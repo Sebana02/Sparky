@@ -1,0 +1,17 @@
+{
+  "name": "bmo",
+  "version": "1.0.0",
+  "description": "Discord bot for private usage",
+  "main": "main.js",
+  "scripts": {
+    "dev": "npx nodemon main.js",
+    "run": "node main.js"
+  },
+  "keywords": [],
+  "author": "Khlozer",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^14.14.1",
+    "dotenv": "^16.3.2"
+  }
+}
