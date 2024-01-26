@@ -8,9 +8,9 @@ module.exports = {
         if (!process.env.GUILD_ID || process.env.GUILD_ID.trim() === '')
             client.application.commands.set(client.commands)
         else {
-            const guild = client.guilds.cache.get(process.env.GUILD_ID);
+            const guild = client.guilds.cache.get(process.env.GUILD_ID)
             if (!guild)
-                console.error("Error: Guild with the specified GUILD_ID not found.");
+                console.error("Error: Guild with the specified GUILD_ID not found.")
             else
                 guild.commands.set(client.commands)
 
@@ -20,9 +20,9 @@ module.exports = {
         if (process.env.PLAYING_ACTIVITY && process.env.PLAYING_ACTIVITY.trim() !== '')
             client.user.setActivity(process.env.PLAYING_ACTIVITY)
         else
-            client.user.setActivity('');
+            client.user.setActivity('')
 
         //Log ready
-        console.log(`-> Logged in as ${client.user.username}\n-> Ready in a total of ${client.guilds.cache.size} servers for ${client.users.cache.size} users`);
+        console.log(`-> Logged in as ${client.user.username}\n-> Ready in a total of ${client.guilds.cache.size} servers for ${client.users.cache.size} users`)
     }
 }

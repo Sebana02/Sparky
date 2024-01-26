@@ -27,5 +27,4 @@ require('./src/logger.js')() //Change console stream to log file
 
 require('./src/loader.js')(client) //Load commands and events
 
-//client.login(process.env.TOKEN) //Login to Discord
-
+client.login(process.env.TOKEN) //Login to Discord
