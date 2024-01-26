@@ -1,4 +1,4 @@
-const { ApplicationCommandOptionType } = require('discord.js')
+const { ApplicationCommandOptionType, EmbedBuilder } = require('discord.js')
 
 //Api for getting gifs
 const api = {
@@ -8,7 +8,6 @@ const api = {
     replaceSpaceWithPlus: (str) => {
         return str.split(' ').join('+')
     },
-
     //return the url of the gif
     search: (keywords) => {
         return [
@@ -18,22 +17,52 @@ const api = {
             `&limit=${api.limit}`
         ].join('')
     },
-
-    getRandomGifs: (category, num) => {
+    getRandomGif: (category) => {
         return fetch(api.search(category))
             .then(async res => {
                 if (res.ok) {
                     const data = await res.json()
                     if (data.results)
-                        return Array.from({ length: num }, () => data.results[Math.floor(Math.random() * data.results.length)].media_formats.gif.url)
+                        return data.results[Math.floor(Math.random() * data.results.length)].media_formats.gif.url
                 }
-
+                console.error("Error: getting gifs: HTTP code: " + res.status)
                 return null
             })
             .catch(error => {
-                console.error("Error: getting gifs " + error.message)
+                console.error("Error: getting gifs: Invalid request: " + error.message)
                 return null
             })
+    },
+    sendRadomGif: async (inter, category) => {
+
+        //Check if the api key is set
+        if (!process.env.TENOR_API_KEY || process.env.TENOR_API_KEY.trim() === '') {
+            console.error("Error: TENOR_API_KEY not set")
+            return await inter.reply({ content: 'Ha ocurrido un error', ephemeral: true })
+                .then(reply => setTimeout(async () => await reply.delete(), 3000))
+        }
+
+        await inter.reply({ content: `Buscando gifs para ${category}...`, ephemeral: false })
+
+        //Search gifs
+        const gif = await api.getRandomGif(category)
+
+        if (!gif)
+            return await inter.editReply({ content: `No hay resultados para ${category}`, ephemeral: false })
+                .then(reply => setTimeout(async () => await reply.delete(), 3000))
+
+        //Send gif
+        const embed = new EmbedBuilder()
+            .setColor(0x2c2d30)
+            .setImage(gif)
+            .setTimestamp()
+            .setFooter({
+                text: inter.user.username, iconURL: inter.user.displayAvatarURL({
+                    size: 1024,
+                    dynamic: true
+                })
+            })
+        await inter.editReply({ content: '', embeds: [embed] })
     }
 
 }
@@ -44,14 +73,6 @@ module.exports = {
     description: 'Muestra un gif aleatorio de la categoria indicada',
     options: [
         {
-            name: 'cantidad',
-            description: 'Cantidad de gifs que quieras enviar',
-            type: ApplicationCommandOptionType.Number,
-            required: true,
-            minValue: 1,
-            maxValue: api.limit
-        },
-        {
             name: 'categoría',
             description: 'Categoría que quieras buscar',
             type: ApplicationCommandOptionType.String,
@@ -59,27 +80,8 @@ module.exports = {
         }
     ],
     run: async (client, inter) => {
-
-        //Check if the api key is set
-        if (!process.env.TENOR_API_KEY || process.env.TENOR_API_KEY.trim() === '') {
-            console.error("Error: TENOR_API_KEY not set")
-            return await inter.reply({ content: 'Ha ocurrido un error', ephemeral: true })
-        }
-
-        //Search gifs
-        const category = inter.options.getString('categoría')
-        const amount = inter.options.getNumber('cantidad')
-
-        await inter.reply({ content: `Buscando gifs para ${category}...`, ephemeral: true })
-
-        const gifs = await api.getRandomGifs(category, amount)
-
-        //Check if there are gifs
-        if (!gifs)
-            return await inter.editReply({ content: `No hay resultados para ${category}`, ephemeral: true })
-
-        //Send gifs
-        gifs.forEach(async (gif) => await inter.channel.send(gif))
+        api.sendRadomGif(inter, inter.options.getString('categoría'))
     },
-    getRandomGifs: api.getRandomGifs
+    getRandomGif: api.getRandomGif,
+    sendRadomGif: api.sendRadomGif
 }
