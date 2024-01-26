@@ -1,5 +1,7 @@
 const { PermissionsBitField } = require('discord.js')
 
+//Command that disconnects the bot
+//Only available for administrators
 module.exports = {
     name: 'disconnect',
     description: 'Desconecta el bot',
