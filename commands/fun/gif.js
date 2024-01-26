@@ -33,7 +33,7 @@ const api = {
                 return null
             })
     },
-    sendRadomGif: async (inter, category) => {
+    sendRadomGif: async (inter, category, description) => {
 
         //Check if the api key is set
         if (!process.env.TENOR_API_KEY || process.env.TENOR_API_KEY.trim() === '') {
@@ -42,13 +42,13 @@ const api = {
                 .then(reply => setTimeout(async () => await reply.delete(), 3000))
         }
 
-        await inter.reply({ content: `Buscando gifs para ${category}...`, ephemeral: false })
+        await inter.deferReply()
 
         //Search gifs
         const gif = await api.getRandomGif(category)
 
         if (!gif)
-            return await inter.editReply({ content: `No hay resultados para ${category}`, ephemeral: false })
+            return await inter.editReply({ content: `No hay resultados para '${category}'`, ephemeral: false })
                 .then(reply => setTimeout(async () => await reply.delete(), 3000))
 
         //Send gif
@@ -62,6 +62,8 @@ const api = {
                     dynamic: true
                 })
             })
+            .setDescription(description)
+
         await inter.editReply({ content: '', embeds: [embed] })
     }
 
@@ -80,7 +82,7 @@ module.exports = {
         }
     ],
     run: async (client, inter) => {
-        api.sendRadomGif(inter, inter.options.getString('categoría'))
+        api.sendRadomGif(inter, inter.options.getString('categoría'), `Gif aleatorio de ${inter.options.getString('categoría')}`)
     },
     getRandomGif: api.getRandomGif,
     sendRadomGif: api.sendRadomGif
