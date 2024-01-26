@@ -3,17 +3,23 @@ const fs = require("fs")
 
 
 module.exports = () => {
-    //Create stream to log file
-    const stream = fs.createWriteStream(process.env.LOG_FILE, {
-        flags: 'a',
-        autoClose: true
-    })
 
-    //Change console stream to log file
-    console = new Console({
-        stdout: stream,
-        stderr: stream,
-    })
+    if (!process.env.LOG_FILE || process.env.LOG_FILE.trim() === '') {
+        console.error("Error: LOG_FILE environment variable not found.")
+    } else {
+
+        //Create stream to log file
+        const stream = fs.createWriteStream(process.env.LOG_FILE, {
+            flags: 'a',
+            autoClose: true
+        })
+
+        //Change console stream to log file
+        console = new Console({
+            stdout: stream,
+            stderr: stream,
+        })
+    }
 
     //Log start time
     console.log("------------------------------------------------------\n"

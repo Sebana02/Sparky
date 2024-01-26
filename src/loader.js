@@ -5,7 +5,7 @@ const path = require('path')
 //Load events recursively from folderPath, and bind them to emitter
 function loadEvents(folderPath, emitter, client) {
     if (!fs.existsSync(folderPath))
-        return console.log(`-> Folder does not exist: ${folderPath}`)
+        return console.error(`-> Error: Folder does not exist: ${folderPath}`)
 
     fs.readdirSync(folderPath).forEach((file) => {
         const filePath = path.join(folderPath, file)
@@ -21,7 +21,7 @@ function loadEvents(folderPath, emitter, client) {
             const eventCallback = event.callback
 
             if (!eventName || !eventCallback)
-                return console.log(`-> Invalid event file: ${file}`)
+                return console.error(`-> Error: Invalid event file: ${file}`)
 
             emitter.on(eventName, eventCallback.bind(null, client))
             console.log(`-> Loaded event: ${eventName}`)
@@ -32,7 +32,7 @@ function loadEvents(folderPath, emitter, client) {
 //Load commands recursively from folderPath
 function loadCommands(folderPath, client) {
     if (!fs.existsSync(folderPath))
-        return console.log(`-> Folder does not exist: ${folderPath}`)
+        return console.error(`-> Error: Folder does not exist: ${folderPath}`)
 
     fs.readdirSync(folderPath).forEach((file) => {
         const filePath = path.join(folderPath, file)
@@ -49,7 +49,7 @@ function loadCommands(folderPath, client) {
             const commandRun = command.run
 
             if (!commandName || !commandDescription || !commandRun)
-                return console.log(`-> Invalid command file: ${file}`)
+                return console.error(`-> Error: Invalid command file: ${file}`)
 
             client.commands.set(commandName.toLowerCase(), command)
             console.log(`-> Loaded comand: ${commandName}`)

@@ -27,4 +27,7 @@ require('./src/logger.js')() //Change console stream to log file
 
 require('./src/loader.js')(client) //Load commands and events
 
+if (!process.env.TOKEN || process.env.TOKEN.trim() === '')
+    return console.error("Error: TOKEN environment variable not found.")
+
 client.login(process.env.TOKEN) //Login to Discord

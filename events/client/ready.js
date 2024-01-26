@@ -2,17 +2,20 @@
 //Register slash commands and set activity
 module.exports = {
     event: "ready",
-    callback: (client) => {
+    callback: async (client) => {
 
         //Register slash commands
         if (!process.env.GUILD_ID || process.env.GUILD_ID.trim() === '')
             client.application.commands.set(client.commands)
         else {
             const guild = client.guilds.cache.get(process.env.GUILD_ID)
-            if (!guild)
+            if (!guild) {
                 console.error("Error: Guild with the specified GUILD_ID not found.")
-            else
+                await client.destroy()
+                process.exit(1)
+            } else {
                 guild.commands.set(client.commands)
+            }
 
         }
 
