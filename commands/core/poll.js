@@ -28,8 +28,14 @@ module.exports = {
     run: async (client, inter) => {
         //Get poll information
         const options = inter.options.getString('opciones').split(',').map(e => e.trim()).filter(Boolean)
-        if (options.length < 2) return inter.reply("Pon al menos dos opciones")
-        else if (options.length > 10) return inter.reply("Demasiadas opciones, pon como mucho 10")
+        if (options.length < 2)
+            return inter.reply({ content: "Pon al menos dos opciones", ephemeral: true })
+                .then(reply => setTimeout(() => reply.delete(), 2000))
+
+        else if (options.length > 10)
+            return inter.reply({ content: "Demasiadas opciones, pon como mucho 10", ephemeral: true })
+                .then(reply => setTimeout(() => reply.delete(), 2000))
+
         const poll = inter.options.getString('tema').trim()
 
         await inter.deferReply()
@@ -136,7 +142,7 @@ async function createCollection(inter, votes, poll, components) {
 
             //Remove previous vote 
             const previousVote = countReactions.get(i.user.id)
-            if (previousVote !== undefined)
+            if (previousVote)
                 votes[previousVote].value--
 
             //Add new vote
