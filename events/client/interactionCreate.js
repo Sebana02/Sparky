@@ -1,12 +1,10 @@
-const { InteractionType } = require('discord.js')
-
 //Event that is called when the bot receives an interaction
 module.exports = {
     event: "interactionCreate",
     callback: async (client, inter) => {
 
         //If interaction is a command
-        if (inter.type === InteractionType.ApplicationCommand) {
+        if (inter.isChatInputCommand()) {
 
             //Log interaction
             let commandInfo = `/${inter.commandName} `
@@ -26,18 +24,17 @@ module.exports = {
 
             //If command has permissions restrictions and user does not have them -> error
             if (command.permissions && !inter.member.permissions.has(command.permissions))
-                return await inter.reply({ content: `No tienes permisos para usar este comando`, ephemeral: true })
+                return await inter.reply({ content: `No tienes permisos para usar este comando`, ephemeral: false })
+                    .then(reply => setTimeout(() => reply.delete(), 2000))
 
 
             //Execute command
             command.run(client, inter)
                 .catch(async (error) => {
-                    console.error(`Error: executing command "${command.name}": ${error.message}`)
+                    console.error(`Error: executing command "${command.name}": ${error}`)
 
-                    if (inter.referred || inter.replied)
-                        await inter.editReply({ content: `Error: al ejecutar el comando "${command.name}"`, ephemeral: true })
-                    else
-                        await inter.reply({ content: `Error: al ejecutar el comando "${command.name}"`, ephemeral: true })
+                    await inter.channel.send({ content: `Error: al ejecutar el comando "${command.name}"`, ephemeral: true })
+                        .then(reply => setTimeout(() => reply.delete(), 2000))
                 })
         }
     }

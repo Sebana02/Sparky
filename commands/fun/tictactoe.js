@@ -174,7 +174,7 @@ class TicTacToe {
         let msg = await this.inter.fetchReply()
 
         // Notify the current player about their turn
-        const turnMessage = await this.inter.channel.send(`${this.turn}, es tu turno!`)
+        const turnMessage = await this.inter.followUp(`${this.turn}, es tu turno!`)
 
         return new Promise(async (resolve, reject) => {
             // Ignore bot interactions and interactions that are not game buttons
