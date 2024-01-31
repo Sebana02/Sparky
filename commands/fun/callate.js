@@ -1,5 +1,5 @@
 const { ApplicationCommandOptionType, EmbedBuilder } = require('discord.js');
-const { sendRadomGif } = require('./gif.js');
+const { sendRandomGif } = require('./gif.js');
 
 //Command that tells a user to shut up
 module.exports = {
@@ -14,6 +14,6 @@ module.exports = {
         }
     ],
     run: async (client, inter) => {
-        await sendRadomGif(inter, 'shut up', `Quiero que te calles ${inter.options.getUser('usuario')}`)
+        await sendRandomGif(inter, 'shut up', `Quiero que te calles ${inter.options.getUser('usuario')}`)
     }
 };

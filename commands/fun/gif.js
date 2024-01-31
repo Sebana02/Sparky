@@ -3,12 +3,14 @@ const { ApplicationCommandOptionType, EmbedBuilder } = require('discord.js')
 //Api for getting gifs
 const api = {
 
+    //Max number of gifs to get
     limit: 50,
 
+    //Replace spaces with plus
     replaceSpaceWithPlus: (str) => {
         return str.split(' ').join('+')
     },
-    //return the url of the gif
+    //Return the url of the gif
     search: (keywords) => {
         return [
             'https://tenor.googleapis.com/v2/search?',
@@ -17,6 +19,7 @@ const api = {
             `&limit=${api.limit}`
         ].join('')
     },
+    //Return a random gif from the category
     getRandomGif: (category) => {
         return fetch(api.search(category))
             .then(async res => {
@@ -33,7 +36,8 @@ const api = {
                 return null
             })
     },
-    sendRadomGif: async (inter, category, description) => {
+    //Send a random gif from the category, with a description
+    sendRandomGif: async (inter, category, description) => {
 
         //Check if the api key is set
         if (!process.env.TENOR_API_KEY || process.env.TENOR_API_KEY.trim() === '') {
@@ -82,8 +86,8 @@ module.exports = {
         }
     ],
     run: async (client, inter) => {
-        api.sendRadomGif(inter, inter.options.getString('categoría'), `Gif aleatorio de ${inter.options.getString('categoría')}`)
+        api.sendRandomGif(inter, inter.options.getString('categoría'), `Gif aleatorio de ${inter.options.getString('categoría')}`)
     },
     getRandomGif: api.getRandomGif,
-    sendRadomGif: api.sendRadomGif
+    sendRandomGif: api.sendRandomGif
 }
