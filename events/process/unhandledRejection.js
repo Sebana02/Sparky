@@ -2,6 +2,6 @@
 module.exports = {
     event: "unhandledRejection",
     callback: async (client, promiseRejectionEvent) => {
-        console.error("Unhandled rejection: ", promiseRejectionEvent);
+        console.error("Error: unhandled promise rejection: ", promiseRejectionEvent);
     }
 };

@@ -8,11 +8,12 @@ function loadEvents(folderPath, emitter, client) {
         return console.error(`-> Error: Folder does not exist: ${folderPath}`)
 
     fs.readdirSync(folderPath).forEach((file) => {
-        const filePath = path.join(folderPath, file)
+        const filePath = path.resolve(folderPath, file)
 
         if (fs.statSync(filePath).isDirectory()) {
-            loadEvents(filePath, emitter)
-        } else {
+            loadEvents(filePath, emitter, client)
+        }
+        else {
             if (!file.endsWith('.js'))
                 return console.log(`-> Skipping non-JS file event: ${file}`)
 
@@ -35,11 +36,12 @@ function loadCommands(folderPath, client) {
         return console.error(`-> Error: Folder does not exist: ${folderPath}`)
 
     fs.readdirSync(folderPath).forEach((file) => {
-        const filePath = path.join(folderPath, file)
+        const filePath = path.resolve(folderPath, file)
 
         if (fs.statSync(filePath).isDirectory()) {
             loadCommands(filePath, client)
-        } else {
+        }
+        else {
             if (!file.endsWith('.js'))
                 return console.log(`-> Skipping non-JS file command: ${file}`)
 
@@ -58,13 +60,20 @@ function loadCommands(folderPath, client) {
 }
 
 module.exports = (client) => {
-    // Load events
-    console.log('-> Loading events...')
-    loadEvents(path.join(__dirname, '../events/process'), process, client)
-    loadEvents(path.join(__dirname, '../events/client'), client, client)
 
-    console.log('-> Loading commands...')
-    client.commands = new Collection()
-    loadCommands(path.join(__dirname, '../commands'), client)
+    try {
+        // Load events
+        console.log('-> Loading events...')
+        loadEvents(path.resolve(__dirname, '../events/process'), process, client)
+        loadEvents(path.resolve(__dirname, '../events/client'), client, client)
+
+        // Load commands
+        console.log('-> Loading commands...')
+        client.commands = new Collection()
+        loadCommands(path.resolve(__dirname, '../commands'), client)
+    }
+    catch (error) {
+        console.error(`Error: loading events and commands: ${error.message}`)
+    }
 }
 
