@@ -36,7 +36,6 @@ module.exports = {
             .setDescription(`🎱${responses[Math.floor(Math.random() * responses.length)]}`)
             .setColor(0x2c2d30)
 
-
         await inter.reply({ embeds: [embed], content: inter.options.getString('pregunta') })
     }
 }

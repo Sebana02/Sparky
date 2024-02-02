@@ -1,7 +1,7 @@
 const { Console } = require("console")
 const fs = require("fs")
 
-
+//Change console stream to log file
 module.exports = () => {
 
     //Check if LOG_FILE environment variable is set

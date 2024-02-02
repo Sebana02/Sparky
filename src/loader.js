@@ -1,4 +1,4 @@
-const { Collection } = require('discord.js')
+const { Collection, Client } = require('discord.js')
 const fs = require('fs')
 const path = require('path')
 
@@ -59,6 +59,7 @@ function loadCommands(folderPath, client) {
     })
 }
 
+
 module.exports = (client) => {
 
     try {
@@ -73,7 +74,7 @@ module.exports = (client) => {
         loadCommands(path.resolve(__dirname, '../commands'), client)
     }
     catch (error) {
-        console.error(`Error: loading events and commands: ${error.message}`)
+        console.error(`Error: loading events and commands: ${error}`)
     }
 }
 

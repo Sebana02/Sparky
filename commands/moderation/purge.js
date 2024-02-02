@@ -18,7 +18,7 @@ module.exports = {
     ],
     run: async (client, inter) => {
         await inter.reply({ content: `Borrando ${inter.options.getNumber('cantidad')} mensajes...`, ephemeral: true })
-            .then(reply => setTimeout(async () => await reply.delete(), 3000))
+            .then(setTimeout(async () => await inter.deleteReply(), 2000))
 
         await inter.channel.bulkDelete(inter.options.getNumber('cantidad'), true)
     }

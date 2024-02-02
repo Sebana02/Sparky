@@ -8,13 +8,13 @@ module.exports = {
     description: 'Desconecta el bot',
     permissions: PermissionsBitField.Flags.Administrator,
     run: async (client, inter) => {
-        const reply = await inter.reply({ content: `Desconectando, ${inter.user.username}...`, ephemeral: true })
+        await inter.reply({ content: `Desconectando, ${inter.user.username}...`, ephemeral: true })
 
         //Wait 2 seconds before disconnecting
         await sleep(2000)
 
         //Delete reply
-        await reply.delete()
+        await inter.deleteReply()
 
         //Disconnect bot
         await client.destroy()

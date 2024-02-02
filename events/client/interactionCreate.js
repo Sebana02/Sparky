@@ -18,14 +18,14 @@ module.exports = {
 
             //No command available -> error
             if (!command) {
-                client.slash.delete(inter.commandName)
+                await client.slash.delete(inter.commandName)
                 return console.error(`Error: command "${inter.commandName}" not found`)
             }
 
             //If command has permissions restrictions and user does not have them -> error
             if (command.permissions && !inter.member.permissions.has(command.permissions))
-                return await inter.reply({ content: `No tienes permisos para usar este comando`, ephemeral: false })
-                    .then(reply => setTimeout(() => reply.delete(), 2000))
+                return await inter.reply({ content: `No tienes permisos para usar este comando`, ephemeral: true })
+                    .then(setTimeout(async () => await inter.deleteReply(), 2000))
 
 
             //Execute command
@@ -33,8 +33,9 @@ module.exports = {
                 .catch(async (error) => {
                     console.error(`Error: executing command "${command.name}": ${error}`)
 
-                    await inter.channel.send({ content: `Error: al ejecutar el comando "${command.name}"`, ephemeral: true })
-                        .then(reply => setTimeout(() => reply.delete(), 2000))
+                    const reply = { content: `Ha ocurrido un error ejecutando "${inter.commandName}"`, ephemeral: true }
+                    inter.replied || inter.deferred ? await inter.editReply(reply) : await inter.reply(reply)
+                    setTimeout(async () => await inter.deleteReply(), 2000)
                 })
         }
     }

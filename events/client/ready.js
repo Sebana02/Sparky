@@ -21,7 +21,7 @@ module.exports = {
             await guild.commands.set(client.commands)
 
         } catch (error) {
-            console.error(`Error: setting up commands: ${error.message}`)
+            console.error(`Error: setting up commands: ${error}`)
             await client.destroy()
             process.exit(1)
         }
