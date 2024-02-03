@@ -1,14 +1,11 @@
-Commands:
-  Games: IAs to play games
-    Hangman
-    RPS
-  Moderation: 
-  Ban
-    Kick
-    Mute
-    .Timeout
-    Unban
-    Unmute
-
-Trivia
+Trivia isnt working
 Test music commands in several servers at a time
+Check every music command and event
+Check hangman
+Check RPS
+IA for RPS
+IA for TicTacToe
+Comment music files
+Comment each module exportation
+Check every moderation command
+Trivia ends when music ends by time

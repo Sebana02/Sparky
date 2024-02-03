@@ -1,5 +1,4 @@
-const { QueryType, Player } = require('discord-player')
-const { useQueue, useMainPlayer } = require('discord-player/dist')
+const { QueryType, useQueue, useMainPlayer } = require('discord-player')
 const { ApplicationCommandOptionType, EmbedBuilder, ActionRowBuilder, ButtonBuilder, InteractionType } = require('discord.js')
 
 module.exports = {
@@ -19,14 +18,14 @@ module.exports = {
 
         await inter.deferReply()
 
-        const queue = useQueue(inter.guildId)
+        let queue = useQueue(inter.guildId)
         const player = useMainPlayer()
 
         if (queue)
-            await queue.delete()
+            queue.delete()
 
         const playlist = inter.options.getString('playlist')
-        const results = await Player.singleton().search(playlist, {
+        const results = await player.search(playlist, {
             requestedBy: inter.member,
             searchEngine: QueryType.AUTO
         })
@@ -48,9 +47,6 @@ module.exports = {
 
         //while there are songs to be played and the trivia is not stopped
         while (toBePlayed.length > 0 && !stop) {
-
-            if (queue && queue.isPlaying())
-                await queue.delete()
 
             //select random song from toBePlayed
             let correctSong = toBePlayed[Math.floor(Math.random() * toBePlayed.length)]
@@ -119,7 +115,9 @@ module.exports = {
                         selfDeaf: true
                     }
                 })
-
+                queue = useQueue(inter.guildId)
+                if (queue && queue.isPlaying())
+                    player.skip()
                 //send message with buttons and leaderboard
                 let message = await inter.editReply({ components: [buttonsRow], embeds: [leaderboard] })
 
