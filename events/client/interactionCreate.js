@@ -34,8 +34,13 @@ module.exports = {
                     console.error(`Error: executing command "${command.name}": ${error}`)
 
                     const reply = { content: `Ha ocurrido un error ejecutando "${inter.commandName}"`, ephemeral: true, components: [], embeds: [] }
-                    inter.replied || inter.deferred ? await inter.editReply(reply) : await inter.reply(reply)
-                    setTimeout(async () => await inter.deleteReply(), 2000)
+                    if (inter.replied || inter.deferred)
+                        await inter.editReply(reply)
+                            .then(setTimeout(async () => await inter.deleteReply(), 2000))
+                    else
+                        await inter.reply(reply)
+                            .then(setTimeout(async () => await inter.deleteReply(), 2000))
+
                 })
         }
     }

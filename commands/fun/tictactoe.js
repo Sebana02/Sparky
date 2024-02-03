@@ -18,11 +18,11 @@ module.exports = {
         const opponent = inter.options.getUser('oponent')
         if (opponent.bot)
             return inter.reply({ content: 'No puedes jugar contra un bot', ephemeral: true })
-                .then(reply => setTimeout(() => reply.delete(), 2000))
+                .then(setTimeout(async () => await inter.deleteReply(), 2000))
 
         if (opponent === inter.user)
-            return inter.reply({ content: 'No puedes jugar contra ti mismo', ephemeral: true })
-                .then(reply => setTimeout(() => reply.delete(), 2000))
+            return inter.reply({ content: 'No puedes jugar contra ti mismo', ephemeral: false })
+                .then(setTimeout(async () => await inter.deleteReply(), 2000))
 
 
         await inter.deferReply()
@@ -34,7 +34,7 @@ module.exports = {
         })
 
         //Start the game
-        game.execute()
+        await game.execute()
     }
 }
 
@@ -63,21 +63,17 @@ class TicTacToe {
         while (!this.game_over) {
 
             //Collect interaction from the player
-            await this.collectInteraction()
-                .then(async interaction => { //Apply the player's move
-                    const row = JSON.parse(interaction.customId).row
-                    const column = JSON.parse(interaction.customId).column
-                    await interaction.reply({ content: `Has elegido la casilla [${row},${column}]`, ephemeral: true })
-                        .then(reply => setTimeout(() => reply.delete(), 2000))
+            const { row, column } = await this.collectInteraction()
 
-                    this.board[row][column] = this.symbols[this.turn === this.player_one ? 0 : 1]
+            if (row === undefined || column === undefined) {
+                this.game_over = true
+                await this.inter.editReply({ content: `Tiempo agotado! Empate`, embeds: [], components: [] })
+                break
+            }
 
-                    await this.inter.editReply({ embeds: [this.createEmbed()], components: this.createButtons() })
-                })
-                .catch(async () => { //If the player does not interact, the game is over
-                    this.game_over = true
-                    return await this.inter.editReply({ content: `Tiempo agotado! Empate`, embeds: [], components: [] })
-                })
+            this.board[row][column] = this.symbols[this.turn === this.player_one ? 0 : 1]
+
+            await this.inter.editReply({ embeds: [this.createEmbed()], components: this.createButtons() })
 
 
             //Check if the player has won
@@ -181,18 +177,29 @@ class TicTacToe {
             const filter = (i) => (!i.user.bot && JSON.parse(i.customId).row !== undefined && JSON.parse(i.customId).column !== undefined)
 
             // Use destructuring to extract properties from the customId
-            const collector = await msg.createMessageComponentCollector({ filter, time: 5000 })
+            const collector = await msg.createMessageComponentCollector({ filter, time: 60000 })
 
             // Listen for 'collect' event
             collector.on('collect', async (interaction) => {
-                //Ignore interactions from other players
-                if (interaction.user !== this.turn)
-                    return await interaction.reply({ content: `No es tu turno!`, ephemeral: true })
-                        .then(reply => setTimeout(() => reply.delete(), 2000))
+                try {
+                    //Ignore interactions from other players
+                    if (interaction.user !== this.turn)
+                        return await interaction.reply({ content: `No es tu turno!`, ephemeral: true })
+                            .then(setTimeout(async () => await interaction.deleteReply(), 2000))
 
-                // Stop collector and resolve Promise
-                collector.stop()
-                resolve(interaction)
+                    // Stop collector and resolve Promise
+                    collector.stop()
+
+                    const row = JSON.parse(interaction.customId).row
+                    const column = JSON.parse(interaction.customId).column
+
+                    await interaction.reply({ content: `Has elegido la casilla [${row},${column}]`, ephemeral: true })
+                        .then(setTimeout(async () => await interaction.deleteReply(), 2000))
+
+                    resolve({ row, column })
+                } catch (error) {
+                    reject(error)
+                }
             })
 
             // Listen for 'end' event
@@ -201,9 +208,8 @@ class TicTacToe {
                 //Delete the turn message
                 await turnMessage.delete()
 
-                //If there has not been any interaction, the game is over
-                if (reason == 'time')
-                    reject()
+                if (reason === 'time')
+                    resolve({})
 
             })
         })

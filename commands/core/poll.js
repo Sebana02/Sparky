@@ -30,11 +30,11 @@ module.exports = {
         const options = inter.options.getString('opciones').split(',').map(e => e.trim()).filter(Boolean)
         if (options.length < 2)
             return await inter.reply({ content: "Pon al menos dos opciones", ephemeral: true })
-                .then(setTimeout(async () => await inter.deleteReply(), 2000))
+                .then(setTimeout(() => inter.deleteReply(), 2000))
 
         else if (options.length > 10)
             return await inter.reply({ content: "Demasiadas opciones, pon como mucho 10", ephemeral: true })
-                .then(setTimeout(async () => await inter.deleteReply(), 2000))
+                .then(setTimeout(() => inter.deleteReply(), 2000))
 
         const poll = inter.options.getString('tema').trim()
 
@@ -152,7 +152,7 @@ async function createCollection(inter, votes, poll, components) {
 
                 //Reply to the user
                 await interaction.reply({ content: `Has votado por '**${votes[index].option}**' `, ephemeral: true })
-                    .then(setTimeout(() => interaction.deleteReply().catch(error => reject(error)), 2000))
+                    .then(setTimeout(() => interaction.deleteReply(), 2000))
 
                 //Update the poll embed
                 const embedResult = createPollEmbed(inter, poll, votes, false)
