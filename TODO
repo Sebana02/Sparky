@@ -1,1 +1,14 @@
-IAs to play games
+Commands:
+  Games: IAs to play games
+    Hangman
+    RPS
+  Moderation: 
+  Ban
+    Kick
+    Mute
+    .Timeout
+    Unban
+    Unmute
+
+Trivia
+Test music commands in several servers at a time

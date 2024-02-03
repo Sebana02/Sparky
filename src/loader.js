@@ -1,6 +1,7 @@
 const { Collection, Client } = require('discord.js')
 const fs = require('fs')
 const path = require('path')
+const { useMainPlayer } = require('discord-player')
 
 //Load events recursively from folderPath, and bind them to emitter
 function loadEvents(folderPath, emitter, client) {
@@ -67,6 +68,8 @@ module.exports = (client) => {
         console.log('-> Loading events...')
         loadEvents(path.resolve(__dirname, '../events/process'), process, client)
         loadEvents(path.resolve(__dirname, '../events/client'), client, client)
+        loadEvents(path.resolve(__dirname, '../events/music'), useMainPlayer().events, client)
+
 
         // Load commands
         console.log('-> Loading commands...')

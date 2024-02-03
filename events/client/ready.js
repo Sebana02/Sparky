@@ -11,7 +11,7 @@ module.exports = {
         //If error occurs, log it and exit the process
         try {
             if (!process.env.GUILD_ID || process.env.GUILD_ID.trim() === '')
-                await client.application.commands.set(client.commands)
+                return await client.application.commands.set(client.commands)
 
             const guild = client.guilds.cache.get(process.env.GUILD_ID)
 
