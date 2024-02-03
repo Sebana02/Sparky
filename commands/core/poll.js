@@ -29,12 +29,12 @@ module.exports = {
         //Get poll information
         const options = inter.options.getString('opciones').split(',').map(e => e.trim()).filter(Boolean)
         if (options.length < 2)
-            return inter.reply({ content: "Pon al menos dos opciones", ephemeral: true })
-                .then(reply => setTimeout(() => reply.delete(), 2000))
+            return await inter.reply({ content: "Pon al menos dos opciones", ephemeral: true })
+                .then(setTimeout(async () => await inter.deleteReply(), 2000))
 
         else if (options.length > 10)
-            return inter.reply({ content: "Demasiadas opciones, pon como mucho 10", ephemeral: true })
-                .then(reply => setTimeout(() => reply.delete(), 2000))
+            return await inter.reply({ content: "Demasiadas opciones, pon como mucho 10", ephemeral: true })
+                .then(setTimeout(async () => await inter.deleteReply(), 2000))
 
         const poll = inter.options.getString('tema').trim()
 
@@ -132,34 +132,37 @@ function createButtons(votes) {
 async function createCollection(inter, votes, poll, components) {
     const msg = await inter.fetchReply()
     const filter = (i) => !i.user.bot && i.customId.startsWith('vote_')
-    const collector = msg.createMessageComponentCollector({ filter, time: inter.options.getNumber('tiempo') * 1000 })
-
     const countReactions = new Map()
 
-    return new Promise((resolve) => {
-        collector.on('collect', async (i) => {
-            const index = parseInt(i.customId.split('_')[1])
+    const collector = msg.createMessageComponentCollector({ filter, time: inter.options.getNumber('tiempo') * 1000 })
 
-            //Remove previous vote 
-            const previousVote = countReactions.get(i.user.id)
-            if (previousVote)
-                votes[previousVote].value--
+    return new Promise(async (resolve, reject) => {
+        collector.on('collect', async (interaction) => {
+            try {
+                const index = parseInt(interaction.customId.split('_')[1])
 
-            //Add new vote
-            countReactions.set(i.user.id, index)
-            votes[index].value++
+                //Remove previous vote 
+                const previousVote = countReactions.get(interaction.user.id)
+                if (previousVote)
+                    votes[previousVote].value--
 
-            //Reply to the user
-            await i.reply({ content: `Has votado por '**${votes[index].option}**' `, ephemeral: true })
-                .then(setTimeout(() => i.deleteReply(), 1500))
+                //Add new vote
+                countReactions.set(interaction.user.id, index)
+                votes[index].value++
 
-            //Update the poll embed
-            const embedResult = createPollEmbed(inter, poll, votes, false)
-            await inter.editReply({ embeds: [embedResult], components: components })
+                //Reply to the user
+                await interaction.reply({ content: `Has votado por '**${votes[index].option}**' `, ephemeral: true })
+                    .then(setTimeout(() => interaction.deleteReply().catch(error => reject(error)), 2000))
+
+                //Update the poll embed
+                const embedResult = createPollEmbed(inter, poll, votes, false)
+                await inter.editReply({ embeds: [embedResult], components: components })
+            } catch (error) {
+                reject(error)
+            }
         })
 
-        collector.on('end', () => {
-            resolve(votes)
-        })
+        collector.on('end', () => resolve(votes))
     })
+
 }

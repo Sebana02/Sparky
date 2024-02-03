@@ -20,31 +20,27 @@ const api = {
         ].join('')
     },
     //Return a random gif from the category
-    getRandomGif: (category) => {
-        return fetch(api.search(category))
-            .then(async res => {
-                if (res.ok) {
-                    const data = await res.json()
-                    if (data.results)
-                        return data.results[Math.floor(Math.random() * data.results.length)].media_formats.gif.url
-                }
-                console.error("Error: getting gifs: HTTP code: " + res.status)
-                return null
-            })
-            .catch(error => {
-                console.error("Error: getting gifs: Invalid request: " + error.message)
-                return null
-            })
+    getRandomGif: async (category) => {
+        // Check if the api key is set
+        if (!process.env.TENOR_API_KEY || process.env.TENOR_API_KEY.trim() === '') {
+            throw 'TENOR_API_KEY environment variable not set'
+        }
+
+        const res = await fetch(api.search(category))
+
+        if (res.ok) {
+            const data = await res.json()
+
+            return (data.results && data.results.length > 0)
+                ? data.results[Math.floor(Math.random() * data.results.length)].media_formats.gif.url
+                : null;
+
+        }
+
+        throw "Invalid HTTP request, code: " + res.status
     },
     //Send a random gif from the category, with a description
     sendRandomGif: async (inter, category, description) => {
-
-        //Check if the api key is set
-        if (!process.env.TENOR_API_KEY || process.env.TENOR_API_KEY.trim() === '') {
-            console.error("Error: TENOR_API_KEY not set")
-            return await inter.reply({ content: 'Ha ocurrido un error', ephemeral: true })
-                .then(reply => setTimeout(async () => await reply.delete(), 3000))
-        }
 
         await inter.deferReply()
 
@@ -53,7 +49,7 @@ const api = {
 
         if (!gif)
             return await inter.editReply({ content: `No hay resultados para '${category}'`, ephemeral: false })
-                .then(reply => setTimeout(async () => await reply.delete(), 3000))
+                .then(setTimeout(async () => await inter.deleteReply(), 2000))
 
         //Send gif
         const embed = new EmbedBuilder()

@@ -16,7 +16,7 @@ module.exports = {
             const guild = client.guilds.cache.get(process.env.GUILD_ID)
 
             if (!guild)
-                throw new Error('Guild with the specified GUILD_ID not found')
+                throw 'Guild with the specified GUILD_ID not found'
 
             await guild.commands.set(client.commands)
 
