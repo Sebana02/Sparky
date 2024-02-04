@@ -1,5 +1,6 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ApplicationCommandOptionType } = require('discord.js')
+const { ActionRowBuilder, ButtonBuilder, ApplicationCommandOptionType } = require('discord.js')
 const interactionReply = require('@utils/interactionReply.js')
+const createEmbed = require('@utils/createEmbed.js')
 
 //Command that creates a poll
 module.exports = {
@@ -62,37 +63,25 @@ function createPollEmbed(inter, poll, votes, end = false) {
     //Calculate total votes
     const totalVotes = votes.reduce((total, vote) => total + vote.value, 0)
 
-    const embed = new EmbedBuilder()
-        .setColor(0xff0000)
-        .setTitle(poll)
-        .setTimestamp()
-        .setFooter({
-            text: inter.user.username,
-            iconURL: inter.user.displayAvatarURL({
-                size: 1024,
-                dynamic: true
-            })
-        })
-
     //Calculate percentage and create the message for each option
+    let votation = []
     votes.forEach(vote => {
         const percentage = totalVotes !== 0 ? (100 * vote.value / totalVotes).toFixed(2) : 0
         const filledBars = '✅'.repeat(vote.value)
         const emptyBars = '⬛'.repeat(totalVotes - vote.value)
 
         const msg = `${filledBars}${emptyBars} ${vote.value} | ${percentage}%`
-
-        embed.addFields({ name: vote.option, value: msg })
+        votation.push({ name: vote.option, value: msg })
     })
 
-    //Create the description
-    const description = !end
-        ? `Teneis ${inter.options.getNumber('tiempo')} segundos para votar\n`
-        : `Votos: ${totalVotes}`
-
-    embed.setDescription(description)
-
-    return embed
+    return createEmbed({
+        color: 0xff0000,
+        title: poll,
+        fields: votation,
+        footer: { text: inter.user.username, iconURL: inter.user.displayAvatarURL({ size: 1024, dynamic: true }) },
+        setTimestamp: true,
+        description: !end ? `Teneis ${inter.options.getNumber('tiempo')} segundos para votar\n` : `Votos totales: ${totalVotes}`
+    })
 }
 
 //Create buttons for each option

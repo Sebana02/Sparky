@@ -1,4 +1,6 @@
-const { EmbedBuilder, ApplicationCommandOptionType, ButtonBuilder, ActionRowBuilder } = require('discord.js')
+const { ApplicationCommandOptionType, ButtonBuilder, ActionRowBuilder } = require('discord.js')
+const createEmbed = require('@utils/createEmbed.js')
+const interactionReply = require('@utils/interactionReply.js')
 
 //Command that allows user to play tic tac toe with a friend
 module.exports = {
@@ -17,12 +19,10 @@ module.exports = {
         //Initial comprobations
         const opponent = inter.options.getUser('oponent')
         if (opponent.bot)
-            return inter.reply({ content: 'No puedes jugar contra un bot', ephemeral: true })
-                .then(setTimeout(async () => await inter.deleteReply(), 2000))
+            return await interactionReply(inter, { content: 'No puedes jugar contra un bot', ephemeral: true, deleteTime: 2 })
 
         if (opponent === inter.user)
-            return inter.reply({ content: 'No puedes jugar contra ti mismo', ephemeral: false })
-                .then(setTimeout(async () => await inter.deleteReply(), 2000))
+            return await interactionReply(inter, { content: 'No puedes jugar contra ti mismo', ephemeral: true, deleteTime: 2 })
 
 
         await inter.deferReply()
@@ -57,7 +57,7 @@ class TicTacToe {
     //Run the game
     async execute() {
         //Initial message
-        await this.inter.editReply({ embeds: [this.createEmbed()], components: this.createButtons() })
+        await interactionReply(this.inter, { embeds: [createEmbed({ description: this.createBoard(), })], components: this.createButtons() })
 
         //Loop until the game is over
         while (!this.game_over) {
@@ -67,25 +67,25 @@ class TicTacToe {
 
             if (row === undefined || column === undefined) {
                 this.game_over = true
-                await this.inter.editReply({ content: `Tiempo agotado! Empate`, embeds: [], components: [] })
+                await interactionReply(this.inter, { content: `Tiempo agotado! Empate` })
                 break
             }
 
             this.board[row][column] = this.symbols[this.turn === this.player_one ? 0 : 1]
 
-            await this.inter.editReply({ embeds: [this.createEmbed()], components: this.createButtons() })
+            await interactionReply(this.inter, { embeds: [createEmbed({ description: this.createBoard(), })], components: this.createButtons() })
 
 
             //Check if the player has won
             if (this.hasWon(this.symbols[this.turn === this.player_one ? 0 : 1])) {
-                await this.inter.editReply({ content: `${this.turn} ha ganado!`, embeds: [], components: [] })
+                await interactionReply(this.inter, { content: `${this.turn} ha ganado!` })
                 this.game_over = true
                 break
             }
 
             //Check if the game is a draw
             if (this.isDraw()) {
-                await this.inter.editReply({ content: `Empate!`, embeds: [], components: [] })
+                await interactionReply(this.inter, { content: `Empate!` })
                 this.game_over = true
                 break
             }
@@ -158,11 +158,11 @@ class TicTacToe {
         return components
     }
 
-    //Create the embed with the board
-    createEmbed() {
-        return new EmbedBuilder().setDescription("----------------\n"
+    //Create map with the current state of the game
+    createBoard() {
+        return "----------------\n"
             + this.board.map(row => '  | ' + row.join('  |  ') + ' |  ').join('\n')
-            + "\n----------------")
+            + "\n----------------"
     }
 
     // Collect interactions from the players
@@ -184,8 +184,7 @@ class TicTacToe {
                 try {
                     //Ignore interactions from other players
                     if (interaction.user !== this.turn)
-                        return await interaction.reply({ content: `No es tu turno!`, ephemeral: true })
-                            .then(setTimeout(async () => await interaction.deleteReply(), 2000))
+                        return await interactionReply(interaction, { content: `No es tu turno!`, ephemeral: true, deleteTime: 2 })
 
                     // Stop collector and resolve Promise
                     collector.stop()
@@ -193,8 +192,7 @@ class TicTacToe {
                     const row = JSON.parse(interaction.customId).row
                     const column = JSON.parse(interaction.customId).column
 
-                    await interaction.reply({ content: `Has elegido la casilla [${row},${column}]`, ephemeral: true })
-                        .then(setTimeout(async () => await interaction.deleteReply(), 2000))
+                    await interactionReply(interaction, { content: `Has elegido la casilla [${row},${column}]`, ephemeral: true, deleteTime: 2 })
 
                     resolve({ row, column })
                 } catch (error) {

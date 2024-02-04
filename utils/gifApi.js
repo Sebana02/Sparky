@@ -1,4 +1,5 @@
-const { EmbedBuilder } = require('discord.js')
+const createEmbed = require('@utils/createEmbed.js')
+const interactionReply = require('@utils/interactionReply.js')
 
 //Max number of gifs to get
 const limit = 50
@@ -33,15 +34,15 @@ async function getRandomGif(category) {
 
         return (data.results && data.results.length > 0)
             ? data.results[Math.floor(Math.random() * data.results.length)].media_formats.gif.url
-            : null;
+            : null
 
     }
 
     throw "Invalid HTTP request, code: " + res.status
 }
 
-//Send a random gif from the category, with a description
-async function sendRandomGif(inter, category, description) {
+//Send a random gif from the category, with a title
+async function sendRandomGif(inter, category, title) {
 
     await inter.deferReply()
 
@@ -49,23 +50,19 @@ async function sendRandomGif(inter, category, description) {
     const gif = await getRandomGif(category)
 
     if (!gif)
-        return await inter.editReply({ content: `No hay resultados para '${category}'`, ephemeral: false })
-            .then(setTimeout(async () => await inter.deleteReply(), 2000))
+        return await interactionReply(inter, { content: `No hay resultados para '${category}'`, ephemeral: false, deleteTime: 2 })
+
 
     //Send gif
-    const embed = new EmbedBuilder()
-        .setColor(0x2c2d30)
-        .setImage(gif)
-        .setTimestamp()
-        .setFooter({
-            text: inter.user.username, iconURL: inter.user.displayAvatarURL({
-                size: 1024,
-                dynamic: true
-            })
-        })
-        .setDescription(description)
+    const embed = createEmbed({
+        color: 0x2c2d30,
+        image: gif,
+        title: title,
+        footer: { text: inter.user.username, iconURL: inter.user.displayAvatarURL({ size: 1024, dynamic: true }) },
+        setTimestamp: true
+    })
 
-    await inter.editReply({ content: '', embeds: [embed] })
+    await interactionReply(inter, { embeds: [embed] })
 }
 
 //Api to get a random gif

@@ -1,6 +1,6 @@
 //hangman repository : https://github.com/Zheoni/Hanger-Bot
 
-const { ApplicationCommandOptionType, ActionRowBuilder, ButtonBuilder, EmbedBuilder, PermissionsBitField } = require('discord.js');
+const { ApplicationCommandOptionType, ActionRowBuilder, ButtonBuilder, EmbedBuilder } = require('discord.js')
 
 
 module.exports = {
@@ -20,80 +20,80 @@ module.exports = {
     ],
     run: async (client, inter) => {
 
-        let game, players, selector;
-        const gameInfo = await startGame(inter);
+        let game, players, selector
+        const gameInfo = await startGame(inter)
         if (gameInfo) {
-            game = gameInfo.game;
-            players = gameInfo.players;
-            selector = gameInfo.selector;
-            await runGame(inter, game, players);
-            await showResult(inter, game, selector);
+            game = gameInfo.game
+            players = gameInfo.players
+            selector = gameInfo.selector
+            await runGame(inter, game, players)
+            await showResult(inter, game, selector)
         }
     }
 }
 
 String.prototype.replaceAt = function (index, replacement) {
-    return this.slice(0, index) + replacement + this.slice(index + replacement.length);
+    return this.slice(0, index) + replacement + this.slice(index + replacement.length)
 }
 
 
 //class hangman
 class hangman {
     constructor(word) {
-        this.word = word;
-        this.lives = 6;
-        this.progress = hangman.hyphenString(word.length);
-        this.remaining = word.length;
-        this.misses = [];
-        this.status = "in progress";
+        this.word = word
+        this.lives = 6
+        this.progress = hangman.hyphenString(word.length)
+        this.remaining = word.length
+        this.misses = []
+        this.status = "in progress"
     }
 
     static hyphenString(n) {
-        let str = "";
+        let str = ""
         for (let i = 0; i < n; ++i) {
-            str += "-";
+            str += "-"
         }
-        return str;
+        return str
     }
 
     guess(c) {
         if (this.progress.includes(c)) {
-            --this.lives;
+            --this.lives
         } else if (this.word.includes(c)) {
             for (let i = 0; i < this.word.length; ++i) {
                 if (this.word[i] === c) {
-                    this.progress = this.progress.replaceAt(i, this.word[i]);
-                    --this.remaining;
+                    this.progress = this.progress.replaceAt(i, this.word[i])
+                    --this.remaining
                 }
             }
         } else {
             if (!this.misses.includes(c)) {
-                this.misses.push(c);
+                this.misses.push(c)
             }
-            --this.lives;
+            --this.lives
         }
 
         if (this.lives == 0) {
-            this.status = "lost";
+            this.status = "lost"
         } else if (this.remaining == 0) {
-            this.status = "won";
+            this.status = "won"
         }
         return {
             status: this.status,
             progress: this.progress,
             misses: this.misses,
             lifes: this.lives
-        };
+        }
     }
 
     guessAll(word) {
         if (this.word === word) {
-            this.progress = this.word;
-            this.status = "won";
+            this.progress = this.word
+            this.status = "won"
         } else {
-            --this.lives;
+            --this.lives
         }
-        return this.status === "won";
+        return this.status === "won"
     }
 }
 
@@ -153,148 +153,148 @@ const figure = [`
 / \\  |      missC
      |
 ==========  gameStatus
-`];
+`]
 
 
 //START GAME
 async function startGame(inter) {
 
-    const players = await gatherPlayers(inter);
-    const gameType = await inter.options.getString('type');
+    const players = await gatherPlayers(inter)
+    const gameType = await inter.options.getString('type')
 
     if (players.length == 0) {
-        await inter.editReply({ content: "Nadie se ha unido al juego...", embeds: [], components: [] });
-        return;
+        await inter.editReply({ content: "Nadie se ha unido al juego...", embeds: [], components: [] })
+        return
     }
 
     if (gameType === "custom" && players.length < 2) {
-        await inter.editReply({ content: "Para una partida custom, se necesitan al menos 2 jugadores.", embeds: [], components: [] });
-        return;
+        await inter.editReply({ content: "Para una partida custom, se necesitan al menos 2 jugadores.", embeds: [], components: [] })
+        return
     }
 
-    let word;
-    let selector;
+    let word
+    let selector
     switch (gameType) {
         case "random":
             word = wordList[Math.floor(Math.random() * wordList.length)]
-            break;
+            break
 
         case "custom":
-            await inter.editReply({ content: players.length + " jugadores se han unido. Seleccionando a un jugador para que elija la palabra. Mirad los DMs!!", embeds: [], components: [] });
+            await inter.editReply({ content: players.length + " jugadores se han unido. Seleccionando a un jugador para que elija la palabra. Mirad los DMs!!", embeds: [], components: [] })
 
-            let userSelection = await getWordFromPlayers(players, inter);
+            let userSelection = await getWordFromPlayers(players, inter)
 
-            if (!userSelection) return;
+            if (!userSelection) return
             else {
-                word = userSelection.word;
-                selector = userSelection.selector;
+                word = userSelection.word
+                selector = userSelection.selector
             }
 
-            break;
+            break
     }
-    const game = new hangman(word);
+    const game = new hangman(word)
 
     return {
         game,
         players,
         selector
-    };
+    }
 }
 async function gatherPlayers(inter) {
 
     const embed = new EmbedBuilder()
         .setTitle('Hangman')
         .setColor(0x36393e)
-        .setDescription('Interaccionad con el bot para jugar al ahorcado!');
+        .setDescription('Interaccionad con el bot para jugar al ahorcado!')
 
     const participar = new ButtonBuilder()
         .setLabel('Participar')
         .setCustomId(JSON.stringify({ type: 'participar' }))
-        .setStyle('Primary');
+        .setStyle('Primary')
 
     const no_participar = new ButtonBuilder()
         .setLabel('No Participar')
         .setCustomId(JSON.stringify({ type: 'no_participar' }))
-        .setStyle('Danger');
+        .setStyle('Danger')
 
-    const row = new ActionRowBuilder().addComponents(participar, no_participar);
+    const row = new ActionRowBuilder().addComponents(participar, no_participar)
 
-    let msg = await inter.reply({ embeds: [embed], components: [row] });
-    const filter = (i) => JSON.parse(i.customId).type === 'participar' || JSON.parse(i.customId).type === 'no_participar';
-    const collector = msg.createMessageComponentCollector({ filter, time: 10000 });
+    let msg = await inter.reply({ embeds: [embed], components: [row] })
+    const filter = (i) => JSON.parse(i.customId).type === 'participar' || JSON.parse(i.customId).type === 'no_participar'
+    const collector = msg.createMessageComponentCollector({ filter, time: 10000 })
 
 
     return new Promise((resolve, reject) => {
-        let players = [];
+        let players = []
         collector.on('collect', async i => {
             if (JSON.parse(i.customId).type === 'participar') {
                 if (!players.find(p => p.id === i.user.id))
-                    players.push(i.user);
+                    players.push(i.user)
 
                 await i.reply({ content: 'Te has unido al juego!', ephemeral: true })
-                    .then(setTimeout(() => i.deleteReply(), 3000));
+                    .then(setTimeout(() => i.deleteReply(), 3000))
 
 
             }
             else if (JSON.parse(i.customId).type === 'no_participar') {
-                players = players.filter(p => p.id != i.user.id);
+                players = players.filter(p => p.id != i.user.id)
                 await i.reply({ content: 'Has abandonado el juego!', ephemeral: true })
-                    .then(setTimeout(() => i.deleteReply(), 3000));
+                    .then(setTimeout(() => i.deleteReply(), 3000))
             }
 
-        });
+        })
 
         collector.on('end', async collected => {
-            await inter.editReply({ embeds: [embed], components: [] });
-            resolve(players);
-        });
-    });
+            await inter.editReply({ embeds: [embed], components: [] })
+            resolve(players)
+        })
+    })
 }
 async function getWordFromPlayers(players, inter) {
-    let word;
-    let chosenOne;
+    let word
+    let chosenOne
     while (!word && players.length > 1) {
 
-        let index = Math.floor((Math.random() * 1000) % players.length);
-        chosenOne = players[index];
-        players = players.splice(index, 1);
+        let index = Math.floor((Math.random() * 1000) % players.length)
+        chosenOne = players[index]
+        players = players.splice(index, 1)
 
-        const dm = await chosenOne.createDM();
-        await dm.send("Eres el elegido!! Escribe tu palabra. Tienes 30 segundos. Recuerda, no participas en la partida.");
+        const dm = await chosenOne.createDM()
+        await dm.send("Eres el elegido!! Escribe tu palabra. Tienes 30 segundos. Recuerda, no participas en la partida.")
 
-        let finish = false;
-        let tries = 0;
-        let msgCollection;
+        let finish = false
+        let tries = 0
+        let msgCollection
 
         while (!finish && tries < 3) {
             try {
-                msgCollection = await getNextMessage(dm, 30000);
+                msgCollection = await getNextMessage(dm, 30000)
 
             } catch (collected) {
-                await dm.send("Se ha acabado el tiempo, estás descalificado.");
-                await inter.editReply({ content: "El elegido no ha respondido a tiempo, eligiendo a otro jugador." });
-                finish = true;
-                continue;
+                await dm.send("Se ha acabado el tiempo, estás descalificado.")
+                await inter.editReply({ content: "El elegido no ha respondido a tiempo, eligiendo a otro jugador." })
+                finish = true
+                continue
             }
 
-            const msg = msgCollection.first().content;
+            const msg = msgCollection.first().content
             if (msg.match(`^[A-Za-zÀ-ú]{3,}$`)) {
-                word = msg.toLowerCase();
-                finish = true;
-                dm.send("Buena palabra!, volviendo al server.");
+                word = msg.toLowerCase()
+                finish = true
+                dm.send("Buena palabra!, volviendo al server.")
             } else {
-                await dm.send("Palabra invalida. Sin espacios y con al menos 3 caracteres.");
-                ++tries;
+                await dm.send("Palabra invalida. Sin espacios y con al menos 3 caracteres.")
+                ++tries
                 if (tries == 3) {
-                    await dm.send("Muchas palabras invalidas. Estás descalificado.");
+                    await dm.send("Muchas palabras invalidas. Estás descalificado.")
                 }
             }
         }
     }
 
     if (!word && players.length <= 1) {
-        inter.editReply({ content: "Nos hemos quedado sin jugadores... try again." });
-        return;
+        inter.editReply({ content: "Nos hemos quedado sin jugadores... try again." })
+        return
     }
 
     return {
@@ -303,7 +303,7 @@ async function getWordFromPlayers(players, inter) {
     }
 }
 async function getNextMessage(channel, maxTime) {
-    const filter = msg => !msg.author.bot;
+    const filter = msg => !msg.author.bot
     return await channel.awaitMessages({
         filter,
         max: 1,
@@ -312,7 +312,7 @@ async function getNextMessage(channel, maxTime) {
     })
         .catch((collected) => {
             throw collected
-        });
+        })
 }
 
 
@@ -320,20 +320,20 @@ async function getNextMessage(channel, maxTime) {
 async function runGame(inter, game, players) {
 
 
-    let buttons = [];
-    let letters = ['a', 'á', 'b', 'c', 'd', 'e', 'é', 'f', 'g', 'h', 'i', 'í', 'j', 'k', 'l', 'm', 'n', 'ñ', 'o', 'ó', 'p', 'q', 'r', 's', 't', 'u', 'ú', 'v', 'w', 'x', 'y', 'z'];
+    let buttons = []
+    let letters = ['a', 'á', 'b', 'c', 'd', 'e', 'é', 'f', 'g', 'h', 'i', 'í', 'j', 'k', 'l', 'm', 'n', 'ñ', 'o', 'ó', 'p', 'q', 'r', 's', 't', 'u', 'ú', 'v', 'w', 'x', 'y', 'z']
     letters.forEach(letter => {
         let button = new ButtonBuilder()
             .setLabel(letter)
             .setCustomId(JSON.stringify({ letter: letter }))
-            .setStyle('Primary');
-        buttons.push(button);
-    });
+            .setStyle('Primary')
+        buttons.push(button)
+    })
 
     let nextButton = new ButtonBuilder()
         .setLabel('>>')
         .setCustomId(JSON.stringify({ letter: 'next' }))
-        .setStyle('Secondary');
+        .setStyle('Secondary')
 
 
     buttonsObject = {
@@ -342,18 +342,18 @@ async function runGame(inter, game, players) {
         nextPage: false
     }
 
-    await showProgress(inter, buttonsObject, game, false);
+    await showProgress(inter, buttonsObject, game, false)
 
     //button collector
-    let msg = await inter.fetchReply();
-    const filter = ((m) => players.find((p) => (p.id === inter.user.id)));
-    const buttonCollector = msg.createMessageComponentCollector({ filter: filter });
+    let msg = await inter.fetchReply()
+    const filter = ((m) => players.find((p) => (p.id === inter.user.id)))
+    const buttonCollector = msg.createMessageComponentCollector({ filter: filter })
 
 
 
     //message collector
-    const filterM = (m) => !m.author.bot && players.find(p => p.id === m.author.id);
-    const collector = inter.channel.createMessageCollector({ filter: filterM, time: (15 * 1000 * 60) }); // max of 15 minutes per game
+    const filterM = (m) => !m.author.bot && players.find(p => p.id === m.author.id)
+    const collector = inter.channel.createMessageCollector({ filter: filterM, time: (15 * 1000 * 60) }) // max of 15 minutes per game
 
 
     return new Promise((resolve, reject) => {
@@ -361,151 +361,151 @@ async function runGame(inter, game, players) {
 
         //button collectorhangm
         buttonCollector.on('collect', async i => {
-            let letter = await JSON.parse(i.customId).letter;
+            let letter = await JSON.parse(i.customId).letter
 
-            if (letter == 'next') buttonsObject.nextPage = !buttonsObject.nextPage;
+            if (letter == 'next') buttonsObject.nextPage = !buttonsObject.nextPage
             else {
-                buttonsObject.buttons = buttonsObject.buttons.filter(b => JSON.parse(b.data.custom_id).letter !== letter);
-                game.guess(letter);
+                buttonsObject.buttons = buttonsObject.buttons.filter(b => JSON.parse(b.data.custom_id).letter !== letter)
+                game.guess(letter)
             }
 
             await i.reply({ content: `Has seleccionado la letra '${letter}'`, ephemeral: true })
-                .then(setTimeout(() => i.deleteReply(), 1000));
+                .then(setTimeout(() => i.deleteReply(), 1000))
 
-            await showProgress(inter, buttonsObject, game, false);
+            await showProgress(inter, buttonsObject, game, false)
 
             if (game.status !== "in progress") {
-                collector.stop();
-                buttonCollector.stop();
+                collector.stop()
+                buttonCollector.stop()
             } else if (players.length < 1) {
-                collector.stop();
-                buttonCollector.stop();
-                game.status = "lost";
+                collector.stop()
+                buttonCollector.stop()
+                game.status = "lost"
             }
-        });
+        })
 
 
         //message collector
         collector.on('collect', async (m) => {
-            const c = m.content.toLowerCase();
+            const c = m.content.toLowerCase()
 
-            m.delete();
+            m.delete()
             if (m.content.match(`^[A-Za-zÀ-ú]{2,}$`)) {
                 if (game.guessAll(c) == false) {
-                    players = players.splice(players.find(p => m.author.id == p.id), 1);
+                    players = players.splice(players.find(p => m.author.id == p.id), 1)
                 }
-            } else return;
+            } else return
 
-            await showProgress(inter, buttonsObject, game, false);
+            await showProgress(inter, buttonsObject, game, false)
 
             if (game.status !== "in progress") {
-                collector.stop();
-                buttonCollector.stop();
+                collector.stop()
+                buttonCollector.stop()
             } else if (players.length < 1) {
-                collector.stop();
-                buttonCollector.stop();
-                game.status = "lost";
+                collector.stop()
+                buttonCollector.stop()
+                game.status = "lost"
             }
-        });
+        })
 
 
         collector.on('end', async (collected) => {
-            await showProgress(inter, {}, game, true);
-            resolve();
-        });
-    });
+            await showProgress(inter, {}, game, true)
+            resolve()
+        })
+    })
 }
 async function showProgress(inter, buttonsObject, game, gameOver) {
-    const figureStep = figure[6 - game.lives];
-    let progress = game.progress;
-    let lives = "";
+    const figureStep = figure[6 - game.lives]
+    let progress = game.progress
+    let lives = ""
     for (let i = 0; i < 6; ++i) {
         if (i < game.lives) {
-            lives += "❤️";
+            lives += "❤️"
         } else {
-            lives += "🖤";
+            lives += "🖤"
         }
     }
-    let misses = "Fallos: ";
+    let misses = "Fallos: "
     for (let i = 0; i < game.misses.length; ++i) {
-        misses += (game.misses[i] + " ");
+        misses += (game.misses[i] + " ")
     }
 
     let screen = figureStep.replace("wordHere", progress)
         .replace("numerOfLives", lives)
-        .replace("missC", misses);
+        .replace("missC", misses)
 
-    const embed = new EmbedBuilder();
+    const embed = new EmbedBuilder()
     if (gameOver) {
         if (game.status === "won") {
-            embed.setColor(0x00CC00);
-            screen = screen.replace("gameStatus", "Has ganado!");
+            embed.setColor(0x00CC00)
+            screen = screen.replace("gameStatus", "Has ganado!")
         } else {
-            embed.setColor(0xE50000);
-            screen = screen.replace("gameStatus", "Game over");
+            embed.setColor(0xE50000)
+            screen = screen.replace("gameStatus", "Game over")
         }
     } else {
-        screen = screen.replace("gameStatus", " ");
-        embed.setColor(0xFFD700);
+        screen = screen.replace("gameStatus", " ")
+        embed.setColor(0xFFD700)
     }
-    embed.setDescription("```\n" + screen + "```");
+    embed.setDescription("```\n" + screen + "```")
 
 
     if (!buttonsObject.buttons || buttonsObject.buttons.length === 0) {
-        await inter.editReply({ embeds: [embed], components: [] });
-        return;
+        await inter.editReply({ embeds: [embed], components: [] })
+        return
     }
 
-    let length = buttonsObject.buttons.length;
-    let rowLength = 5;
-    let pageLength = 25;
+    let length = buttonsObject.buttons.length
+    let rowLength = 5
+    let pageLength = 25
 
 
-    let components = [];
+    let components = []
 
     if (length > 25) { // mas de una pagina de botones
 
         if (!buttonsObject.nextPage) { // pagina 1, se añaden 24 botones y el boton de siguiente pagina
             for (let i = 0; i < pageLength - rowLength; i += rowLength) { // 4 rows enteras
                 let row = new ActionRowBuilder()
-                    .addComponents(buttonsObject.buttons.slice(i, i + rowLength));
-                components.push(row);
+                    .addComponents(buttonsObject.buttons.slice(i, i + rowLength))
+                components.push(row)
             }
 
             let row = new ActionRowBuilder() //4 botones + next button
-                .addComponents(buttonsObject.buttons.slice(pageLength - rowLength, pageLength - rowLength + 4)).addComponents(buttonsObject.nextButton);
-            components.push(row);
+                .addComponents(buttonsObject.buttons.slice(pageLength - rowLength, pageLength - rowLength + 4)).addComponents(buttonsObject.nextButton)
+            components.push(row)
 
         }
         else { // pagina 2, se añaden los botones restantes y el boton de pagina anterior
-            let numRows = Math.ceil(((length - 24) / 5)); //rows necesarias para mostrar los botones restantes
+            let numRows = Math.ceil(((length - 24) / 5)) //rows necesarias para mostrar los botones restantes
             for (let i = 0; i < numRows; i++) {
-                let ini = 24 + i * 5; //indice inicial de los botones de la fila
-                let row = new ActionRowBuilder();
+                let ini = 24 + i * 5 //indice inicial de los botones de la fila
+                let row = new ActionRowBuilder()
                 if (i === numRows - 1) //ultima fila, se añaden los botones restantes y el boton de pagina anterior
-                    row.addComponents(buttonsObject.buttons.slice(ini, ini + (length - ini))).addComponents(buttonsObject.nextButton);
+                    row.addComponents(buttonsObject.buttons.slice(ini, ini + (length - ini))).addComponents(buttonsObject.nextButton)
                 else //se añaden 5 botones
-                    row.addComponents(buttonsObject.buttons.slice(ini, ini + 5));
+                    row.addComponents(buttonsObject.buttons.slice(ini, ini + 5))
 
-                components.push(row);
+                components.push(row)
             }
         }
 
     }
     else { // una sola pagina de botones, se añaden todos
-        let numRows = Math.ceil((length / 5)); //rows necesarias para mostrar los botones restantes
+        let numRows = Math.ceil((length / 5)) //rows necesarias para mostrar los botones restantes
         for (let i = 0; i < numRows; i++) {
-            let ini = i * 5; //indice inicial de los botones de la fila
-            let row = new ActionRowBuilder();
+            let ini = i * 5 //indice inicial de los botones de la fila
+            let row = new ActionRowBuilder()
             if (i === numRows - 1) //ultima fila, se añaden los botones restantes y el boton de pagina anterior
-                row.addComponents(buttonsObject.buttons.slice(ini, ini + (length - ini)));
+                row.addComponents(buttonsObject.buttons.slice(ini, ini + (length - ini)))
             else //se añaden 5 botones
-                row.addComponents(buttonsObject.buttons.slice(ini, ini + 5));
+                row.addComponents(buttonsObject.buttons.slice(ini, ini + 5))
 
-            components.push(row);
+            components.push(row)
         }
     }
-    await inter.editReply({ embeds: [embed], components: components });
+    await inter.editReply({ embeds: [embed], components: components })
 
 }
 
@@ -514,18 +514,18 @@ async function showProgress(inter, buttonsObject, game, gameOver) {
 async function showResult(inter, game, selector) {
     if (game.status === "won") {
         if (selector) {
-            await inter.editReply({ content: `Has ganado !! ${selector.username}... intenta elegir una palabra mas dificil la próxima vez.`, embeds: [], components: [] });
+            await inter.editReply({ content: `Has ganado !! ${selector.username}... intenta elegir una palabra mas dificil la próxima vez.`, embeds: [], components: [] })
         } else {
-            await inter.editReply({ content: "Esta vez has ganado, pero no te confies, la proxima vez puede ser diferente.", embeds: [], components: [] });
+            await inter.editReply({ content: "Esta vez has ganado, pero no te confies, la proxima vez puede ser diferente.", embeds: [], components: [] })
         }
     } else if (game.status === "lost") {
         if (selector) {
-            await inter.editReply({ content: `${selector.username} ha ganado!!. La palabra era ${game.word}.`, embeds: [], components: [] });
+            await inter.editReply({ content: `${selector.username} ha ganado!!. La palabra era ${game.word}.`, embeds: [], components: [] })
         } else {
-            await inter.editReply({ content: `He ganado !!. La palabra era ${game.word}.`, embeds: [], components: [] });
+            await inter.editReply({ content: `He ganado !!. La palabra era ${game.word}.`, embeds: [], components: [] })
         }
     } else {
-        await inter.editReply({ content: "El juego ha acabado, se ha alcanzado el limite de 15 minutos.", embeds: [], components: [] });
+        await inter.editReply({ content: "El juego ha acabado, se ha alcanzado el limite de 15 minutos.", embeds: [], components: [] })
     }
 }
 

@@ -1,4 +1,4 @@
-const { sendRandomGif } = require('@commands/fun/gif.js');
+const { sendRandomGif } = require('@utils/gifApi.js')
 
 //Command that sends random gif(s) from the category meme
 module.exports = {
@@ -7,4 +7,4 @@ module.exports = {
     run: async (client, inter) => {
         await sendRandomGif(inter, 'meme', 'Meme aleatorio')
     }
-};
+}
