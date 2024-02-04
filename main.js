@@ -1,3 +1,4 @@
+require('module-alias/register')
 const { Client, GatewayIntentBits, Partials } = require('discord.js')
 const { Player } = require('discord-player')
 

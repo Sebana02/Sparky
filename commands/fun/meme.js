@@ -1,5 +1,4 @@
-const { EmbedBuilder } = require('discord.js');
-const { sendRandomGif } = require('./gif.js');
+const { sendRandomGif } = require('@commands/fun/gif.js');
 
 //Command that sends random gif(s) from the category meme
 module.exports = {
