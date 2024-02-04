@@ -7,15 +7,15 @@ module.exports = {
     voiceChannel: true,
 
     run: async (client, inter) => {
-        const queue = useQueue(inter.guildId)
-
         await inter.deferReply()
 
+        const queue = useQueue(inter.guildId)
+
         if (!queue || !queue.isPlaying()) return inter.editReply({
-            embed: [new EmbedBuilder().setAuthor({ name: `No hay música reproduciendose` }).setColor(0xff0000)], ephemeral: true
+            embeds: [new EmbedBuilder().setAuthor({ name: `No hay música reproduciendose` }).setColor(0xff0000)], ephemeral: true
         })
 
-        await queue.tracks.shuffle()
+        queue.tracks.shuffle()
 
         const Embed = new EmbedBuilder()
             .setAuthor({ name: `Se han barajeado **${queue.tracks.size}** canciones` })

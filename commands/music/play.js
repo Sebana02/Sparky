@@ -25,7 +25,8 @@ module.exports = {
             searchEngine: QueryType.AUTO
         })
 
-        if (!results.hasTracks()) return inter.editReply({ embed: [new EmbedBuilder().setAuthor({ name: `No hay resultados` }).setColor(0xff0000)], ephemeral: false })
+        if (!results.hasTracks())
+            return inter.editReply({ embeds: [new EmbedBuilder().setAuthor({ name: `No hay resultados` }).setColor(0xff0000)], ephemeral: false })
 
         await player.play(inter.member.voice.channel, results, {
             nodeOptions: {

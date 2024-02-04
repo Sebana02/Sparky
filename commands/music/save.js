@@ -13,7 +13,7 @@ module.exports = {
 
 
         if (!queue || !queue.isPlaying()) return inter.editReply({
-            embed: [new EmbedBuilder().setAuthor({ name: `No hay música reproduciendose` }).setColor(0xff0000)], ephemeral: true
+            embeds: [new EmbedBuilder().setAuthor({ name: `No hay música reproduciendose` }).setColor(0xff0000)], ephemeral: true
         })
 
         await inter.member.send({

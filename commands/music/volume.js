@@ -1,5 +1,5 @@
 const { ApplicationCommandOptionType, EmbedBuilder } = require('discord.js')
-const { useQueue, usePlayer } = require('discord-player')
+const { useQueue } = require('discord-player')
 
 module.exports = {
     name: 'volume',
@@ -18,18 +18,17 @@ module.exports = {
 
     run: async (client, inter) => {
 
+        await inter.deferReply()
+
         const queue = useQueue(inter.guildId)
-        const player = usePlayer(inter.guildId)
 
         const vol = inter.options.getNumber('volume')
 
-        await inter.deferReply()
-
         if (!queue || !queue.isPlaying()) return inter.editReply({
-            embed: [new EmbedBuilder().setAuthor({ name: `No hay música reproduciendose` }).setColor(0xff0000)], ephemeral: true
+            embeds: [new EmbedBuilder().setAuthor({ name: `No hay música reproduciendose` }).setColor(0xff0000)], ephemeral: true
         })
 
-        await player.setVolume(vol)
+        queue.node.setVolume(vol)
 
         const Embed = new EmbedBuilder()
             .setAuthor({ name: `Se ha modificado el volumen a **${vol}**%` })

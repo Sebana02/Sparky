@@ -1,4 +1,4 @@
-const { useQueue, usePlayer } = require('discord-player')
+const { useQueue } = require('discord-player')
 const { EmbedBuilder } = require('discord.js')
 
 module.exports = {
@@ -7,16 +7,15 @@ module.exports = {
     voiceChannel: true,
 
     run: async (client, inter) => {
-        const queue = useQueue(inter.guildId)
-        const player = usePlayer(inter.guildId)
-
         await inter.deferReply()
 
+        const queue = useQueue(inter.guildId)
+
         if (!queue || !queue.isPlaying()) return inter.editReply({
-            embed: [new EmbedBuilder().setAuthor({ name: `No hay música reproduciendose` }).setColor(0xff0000)], ephemeral: true
+            embeds: [new EmbedBuilder().setAuthor({ name: `No hay música reproduciendose` }).setColor(0xff0000)], ephemeral: true
         })
 
-        await player.skip()
+        queue.node.skip()
 
         const Embed = new EmbedBuilder()
             .setAuthor({ name: `Canción ${queue.currentTrack.title} saltada` })

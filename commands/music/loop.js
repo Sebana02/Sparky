@@ -20,13 +20,13 @@ module.exports = {
         }
     ],
     run: async (client, inter) => {
-        const queue = useQueue(inter.guildId)
-
         await inter.deferReply({ ephemeral: true })
 
-        if (!queue || !queue.isPlaying()) return inter.editReply({ embed: [new EmbedBuilder().setAuthor({ name: `No hay música reproduciendose` }).setColor(0xff0000)], ephemeral: true })
+        const queue = useQueue(inter.guildId)
 
-        await queue.setRepeatMode(inter.options.getNumber('action'))
+        if (!queue || !queue.isPlaying()) return inter.editReply({ embeds: [new EmbedBuilder().setAuthor({ name: `No hay música reproduciendose` }).setColor(0xff0000)], ephemeral: true })
+
+        queue.setRepeatMode(inter.options.getNumber('action'))
 
         const names = ['desactivado', 'canción', 'cola', 'autoplay']
 

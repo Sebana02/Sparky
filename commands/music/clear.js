@@ -12,9 +12,9 @@ module.exports = {
         await inter.deferReply({ ephemeral: true })
 
         if (!queue || !queue.isPlaying()) return inter.editReply({
-            embed: [new EmbedBuilder().setAuthor({ name: `No hay música reproduciendose` }).setColor(0xff0000)], ephemeral: true
+            embeds: [new EmbedBuilder().setAuthor({ name: `No hay música reproduciendose` }).setColor(0xff0000)], ephemeral: true
         })
-        if (queue.isEmpty()) return inter.editReply({ embed: [new EmbedBuilder().setAuthor({ name: `No hay canciones en la cola` }).setColor(0xff0000)], ephemeral: true })
+        if (queue.isEmpty()) return inter.editReply({ embeds: [new EmbedBuilder().setAuthor({ name: `No hay canciones en la cola` }).setColor(0xff0000)], ephemeral: true })
 
         await queue.clear()
 

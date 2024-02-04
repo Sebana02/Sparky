@@ -14,13 +14,13 @@ module.exports = {
 
         await inter.deferReply()
 
-        if (!queue || !queue.isPlaying()) return inter.editReply({ embed: [new EmbedBuilder().setAuthor({ name: `No hay música reproduciendose` }).setColor(0xff0000)], ephemeral: false })
+        if (!queue || !queue.isPlaying()) return inter.editReply({ embeds: [new EmbedBuilder().setAuthor({ name: `No hay música reproduciendose` }).setColor(0xff0000)], ephemeral: false })
 
         const track = queue.currentTrack.title
 
         const lyrics = await genius.search(track).catch(() => null)
 
-        if (!lyrics) return inter.editReply({ embed: [new EmbedBuilder().setAuthor({ name: `No hay letra para esta canción` }).setColor(0xff0000)], ephemeral: false })
+        if (!lyrics) return inter.editReply({ embeds: [new EmbedBuilder().setAuthor({ name: `No hay letra para esta canción` }).setColor(0xff0000)], ephemeral: false })
         const trimmedLyrics = lyrics.lyrics.substring(0, 1997)
 
         const embed = new EmbedBuilder()

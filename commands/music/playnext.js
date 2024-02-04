@@ -1,5 +1,5 @@
 const { ApplicationCommandOptionType, EmbedBuilder } = require('discord.js')
-const { QueryType, useQueue, Player } = require('discord-player')
+const { QueryType, useQueue, useMainPlayer } = require('discord-player')
 
 module.exports = {
     name: 'playnext',
@@ -15,20 +15,23 @@ module.exports = {
     ],
 
     run: async (client, inter) => {
-
-        const queue = useQueue(inter.guildId)
-
         await inter.deferReply()
 
         const song = inter.options.getString('song')
-        const results = await Player.singleton().search(song, {
+        const results = await useMainPlayer().search(song, {
             requestedBy: inter.member,
             searchEngine: QueryType.AUTO
         })
 
-        if (!results.hasTracks()) return inter.editReply({ embed: [new EmbedBuilder().setAuthor({ name: `No hay resultados` }).setColor(0xff0000)], ephemeral: false })
+        if (!results.hasTracks())
+            return inter.editReply({ embeds: [new EmbedBuilder().setAuthor({ name: `No hay resultados` }).setColor(0xff0000)], ephemeral: false })
 
-        await queue.insertTrack(results.tracks[0], 0)
+        const queue = useQueue(inter.guildId)
+
+        if (!queue)
+            return inter.editReply({ embeds: [new EmbedBuilder().setAuthor({ name: `No hay música reproduciendose` }).setColor(0xff0000)], ephemeral: false })
+
+        queue.insertTrack(results.tracks[0], 0)
 
         const Embed = new EmbedBuilder()
             .setAuthor({ name: `La canción se ha añadido a continuación en la cola` })

@@ -1,4 +1,4 @@
-const { useQueue } = require('discord-player')
+const { useQueue, useHistory } = require('discord-player')
 const { EmbedBuilder } = require('discord.js')
 
 module.exports = {
@@ -7,20 +7,20 @@ module.exports = {
     voiceChannel: true,
 
     run: async (client, inter) => {
-
-        const queue = useQueue(inter.guildId)
-
         await inter.deferReply({ ephemeral: true })
 
+        const queue = useQueue(inter.guildId)
+        const history = useHistory(inter.guildId)
+
         if (!queue || !queue.isPlaying()) return inter.editReply({
-            embed: [new EmbedBuilder().setAuthor({ name: `No hay música reproduciendose` }).setColor(0xff0000)], ephemeral: true
+            embeds: [new EmbedBuilder().setAuthor({ name: `No hay música reproduciendose` }).setColor(0xff0000)], ephemeral: true
         })
-        if (queue.history.isEmpty()) return inter.editReply({
-            embed: [new EmbedBuilder().setAuthor({ name: `No hay canciones anteriores` }).setColor(0xff0000)
+        if (history.isEmpty()) return inter.editReply({
+            embeds: [new EmbedBuilder().setAuthor({ name: `No hay canciones anteriores` }).setColor(0xff0000)
             ], ephemeral: true
         })
 
-        await queue.history.previous(true)
+        await history.previous(true)
 
         const Embed = new EmbedBuilder()
             .setAuthor({ name: 'Reproduciendo la canción anterior', iconURL: queue.currentTrack.thumbnail })

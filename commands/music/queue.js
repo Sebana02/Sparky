@@ -7,9 +7,9 @@ module.exports = {
     voiceChannel: true,
 
     run: async (client, inter) => {
-        const queue = useQueue(inter.guildId)
-
         await inter.deferReply()
+
+        const queue = useQueue(inter.guildId)
 
         if (!queue || !queue.isPlaying()) return inter.editReply({
             embeds: [new EmbedBuilder().setAuthor({ name: `No hay música reproduciendose` }).setColor(0xff0000)], ephemeral: true

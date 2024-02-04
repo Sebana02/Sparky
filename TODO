@@ -9,3 +9,4 @@ Comment music files
 Comment each module exportation
 Check every moderation command
 Trivia ends when music ends by time
+Use module-alias package to create general methods such us send a message or create embeds
