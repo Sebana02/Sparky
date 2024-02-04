@@ -1,4 +1,5 @@
-const { ApplicationCommandOptionType, EmbedBuilder } = require('discord.js');
+const { ApplicationCommandOptionType, EmbedBuilder } = require('discord.js')
+const reply = require('@utils/interactionReply.js')
 
 const responses = [
     'Sí',
@@ -36,6 +37,6 @@ module.exports = {
             .setDescription(`🎱${responses[Math.floor(Math.random() * responses.length)]}`)
             .setColor(0x2c2d30)
 
-        await inter.reply({ embeds: [embed], content: inter.options.getString('pregunta') })
+        await reply(inter, { embeds: [embed], deleteTime: 3 })
     }
 }

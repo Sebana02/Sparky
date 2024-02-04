@@ -27,9 +27,9 @@ player.extractors.loadDefault()
 
 require('dotenv').config() // load .env variables
 
-require('./src/logger.js')() //Change console stream to log file
+require('@src/logger.js')() //Change console stream to log file
 
-require('./src/loader.js')(client) //Load commands and events
+require('@src/loader.js')(client) //Load commands and events
 
 
 //Check if TOKEN environment variable is set

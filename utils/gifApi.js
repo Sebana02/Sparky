@@ -68,7 +68,7 @@ async function sendRandomGif(inter, category, description) {
     await inter.editReply({ content: '', embeds: [embed] })
 }
 
-//Api to get and send random gifs
+//Api to get a random gif
 module.exports = {
     sendRandomGif,
     getRandomGif
