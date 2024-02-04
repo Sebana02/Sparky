@@ -1,4 +1,5 @@
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ApplicationCommandOptionType } = require('discord.js')
+const interactionReply = require('@utils/interactionReply.js')
 
 //Command that creates a poll
 module.exports = {
@@ -29,12 +30,10 @@ module.exports = {
         //Get poll information
         const options = inter.options.getString('opciones').split(',').map(e => e.trim()).filter(Boolean)
         if (options.length < 2)
-            return await inter.reply({ content: "Pon al menos dos opciones", ephemeral: true })
-                .then(setTimeout(() => inter.deleteReply(), 2000))
+            return await interactionReply(inter, { content: 'Pon al menos dos opciones', ephemeral: true, deleteTime: 2 })
 
         else if (options.length > 10)
-            return await inter.reply({ content: "Demasiadas opciones, pon como mucho 10", ephemeral: true })
-                .then(setTimeout(() => inter.deleteReply(), 2000))
+            return await interactionReply(inter, { content: 'Demasiadas opciones, pon como mucho 10', ephemeral: true, deleteTime: 2 })
 
         const poll = inter.options.getString('tema').trim()
 
@@ -46,14 +45,14 @@ module.exports = {
         //Send initial poll embed
         const embed = createPollEmbed(inter, poll, votes, false)
         const components = createButtons(votes)
-        await inter.editReply({ embeds: [embed], components })
+        await interactionReply(inter, { embeds: [embed], components })
 
         //Create a collection of votes
         const finalVotes = await createCollection(inter, votes, poll, components)
 
         //Send the final poll embed
         const embedResult = createPollEmbed(inter, poll, finalVotes, true)
-        await inter.editReply({ embeds: [embedResult], components: [] })
+        await interactionReply(inter, { embeds: [embedResult] })
     }
 
 }
@@ -151,12 +150,12 @@ async function createCollection(inter, votes, poll, components) {
                 votes[index].value++
 
                 //Reply to the user
-                await interaction.reply({ content: `Has votado por '**${votes[index].option}**' `, ephemeral: true })
-                    .then(setTimeout(() => interaction.deleteReply(), 2000))
+                await interactionReply(interaction, { content: `Has votado por '**${votes[index].option}**' `, ephemeral: true, deleteTime: 2 }, propagate = false)
+
 
                 //Update the poll embed
                 const embedResult = createPollEmbed(inter, poll, votes, false)
-                await inter.editReply({ embeds: [embedResult], components: components })
+                await interactionReply(inter, { embeds: [embedResult], components: components })
             } catch (error) {
                 reject(error)
             }
