@@ -1,5 +1,5 @@
-const { ApplicationCommandOptionType, EmbedBuilder } = require('discord.js');
-const { sendRandomGif } = require('./gif.js');
+const { ApplicationCommandOptionType } = require('discord.js');
+const { sendRandomGif } = require('@utils/gifApi.js')
 
 //Command that tells a user to shut up
 module.exports = {
