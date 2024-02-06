@@ -1,13 +1,63 @@
-Trivia isnt working
+Trivia isnt working. Trivia ends when music ends by time
 Test music commands in several servers at a time
-Check every music command and event
-Check hangman
-Check RPS
 IA for RPS
 IA for TicTacToe
-Comment music files
-Comment each module exportation
-Check every moderation command
-Trivia ends when music ends by time
-Use module-alias package to create general methods such us send a message or create embeds
 Check if theres anyway to change relative paths in loader.js
+Complete utils
+
+Check every file and comment it:
+    - main.js
+    - Src:
+      - loader
+      - logger
+    - Events:
+      - exit 
+      - SIGINT
+      - unhandledRejection
+      - interactionCreate
+      - ready
+      - audioTrackAdd
+      - audioTracksAdd
+      - disconnect
+      - emptyChannel
+      - emptyQueue
+      - error
+      - playerError
+      - playerStart
+    - Commands:
+      - disconnect
+      - poll
+      - 8ball
+      - callate
+      - gif
+      - hangman
+      - meme
+      - rps
+      - tictactoe
+      - ban
+      - kick
+      - mute
+      - purge
+      - timeout
+      - unban
+      - unmute
+      - back
+      - clear
+      - loop
+      - lyrics
+      - nowplaying
+      - pause
+      - play
+      - playnext
+      - queue
+      - resume
+      - save
+      - shuffle
+      - skip
+      - stop
+      - trivia
+      - volume
+    - Utils:
+      - embedUtils
+      - gifUtils
+      - interactionUtils

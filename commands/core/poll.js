@@ -1,5 +1,5 @@
 const { ActionRowBuilder, ButtonBuilder, ApplicationCommandOptionType } = require('discord.js')
-const { reply } = require('@utils/interactionUtils.js')
+const { reply, deferReply, fetchReply } = require('@utils/interactionUtils.js')
 const createEmbed = require('@utils/embedUtils.js')
 
 //Command that creates a poll
@@ -38,7 +38,7 @@ module.exports = {
 
         const poll = inter.options.getString('tema').trim()
 
-        await inter.deferReply()
+        await deferReply(inter)
 
         //Create votes, array of {option, value}
         const votes = options.map(option => ({ option, value: 0 }))
@@ -118,7 +118,7 @@ function createButtons(votes) {
 //Create a collection of votes and update the poll embed
 //Returns the final votes
 async function createCollection(inter, votes, poll, components) {
-    const msg = await inter.fetchReply()
+    const msg = await fetchReply(inter)
     const filter = (i) => !i.user.bot && i.customId.startsWith('vote_')
     const countReactions = new Map()
 

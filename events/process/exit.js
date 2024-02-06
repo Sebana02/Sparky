@@ -1,4 +1,6 @@
-// Event when the bot is exiting
+/**
+ *  Event when the bot is exiting
+ */
 module.exports = {
     event: "exit",
     callback: (client, code) => {
