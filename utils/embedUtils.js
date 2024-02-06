@@ -1,5 +1,6 @@
 const { EmbedBuilder } = require('discord.js')
 
+
 module.exports = (embedInformation) => {
     const {
         title = null,

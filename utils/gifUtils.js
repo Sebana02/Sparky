@@ -1,5 +1,5 @@
-const createEmbed = require('@utils/createEmbed.js')
-const interactionReply = require('@utils/interactionReply.js')
+const createEmbed = require('@utils/embedUtils.js')
+const { reply } = require('@utils/interactionUtils.js')
 
 //Max number of gifs to get
 const limit = 50
@@ -50,7 +50,7 @@ async function sendRandomGif(inter, category, title) {
     const gif = await getRandomGif(category)
 
     if (!gif)
-        return await interactionReply(inter, { content: `No hay resultados para '${category}'`, ephemeral: false, deleteTime: 2 })
+        return await reply(inter, { content: `No hay resultados para '${category}'`, ephemeral: false, deleteTime: 2 })
 
 
     //Send gif
@@ -62,7 +62,7 @@ async function sendRandomGif(inter, category, title) {
         setTimestamp: true
     })
 
-    await interactionReply(inter, { embeds: [embed] })
+    await reply(inter, { embeds: [embed] })
 }
 
 //Api to get a random gif

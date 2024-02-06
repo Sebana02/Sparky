@@ -1,0 +1,14 @@
+// This file is used to create aliases for the paths in the project, so that we can use them in the import statements
+// It also helps intelisense to work properly when requiring modules
+{
+"compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "@commands/*": ["commands/*"],
+      "@utils/*": ["utils/*"],
+      "@events/*": ["events/*"],
+      "@src/*": ["src/*"]
+    }
+  },
+  "exclude": ["node_modules"]
+}

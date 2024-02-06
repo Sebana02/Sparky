@@ -1,5 +1,5 @@
-const { ApplicationCommandOptionType } = require('discord.js');
-const { sendRandomGif } = require('@utils/gifApi.js')
+const { ApplicationCommandOptionType } = require('discord.js')
+const { sendRandomGif } = require('@utils/gifUtils.js')
 
 //Command that tells a user to shut up
 module.exports = {
@@ -16,4 +16,4 @@ module.exports = {
     run: async (client, inter) => {
         await sendRandomGif(inter, 'shut up', `Quiero que te calles ${inter.options.getUser('usuario')}`)
     }
-};
+}

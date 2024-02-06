@@ -1,5 +1,5 @@
 const { ApplicationCommandOptionType } = require('discord.js')
-const { sendRandomGif } = require('@utils/gifApi.js')
+const { sendRandomGif } = require('@utils/gifUtils.js')
 
 //Command that sends random gif(s) from the category
 module.exports = {

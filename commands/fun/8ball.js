@@ -1,6 +1,6 @@
-const { ApplicationCommandOptionType, EmbedBuilder } = require('discord.js')
-const interactionReply = require('@utils/interactionReply.js')
-const createEmbed = require('@utils/createEmbed.js')
+const { ApplicationCommandOptionType } = require('discord.js')
+const { reply } = require('@utils/interactionUtils.js')
+const createEmbed = require('@utils/embedUtils.js')
 
 //Command that asks a question to the magic 8ball
 module.exports = {
@@ -20,7 +20,7 @@ module.exports = {
             color: 0x2c2d30
         })
 
-        await interactionReply(inter, { embeds: [embed] })
+        await reply(inter, { embeds: [embed] })
     }
 }
 
