@@ -15,9 +15,6 @@ module.exports = (embedInformation) => {
         setTimestamp = false
     } = embedInformation
 
-    if (!title && !description)
-        throw 'title and description not provided'
-
     const embed = new EmbedBuilder()
         .setTitle(title)
         .setDescription(description)
@@ -43,11 +40,17 @@ module.exports = (embedInformation) => {
         embed.setTimestamp()
 
     if (fields && fields.length > 0)
-        fields.forEach(field => {
-            embed.addFields({
-                name: field.name, value: field.value, inline: field.inline || false
-            })
-        })
+        embed.addFields(fields)
+
+    if (!(embed.data.title ||
+        embed.data.description ||
+        embed.data.fields ||
+        embed.data.image ||
+        embed.data.thumbnail ||
+        embed.data.author ||
+        embed.data.footer
+    ))
+        throw new Error('creating embed: embed is empty')
 
     return embed
 }
