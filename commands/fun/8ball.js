@@ -16,8 +16,7 @@ module.exports = {
     ],
     run: async (client, inter) => {
         const embed = createEmbed({
-            description: `🎱${responses[Math.floor(Math.random() * responses.length)]}`,
-            color: 0x2c2d30
+            description: `🎱${responses[Math.floor(Math.random() * responses.length)]}`
         })
 
         await reply(inter, { embeds: [embed] })

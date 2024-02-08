@@ -75,7 +75,7 @@ module.exports = {
 
             //Fetch the reply if the interaction is already replied to
             if (interaction.replied)
-                await interaction.fetchReply()
+                return await interaction.fetchReply()
 
         }
         catch (error) {
