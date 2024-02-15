@@ -2,8 +2,14 @@ const { Collection, Client } = require('discord.js')
 const fs = require('fs')
 const path = require('path')
 const { useMainPlayer } = require('discord-player')
+const { eventErrorHandler } = require('@utils/eventErrorHandler')
 
-//Load events recursively from folderPath, and bind them to emitter
+/**
+ * Loads events recursively from the specified folder path and binds them to the emitter.
+ * @param {string} folderPath - The path of the folder containing the events.
+ * @param {object} emitter - The event emitter to bind the events to.
+ * @param {Client} client - The Discord client.
+ */
 function loadEvents(folderPath, emitter, client) {
     if (!fs.existsSync(folderPath))
         return console.error(`-> Error: Folder does not exist: ${folderPath}`)
@@ -25,13 +31,17 @@ function loadEvents(folderPath, emitter, client) {
             if (!eventName || !eventCallback)
                 return console.error(`-> Error: Invalid event file: ${file}`)
 
-            emitter.on(eventName, eventCallback.bind(null, client))
+            emitter.on(eventName, (...args) => eventErrorHandler(eventName, eventCallback, client, ...args))
             console.log(`-> Loaded event: ${eventName}`)
         }
     })
 }
 
-//Load commands recursively from folderPath
+/**
+ * Loads commands recursively from the specified folder path.
+ * @param {string} folderPath - The path of the folder containing the commands.
+ * @param {Client} client - The Discord client.
+ */
 function loadCommands(folderPath, client) {
     if (!fs.existsSync(folderPath))
         return console.error(`-> Error: Folder does not exist: ${folderPath}`)
@@ -55,29 +65,36 @@ function loadCommands(folderPath, client) {
                 return console.error(`-> Error: Invalid command file: ${file}`)
 
             client.commands.set(commandName.toLowerCase(), command)
-            console.log(`-> Loaded comand: ${commandName}`)
+            console.log(`-> Loaded command: ${commandName}`)
         }
     })
 }
 
+/**
+ * Module that loads events and commands.
+ */
+module.exports = {
+    /**
+     * Loads events and commands.
+     * @param {Client} client - The Discord client.
+     */
+    config: (client) => {
 
-module.exports = (client) => {
-
-    try {
-        // Load events
-        console.log('-> Loading events...')
-        loadEvents(path.resolve(__dirname, '../events/process'), process, client)
-        loadEvents(path.resolve(__dirname, '../events/client'), client, client)
-        loadEvents(path.resolve(__dirname, '../events/music'), useMainPlayer().events, client)
+        try {
+            // Load events
+            console.log('-> Loading events...')
+            loadEvents(path.resolve(__dirname, '../events/process'), process, client)
+            loadEvents(path.resolve(__dirname, '../events/client'), client, client)
+            loadEvents(path.resolve(__dirname, '../events/music'), useMainPlayer().events, client)
 
 
-        // Load commands
-        console.log('-> Loading commands...')
-        client.commands = new Collection()
-        loadCommands(path.resolve(__dirname, '../commands'), client)
-    }
-    catch (error) {
-        console.error(`Error: loading events and commands: ${error}`)
+            // Load commands
+            console.log('-> Loading commands...')
+            client.commands = new Collection()
+            loadCommands(path.resolve(__dirname, '../commands'), client)
+        }
+        catch (error) {
+            console.error(`Error: loading events and commands: ${error}`)
+        }
     }
 }
-

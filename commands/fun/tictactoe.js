@@ -1,5 +1,5 @@
 const { ApplicationCommandOptionType, ButtonBuilder, ActionRowBuilder } = require('discord.js')
-const createEmbed = require('@utils/embedUtils.js')
+const { createEmbed } = require('@utils/embedUtils.js')
 const { reply } = require('@utils/interactionUtils.js')
 
 //Command that allows user to play tic tac toe with a friend

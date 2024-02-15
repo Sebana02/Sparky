@@ -1,17 +1,19 @@
-const { EmbedBuilder } = require('discord.js')
+const { createEmbed } = require('@utils/embedUtils')
 
+/**
+ * Event emmited when an error occurs in the player
+ */
 module.exports = {
     event: 'playerError',
     callback: (client, queue, error) => {
 
-        console.log(`Error emitted from the connection ${error.message}`)
-
         if (queue.metadata.trivia) return
 
-        const embed = new EmbedBuilder()
-            .setAuthor({ name: 'Ha ocurrido un error' })
-            .setColor(0x13f857)
+        const errorPlayerEmbed = createEmbed({
+            color: 0xff2222,
+            author: { name: `Ha ocurrido un error`, iconURL: client.user.displayAvatarURL() },
+        })
 
-        queue.metadata.channel.send({ embeds: [embed] })
+        queue.metadata.channel.send({ embeds: [errorPlayerEmbed] })
     }
 }

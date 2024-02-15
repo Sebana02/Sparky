@@ -3,27 +3,14 @@ Test music commands in several servers at a time
 IA for RPS
 IA for TicTacToe
 Check if theres anyway to change relative paths in loader.js
-Complete utils
-Maybe add error embed, and other kinds
 Check every file and comment it:
-    - main.js
-    - Src:
-      - loader
-      - logger
     - Events:
-      - exit 
-      - SIGINT
-      - unhandledRejection
       - interactionCreate
-      - ready
-      - audioTrackAdd
-      - audioTracksAdd
-      - disconnect
-      - emptyChannel
-      - emptyQueue
-      - error
-      - playerError
-      - playerStart
+      - playerPause
+      - playerResume
+      - playerSkip
+      - queueDelete (stop)
+      - volumeChange
     - Commands:
       - disconnect
       - poll
@@ -41,6 +28,7 @@ Check every file and comment it:
       - timeout
       - unban
       - unmute
+      
       - back
       - clear
       - loop
@@ -61,3 +49,4 @@ Check every file and comment it:
       - embedUtils
       - gifUtils
       - interactionUtils
+      - eventErrorHandler

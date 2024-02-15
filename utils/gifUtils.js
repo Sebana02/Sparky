@@ -1,4 +1,4 @@
-const createEmbed = require('@utils/embedUtils.js')
+const { createEmbed } = require('@utils/embedUtils.js')
 const { reply } = require('@utils/interactionUtils.js')
 
 //Max number of gifs to get

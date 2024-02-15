@@ -1,0 +1,55 @@
+------------------------------------------------------
+Starting bot at 15/2/2024, 23:34:48
+-> Loading events...
+-> Loaded event: exit
+-> Loaded event: SIGINT
+-> Loaded event: unhandledRejection
+-> Loaded event: interactionCreate
+-> Loaded event: ready
+-> Loaded event: audioTrackAdd
+-> Loaded event: audioTracksAdd
+-> Loaded event: disconnect
+-> Loaded event: emptyChannel
+-> Loaded event: emptyQueue
+-> Loaded event: error
+-> Loaded event: playerError
+-> Loaded event: playerPause
+-> Loaded event: playerStart
+-> Loading commands...
+-> Loaded command: disconnect
+-> Loaded command: poll
+-> Loaded command: 8ball
+-> Loaded command: callate
+-> Loaded command: gif
+-> Loaded command: hangman
+-> Loaded command: meme
+-> Loaded command: rps
+-> Loaded command: tictactoe
+-> Loaded command: ban
+-> Loaded command: kick
+-> Loaded command: mute
+-> Loaded command: purge
+-> Loaded command: timeout
+-> Loaded command: unban
+-> Loaded command: unmute
+-> Loaded command: back
+-> Loaded command: clear
+-> Loaded command: loop
+-> Loaded command: lyrics
+-> Loaded command: nowplaying
+-> Loaded command: pause
+-> Loaded command: play
+-> Loaded command: playnext
+-> Loaded command: queue
+-> Loaded command: resume
+-> Loaded command: save
+-> Loaded command: shuffle
+-> Loaded command: skip
+-> Loaded command: stop
+-> Loaded command: trivia
+-> Loaded command: volume
+-> Logged in as BMO
+-> Ready in a total of 4 servers for 2 users
+Command: /play song: https://open.spotify.com/playlist/3xHszr5ZwvX9KRxirniAUX?si=9208c4da95ec4b05  | User: khlozer | Guild: Bot testing at 15/2/2024, 23:34:50
+Command: /clear  | User: khlozer | Guild: Bot testing at 15/2/2024, 23:34:54
+Bot received SIGINT signal, disconnecting...

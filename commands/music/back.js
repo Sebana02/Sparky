@@ -1,6 +1,6 @@
 const { useQueue, useHistory } = require('discord-player')
 const { reply, deferReply } = require('@utils/interactionUtils')
-const createEmbed = require('@utils/embedUtils')
+const { createEmbed } = require('@utils/embedUtils')
 
 module.exports = {
     name: 'back',

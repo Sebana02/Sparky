@@ -1,5 +1,7 @@
 const { QueryType, useMainPlayer } = require('discord-player')
-const { ApplicationCommandOptionType, EmbedBuilder } = require('discord.js')
+const { ApplicationCommandOptionType } = require('discord.js')
+const { createEmbed } = require('@utils/embedUtils')
+const { reply, deferReply } = require('@utils/interactionUtils')
 
 module.exports = {
     name: 'play',
@@ -16,17 +18,19 @@ module.exports = {
 
     run: async (client, inter) => {
 
-        await inter.deferReply()
-
         const player = useMainPlayer()
         const song = inter.options.getString('song')
+
+        await deferReply(inter)
+
         const results = await player.search(song, {
             requestedBy: inter.member,
             searchEngine: QueryType.AUTO
         })
 
         if (!results.hasTracks())
-            return inter.editReply({ embeds: [new EmbedBuilder().setAuthor({ name: `No hay resultados` }).setColor(0xff0000)], ephemeral: false })
+            return await reply(inter, { embeds: [new EmbedBuilder().setAuthor({ name: `No hay resultados` }).setColor(0xff0000)], ephemeral: false })
+
 
         await player.play(inter.member.voice.channel, results, {
             nodeOptions: {
@@ -37,23 +41,14 @@ module.exports = {
                 },
                 leaveOnEmptyCooldown: 0,
                 leaveOnEmpty: true,
+                leaveOnEndCooldown: 0,
                 leaveOnEnd: true,
                 bufferingTimeout: 0,
                 selfDeaf: true
             }
         })
-            .then(async (res) => {
-                const Embed = new EmbedBuilder()
-                    .setAuthor({ name: `Cargando tu ${res.track.playlist ? 'playlist' : 'canción'}... ` })
-                    .setColor(0x13f857)
-                return inter.editReply({ embeds: [Embed] })
-            })
-            .catch(async (err) => {
-                const Embed = new EmbedBuilder()
-                    .setAuthor({ name: 'Ha ocurrido un error' })
-                    .setColor(0xff0000)
-                await inter.editReply({ embeds: [Embed] })
-                return console.log(err)
-            })
+
+
+
     }
 }

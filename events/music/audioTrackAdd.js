@@ -1,14 +1,20 @@
-const { EmbedBuilder } = require('discord.js')
+const { createEmbed } = require('@utils/embedUtils')
 
+/**
+ * Event emitted when a track is added to the queue
+ */
 module.exports = {
     event: 'audioTrackAdd',
-    callback: (client, queue, track) => {
+    callback: async (client, queue, track) => {
+
         if (queue.metadata.trivia) return
 
-        const embed = new EmbedBuilder()
-            .setAuthor({ name: `Añadida a la cola : ${track.title} `, iconURL: track.thumbnail })
-            .setColor(0x13f857)
+        const queuedEmbed = createEmbed({
+            color: 0x40e0d0,
+            author: { name: `${track.title} | ${track.author}`, iconURL: track.thumbnail },
+            footer: { text: `añadida a la cola` }
+        })
 
-        queue.metadata.channel.send({ embeds: [embed] })
+        await queue.metadata.channel.send({ embeds: [queuedEmbed] })
     }
 }

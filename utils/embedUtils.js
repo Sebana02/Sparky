@@ -1,6 +1,11 @@
 const { EmbedBuilder } = require('discord.js')
 
 /**
+ * Utils for creating Discord embeds
+ */
+module.exports = {
+
+    /**
  * Creates a Discord embed using the provided embedContent.
  * 
  * @param {Object} embedContent - The content for the embed.
@@ -36,47 +41,53 @@ const { EmbedBuilder } = require('discord.js')
  * 
  * @note Make sure to provide at least one of the following properties: title, description, fields, image, thumbnail, author, or footer, otherwise an error will be thrown.
  */
-module.exports = (embedContent) => {
+    createEmbed: (embedContent) => {
+        // Destructure the embedContent object
+        const {
+            title,
+            description,
+            color = 0x2c2d30,
+            fields,
+            thumbnail,
+            image,
+            footer,
+            author,
+            url,
+            setTimestamp = false
+        } = embedContent
 
-    // Destructure the embedContent object
-    const {
-        title,
-        description,
-        color = 0x2c2d30,
-        fields,
-        thumbnail,
-        image,
-        footer,
-        author,
-        url,
-        setTimestamp = false
-    } = embedContent
+        const embed = new EmbedBuilder()
 
-    const embed = new EmbedBuilder()
+        try {
 
-    // Set the properties of the embed
-    if (title) embed.setTitle(title)
-    if (description) embed.setDescription(description)
-    if (color) embed.setColor(color)
-    if (thumbnail) embed.setThumbnail(thumbnail)
-    if (image) embed.setImage(image)
-    if (url) embed.setURL(url)
-    if (footer) embed.setFooter(footer)
-    if (author) embed.setAuthor(author)
-    if (setTimestamp) embed.setTimestamp()
-    if (fields) embed.addFields(fields)
+            // Set the properties of the embed
+            if (title) embed.setTitle(title)
+            if (description) embed.setDescription(description)
+            if (color) embed.setColor(color)
+            if (thumbnail) embed.setThumbnail(thumbnail)
+            if (image) embed.setImage(image)
+            if (url) embed.setURL(url)
+            if (footer) embed.setFooter(footer)
+            if (author) embed.setAuthor(author)
+            if (setTimestamp) embed.setTimestamp()
+            if (fields) embed.addFields(fields)
 
-    // Check if the embed is empty
-    if (!(embed.data.title ||
-        embed.data.description ||
-        embed.data.fields ||
-        embed.data.image ||
-        embed.data.thumbnail ||
-        embed.data.author ||
-        embed.data.footer
-    )) {
-        throw new Error('creating embed: embed is empty')
+            // Check if the embed is empty
+            if (!(embed.data.title ||
+                embed.data.description ||
+                embed.data.fields ||
+                embed.data.image ||
+                embed.data.thumbnail ||
+                embed.data.author ||
+                embed.data.footer
+            )) {
+                throw new Error('embed is empty')
+            }
+
+        } catch (error) {
+            throw new Error(`creating embed: ${error.message}`)
+        }
+
+        return embed
     }
-
-    return embed
 }

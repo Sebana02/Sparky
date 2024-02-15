@@ -1,4 +1,6 @@
-// Event when user presses CTRL+C (SIGINT)
+/**
+ * Event when user presses CTRL+C (SIGINT)
+ */
 module.exports = {
     event: "SIGINT",
     callback: async (client) => {

@@ -1,8 +1,9 @@
 const { useQueue } = require('discord-player')
-const { EmbedBuilder } = require('discord.js')
 const { reply } = require('@utils/interactionUtils.js')
 
-//Event that is called when the bot receives an interaction
+/**
+ * Event that is called when the bot receives an interaction
+ */
 module.exports = {
     event: "interactionCreate",
     callback: async (client, inter) => {

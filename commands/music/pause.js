@@ -1,5 +1,7 @@
-const { useQueue } = require('discord-player')
-const { EmbedBuilder } = require('discord.js')
+const { useQueue, usePlayer } = require('discord-player')
+const { reply } = require('@utils/interactionUtils')
+const { createEmbed } = require('@utils/embedUtils')
+
 module.exports = {
     name: 'pause',
     description: 'Pausa la canción',
@@ -9,10 +11,12 @@ module.exports = {
         await inter.deferReply()
 
         const queue = useQueue(inter.guildId)
+        const player = usePlayer(inter.guildId)
 
-        if (!queue || !queue.isPlaying()) return inter.editReply({ embeds: [new EmbedBuilder().setAuthor({ name: `No hay música reproduciendose` }).setColor(0xff0000)], ephemeral: false })
+        if (!queue || !queue.isPlaying())
+            return reply(inter, { embeds: [new EmbedBuilder().setAuthor({ name: `No hay música reproduciendose` }).setColor(0xff0000)], ephemeral: false })
 
-        queue.node.setPaused(true)
+        player.setPaused(true)
 
         const Embed = new EmbedBuilder()
             .setAuthor({
@@ -20,6 +24,6 @@ module.exports = {
             })
             .setColor(0x13f857)
 
-        return inter.editReply({ embeds: [Embed] })
+        await reply(inter, { embeds: [Embed] })
     }
 }

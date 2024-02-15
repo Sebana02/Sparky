@@ -1,4 +1,6 @@
-// Utility functions for Discord interactions.
+/**
+ * Utils for handling interactions
+ */
 module.exports = {
     reply: async (interaction, options = {}) => {
 

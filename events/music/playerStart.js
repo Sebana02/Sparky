@@ -1,14 +1,16 @@
-const { EmbedBuilder } = require('discord.js');
+const { createEmbed } = require('@utils/embedUtils')
 
 module.exports = {
     event: 'playerStart',
     callback: (client, queue, track) => {
-        if (queue.repeatMode !== 0 || queue.metadata.trivia) return;
+        if (queue.repeatMode !== 0 || queue.metadata.trivia) return
 
-        const embed = new EmbedBuilder()
-            .setAuthor({ name: `Sonando... "${track.title}" en "${queue.metadata.voiceChannel.name}"`, iconURL: track.thumbnail })
-            .setColor(0x13f857)
+        const playerStartEmbed = createEmbed({
+            color: 0x13f857,
+            author: { name: `${track.title} | ${track.author}`, iconURL: track.thumbnail },
+            footer: { text: `reproduciendo ahora` }
+        })
 
-        queue.metadata.channel.send({ embeds: [embed] })
+        queue.metadata.channel.send({ embeds: [playerStartEmbed] })
     }
 }
