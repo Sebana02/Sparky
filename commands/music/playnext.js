@@ -1,6 +1,11 @@
-const { ApplicationCommandOptionType, EmbedBuilder } = require('discord.js')
+const { ApplicationCommandOptionType } = require('discord.js')
 const { QueryType, useQueue, useMainPlayer } = require('discord-player')
+const { reply, deferReply } = require('@utils/interactionUtils')
+const { noResults, addToQueue, noQueue } = require('@utils/embedUtils/embedPresets')
 
+/**
+ * Command for playing a song next
+ */
 module.exports = {
     name: 'playnext',
     description: "Reproduce la canción que quieras a continuación",
@@ -15,27 +20,35 @@ module.exports = {
     ],
 
     run: async (client, inter) => {
-        await inter.deferReply()
+        await deferReply(inter)
 
+        const queue = useQueue(inter.guildId)
         const song = inter.options.getString('song')
+
         const results = await useMainPlayer().search(song, {
             requestedBy: inter.member,
             searchEngine: QueryType.AUTO
         })
+        if (!results.hasTracks()) {
+            return await reply(inter, {
+                embeds: [noResults(client)],
+                ephemeral: true,
+                deleteTime: 2
+            })
+        }
 
-        if (!results.hasTracks())
-            return inter.editReply({ embeds: [new EmbedBuilder().setAuthor({ name: `No hay resultados` }).setColor(0xff0000)], ephemeral: false })
-
-        const queue = useQueue(inter.guildId)
-
-        if (!queue)
-            return inter.editReply({ embeds: [new EmbedBuilder().setAuthor({ name: `No hay música reproduciendose` }).setColor(0xff0000)], ephemeral: false })
+        if (!queue || !queue.isPlaying()) {
+            return await reply(inter, {
+                embeds: [noQueue(client)],
+                ephemeral: true,
+                deleteTime: 2
+            })
+        }
 
         queue.insertTrack(results.tracks[0], 0)
 
-        const Embed = new EmbedBuilder()
-            .setAuthor({ name: `La canción se ha añadido a continuación en la cola` })
-            .setColor(0x13f857)
-        await inter.editReply({ embeds: [Embed] })
+        await reply(inter, {
+            embeds: [addToQueue(results.tracks[0])]
+        })
     }
 }

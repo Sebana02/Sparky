@@ -1,25 +1,33 @@
-const { useQueue } = require('discord-player')
-const { EmbedBuilder } = require('discord.js')
+const { useQueue, usePlayer } = require('discord-player')
+const { reply, deferReply } = require('@utils/interactionUtils')
+const { noQueue, resume } = require('@utils/embedUtils/embedPresets')
+
+/**
+ * Command for resuming the queue
+ */
 module.exports = {
     name: 'resume',
     description: 'Reanuda la canción',
     voiceChannel: true,
 
     run: async (client, inter) => {
-        await inter.deferReply()
+        await deferReply(inter)
 
         const queue = useQueue(inter.guildId)
+        const player = usePlayer(inter.guildId)
 
-        if (!queue || !queue.isPlaying()) return inter.editReply({ embeds: [new EmbedBuilder().setAuthor({ name: `No hay música reproduciendose` }).setColor(0xff0000)], ephemeral: false })
-
-        await queue.node.setPaused(false)
-
-        const Embed = new EmbedBuilder()
-            .setAuthor({
-                name: ` Canción: ${queue.currentTrack.title}, reanudada`
+        if (!queue || !queue.isPlaying()) {
+            return await reply(inter, {
+                embeds: [noQueue(client)],
+                ephemeral: true,
+                deleteTime: 2
             })
-            .setColor(0x13f857)
+        }
 
-        return inter.editReply({ embeds: [Embed] })
+        player.setPaused(false)
+
+        await reply(inter, {
+            embeds: [resume(queue.currentTrack)]
+        })
     }
 }

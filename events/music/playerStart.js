@@ -1,4 +1,4 @@
-const { createEmbed } = require('@utils/embedUtils')
+const { createEmbed } = require('@utils/embedUtils/embedUtils')
 
 module.exports = {
     event: 'playerStart',

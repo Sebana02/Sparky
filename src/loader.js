@@ -2,7 +2,7 @@ const { Collection, Client } = require('discord.js')
 const fs = require('fs')
 const path = require('path')
 const { useMainPlayer } = require('discord-player')
-const { eventErrorHandler } = require('@utils/eventErrorHandler')
+const { eventErrorHandler } = require('@utils/errorUtils/eventErrorHandler')
 
 /**
  * Loads events recursively from the specified folder path and binds them to the emitter.

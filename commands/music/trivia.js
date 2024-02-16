@@ -70,7 +70,7 @@ module.exports = {
             songs.forEach(b => {
                 buttonsRow.addComponents(
                     new ButtonBuilder()
-                        .setLabel((b.title + ' - ' + b.author).substring(0, 80))
+                        .setLabel((b.title + ' | ' + b.author).substring(0, 80))
                         .setStyle('Primary')
                         .setCustomId(JSON.stringify({ id: b.id }))
 
@@ -117,7 +117,7 @@ module.exports = {
                 })
                 queue = useQueue(inter.guildId)
                 if (queue && queue.isPlaying())
-                    player.skip()
+                    queue.node.skip()
                 //send message with buttons and leaderboard
                 let message = await inter.editReply({ components: [buttonsRow], embeds: [leaderboard] })
 

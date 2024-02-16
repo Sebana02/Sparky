@@ -1,6 +1,11 @@
 const { QueueRepeatMode, useQueue } = require('discord-player')
-const { ApplicationCommandOptionType, EmbedBuilder } = require('discord.js')
+const { ApplicationCommandOptionType, } = require('discord.js')
+const { reply, deferReply } = require('@utils/interactionUtils')
+const { noQueue, loop } = require('@utils/embedUtils/embedPresets')
 
+/**
+ * Command for setting the loop mode
+ */
 module.exports = {
     name: 'loop',
     description: 'Activa/Desactiva loop de una canción o de la cola',
@@ -20,21 +25,24 @@ module.exports = {
         }
     ],
     run: async (client, inter) => {
-        await inter.deferReply({ ephemeral: true })
+
+        await deferReply(inter)
 
         const queue = useQueue(inter.guildId)
 
-        if (!queue || !queue.isPlaying()) return inter.editReply({ embeds: [new EmbedBuilder().setAuthor({ name: `No hay música reproduciendose` }).setColor(0xff0000)], ephemeral: true })
+        if (!queue || !queue.isPlaying()) {
+            return await reply(inter, {
+                embeds: [noQueue(client)],
+                ephemeral: true,
+                deleteTime: 2
+            })
+
+        }
 
         queue.setRepeatMode(inter.options.getNumber('action'))
 
-        const names = ['desactivado', 'canción', 'cola', 'autoplay']
-
-        const Embed = new EmbedBuilder()
-            .setAuthor({ name: `Loop: ${names[queue.repeatMode]}` })
-            .setColor(0x13f857)
-
-        return inter.editReply({ embeds: [Embed] })
-
+        return reply(inter, {
+            embeds: [loop(queue.repeatMode, queue.currentTrack)]
+        })
     },
 }

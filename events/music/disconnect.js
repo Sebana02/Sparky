@@ -1,4 +1,4 @@
-const { createEmbed } = require('@utils/embedUtils')
+const { createEmbed } = require('@utils/embedUtils/embedUtils')
 
 /**
  * Event emitted when the bot is disconnected from the voice channel

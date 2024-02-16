@@ -26,21 +26,18 @@ Check every file and comment it:
       - unban
       - unmute
 
-      - clear
-      - loop
       - lyrics
       - nowplaying
-      - pause
-      - playnext
-      - queue
-      - resume
       - save
       - shuffle
       - skip
       - trivia
-      - volume
 
 Embed colors -> generalise:
+  Error -> rojo : 0xff2222
+  Music: 0xffa500
+
+
 
   naranja: 0xffa500 -> el resto
   rojo: 0xff2222 -> error

@@ -1,6 +1,6 @@
 const { ApplicationCommandOptionType } = require('discord.js')
 const { reply } = require('@utils/interactionUtils.js')
-const { createEmbed } = require('@utils/embedUtils.js')
+const { createEmbed } = require('@utils/embedUtils/embedUtils.js')
 
 //Command that asks a question to the magic 8ball
 module.exports = {

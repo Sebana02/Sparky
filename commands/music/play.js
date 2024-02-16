@@ -1,7 +1,7 @@
 const { QueryType, useMainPlayer } = require('discord-player')
 const { ApplicationCommandOptionType } = require('discord.js')
-const { createEmbed } = require('@utils/embedUtils')
 const { reply, deferReply } = require('@utils/interactionUtils')
+const { noResults, addToQueue, addToQueueMany } = require('@utils/embedUtils/embedPresets')
 
 /**
  * Command for playing a song
@@ -25,18 +25,17 @@ module.exports = {
 
         const player = useMainPlayer()
         const song = inter.options.getString('song')
+
         const results = await player.search(song, {
             requestedBy: inter.member,
             searchEngine: QueryType.AUTO
         })
-
         if (!results.hasTracks()) {
-            const noResultsEmbed = createEmbed({
-                color: 0xff2222,
-                author: { name: 'No hay resultados', iconURL: client.user.displayAvatarURL() }
+            return await reply(inter, {
+                embeds: [noResults(client)],
+                ephemeral: true,
+                deleteTime: 2
             })
-
-            return await reply(inter, { embeds: [noResultsEmbed], ephemeral: true, deleteTime: 2 })
         }
 
         await player.play(inter.member.voice.channel, results, {
@@ -54,18 +53,11 @@ module.exports = {
             }
         })
 
-
-        const queueEmbed = createEmbed({
-            color: 0x40e0d0,
-            author: {
-                name: results.playlist ? `${results.tracks.length} canciones` : `${results.tracks[0].title} | ${results.tracks[0].author}`,
-                iconURL: results.playlist ? results.tracks[0].thumbnail : results.tracks[0].thumbnail
-            },
-            footer: {
-                text: results.playlist ? 'añadidas a la cola' : 'añadida a la cola'
-            }
+        await reply(inter, {
+            embeds: [results.playlist
+                ? addToQueueMany(results)
+                : addToQueue(results.tracks[0])]
         })
-        await reply(inter, { embeds: [queueEmbed] })
 
     }
 }

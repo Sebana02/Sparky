@@ -1,5 +1,7 @@
-const { ApplicationCommandOptionType, EmbedBuilder } = require('discord.js')
-const { useQueue } = require('discord-player')
+const { ApplicationCommandOptionType } = require('discord.js')
+const { useQueue, usePlayer } = require('discord-player')
+const { reply, deferReply } = require('@utils/interactionUtils')
+const { noQueue, volume } = require('@utils/embedUtils/embedPresets')
 
 module.exports = {
     name: 'volume',
@@ -18,22 +20,24 @@ module.exports = {
 
     run: async (client, inter) => {
 
-        await inter.deferReply()
+        await deferReply(inter)
 
         const queue = useQueue(inter.guildId)
-
+        const player = usePlayer(inter.guildId)
         const vol = inter.options.getNumber('volume')
 
-        if (!queue || !queue.isPlaying()) return inter.editReply({
-            embeds: [new EmbedBuilder().setAuthor({ name: `No hay música reproduciendose` }).setColor(0xff0000)], ephemeral: true
+        if (!queue || !queue.isPlaying()) {
+            return await reply(inter, {
+                embeds: [noQueue(client)],
+                ephemeral: true,
+                deleteTime: 2
+            })
+        }
+
+        player.setVolume(vol)
+
+        await reply(inter, {
+            embeds: [volume(vol, queue.currentTrack)]
         })
-
-        queue.node.setVolume(vol)
-
-        const Embed = new EmbedBuilder()
-            .setAuthor({ name: `Se ha modificado el volumen a **${vol}**%` })
-            .setColor(0x13f857)
-
-        await inter.editReply({ embeds: [Embed] })
     },
 }

@@ -1,4 +1,4 @@
-const { createEmbed } = require('@utils/embedUtils')
+const { createEmbed } = require('@utils/embedUtils/embedUtils')
 
 /**
  * Event emmited when an error occurs in the player
