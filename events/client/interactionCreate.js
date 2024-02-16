@@ -1,5 +1,6 @@
 const { useQueue } = require('discord-player')
 const { reply } = require('@utils/interactionUtils.js')
+const { commandErrorHandler } = require('@utils/commandErrorHandler.js')
 
 /**
  * Event that is called when the bot receives an interaction
@@ -53,12 +54,7 @@ module.exports = {
 
             }
             //Execute command
-            command.run(client, inter)
-                .catch(async (error) => {
-                    console.error(`Error: executing command "${command.name}": ${error.message}`)
-
-                    await reply(inter, { content: `Ha ocurrido un error ejecutando "${inter.commandName}"`, ephemeral: true, deleteTime: 2, propagate: false })
-                })
+            await commandErrorHandler(inter.commandName, command.run, client, inter)
         }
     }
 }

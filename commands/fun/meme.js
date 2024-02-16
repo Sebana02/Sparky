@@ -5,6 +5,6 @@ module.exports = {
     name: 'meme',
     description: 'Manda un meme aleatorio',
     run: async (client, inter) => {
-        await sendRandomGif(inter, 'meme', 'Meme aleatorio')
+        await sendRandomGif(inter, 'meme')
     }
 }

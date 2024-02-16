@@ -13,20 +13,32 @@ module.exports = {
         const queue = useQueue(inter.guildId)
         const history = useHistory(inter.guildId)
 
-        if (!queue || !queue.isPlaying())
-            return await reply(inter, { embeds: [createEmbed({ author: { name: `No hay música reproduciendose` }, color: 0xff0000 })], ephemeral: true, deleteTime: 2 })
+        if (!queue || !queue.isPlaying()) {
+            const noMusicEmbed = createEmbed({
+                color: 0xff2222,
+                author: { name: 'No hay música reproduciendose', iconURL: client.user.displayAvatarURL() }
+            })
 
-        if (history.isEmpty())
-            return await reply(inter, { embeds: [createEmbed({ author: { name: `No hay canciones anteriores` }, color: 0xff0000 })], ephemeral: true, deleteTime: 2 })
+            return await reply(inter, { embeds: [noMusicEmbed], ephemeral: true, deleteTime: 2 })
+        }
 
+        if (history.isEmpty()) {
+            const noHistoryEmbed = createEmbed({
+                color: 0xff2222,
+                author: { name: 'No hay historial', iconURL: client.user.displayAvatarURL() }
+            })
+
+            return await reply(inter, { embeds: [noHistoryEmbed], ephemeral: true, deleteTime: 2 })
+        }
 
         await history.previous(true)
 
-        const embed = createEmbed({
-            author: { name: 'Reproduciendo la canción anterior', iconURL: queue.currentTrack.thumbnail },
-            color: 0x13f857
+        const previousTrackEmbed = createEmbed({
+            color: 0x40e0d0,
+            author: { name: `${queue.currentTrack.title} | ${queue.currentTrack.author}`, iconURL: queue.currentTrack.thumbnail },
+            footer: { text: 'reproduciendo canción anterior' }
         })
 
-        await reply(inter, { embeds: [embed] })
+        await reply(inter, { embeds: [previousTrackEmbed] })
     },
 }

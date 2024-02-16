@@ -14,6 +14,6 @@ module.exports = {
         }
     ],
     run: async (client, inter) => {
-        await sendRandomGif(inter, inter.options.getString('categoría'), `Gif aleatorio de ${inter.options.getString('categoría')}`)
+        await sendRandomGif(inter, inter.options.getString('categoría'))
     },
 }
