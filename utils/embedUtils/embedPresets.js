@@ -1,6 +1,8 @@
 const { createEmbed } = require('@utils/embedUtils/embedUtils')
 const { SearchResult, Track, GuildQueue } = require('discord-player')
 const { Client, EmbedBuilder } = require('discord.js')
+const { LyricsData } = require('@discord-player/extractor')
+
 
 /**
  * Preset embed for different situations
@@ -37,6 +39,21 @@ module.exports = {
   },
 
   /**
+   * Generates a no playlist embed
+   * @param {Client} client - The Discord client object
+   * @returns {EmbedBuilder} - The no results embed
+   */
+  noPlaylist: (client) => {
+    return createEmbed({
+      color: 0xff2222,
+      author: {
+        name: 'Asegúrate que el link sea de una playlist y tenga al menos 5 canciones',
+        iconURL: client.user.displayAvatarURL()
+      }
+    })
+  },
+
+  /**
    * Generates a no queue embed
    * @param {Client} client - The Discord client object
    * @returns {EmbedBuilder} - The no queue embed
@@ -62,6 +79,21 @@ module.exports = {
       author: {
         name: 'No hay historial',
         iconURL: client.user.displayAvatarURL()
+      }
+    })
+  },
+
+  /**
+   * Generates a no lyrics embed
+   * @param {Track} track - The track object
+   * @returns {EmbedBuilder} - The no lyrics embed
+   */
+  noLyrics: (track) => {
+    return createEmbed({
+      color: 0xff2222,
+      author: {
+        name: 'No hay letra para esta canción',
+        iconURL: track.thumbnail
       }
     })
   },
@@ -239,6 +271,46 @@ module.exports = {
       author: {
         name: `Se ha modificado el volumen a ${vol}%`,
         iconURL: track.thumbnail
+      }
+    })
+  },
+
+  /**
+   * Generates a lyrics embed
+   * @param {LyricsData} lyricsData - The lyrics object
+   * @returns {EmbedBuilder} - The lyrics embed
+   */
+  lyrics: (lyricsData) => {
+    const trimmedLyrics = lyricsData.lyrics.substring(0, 1997)
+
+    return createEmbed({
+      color: 0xffa500,
+      title: lyricsData.title,
+      url: lyricsData.url,
+      thumbnail: lyricsData.thumbnail,
+      author: {
+        name: lyricsData.artist.name,
+        iconURL: lyricsData.artist.image,
+        url: lyricsData.artist.url
+      },
+      description: trimmedLyrics.length === 1997 ? `${trimmedLyrics}...` : trimmedLyrics
+    })
+  },
+
+  /**
+   * Generates a skip embed
+   * @param {Track} track - The track object
+   * @returns {EmbedBuilder} - The skip embed
+   */
+  skip: (track) => {
+    return createEmbed({
+      color: 0xffa500,
+      author: {
+        name: `${track.title} | ${track.author}`,
+        iconURL: track.thumbnail
+      },
+      footer: {
+        text: 'saltada'
       }
     })
   }

@@ -1,26 +1,33 @@
-const { useQueue } = require('discord-player')
-const { EmbedBuilder } = require('discord.js')
+const { useQueue, usePlayer } = require('discord-player')
+const { reply, deferReply } = require('@utils/interactionUtils')
+const { noQueue, skip } = require('@utils/embedUtils/embedPresets')
 
+/**
+ * Command for skipping the current song
+ */
 module.exports = {
     name: 'skip',
     description: 'Salta la canción actual',
     voiceChannel: true,
 
     run: async (client, inter) => {
-        await inter.deferReply()
+        await deferReply(inter)
 
         const queue = useQueue(inter.guildId)
+        const player = usePlayer(inter.guildId)
 
-        if (!queue || !queue.isPlaying()) return inter.editReply({
-            embeds: [new EmbedBuilder().setAuthor({ name: `No hay música reproduciendose` }).setColor(0xff0000)], ephemeral: true
+        if (!queue || !queue.isPlaying()) {
+            return await reply(inter, {
+                embeds: [noQueue(client)],
+                ephemeral: true,
+                deleteTime: 2
+            })
+        }
+
+        player.skip()
+
+        await reply(inter, {
+            embeds: [skip(queue.currentTrack)]
         })
-
-        queue.node.skip()
-
-        const Embed = new EmbedBuilder()
-            .setAuthor({ name: `Canción ${queue.currentTrack.title} saltada` })
-            .setColor(0x13f857)
-
-        return inter.editReply({ embeds: [Embed] })
     },
 }

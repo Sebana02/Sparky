@@ -1,5 +1,7 @@
-const { QueryType, useQueue, useMainPlayer } = require('discord-player')
+const { deferReply, reply, fetchReply } = require('@utils/interactionUtils')
+const { QueryType, useQueue, useMainPlayer, usePlayer } = require('discord-player')
 const { ApplicationCommandOptionType, EmbedBuilder, ActionRowBuilder, ButtonBuilder, InteractionType } = require('discord.js')
+const { noResults, noPlaylist } = require('@utils/embedUtils/embedPresets')
 
 module.exports = {
     name: 'trivia',
@@ -16,7 +18,7 @@ module.exports = {
 
     run: async (client, inter) => {
 
-        await inter.deferReply()
+        await deferReply(inter)
 
         let queue = useQueue(inter.guildId)
         const player = useMainPlayer()
@@ -30,12 +32,22 @@ module.exports = {
             searchEngine: QueryType.AUTO
         })
 
-        let songsNumber = 4
+        const songsNumber = 4
 
-
-        if (!results.hasTracks()) return inter.editReply({ embeds: [new EmbedBuilder().setAuthor({ name: `Sin resultados` }).setColor(0xff0000)], ephemeral: true })
-        if (!results.hasPlaylist()) return inter.editReply({ embeds: [new EmbedBuilder().setAuthor({ name: `No es una playlist` }).setColor(0xff0000)], ephemeral: true })
-        if (results.tracks.length < songsNumber) return inter.editReply({ embeds: [new EmbedBuilder().setAuthor({ name: `La playlist debe tener al menos 4 canciones` }).setColor(0xff0000)], ephemeral: true })
+        if (!results.hasTracks()) {
+            return await reply(inter, {
+                embeds: [noResults(client)],
+                ephemeral: true,
+                deleteTime: 2
+            })
+        }
+        if (!results.hasPlaylist() || results.tracks.length < songsNumber) {
+            return await reply(inter, {
+                embeds: [noPlaylist(client)],
+                ephemeral: true,
+                deleteTime: 2
+            })
+        }
 
         let players = [] //{user: user, score: score}
 
@@ -98,82 +110,77 @@ module.exports = {
 
 
             //if theres an error with the song, skip it (try block)
-            try {
-                //skip and play next track
-                await player.play(inter.member.voice.channel, correctSong.url, {
-                    nodeOptions: {
-                        metadata: {
-                            voiceChannel: inter.member.voice.channel,
-                            channel: inter.channel,
-                            client: client,
-                            trivia: true
-                        },
-                        leaveOnEmptyCooldown: 0,
-                        leaveOnEmpty: true,
-                        leaveOnEnd: true,
-                        bufferingTimeout: 0,
-                        selfDeaf: true
+            //skip and play next track
+            await player.play(inter.member.voice.channel, correctSong.url, {
+                nodeOptions: {
+                    metadata: {
+                        voiceChannel: inter.member.voice.channel,
+                        channel: inter.channel,
+                        trivia: true
+                    },
+                    leaveOnEmpty: false,
+                    leaveOnEnd: false,
+                    leaveOnStop: false,
+                    bufferingTimeout: 0,
+                    selfDeaf: true
+                }
+            })
+
+            //send message with buttons and leaderboard
+            await reply(inter, {
+                embeds: [leaderboard],
+                components: [buttonsRow]
+            })
+
+            //wait for button click
+            let filter = (i) => !i.user.bot && i.type === InteractionType.MessageComponent
+            let message = await fetchReply(inter)
+            await message.awaitMessageComponent({ filter, time: 300000, max: 1 })
+                .then(async i => {
+
+                    let result = new EmbedBuilder()
+
+                    if (JSON.parse(i.customId).id === 'Stop') { //stop
+                        stop = true
+                        result
+                            .setTitle('Se ha parado el trivia!')
+                            .setColor(0x13f857)
+
                     }
+                    else if (JSON.parse(i.customId).id === correctSong.id) { //correct song
+                        //add 1 point to player
+                        let player = players.find(p => p.user === i.user)
+                        if (player) player.score++
+                        else players.push({ user: i.user, score: 1 })
+
+                        //send message with correct answer
+                        result
+                            .setTitle('Correcto!')
+                            .setDescription(`La canción era **${(correctSong.title + ' - ' + correctSong.author).substring(0, 80)}**`)
+                            .setColor(0x13f857)
+
+                    }
+                    else {
+                        result
+                            .setTitle('Incorrecto!')
+                            .setDescription(`La canción era **${(correctSong.title + ' - ' + correctSong.author).substring(0, 80)}**`)
+                            .setColor(0x13f857)
+                    }
+
+                    return await reply(i, { embeds: [result], ephemeral: false, deleteTime: 1.5 })
+
                 })
-                queue = useQueue(inter.guildId)
-                if (queue && queue.isPlaying())
-                    queue.node.skip()
-                //send message with buttons and leaderboard
-                let message = await inter.editReply({ components: [buttonsRow], embeds: [leaderboard] })
-
-
-                //wait for button click
-                let filter = (i) => !i.user.bot && i.type === InteractionType.MessageComponent
-                await message.awaitMessageComponent({ filter, time: 300000, max: 1 })
-                    .then(async i => {
-                        let result = new EmbedBuilder()
-
-                        if (JSON.parse(i.customId).id === 'Stop') { //stop
-                            stop = true
-                            result
-                                .setTitle('Se ha parado el trivia!')
-                                .setColor(0x13f857)
-
-                        }
-                        else if (JSON.parse(i.customId).id === correctSong.id) { //correct song
-                            //add 1 point to player
-                            let player = players.find(p => p.user === i.user)
-                            if (player) player.score++
-                            else players.push({ user: i.user, score: 1 })
-
-                            //send message with correct answer
-                            result
-                                .setTitle('Correcto!')
-                                .setDescription(`La canción era **${(correctSong.title + ' - ' + correctSong.author).substring(0, 80)}**`)
-                                .setColor(0x13f857)
-
-                        }
-                        else {
-                            result
-                                .setTitle('Incorrecto!')
-                                .setDescription(`La canción era **${(correctSong.title + ' - ' + correctSong.author).substring(0, 80)}**`)
-                                .setColor(0x13f857)
-                        }
-
-                        return await i.reply({ embeds: [result], ephemeral: false })
-                            .then(reply => setTimeout(() => reply.delete(), 1500))
-
-                    })
-            } catch (error) {
-                console.log(error)
-                continue
-            }
 
         }
 
         if (queue)
-            await queue.delete()
+            queue.delete()
 
         let leaderboard = new EmbedBuilder()
             .setTitle('Se ha acabado el trivia!')
             .setDescription('**PUNTUACIÓN**\n' + players.map(p => `${p.user.username} : ${p.score}`).join('\n'))
             .setColor(0x13f857)
 
-        return await inter.editReply({ components: [], embeds: [leaderboard] })
-    },
+        await reply(inter, { components: [], embeds: [leaderboard] })
+    }
 }
