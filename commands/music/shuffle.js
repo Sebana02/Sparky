@@ -1,25 +1,32 @@
 const { useQueue } = require('discord-player')
-const { EmbedBuilder } = require('discord.js')
+const { noQueue, shuffle } = require('@utils/embedMusicPresets')
+const { reply, deferReply } = require('@utils/interactionUtils')
 
+/**
+ * Command for shuffling the queue
+ */
 module.exports = {
     name: 'shuffle',
     description: 'Barajar la cola de la música',
     voiceChannel: true,
 
     run: async (client, inter) => {
-        await inter.deferReply()
+        await deferReply(inter)
 
         const queue = useQueue(inter.guildId)
 
-        if (!queue || !queue.isPlaying()) return inter.editReply({
-            embeds: [new EmbedBuilder().setAuthor({ name: `No hay música reproduciendose` }).setColor(0xff0000)], ephemeral: true
-        })
+        if (!queue || !queue.isPlaying()) {
+            return await reply(inter, {
+                embeds: [noQueue(client)],
+                ephemeral: true,
+                deleteTime: 2
+            })
+        }
 
         queue.tracks.shuffle()
 
-        const Embed = new EmbedBuilder()
-            .setAuthor({ name: `Se han barajeado **${queue.tracks.size}** canciones` })
-            .setColor(0x13f857)
-        return inter.editReply({ embeds: [Embed] })
+        await reply(inter, {
+            embeds: [shuffle(queue)]
+        })
     },
 }

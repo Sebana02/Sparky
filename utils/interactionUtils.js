@@ -105,6 +105,7 @@ module.exports = {
      * @param {boolean} [options.propagate=true] - Whether to propagate any errors that occur during the fetch
      * @returns {ChatInputCommandInteraction} - The fetched reply
      * @throws {Error} - If the interaction is not provided or if the interaction has not been replied to
+     * @returns {Promise<ChatInputCommandInteraction>} - The fetched reply
      * 
      * @example
      * 

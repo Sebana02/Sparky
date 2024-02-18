@@ -1,4 +1,4 @@
-const { createEmbed } = require('@utils/embedUtils/embedUtils')
+const { createEmbed } = require('@utils/embedUtils')
 const { reply } = require('@utils/interactionUtils')
 
 /**

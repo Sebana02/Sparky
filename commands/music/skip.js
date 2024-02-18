@@ -1,6 +1,6 @@
 const { useQueue, usePlayer } = require('discord-player')
 const { reply, deferReply } = require('@utils/interactionUtils')
-const { noQueue, skip } = require('@utils/embedUtils/embedPresets')
+const { noQueue, skip } = require('@utils/embedMusicPresets')
 
 /**
  * Command for skipping the current song

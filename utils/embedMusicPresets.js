@@ -1,11 +1,11 @@
-const { createEmbed } = require('@utils/embedUtils/embedUtils')
+const { createEmbed } = require('@utils/embedUtils')
 const { SearchResult, Track, GuildQueue } = require('discord-player')
 const { Client, EmbedBuilder } = require('discord.js')
 const { LyricsData } = require('@discord-player/extractor')
 
 
 /**
- * Preset embed for different situations
+ * Preset music embed for different situations
  */
 module.exports = {
   /**
@@ -312,6 +312,68 @@ module.exports = {
       footer: {
         text: 'saltada'
       }
+    })
+  },
+
+  /**
+   * Generates a now playing embed
+   * @param {GuildQueue} queue - The queue object
+   * @returns {EmbedBuilder} - The now playing embed
+   */
+  nowPlaying: (queue, player) => {
+    const track = queue.currentTrack
+    const loopModes = ['desactivado', 'canción', 'cola', 'autoplay']
+
+    return createEmbed({
+      color: 0xffa500,
+      thumbnail: track.thumbnail,
+      title: `${track.title} | ${track.author}`,
+      description: `Volumen **${player.volume}%**\nDuración **${track.duration}**\nProgreso ${player.createProgressBar()}\nLoop mode **${loopModes[queue.repeatMode]}**\nRequested by ${track.requestedBy}`
+    })
+  },
+
+  /**
+   * Generates a shuffle embed
+   * @param {GuildQueue} queue - The queue object
+   * @returns {EmbedBuilder} - The shuffle embed
+   */
+  shuffle: (queue) => {
+    return createEmbed({
+      color: 0xffa500,
+      author: { name: `${queue.tracks.size} canciones`, iconURL: queue.currentTrack.thumbnail },
+      footer: { text: 'se han barajeado' }
+    })
+  },
+
+  /**
+   * Generates a save embed
+   * @param {Track} track - The track object
+   * @returns {EmbedBuilder} - The save embed
+   */
+  savePrivate: (track) => {
+    return createEmbed({
+      color: 0xffa500,
+      title: `:arrow_forward: ${track.title}`,
+      thumbnail: track.thumbnail,
+      fields: [
+        { name: ':hourglass: Duration:', value: `\`${track.duration}\``, inline: true },
+        { name: 'Song by:', value: `\`${track.author}\``, inline: true },
+        { name: 'Views :eyes:', value: `\`${Number(track.views).toLocaleString()}\``, inline: true },
+        { name: 'Song URL:', value: `\`${track.url}\`` }
+      ]
+    })
+  },
+
+  /**
+   * Generates a save embed
+   * @param {Track} track - The track object
+   * @returns {EmbedBuilder} - The save embed
+   */
+  save: (track) => {
+    return createEmbed({
+      color: 0xffa500,
+      author: { name: `${track.title} | ${track.author}`, iconURL: track.thumbnail },
+      footer: { text: 'enviada al privado' }
     })
   }
 }

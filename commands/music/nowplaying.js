@@ -1,29 +1,31 @@
-const { EmbedBuilder } = require('discord.js')
-const { useQueue } = require('discord-player')
+const { useQueue, usePlayer } = require('discord-player')
+const { noQueue, nowPlaying } = require('@utils/embedMusicPresets')
+const { reply, deferReply } = require('@utils/interactionUtils')
+
+/**
+ * Command for showing the current playing song
+ */
 module.exports = {
     name: 'nowplaying',
     description: 'Muestra la cancion que se esta reproduciendo actualmente',
     voiceChannel: true,
 
     run: async (client, inter) => {
+        await deferReply(inter)
+
         const queue = useQueue(inter.guildId)
+        const player = usePlayer(inter.guildId)
 
-        await inter.deferReply()
+        if (!queue || !queue.isPlaying()) {
+            return await reply(inter, {
+                embeds: [noQueue(client)],
+                ephemeral: true,
+                deleteTime: 2
+            })
+        }
 
-        if (!queue || !queue.isPlaying()) return inter.editReply({ embeds: [new EmbedBuilder().setAuthor({ name: `No hay música reproduciendose` }).setColor(0xff0000)], ephemeral: true })
-
-        const track = queue.currentTrack
-        const methods = ['desactivado', 'canción', 'cola']
-
-
-        const embed = new EmbedBuilder()
-            .setThumbnail(track.thumbnail ?? inter.user.displayAvatarURL())
-            .setTitle(`**${track.title}** | **${track.author}**`)
-            .setDescription(`Volumen **${queue.node.volume}**%\nDuración **${track.duration}**\nProgreso ${queue.node.createProgressBar()}\nLoop mode **${methods[queue.repeatMode]}**\nRequested by ${track.requestedBy}`)
-            .setColor(0x13f857)
-            .setTimestamp()
-
-
-        inter.editReply({ embeds: [embed], ephemeral: false })
+        await reply(inter, {
+            embeds: [nowPlaying(queue, player)]
+        })
     },
 }

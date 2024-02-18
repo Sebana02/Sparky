@@ -1,47 +1,36 @@
-const { EmbedBuilder } = require("discord.js")
 const { useQueue } = require("discord-player")
+const { reply, deferReply } = require('@utils/interactionUtils')
+const { noQueue, savePrivate, save } = require('@utils/embedMusicPresets')
 
+/**
+ * Command for saving the current song in a private message
+ */
 module.exports = {
     name: 'save',
     description: 'Guardar la canción actual en un mensaje privado',
     voiceChannel: true,
 
     run: async (client, inter) => {
+        await deferReply(inter, { ephemeral: true })
+
         const queue = useQueue(inter.guildId)
 
-        await inter.deferReply({ ephemeral: true })
-
-
-        if (!queue || !queue.isPlaying()) return inter.editReply({
-            embeds: [new EmbedBuilder().setAuthor({ name: `No hay música reproduciendose` }).setColor(0xff0000)], ephemeral: true
-        })
+        if (!queue || !queue.isPlaying()) {
+            return await reply(inter, {
+                embeds: [noQueue(client)],
+                ephemeral: true,
+                deleteTime: 2
+            })
+        }
 
         await inter.member.send({
-            embeds: [
-                new EmbedBuilder()
-                    .setColor(0x13f857)
-                    .setTitle(`:arrow_forward: ${queue.currentTrack.title}`)
-                    .setURL(queue.currentTrack.url)
-                    .addFields(
-                        { name: ':hourglass: Duration:', value: `\`${queue.currentTrack.duration}\``, inline: true },
-                        { name: 'Song by:', value: `\`${queue.currentTrack.author}\``, inline: true },
-                        { name: 'Views :eyes:', value: `\`${Number(queue.currentTrack.views).toLocaleString()}\``, inline: true },
-                        { name: 'Song URL:', value: `\`${queue.currentTrack.url}\`` }
-                    )
-                    .setThumbnail(queue.currentTrack.thumbnail)
-                    .setFooter({ text: `Desde el servidor ${inter.member.guild.name}`, iconURL: inter.member.guild.iconURL({ dynamic: false }) })
-            ]
-        }).then(() => {
-            const Embed = new EmbedBuilder()
-                .setAuthor({ name: `Te he mandado la canción por privado` })
-                .setColor(0x13f857)
-            return inter.editReply({ embeds: [Embed] })
-        }).catch(async error => {
-            const Embed = new EmbedBuilder()
-                .setAuthor({ name: 'Ha ocurrido un error' })
-                .setColor(0xff0000)
-            await inter.editReply({ embeds: [Embed] })
-            return console.log(error)
+            embeds: [savePrivate(queue.currentTrack)]
         })
-    },
+
+        await reply(inter, {
+            embeds: [save(queue.currentTrack)],
+            ephemeral: true,
+            deleteTime: 2
+        })
+    }
 }

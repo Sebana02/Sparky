@@ -1,11 +1,11 @@
-const { createEmbed } = require('@utils/embedUtils/embedUtils')
+const { createEmbed } = require('@utils/embedUtils')
 
 /**
  * Event emmited when an error occurs in the player
  */
 module.exports = {
     event: 'playerError',
-    callback: (client, queue, error) => {
+    callback: async (client, queue, error) => {
 
         if (queue.metadata.trivia) return
 
@@ -14,6 +14,6 @@ module.exports = {
             author: { name: `Ha ocurrido un error`, iconURL: client.user.displayAvatarURL() },
         })
 
-        queue.metadata.channel.send({ embeds: [errorPlayerEmbed] })
+        await queue.metadata.channel.send({ embeds: [errorPlayerEmbed] })
     }
 }

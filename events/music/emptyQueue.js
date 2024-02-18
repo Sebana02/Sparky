@@ -1,11 +1,11 @@
-const { createEmbed } = require('@utils/embedUtils/embedUtils')
+const { createEmbed } = require('@utils/embedUtils')
 
 /**
  * Event emitted when the queue is empty
  */
 module.exports = {
     event: 'emptyQueue',
-    callback: (client, queue, track) => {
+    callback: async (client, queue) => {
 
         if (queue.metadata.trivia) return
 
@@ -14,6 +14,6 @@ module.exports = {
             author: { name: `No hay más canciones en la cola, saliendo...`, iconURL: client.user.displayAvatarURL() },
         })
 
-        queue.metadata.channel.send({ embeds: [emptyQueueEmbed] })
+        await queue.metadata.channel.send({ embeds: [emptyQueueEmbed] })
     }
 }

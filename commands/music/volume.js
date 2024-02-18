@@ -1,7 +1,7 @@
 const { ApplicationCommandOptionType } = require('discord.js')
 const { useQueue, usePlayer } = require('discord-player')
 const { reply, deferReply } = require('@utils/interactionUtils')
-const { noQueue, volume } = require('@utils/embedUtils/embedPresets')
+const { noQueue, volume } = require('@utils/embedMusicPresets')
 
 module.exports = {
     name: 'volume',

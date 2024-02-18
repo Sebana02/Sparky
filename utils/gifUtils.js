@@ -1,4 +1,4 @@
-const { createEmbed } = require('@utils/embedUtils/embedUtils.js')
+const { createEmbed } = require('@utils/embedUtils.js')
 const { reply, deferReply } = require('@utils/interactionUtils.js')
 const { ChatInputCommandInteraction } = require('discord.js')
 

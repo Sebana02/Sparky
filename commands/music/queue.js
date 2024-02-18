@@ -1,6 +1,6 @@
 const { useQueue } = require('discord-player')
 const { reply, deferReply } = require('@utils/interactionUtils')
-const { noQueue, currentQueue } = require('@utils/embedUtils/embedPresets')
+const { noQueue, currentQueue } = require('@utils/embedMusicPresets')
 
 /**
  * Command for showing the queue

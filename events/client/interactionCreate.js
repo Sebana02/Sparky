@@ -1,6 +1,6 @@
 const { useQueue } = require('discord-player')
 const { reply } = require('@utils/interactionUtils.js')
-const { commandErrorHandler } = require('@utils/errorUtils/commandErrorHandler.js')
+const { commandErrorHandler } = require('@utils/commandErrorHandler.js')
 
 /**
  * Event that is called when the bot receives an interaction

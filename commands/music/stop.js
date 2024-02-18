@@ -1,6 +1,6 @@
 const { useQueue } = require('discord-player')
 const { reply, deferReply } = require('@utils/interactionUtils')
-const { noQueue, stop } = require('@utils/embedUtils/embedPresets')
+const { noQueue, stop } = require('@utils/embedMusicPresets')
 
 /**
  * Command for stopping the music

@@ -26,9 +26,6 @@ Check every file and comment it:
       - unban
       - unmute
 
-      - nowplaying
-      - save
-      - shuffle
       - trivia
 
 Embed colors -> generalise:
@@ -54,22 +51,3 @@ Embed colors -> generalise:
   Amarillo mostaza: 0xf39c12
   Verde oliva suave: 0x8e44ad
   No color: 0x2c2d30
-
-
-  - audioTrackAdd
-  - audioTrackRemove
-  - audioTrackAdd
-  - audioTrackRemove
-  - audioTracksAdd
-  - audioTracksRemove
-  - disconnect
-  - emptyChannel
-  - emptyQueue
-  - error
-  - playerError
-  - playerPause
-  - playerResume
-  - playerSkip
-  - playerStart
-  - queueDelete
-  - volumeChange

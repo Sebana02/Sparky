@@ -1,6 +1,6 @@
 const { EmbedBuilder, ApplicationCommandOptionType, ButtonBuilder, ActionRowBuilder } = require('discord.js')
 const { reply, deferReply, fetchReply } = require('@utils/interactionUtils.js')
-const { createEmbed } = require('@utils/embedUtils/embedUtils.js')
+const { createEmbed } = require('@utils/embedUtils.js')
 
 module.exports = {
     name: 'rps',

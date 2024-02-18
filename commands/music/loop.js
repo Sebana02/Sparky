@@ -1,7 +1,7 @@
 const { QueueRepeatMode, useQueue } = require('discord-player')
 const { ApplicationCommandOptionType, } = require('discord.js')
 const { reply, deferReply } = require('@utils/interactionUtils')
-const { noQueue, loop } = require('@utils/embedUtils/embedPresets')
+const { noQueue, loop } = require('@utils/embedMusicPresets')
 
 /**
  * Command for setting the loop mode

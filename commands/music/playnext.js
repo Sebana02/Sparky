@@ -1,7 +1,7 @@
 const { ApplicationCommandOptionType } = require('discord.js')
 const { QueryType, useQueue, useMainPlayer } = require('discord-player')
 const { reply, deferReply } = require('@utils/interactionUtils')
-const { noResults, addToQueue, noQueue } = require('@utils/embedUtils/embedPresets')
+const { noResults, addToQueue, noQueue } = require('@utils/embedMusicPresets')
 
 /**
  * Command for playing a song next

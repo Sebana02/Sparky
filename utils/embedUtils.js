@@ -70,7 +70,7 @@ module.exports = {
             if (footer && footer.text) embed.setFooter(footer)
             if (author && author.name) embed.setAuthor(author)
             if (setTimestamp) embed.setTimestamp()
-            if (fields) embed.addFields(fields)
+            if (fields) fields.forEach(field => { if (field.name && field.value) embed.addFields(field) })
 
             // Check if the embed is empty
             if (!(embed.data.title ||
