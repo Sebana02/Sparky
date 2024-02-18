@@ -1,8 +1,8 @@
-Trivia isnt working. Trivia ends when music ends by time
 Test music commands in several servers at a time
 IA for RPS
 IA for TicTacToe
 Check if theres anyway to change relative paths in loader.js
+Trivia unhandled rejection when an error occurs during awaitMessageComponent
 Check every file and comment it:
     - Events:
       - interactionCreate
@@ -25,9 +25,6 @@ Check every file and comment it:
       - timeout
       - unban
       - unmute
-
-      - trivia
-
 Embed colors -> generalise:
   Error -> rojo : 0xff2222
   Music: 0xffa500
