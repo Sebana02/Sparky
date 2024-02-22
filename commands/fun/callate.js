@@ -14,6 +14,6 @@ module.exports = {
         }
     ],
     run: async (client, inter) => {
-        await sendRandomGif(inter, 'shut up', `Quiero que te calles ${inter.options.getUser('usuario')}`)
+        await sendRandomGif(inter, 'shut up', `Quiero que te calles ${inter.options.getUser('usuario').username}`)
     }
 }

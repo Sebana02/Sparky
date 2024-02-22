@@ -16,7 +16,7 @@ module.exports = {
      * @param {number} [options.deleteTime=-1] - The time in seconds after which the reply should be deleted
      * @param {boolean} [options.propagate=true] - Whether to propagate any errors that occur during the reply
      * @throws {Error} - If the interaction is not provided or if neither content nor embeds are provided
-     * 
+     * @returns {Promise<void>} - A promise that resolves after the reply is sent
      * @example
      * await reply(interaction, { content: 'Hello, world!' })
      * 
@@ -70,7 +70,7 @@ module.exports = {
      * @param {boolean} [options.ephemeral=false] - Whether the deferred reply should be ephemeral
      * @param {boolean} [options.propagate=true] - Whether to propagate any errors that occur during the deferral
      * @throws {Error} - If the interaction is not provided
-     * 
+     * @returns {Promise<void>} - A promise that resolves after the reply is deferred
      * @example
      * 
      * await deferReply(interaction)
@@ -103,10 +103,8 @@ module.exports = {
      * @param {Object} interaction - The interaction object
      * @param {Object} [options={}] - The options for fetching the reply
      * @param {boolean} [options.propagate=true] - Whether to propagate any errors that occur during the fetch
-     * @returns {ChatInputCommandInteraction} - The fetched reply
      * @throws {Error} - If the interaction is not provided or if the interaction has not been replied to
-     * @returns {Promise<ChatInputCommandInteraction>} - The fetched reply
-     * 
+     * @returns {Promise<ChatInputCommandInteraction>} - A promise that resolves with the fetched reply
      * @example
      * 
      * const reply = await fetchReply(interaction)
@@ -140,7 +138,7 @@ module.exports = {
      * @param {number} [options.deleteTime=-1] - The time in seconds after which the reply should be deleted
      * @param {boolean} [options.propagate=true] - Whether to propagate any errors that occur during the deletion
      * @throws {Error} - If the interaction is not provided
-     * 
+     * @returns {Promise<void>} - A promise that resolves after the reply is deleted
      * @example
      * 
      * await deleteReply(interaction)
@@ -186,7 +184,7 @@ module.exports = {
      * @param {number} [options.deleteTime=-1] - The time in seconds after which the follow-up message should be deleted
      * @param {boolean} [options.propagate=true] - Whether to propagate any errors that occur during the follow-up
      * @throws {Error} - If the interaction is not provided or if neither content nor embeds are provided
-     * 
+     * @returns {Promise<void>} - A promise that resolves after the follow-up message is sent
      * @example
      * 
      * await followUp(interaction, { content: 'Hello, world!' })

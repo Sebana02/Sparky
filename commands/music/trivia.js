@@ -141,7 +141,7 @@ async function awaitInteraction(inter, players, correctSong, results, toBePlayed
                     author: { name: 'Se ha parado el trivia!', iconURL: i.user.displayAvatarURL() },
                     color: 0xffa500
                 })
-                await reply(i, { embeds: [result], deleteTime: 1.5 })
+                await reply(i, { embeds: [result], deleteTime: 1.5, propagate: false })
 
                 await endTrivia(inter, players)
             }
@@ -157,7 +157,7 @@ async function awaitInteraction(inter, players, correctSong, results, toBePlayed
                         color: 0xffa500
                     })
 
-                    await reply(i, { embeds: [result], deleteTime: 1.5 })
+                    await reply(i, { embeds: [result], deleteTime: 1.5, propagate: false })
                 }
                 else {
                     const result = createEmbed({
@@ -166,7 +166,7 @@ async function awaitInteraction(inter, players, correctSong, results, toBePlayed
                         color: 0xffa500
                     })
 
-                    await reply(i, { embeds: [result], deleteTime: 1.5 })
+                    await reply(i, { embeds: [result], deleteTime: 1.5, propagate: false })
                 }
 
                 await triviaRound(inter, players, results, toBePlayed)

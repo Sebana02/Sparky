@@ -3,8 +3,6 @@ IA for RPS
 IA for TicTacToe
 Check if theres anyway to change relative paths in loader.js
 Trivia unhandled rejection when an error occurs during awaitMessageComponent
-Trivia interaccion fallida si dos le dan a la vez -> reply every interaction
-callate user doesnt work
 Check every file and comment it:
     - Events:
       - interactionCreate
