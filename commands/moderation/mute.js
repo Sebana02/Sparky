@@ -1,6 +1,8 @@
-const { ApplicationCommandOptionType, PermissionsBitField } = require('discord.js');
+const { ApplicationCommandOptionType, PermissionsBitField } = require('discord.js')
 
-//Mutes a member from the server
+/**
+ * Command that mutes a member from the server
+ */
 module.exports = {
     name: 'mute',
     description: 'Mutea a un miembro del servidor',
@@ -20,52 +22,53 @@ module.exports = {
         },
     ],
     run: async (client, inter) => {
-        const member = inter.options.getMember('member');
-        const reason = inter.options.getString('reason');
+        //Get member and reason
+        const member = inter.options.getMember('member')
+        const reason = inter.options.getString('reason')
 
-        await inter.deferReply({ ephemeral: true });
+        //Defer reply
+        await inter.deferReply({ ephemeral: true })
 
-        if (member.id === inter.user.id) return await inter.editReply({ content: 'No puedes mutearte a ti mismo', ephemeral: true });
+        //Check the member is not the bot or the author of the interaction
+        if (member.id === inter.user.id) return await inter.editReply({ content: 'No puedes mutearte a ti mismo', ephemeral: true })
         if (member.user.bot) return await inter.editReply({ content: 'No puedes mutear a un bot', ephemeral: true })
 
-        let muteRole = await inter.guild.roles.cache.find(role => role.name === 'Muted');
-
+        //Check if the role "Muted" exists, if not, create it
+        let muteRole = await inter.guild.roles.cache.find(role => role.name === 'Muted')
         if (!muteRole) {
-            try {
-                muteRole = await inter.guild.roles.create({
-                    name: "Muted",
-                    color: "#514f48",
-                    permissions: [],
-                    reason: "Se necesita un rol para mutear a los miembros"
-                },
-                )
+            muteRole = await inter.guild.roles.create({
+                name: "Muted",
+                color: "#514f48",
+                permissions: [],
+                reason: "Se necesita un rol para mutear a los miembros"
+            },
+            )
 
-                await inter.guild.channels.cache.forEach(async (channel) => {
-                    await channel.permissionOverwrites.create(muteRole, {
-                        SendMessages: false,
-                        AddReactions: false,
-                        Speak: false,
-                        Connect: false,
-                    })
+            await inter.guild.channels.cache.forEach(async (channel) => {
+                await channel.permissionOverwrites.create(muteRole, {
+                    SendMessages: false,
+                    AddReactions: false,
+                    Speak: false,
+                    Connect: false,
                 })
-            } catch (err) {
-                console.error(err);
-            }
+            })
         }
 
-        if (member.roles.cache.has(muteRole.id)) return inter.editReply({ content: 'El miembro ya está muteado', ephemeral: true });
+        //Check if the member is already muted
+        if (member.roles.cache.has(muteRole.id)) return inter.editReply({ content: 'El miembro ya está muteado', ephemeral: true })
 
+        //Mute the member and send a DM to him explaining the reason
         member.roles.set([muteRole.id])
             .then(() => {
                 member.send(`Has sido muteado en ${inter.guild.name} por - ${reason}`)
                     .catch(err => console.error('El miembro tiene los DM desactivados: ' + err))
 
-                inter.editReply({ content: `El miembro ${member} ha sido muteado`, ephemeral: true });
+                inter.editReply({ content: `El miembro ${member} ha sido muteado`, ephemeral: true })
             })
             .catch(err => {
                 console.error(err)
-                inter.editReply({ content: 'No se pudo mutear al miembro', ephemeral: true });
-            });
+                inter.editReply({ content: 'No se pudo mutear al miembro', ephemeral: true })
+            })
 
     }
 }

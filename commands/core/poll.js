@@ -2,7 +2,9 @@ const { ActionRowBuilder, ButtonBuilder, ApplicationCommandOptionType } = requir
 const { reply, deferReply, fetchReply } = require('@utils/interactionUtils.js')
 const { createEmbed } = require('@utils/embedUtils.js')
 
-//Command that creates a poll
+/**
+ * Command that creates a poll
+ */
 module.exports = {
     name: 'poll',
     description: 'Crea una encuesta',
@@ -28,7 +30,7 @@ module.exports = {
         }
     ],
     run: async (client, inter) => {
-        //Get poll information
+        //Get options and check they fit the requirements
         const options = inter.options.getString('opciones').split(',').map(e => e.trim()).filter(Boolean)
         if (options.length < 2)
             return await reply(inter, { content: 'Pon al menos dos opciones', ephemeral: true, deleteTime: 2 })
@@ -38,9 +40,10 @@ module.exports = {
 
         const poll = inter.options.getString('tema').trim()
 
+        //Defer reply
         await deferReply(inter)
 
-        //Create votes, array of {option, value}
+        //Create votes -> Array<{option, value}>
         const votes = options.map(option => ({ option, value: 0 }))
 
         //Send initial poll embed
@@ -58,7 +61,14 @@ module.exports = {
 
 }
 
-//Create the poll embed
+/**
+ * Creates a poll embed
+ * @param {Interaction} inter The interaction
+ * @param {String} poll The poll title
+ * @param {Array<{option, value}>} votes The votes
+ * @param {Boolean} end If the poll has ended
+ * @returns {MessageEmbed} The poll embed
+ */
 function createPollEmbed(inter, poll, votes, end = false) {
     //Calculate total votes
     const totalVotes = votes.reduce((total, vote) => total + vote.value, 0)
@@ -74,6 +84,7 @@ function createPollEmbed(inter, poll, votes, end = false) {
         votation.push({ name: vote.option, value: msg })
     })
 
+    //Create the embed and return it
     return createEmbed({
         color: 0xff0000,
         title: poll,
@@ -84,7 +95,11 @@ function createPollEmbed(inter, poll, votes, end = false) {
     })
 }
 
-//Create buttons for each option
+/**
+ * Creates buttons for each option
+ * @param {Array<{option, value}>} votes The votes
+ * @returns {Array<ActionRowBuilder>} Buttons for each option
+ */
 function createButtons(votes) {
     //Create a button for each option
     const buttons = votes.map((vote, i) =>
@@ -98,7 +113,7 @@ function createButtons(votes) {
     const maxButtonsPerRow = 5
     const numRows = Math.ceil(buttons.length / maxButtonsPerRow)
 
-    //Create a row for each 5 buttons
+    //Distribution of buttons in rows
     for (let i = 0; i < numRows; i++) {
         const ini = i * maxButtonsPerRow
         const row = new ActionRowBuilder()
@@ -115,21 +130,33 @@ function createButtons(votes) {
     return components
 }
 
-//Create a collection of votes and update the poll embed
-//Returns the final votes
+/**
+ * Creates a collection of votes and updates the poll embed
+ * @param {Interaction} inter The interaction
+ * @param {Array<{option, value}>} votes The votes
+ * @param {String} poll The poll title
+ * @param {Array<ActionRowBuilder>} components Buttons for each option
+ * @returns {Promise<Array<{option, value}>>} The final votes. It resolves when the collector ends or rejects if there is an error
+ */
 async function createCollection(inter, votes, poll, components) {
+    //Gets the poll message
     const msg = await fetchReply(inter)
+
+    //Create a collector for the votes
     const filter = (i) => !i.user.bot && i.customId.startsWith('vote_')
     const countReactions = new Map()
-
     const collector = msg.createMessageComponentCollector({ filter, time: inter.options.getNumber('tiempo') * 1000 })
 
+    //This promise resolves with the final votes when the collector ends or rejects if there is an error
     return new Promise(async (resolve, reject) => {
+
+        //When a user votes
         collector.on('collect', async (interaction) => {
             try {
+                //Get the index of the option voted
                 const index = parseInt(interaction.customId.split('_')[1])
 
-                //Remove previous vote 
+                //Remove previous user vote 
                 const previousVote = countReactions.get(interaction.user.id)
                 if (previousVote)
                     votes[previousVote].value--
@@ -141,15 +168,17 @@ async function createCollection(inter, votes, poll, components) {
                 //Reply to the user
                 await reply(interaction, { content: `Has votado por '**${votes[index].option}**' `, ephemeral: true, deleteTime: 2 }, propagate = false)
 
-
                 //Update the poll embed
                 const embedResult = createPollEmbed(inter, poll, votes, false)
                 await reply(inter, { embeds: [embedResult], components: components })
+
             } catch (error) {
+                //If there is an error, reject the promise
                 reject(error)
             }
         })
 
+        //When the collector ends, resolve the promise with the final votes
         collector.on('end', () => resolve(votes))
     })
 

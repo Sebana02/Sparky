@@ -4,20 +4,13 @@
 - Trivia unhandled rejection when an error occurs during awaitMessageComponent
 - Generalise embed colors
 - Check several permissions for commands at the same time
-- Check every file and comment it:  
-  - Events:
-    - interactionCreate
-    - ready
+- Check every file
+- Check if @ can be deleted from require statements
+- Intercionalize the bot
+
   - Commands:
-    - core:
-      - disconnect
-      - poll
     - fun
-      - 8ball
-      - callate
-      - gif
       - hangman
-      - meme
       - rps
       - tictactoe
     -moderation

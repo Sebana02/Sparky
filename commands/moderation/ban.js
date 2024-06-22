@@ -1,6 +1,10 @@
-const { ApplicationCommandOptionType, PermissionsBitField } = require('discord.js');
+const { ApplicationCommandOptionType, PermissionsBitField } = require('discord.js')
+const { reply, deferReply, fetchReply } = require('@utils/interactionUtils.js')
 
-//Bans a member from the server, the member will not be able to join the server again until someone unban him
+/**
+ * Command that bans a member from the server
+ * The member will not be able to join the server again until someone unban him
+ */
 module.exports = {
     name: 'ban',
     description: 'Banea a un miembro del servidor.',
@@ -20,25 +24,29 @@ module.exports = {
         }
     ],
     run: async (client, inter) => {
-        const member = inter.options.getMember('member');
-        const reason = inter.options.getString('reason');
+        //Get member and reason
+        const member = inter.options.getMember('member')
+        const reason = inter.options.getString('reason')
 
-        await inter.deferReply({ ephemeral: true });
+        //Defer reply
+        await deferReply(inter, { ephemeral: true })
 
-        if (member.id === inter.user.id) return await inter.editReply({ content: 'No puedes banearte a ti mismo', ephemeral: true });
-        if (member.user.bot) return await inter.editReply({ content: 'No puedes banear a un bot', ephemeral: true })
-        if (!member.bannable) return await inter.editReply({ content: 'No se pudo banear al miembro del servidor', ephemeral: true });
+        //Check the member is not the bot, the author of the interaction and that the member is bannable
+        if (member.id === inter.user.id) return await reply(inter, { content: 'No puedes banearte a ti mismo', ephemeral: true })
+        if (member.user.bot) return await reply(inter, { content: 'No puedes banear a un bot', ephemeral: true })
+        if (!member.bannable) return await reply(inter, { content: 'No se pudo banear al miembro del servidor', ephemeral: true })
 
+        //Try to ban the member and send a DM to him explaining the reason
         await member.ban({ reason: reason, deleteMessageSeconds: 0 })
             .then(async () => {
                 await member.send(`Has sido baneado del servidor ${inter.guild.name} por '${reason}'`)
-                    .catch(err => console.error('El miembro tiene los DM desactivados: ' + err));
+                    .catch(err => console.error('El miembro tiene los DM desactivados: ' + err))
 
-                await inter.editReply({ content: `${member} ha sido baneado del servidor`, ephemeral: true });
+                await inter.editReply({ content: `${member} ha sido baneado del servidor`, ephemeral: true })
             })
             .catch(err => {
                 inter.editReply({ content: 'No se pudo banear al miembro del servidor', ephemeral: true })
-                console.error(err);
-            });
+                console.error(err)
+            })
     }
 }

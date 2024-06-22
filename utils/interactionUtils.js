@@ -7,7 +7,7 @@ module.exports = {
 
     /**
      * Reply to an interaction
-     * @param {ChatInputCommandInteraction} interaction - The interaction object
+     * @param {Interaction} interaction - The interaction object
      * @param {Object} [options={}] - The options for the reply
      * @param {string} [options.content=''] - The content of the reply
      * @param {boolean} [options.ephemeral=false] - Whether the reply should be ephemeral (only visible to the user who triggered the interaction)
@@ -62,7 +62,7 @@ module.exports = {
 
     /**
      * Defer a reply to an interaction
-     * @param {Object} interaction - The interaction object
+     * @param {Interaction} interaction - The interaction object
      * @param {Object} [options={}] - The options for deferring the reply
      * @param {boolean} [options.ephemeral=false] - Whether the deferred reply should be ephemeral
      * @param {boolean} [options.propagate=true] - Whether to propagate any errors that occur during the deferral
@@ -94,7 +94,7 @@ module.exports = {
 
     /**
      * Fetch the reply to an interaction
-     * @param {Object} interaction - The interaction object
+     * @param {Interaction} interaction - The interaction object
      * @param {Object} [options={}] - The options for fetching the reply
      * @param {boolean} [options.propagate=true] - Whether to propagate any errors that occur during the fetch
      * @throws {Error} - If the interaction is not provided or if the interaction has not been replied to
@@ -124,7 +124,7 @@ module.exports = {
 
     /**
      * Delete the reply to an interaction
-     * @param {Object} interaction - The interaction object
+     * @param {Interaction} interaction - The interaction object
      * @param {Object} [options={}] - The options for deleting the reply
      * @param {number} [options.deleteTime=-1] - The time in seconds after which the reply should be deleted
      * @param {boolean} [options.propagate=true] - Whether to propagate any errors that occur during the deletion
@@ -163,7 +163,7 @@ module.exports = {
 
     /**
      * Follow up on an interaction
-     * @param {Object} interaction - The interaction object
+     * @param {Interaction} interaction - The interaction object
      * @param {Object} [options={}] - The options for following up on the interaction
      * @param {string} [options.content=''] - The content of the follow-up message
      * @param {boolean} [options.ephemeral=false] - Whether the follow-up message should be ephemeral

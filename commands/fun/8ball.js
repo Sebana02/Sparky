@@ -2,7 +2,9 @@ const { ApplicationCommandOptionType } = require('discord.js')
 const { reply } = require('@utils/interactionUtils.js')
 const { createEmbed } = require('@utils/embedUtils.js')
 
-//Command that asks a question to the magic 8ball
+/**
+ * Command that asks a question to the magic 8ball and gets a random response
+ */
 module.exports = {
     name: '8ball',
     description: 'Haz una pregunta a la bola mágica',
@@ -15,10 +17,12 @@ module.exports = {
         }
     ],
     run: async (client, inter) => {
+        //Create embed with random response
         const embed = createEmbed({
             description: `🎱${responses[Math.floor(Math.random() * responses.length)]}`
         })
 
+        //Reply to the interaction
         await reply(inter, { embeds: [embed] })
     }
 }

@@ -21,13 +21,52 @@ module.exports = {
      * Use PermissionsBitField.Flags to set the permissions
      * 
      * Example: PermissionsBitField.Flags.ADMINISTRATOR
+     * 
+     * You can combine permissions using bitwise OR (|)
+     * 
+     * Example: PermissionsBitField.Flags.ADMINISTRATOR | PermissionsBitField.Flags.BAN_MEMBERS
+     * 
+     * You can skip this property if the command does not require permissions
      */
     permissions: PermissionsBitField.Flags.ADMINISTRATOR,
 
     /**
+     * Command requires user to be in a voice channel
+     * 
+     * You can skip this property if the command does not require the user to be in a voice channel
+     */
+    voiceChannel: true,
+
+    /**
+     * Command options
+     * 
+     * You can skip this property if the command does not have options
+     * 
+     * Options are objects with the following properties:
+     * - name: The name of the option
+     * - description: The description of the option
+     * - type: The type of the option (ApplicationCommandOptionType)
+     * - required: Whether the option is required or not
+     * 
+     * You can add more properties depending on the option type
+     * 
+     * You can add more options by adding more objects to the array
+     * 
+     * You can check full option fields in the discord.js documentation
+     */
+    options: [
+        {
+            name: 'nombre de la opción',
+            description: 'descripción de la opción',
+            type: ApplicationCommandOptionType.String,
+            required: true,
+        },
+    ],
+
+    /**
      * Command run function
      * @param {Client} client - The Discord client object
-     * @param {Object} inter - The interaction object related to the command
+     * @param {Interaction} inter - The interaction object related to the command
      * @returns {Promise<void>} - A promise that resolves when the command is finished, if not needed, remove async
      */
     run: async (client, inter) => {
