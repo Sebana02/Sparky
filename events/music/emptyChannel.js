@@ -1,17 +1,20 @@
-const { createEmbed } = require('@utils/embedUtils')
+const { emptyChannel } = require('@utils/embedMusicPresets')
 
 /**
  * Event emitted when the voice channel is empty
+ * Sends an empty channel embed to the channel where the music is playing
  */
 module.exports = {
     event: 'emptyChannel',
+
+    /**
+    * Callback function for handling the event when the voice channel is empty
+    * @param {Client} client - The Discord client object
+    * @param {GuildQueue} queue - The queue object related to the empty channel event
+    * @returns {Promise<void>}
+    */
     callback: async (client, queue) => {
-
-        const emptyChannelEmbed = createEmbed({
-            color: 0xffa500,
-            author: { name: `No hay nadie en el canal de voz, saliendo...`, iconURL: client.user.displayAvatarURL() },
-        })
-
-        await queue.metadata.channel.send({ embeds: [emptyChannelEmbed] })
+        //Send the empty channel embed to the channel
+        await queue.metadata.channel.send({ embeds: [emptyChannel(client)] })
     }
 }

@@ -1,8 +1,15 @@
 /**
  * Event that is called when the bot is ready
+ * Logs the bot in the console, sets the activity and registers the slash commands
  */
 module.exports = {
     event: "ready",
+
+    /**
+     * Callback function for handling the ready event
+     * @param {Client} client - The Discord client object
+     * @returns {Promise<void>}
+     */
     callback: async (client) => {
 
         //Log ready

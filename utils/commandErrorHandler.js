@@ -16,16 +16,19 @@ module.exports = {
      * @returns {Promise<void>}
      */
     commandErrorHandler: async (commandName, commandFunction, client, inter, ...args) => {
+        //Tries to execute the command function
         try {
             await commandFunction(client, inter)
         } catch (error) {
             console.error(`Error: in command "${commandName}": ${error.message}`)
 
+            // Create an error embed
             const errorEmbed = createEmbed({
                 color: 0xff2222,
                 author: { name: 'Ha ocurrido un error', iconURL: client.user.displayAvatarURL() },
             })
 
+            // Reply to the interaction with the error embed
             await reply(inter, { embeds: [errorEmbed], ephemeral: true, deleteTime: 2, propagate: false })
         }
     }

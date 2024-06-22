@@ -25,6 +25,14 @@ module.exports = {
         const queue = useQueue(inter.guildId)
         const song = inter.options.getString('song')
 
+        if (!queue || !queue.isPlaying()) {
+            return await reply(inter, {
+                embeds: [noQueue(client)],
+                ephemeral: true,
+                deleteTime: 2
+            })
+        }
+
         const results = await useMainPlayer().search(song, {
             requestedBy: inter.member,
             searchEngine: QueryType.AUTO
@@ -36,15 +44,6 @@ module.exports = {
                 deleteTime: 2
             })
         }
-
-        if (!queue || !queue.isPlaying()) {
-            return await reply(inter, {
-                embeds: [noQueue(client)],
-                ephemeral: true,
-                deleteTime: 2
-            })
-        }
-
         queue.insertTrack(results.tracks[0], 0)
 
         await reply(inter, {

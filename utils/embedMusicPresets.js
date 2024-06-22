@@ -4,6 +4,13 @@ const { Client, EmbedBuilder } = require('discord.js')
 const { LyricsData } = require('@discord-player/extractor')
 
 
+const ColorScheme = {
+  error: 0xff2222,
+  playing: 0x13f857,
+  added: 0x40e0d0,
+  general: 0xffa500
+}
+
 /**
  * Preset music embed for different situations
  */
@@ -13,9 +20,9 @@ module.exports = {
    * @param {Client} client - The Discord client object
    * @returns {EmbedBuilder} - The error embed
    */
-  error: (client) => {
+  musicError: (client) => {
     return createEmbed({
-      color: 0xff2222,
+      color: ColorScheme.error,
       author: {
         name: "Ha ocurrido un error",
         iconURL: client.user.displayAvatarURL()
@@ -30,7 +37,7 @@ module.exports = {
    */
   noResults: (client) => {
     return createEmbed({
-      color: 0xff2222,
+      color: ColorScheme.error,
       author: {
         name: 'No hay resultados',
         iconURL: client.user.displayAvatarURL()
@@ -45,7 +52,7 @@ module.exports = {
    */
   noPlaylist: (client) => {
     return createEmbed({
-      color: 0xff2222,
+      color: ColorScheme.error,
       author: {
         name: 'Asegúrate que el link sea de una playlist y tenga al menos 5 canciones',
         iconURL: client.user.displayAvatarURL()
@@ -60,7 +67,7 @@ module.exports = {
    */
   noQueue: (client) => {
     return createEmbed({
-      color: 0xff2222,
+      color: ColorScheme.error,
       author: {
         name: 'No hay música reproduciendose',
         iconURL: client.user.displayAvatarURL()
@@ -75,7 +82,7 @@ module.exports = {
    */
   noHistory: (client) => {
     return createEmbed({
-      color: 0xff2222,
+      color: ColorScheme.error,
       author: {
         name: 'No hay historial',
         iconURL: client.user.displayAvatarURL()
@@ -90,7 +97,7 @@ module.exports = {
    */
   noLyrics: (track) => {
     return createEmbed({
-      color: 0xff2222,
+      color: ColorScheme.error,
       author: {
         name: 'No hay letra para esta canción',
         iconURL: track.thumbnail
@@ -105,7 +112,7 @@ module.exports = {
    */
   addToQueue: (track) => {
     return createEmbed({
-      color: 0xffa500,
+      color: ColorScheme.added,
       author: {
         name: `${track.title} | ${track.author}`,
         iconURL: track.thumbnail
@@ -123,7 +130,7 @@ module.exports = {
    */
   addToQueueMany: (results) => {
     return createEmbed({
-      color: 0xffa500,
+      color: ColorScheme.added,
       author: {
         name: `${results.tracks.length} canciones`,
         iconURL: results.tracks[0].thumbnail
@@ -141,7 +148,7 @@ module.exports = {
    */
   previousTrack: (track) => {
     return createEmbed({
-      color: 0xffa500,
+      color: ColorScheme.added,
       author: {
         name: `${track.title} | ${track.author}`,
         iconURL: track.thumbnail
@@ -159,7 +166,7 @@ module.exports = {
    */
   stop: (client) => {
     return createEmbed({
-      color: 0xffa500,
+      color: ColorScheme.general,
       author: {
         name: 'Se ha parado la música',
         iconURL: client.user.displayAvatarURL()
@@ -174,7 +181,7 @@ module.exports = {
    */
   pause: (track) => {
     return createEmbed({
-      color: 0xffa500,
+      color: ColorScheme.general,
       author: {
         name: `${track.title} | ${track.author}`,
         iconURL: track.thumbnail
@@ -192,7 +199,7 @@ module.exports = {
    */
   resume: (track) => {
     return createEmbed({
-      color: 0xffa500,
+      color: ColorScheme.general,
       author: {
         name: `${track.title} | ${track.author}`,
         iconURL: track.thumbnail
@@ -210,7 +217,7 @@ module.exports = {
    */
   clear: (client) => {
     return createEmbed({
-      color: 0xffa500,
+      color: ColorScheme.general,
       author: {
         name: `Cola de reproducción vaciada`,
         iconURL: client.user.displayAvatarURL()
@@ -228,7 +235,7 @@ module.exports = {
     const names = ['desactivado', 'canción', 'cola', 'autoplay']
 
     return createEmbed({
-      color: 0xffa500,
+      color: ColorScheme.general,
       author: {
         name: `Loop: ${names[repeatMode]}`,
         iconURL: track.thumbnail
@@ -247,7 +254,7 @@ module.exports = {
     const tracks = queue.tracks.map((track, i) => `**${i + 1}** - ${track.title} | ${track.author} (requested by : ${track.requestedBy.username})`)
 
     return createEmbed({
-      color: 0xffa500,
+      color: ColorScheme.general,
       thumbnail: queue.currentTrack.thumbnail,
       setTimestamp: true,
       description: `${tracks.slice(0, 5).join('\n')}\n\n${nextSongs}`,
@@ -267,7 +274,7 @@ module.exports = {
    */
   volume: (vol, track) => {
     return createEmbed({
-      color: 0xffa500,
+      color: ColorScheme.general,
       author: {
         name: `Se ha modificado el volumen a ${vol}%`,
         iconURL: track.thumbnail
@@ -284,7 +291,7 @@ module.exports = {
     const trimmedLyrics = lyricsData.lyrics.substring(0, 1997)
 
     return createEmbed({
-      color: 0xffa500,
+      color: ColorScheme.general,
       title: lyricsData.title,
       url: lyricsData.url,
       thumbnail: lyricsData.thumbnail,
@@ -304,7 +311,7 @@ module.exports = {
    */
   skip: (track) => {
     return createEmbed({
-      color: 0xffa500,
+      color: ColorScheme.general,
       author: {
         name: `${track.title} | ${track.author}`,
         iconURL: track.thumbnail
@@ -325,7 +332,7 @@ module.exports = {
     const loopModes = ['desactivado', 'canción', 'cola', 'autoplay']
 
     return createEmbed({
-      color: 0xffa500,
+      color: ColorScheme.playing,
       thumbnail: track.thumbnail,
       title: `${track.title} | ${track.author}`,
       description: `Volumen **${player.volume}%**\nDuración **${track.duration}**\nProgreso ${player.createProgressBar()}\nLoop mode **${loopModes[queue.repeatMode]}**\nRequested by ${track.requestedBy}`
@@ -339,7 +346,7 @@ module.exports = {
    */
   shuffle: (queue) => {
     return createEmbed({
-      color: 0xffa500,
+      color: ColorScheme.general,
       author: { name: `${queue.tracks.size} canciones`, iconURL: queue.currentTrack.thumbnail },
       footer: { text: 'se han barajeado' }
     })
@@ -352,7 +359,7 @@ module.exports = {
    */
   savePrivate: (track) => {
     return createEmbed({
-      color: 0xffa500,
+      color: ColorScheme.general,
       title: `:arrow_forward: ${track.title}`,
       thumbnail: track.thumbnail,
       fields: [
@@ -371,9 +378,47 @@ module.exports = {
    */
   save: (track) => {
     return createEmbed({
-      color: 0xffa500,
+      color: ColorScheme.general,
       author: { name: `${track.title} | ${track.author}`, iconURL: track.thumbnail },
       footer: { text: 'enviada al privado' }
     })
-  }
+  },
+
+  /**
+   * Generates a playing embed
+   * @param {Track} track - The track object
+   * @returns {EmbedBuilder} - The playing embed
+   */
+  playing: (track) => {
+    return createEmbed({
+      color: ColorScheme.playing,
+      author: { name: `${track.title} | ${track.author}`, iconURL: track.thumbnail },
+      footer: { text: `reproduciendo ahora` }
+    })
+  },
+
+  /**
+   * Generates a empty channel embed
+   * @param {Client} client - The Discord client object
+   * @returns {EmbedBuilder} - The empty channel embed
+   */
+  emptyChannel: (client) => {
+    return createEmbed({
+      color: ColorScheme.general,
+      author: { name: `No hay nadie en el canal de voz, saliendo...`, iconURL: client.user.displayAvatarURL() }
+    })
+  },
+
+  /**
+     * Generates a empty queue embed
+     * @param {Client} client - The Discord client object
+     * @returns {EmbedBuilder} - The empty channel embed
+     */
+  emptyQueue: (client) => {
+    return createEmbed({
+      color: ColorScheme.general,
+      author: { name: `No hay canciones en la cola, saliendo...`, iconURL: client.user.displayAvatarURL() }
+    })
+  },
+
 }

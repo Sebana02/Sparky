@@ -6,7 +6,7 @@ const fs = require("fs")
  */
 module.exports = {
     /**
-     * Change console stream to log file
+     * Change console stream to log file. This in an optional feature.
      */
     config: () => {
 

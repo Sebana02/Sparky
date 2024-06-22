@@ -1,0 +1,47 @@
+- Test music commands in several servers at a time  
+- IA for RPS  
+- IA for TicTacToe  
+- Trivia unhandled rejection when an error occurs during awaitMessageComponent
+- Generalise embed colors
+- Check several permissions for commands at the same time
+- Check every file and comment it:  
+  - Events:
+    - interactionCreate
+    - ready
+  - Commands:
+    - core:
+      - disconnect
+      - poll
+    - fun
+      - 8ball
+      - callate
+      - gif
+      - hangman
+      - meme
+      - rps
+      - tictactoe
+    -moderation
+      - ban
+      - kick
+      - mute
+      - purge
+      - timeout
+      - unban
+      - unmute   
+    - music
+      - back
+      - clear
+      - loop
+      - lyrics
+      - nowplaying
+      - pause
+      - play
+      - playnext
+      - queue
+      - resume
+      - save
+      - shuffle
+      - skip
+      - stop
+      - trivia
+      - volume

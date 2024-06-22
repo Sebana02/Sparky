@@ -12,6 +12,7 @@ module.exports = {
      * @returns {Promise<void>}
      */
     eventErrorHandler: async (eventName, eventCallback, client, ...args) => {
+        //Tries to execute the event callback
         try {
             await eventCallback(client, ...args)
         } catch (error) {
