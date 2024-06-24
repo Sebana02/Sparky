@@ -24,7 +24,7 @@ const client = new Client({ // client setup
 })
 
 const player = new Player(client) // player setup
-player.extractors.loadDefault()
+player.extractors.loadDefault() // load default extractors
 
 require('dotenv').config() // load .env variables
 

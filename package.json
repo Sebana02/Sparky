@@ -12,14 +12,14 @@
   "author": "Khlozer",
   "license": "ISC",
   "dependencies": {
-    "@discord-player/extractor": "^4.4.6",
+    "@discord-player/extractor": "^4.4.7",
     "@ffmpeg-installer/ffmpeg": "^1.1.0",
     "discord-player": "^6.6.7",
     "discord.js": "^14.14.1",
     "dotenv": "^16.4.1",
     "mediaplex": "^0.0.9",
     "module-alias": "^2.2.3",
-    "play-dl": "^1.9.7"
+    "ytdl-core": "^4.11.5"
   },
   "_moduleAliases": {
     "@root": ".",

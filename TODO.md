@@ -7,6 +7,7 @@
 - [ ] Check if @ can be deleted from require statements -> use ES6 import instead of CommonJS require
 - [ ] Intercionalize the bot
 - [ ] Throw error inside promises to check if it's caught(tictactoe,trivia)
+- [ ] Music is not playing
   
 - [ ] tictactoe
 - [ ] trivia
