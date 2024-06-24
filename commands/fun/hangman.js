@@ -1,6 +1,6 @@
 //hangman repository : https://github.com/Zheoni/Hanger-Bot
 
-const { ApplicationCommandOptionType, ActionRowBuilder, ButtonBuilder, EmbedBuilder } = require('discord.js')
+const { ApplicationCommandOptionType, ActionRowBuilder, ButtonBuilder } = require('discord.js')
 const { deferReply, reply, fetchReply } = require('@utils/interactionUtils.js')
 const { createEmbed } = require('@utils/embedUtils.js')
 
@@ -31,22 +31,13 @@ module.exports = {
         await deferReply(inter)
 
         //Create the game
-        let game, players, selector
         const gameInfo = await startGame(inter)
 
-        //If created successfully, run the game, else show error message
-        if (!(gameInfo && gameInfo.game && gameInfo.players))
-            return await reply(inter, { content: "Ha ocurrido un error al iniciar el juego.", embeds: [], components: [], deleteTime: 2 })
-
-        game = gameInfo.game
-        players = gameInfo.players
-        selector = gameInfo.selector
-
         //Run the game
-        await runGame(inter, game, players)
+        await runGame(inter, gameInfo.game, gameInfo.players)
 
         //Show the result
-        await showResult(inter, game, selector)
+        await showResult(inter, gameInfo.game, gameInfo.selector)
 
     }
 }
@@ -61,20 +52,10 @@ String.prototype.replaceAt = function (index, replacement) {
     return this.slice(0, index) + replacement + this.slice(index + replacement.length)
 }
 
-
 /**
  * Class for the hangman game
  */
 class hangman {
-    constructor(word) {
-        this.word = word //word to guess
-        this.lives = 6 //lives
-        this.progress = hangman.hyphenString(word.length) //progress
-        this.remaining = word.length //remaining letters to guess 
-        this.misses = [] //misses
-        this.status = "in progress" //game status
-    }
-
     /**
      * Returns a string with n hyphens
      * @param {number} n number of hyphens
@@ -89,13 +70,26 @@ class hangman {
     }
 
     /**
+     * Represents the status of the game
+     */
+    static gameStatus = {
+        lose: 0,
+        inProgress: 1,
+        win: 2
+    }
+
+    constructor(word) {
+        this.word = word //word to guess
+        this.lives = 6 //lives
+        this.progress = hangman.hyphenString(word.length) //progress
+        this.remaining = word.length //remaining letters to guess 
+        this.misses = [] //misses
+        this.status = hangman.gameStatus.inProgress //game status
+    }
+
+    /**
      * Guess a letter
      * @param {string} c - Letter to guess
-     * @returns {object} Game status
-     * @returns {string} returns.status - The current game status
-     * @returns {string} returns.progress - The current progress of the word
-     * @returns {string[]} returns.misses - The missed letters
-     * @returns {number} returns.lifes - The remaining lives
      */
     guess(c) {
         if (this.progress.includes(c)) { //letter already guessed
@@ -118,35 +112,25 @@ class hangman {
 
         //update game status
         if (this.lives == 0)
-            this.status = "lost"
+            this.status = hangman.gameStatus.lose
         else if (this.remaining == 0)
-            this.status = "won"
-
-        //return game status
-        return {
-            status: this.status,
-            progress: this.progress,
-            misses: this.misses,
-            lifes: this.lives
-        }
+            this.status = hangman.gameStatus.win
     }
 
     /**
      * Guess the whole word
      * @param {string} word word to guess
-     * @returns {boolean} true if the word is guessed, false otherwise
      */
     guessAll(word) {
         if (this.word === word) { //word is guessed
             this.progress = this.word
-            this.status = "won"
+            this.remaining = 0
+            this.status = hangman.gameStatus.win
         }
         else { //word is not guessed
-            --this.lives
+            if (--this.lives == 0)
+                this.status = hangman.gameStatus.lose
         }
-
-        //return whether the word is guessed
-        return this.status === "won"
     }
 }
 
@@ -223,14 +207,13 @@ async function startGame(inter) {
 
     //check if enough players have joined
     if (players.length == 0)
-        return await reply(inter, { content: "Nadie se ha unido al juego...", embeds: [], components: [] })
+        return await reply(inter, { content: "Nadie se ha unido al juego", embeds: [], components: [], deleteTime: 2 })
     if (gameType === "custom" && players.length < 2)
-        return await reply(inter, { content: "Para una partida custom, se necesitan al menos 2 jugadores.", embeds: [], components: [] })
+        return await reply(inter, { content: "Para una partida custom, se necesitan al menos 2 jugadores", embeds: [], components: [], deleteTime: 2 })
 
 
     //choose word according to game type
-    let word
-    let selector
+    let word, selector
     switch (gameType) {
         //random word
         case "random":
@@ -257,6 +240,10 @@ async function startGame(inter) {
     //create the game
     const game = new hangman(word)
 
+    //If created successfully, run the game, else show error message
+    if (!(game && players))
+        return await reply(inter, { content: "Ha ocurrido un error al iniciar el juego", embeds: [], deleteTime: 2 })
+
     //return the game object
     return {
         game,
@@ -273,29 +260,29 @@ async function startGame(inter) {
 async function gatherPlayers(inter) {
 
     //Initial message and buttons to join the game
-    const embed = new EmbedBuilder()
-        .setTitle('Hangman')
-        .setColor(0x36393e)
-        .setDescription('Interaccionad con el bot para jugar al ahorcado!')
+    const embed = createEmbed({
+        color: 0x36393e,
+        footer: { text: 'Hangman: Teneis 10 segundos para uniros al juego', iconURL: inter.user.displayAvatarURL() }
+    })
 
-    const participar = new ButtonBuilder()
-        .setLabel('Participar')
-        .setCustomId(JSON.stringify({ type: 'participar' }))
+    const join = new ButtonBuilder()
+        .setLabel('Unirse al juego')
+        .setCustomId(JSON.stringify({ type: 'join' }))
         .setStyle('Primary')
 
-    const no_participar = new ButtonBuilder()
-        .setLabel('No Participar')
-        .setCustomId(JSON.stringify({ type: 'no_participar' }))
-        .setStyle('Danger')
+    const exit = new ButtonBuilder()
+        .setLabel('Salir del juego')
+        .setCustomId(JSON.stringify({ type: 'exit' }))
+        .setStyle('Secondary')
 
-    const row = new ActionRowBuilder().addComponents(participar, no_participar)
+    const row = new ActionRowBuilder().addComponents(join, exit)
 
     //Send initial message
     await reply(inter, { embeds: [embed], components: [row] })
     let msg = await fetchReply(inter)
 
     //Create a collector to gather players
-    const filter = (i) => JSON.parse(i.customId).type === 'participar' || JSON.parse(i.customId).type === 'no_participar'
+    const filter = (i) => JSON.parse(i.customId).type === 'join' || JSON.parse(i.customId).type === 'exit'
     const collector = await msg.createMessageComponentCollector({ filter, time: 10000 })
 
     //Return a promise that resolves with the list of players when the collector ends
@@ -308,24 +295,24 @@ async function gatherPlayers(inter) {
 
             try {
                 //Player wants to join
-                if (JSON.parse(i.customId).type === 'participar') {
+                if (JSON.parse(i.customId).type === 'join') {
 
                     //Add player to the list if they haven't joined yet
                     if (!players.find(p => p.id === i.user.id))
                         players.push(i.user)
 
                     //Reply to the player
-                    await reply(i, { content: 'Te has unido al juego!', ephemeral: true, deleteTime: 3, propagate: false })
+                    await reply(i, { content: 'Te has unido al juego!', ephemeral: true, deleteTime: 2, propagate: false })
                 }
 
                 //Player doesn't want to join
-                else if (JSON.parse(i.customId).type === 'no_participar') {
+                else if (JSON.parse(i.customId).type === 'exit') {
 
                     //Remove player from the list
                     players = players.filter(p => p.id != i.user.id)
 
                     //Reply to the player
-                    await reply(i, { content: 'Has abandonado el juego!', ephemeral: true, deleteTime: 3, propagate: false })
+                    await reply(i, { content: 'Has abandonado el juego!', ephemeral: true, deleteTime: 2, propagate: false })
                 }
             } catch (error) {
                 reject(error)
@@ -350,8 +337,7 @@ async function gatherPlayers(inter) {
 async function getWordFromPlayers(players, inter) {
 
     //If no word is chosen and there is more than one player, choose a player to select a word
-    let word
-    let chosenOne
+    let word, chosenOne
     while (!word && players.length > 1) {
 
         //Choose a player
@@ -361,7 +347,7 @@ async function getWordFromPlayers(players, inter) {
 
         //Send a DM to the player
         const dm = await chosenOne.createDM()
-        await dm.send("Eres el elegido!! Escribe tu palabra. Tienes 30 segundos. Recuerda, no participas en la partida.")
+        await dm.send("Eres el elegido! Tienes 30 segundos para escribir tu palabra. Recuerda, no participas en la partida")
 
         //Get the word from the player, if the player doesn't respond in time or makes more than 3 tries, choose another player
         let finish = false
@@ -375,7 +361,7 @@ async function getWordFromPlayers(players, inter) {
 
             } catch (collected) {
                 await dm.send("Se ha acabado el tiempo, estás descalificado.")
-                await reply(inter, { content: "El elegido no ha respondido a tiempo, eligiendo a otro jugador." })
+                await reply(inter, { content: "El elegido no ha respondido a tiempo, eligiendo a otro jugador" })
                 finish = true
                 continue
             }
@@ -385,12 +371,12 @@ async function getWordFromPlayers(players, inter) {
             if (msg.match(`^[A-Za-zÀ-ú]{3,}$`)) {
                 word = msg.toLowerCase()
                 finish = true
-                dm.send("Buena palabra!, volviendo al server.")
+                await dm.send("Buena palabra, volviendo al server")
             }
             else {
-                await dm.send("Palabra invalida. Sin espacios y con al menos 3 caracteres.")
+                await dm.send("Palabra invalida, no uses caracteres especiales ni espacios y que tenga al menos 3 letras. Intenta de nuevo")
                 if (++tries == 3)
-                    await dm.send("Muchas palabras invalidas. Estás descalificado.")
+                    await dm.send("Muchas palabras invalidas, estás descalificado")
 
             }
         }
@@ -398,7 +384,7 @@ async function getWordFromPlayers(players, inter) {
 
     //If no word is chosen and there is only one player left, return
     if (!word && players.length <= 1)
-        return reply(inter, { content: "Nos hemos quedado sin jugadores..." })
+        return await reply(inter, { content: "Nos hemos quedado sin jugadores", embeds: [], components: [], deleteTime: 2 })
 
 
     //Return the word and the player that chose it
@@ -413,6 +399,7 @@ async function getWordFromPlayers(players, inter) {
  * @param {TextChannel} channel - The channel to get the message from
  * @param {number} maxTime - The maximum time to wait for a message
  * @returns {Promise<Message>} The message
+ * 
  */
 async function getNextMessage(channel, maxTime) {
     const filter = msg => !msg.author.bot
@@ -422,11 +409,7 @@ async function getNextMessage(channel, maxTime) {
         time: maxTime,
         errors: ['time']
     })
-        .catch((collected) => {
-            throw collected
-        })
 }
-
 
 /**
  * Function to run the game
@@ -437,37 +420,8 @@ async function getNextMessage(channel, maxTime) {
  */
 async function runGame(inter, game, players) {
 
-    //Create buttons for the letters
-    let buttons = []
-    let letters = ['a', 'á', 'b', 'c', 'd', 'e', 'é', 'f', 'g', 'h', 'i', 'í', 'j', 'k', 'l', 'm', 'n', 'ñ', 'o', 'ó', 'p', 'q', 'r', 's', 't', 'u', 'ú', 'v', 'w', 'x', 'y', 'z']
-    letters.forEach(letter => {
-        let button = new ButtonBuilder()
-            .setLabel(letter)
-            .setCustomId(JSON.stringify({ letter: letter }))
-            .setStyle('Primary')
-        buttons.push(button)
-    })
-
-    //Create next page button
-    let nextButton = new ButtonBuilder()
-        .setLabel('>>')
-        .setCustomId(JSON.stringify({ letter: 'next' }))
-        .setStyle('Secondary')
-
-    //Create object with buttons
-    buttonsObject = {
-        buttons: buttons,
-        nextButton: nextButton,
-        nextPage: false
-    }
-
     //Show the progress
-    await showProgress(inter, buttonsObject, game, false)
-
-    //Create a collector for the buttons
-    let msg = await fetchReply(inter)
-    const filter = (m) => !m.author.bot && players.find(p => p.id === m.author.id)
-    const buttonCollector = await msg.createMessageComponentCollector({ filter: filter, time: (15 * 1000 * 60) })
+    await showProgress(inter, game, players)
 
     //Create a collector for the messages
     const filterM = (m) => !m.author.bot && players.find(p => p.id === m.author.id)
@@ -476,70 +430,34 @@ async function runGame(inter, game, players) {
     //Return a promise that resolves when the game ends
     return new Promise((resolve, reject) => {
 
-        //Button collector
-        buttonCollector.on('collect', async i => {
-
-            try {
-                //Get the letter from the button
-                let letter = await JSON.parse(i.customId).letter
-
-                //Check if the letter is 'next' or a letter
-                if (letter == 'next')
-                    buttonsObject.nextPage = !buttonsObject.nextPage
-                else {
-                    buttonsObject.buttons = buttonsObject.buttons.filter(b => JSON.parse(b.data.custom_id).letter !== letter)
-                    game.guess(letter)
-                }
-
-                //Reply to the player
-                await reply(i, { content: `Has seleccionado la letra '${letter}'`, ephemeral: true, deleteTime: 1, propagate: false })
-
-                //Show the progress
-                await showProgress(inter, buttonsObject, game, false)
-
-                //Check if the game has ended, if so, stop the collectors
-                if (game.status !== "in progress") {
-                    collector.stop()
-                    buttonCollector.stop()
-                }
-                else if (players.length < 1) {
-                    collector.stop()
-                    buttonCollector.stop()
-                    game.status = "lost"
-                }
-            } catch (error) {
-                reject(error)
-                collector.stop()
-                buttonCollector.stop()
-            }
-        })
-
-
         //Message collector
         collector.on('collect', async (m) => {
 
             try {
                 //Get letter, erase message and check if it's a valid letter
-                const c = m.content.toLowerCase()
-                m.delete()
-                if (m.content.match(`^[A-Za-zÀ-ú]{2,}$`)) {
-                    if (game.guessAll(c) == false)
+                if (m.content.match(`^[A-Za-zÀ-ú]{1,}$`)) {
+                    const c = m.content.toLowerCase()
+                    await m.delete()
+
+                    //If the letter is more than one character, guess the whole word and remove the player from the list
+                    if (c.length > 1) {
+                        game.guessAll(c)
                         players = players.splice(players.find(p => m.author.id == p.id), 1)
-                }
-                else
-                    game.guess(c)
+                    }
+                    else { //Guess the letter e.o.c.
+                        game.guess(c)
+                    }
 
-                //Show the progress
-                await showProgress(inter, buttonsObject, game, false)
+                    //Show the progress
+                    await showProgress(inter, game, players)
 
-                //Check if the game has ended, if so, stop the collectors
-                if (game.status !== "in progress") {
-                    collector.stop()
-                    buttonCollector.stop()
-                } else if (players.length < 1) {
-                    collector.stop()
-                    buttonCollector.stop()
-                    game.status = "lost"
+                    //Check if the game has ended, if so, stop the collectors
+                    if (game.status !== hangman.gameStatus.inProgress) {
+                        collector.stop()
+                    } else if (players.length < 1) {
+                        collector.stop()
+                        game.status = hangman.gameStatus.lose
+                    }
                 }
             } catch (error) {
                 reject(error)
@@ -548,8 +466,7 @@ async function runGame(inter, game, players) {
         })
 
         //End the game when the collectors end, resolve the promise and show the result
-        collector.on('end', async (collected) => {
-            await showProgress(inter, {}, game, true)
+        collector.on('end', () => {
             resolve()
         })
     })
@@ -562,66 +479,20 @@ async function runGame(inter, game, players) {
  * @param {hangman} game
  * @param {boolean} gameOver
  */
-
-async function showProgress(inter, buttonsObject, game, gameOver) {
+async function showProgress(inter, game, players) {
     //Set the information to show in the screen and create embed
     const embed = createEmbed({
-        title: "Ahorcado",
         description: "```\n" + figure[6 - game.lives] + `\n${game.progress}` + "\n```",
         color: 0xFFD700,
         fields: [
             { name: "Vidas", value: "💖 ".repeat(game.lives) + "🖤 ".repeat(6 - game.lives), inline: true },
             { name: "Fallos", value: game.misses.join(" "), inline: true }
-        ]
+        ],
+        footer: { text: `Jugadores: ${players.map(p => p.username).join(", ")}` }
     })
 
-    //Distribute the buttons in rows
-    if (!buttonsObject.buttons || buttonsObject.buttons.length === 0)
-        return await reply(inter, { embeds: [embed], components: [] })
-
-
-    let length = buttonsObject.buttons.length
-    let rowLength = 5
-    let pageLength = 25
-    let components = []
-
-    if (length > 25) {//More than one page of buttons
-
-        if (!buttonsObject.nextPage) { //Page 1, add 24 buttons and the next page button
-            for (let i = 0; i < pageLength - rowLength; i += rowLength) // 4 rows of 5 buttons
-                components.push(new ActionRowBuilder()
-                    .addComponents(buttonsObject.buttons.slice(i, i + rowLength)))
-
-            components.push(new ActionRowBuilder() //1 row of 4 buttons and the next page button
-                .addComponents(buttonsObject.buttons.slice(pageLength - rowLength, pageLength - rowLength + 4)).addComponents(buttonsObject.nextButton))
-        }
-        else { //Page 2, add the remaining buttons and the previous page button
-            let numRows = Math.ceil(((length - 24) / 5)) //Needed rows to show the remaining buttons
-            for (let i = 0; i < numRows; i++) {
-                let ini = 24 + i * 5 //Initial index of the buttons in the row
-
-                if (i === numRows - 1) //Last row, add the remaining buttons and the previous page button
-                    components.push(new ActionRowBuilder().addComponents(buttonsObject.buttons.slice(ini, ini + (length - ini))).addComponents(buttonsObject.nextButton))
-                else //Add 5 buttons
-                    components.push(new ActionRowBuilder().addComponents(buttonsObject.buttons.slice(ini, ini + 5)))
-            }
-        }
-
-    }
-    else { //Only one page of buttons, add all buttons
-        let numRows = Math.ceil((length / 5)) //Needed rows to show all buttons
-        for (let i = 0; i < numRows; i++) {
-            let ini = i * 5 //Initial index of the buttons in the row
-
-            if (i === numRows - 1) //ultima fila, se añaden los botones restantes y el boton de pagina anterior
-                components.push(new ActionRowBuilder().addComponents(buttonsObject.buttons.slice(ini, ini + (length - ini))))
-            else //se añaden 5 botones
-                components.push(new ActionRowBuilder().addComponents(buttonsObject.buttons.slice(ini, ini + 5)))
-        }
-    }
-    await reply(inter, { embeds: [embed], components: components })
+    await reply(inter, { embeds: [embed] })
 }
-
 
 /**
  * Function to show the result of the game
@@ -631,21 +502,32 @@ async function showProgress(inter, buttonsObject, game, gameOver) {
  */
 async function showResult(inter, game, selector) {
 
-    if (game.status === "won") {
+    //Set the message and color according to the game status
+    let msg = ''
+    let color = 0xFFD700
+    if (game.status === hangman.gameStatus.win) {
+        color = 0x13f857
         if (selector)
-            await reply(inter, { content: `Has ganado !! ${selector.username}... intenta elegir una palabra mas dificil la próxima vez.`, embeds: [], components: [] })
+            msg = `Has ganado!! ${selector.username}... intenta elegir una palabra mas dificil la próxima vez`
         else
-            await reply(inter, { content: "Esta vez has ganado, pero no te confies, la proxima vez puede ser diferente.", embeds: [], components: [] })
-
-    } else if (game.status === "lost") {
+            msg = "Esta vez has ganado, pero no te confies, la proxima vez puede ser diferente"
+    } else if (game.status === hangman.gameStatus.lose) {
+        color = 0xff2222
         if (selector)
-            await reply(inter, { content: `${selector.username} ha ganado!!. La palabra era ${game.word}.`, embeds: [], components: [] })
+            msg = `${selector.username} ha ganado!! La palabra era '${game.word}'`
         else
-            await reply(inter, { content: `He ganado !!. La palabra era ${game.word}.`, embeds: [], components: [] })
+            msg = `He ganado!! La palabra era '${game.word}'`
+    } else
+        msg = "El juego ha acabado, se ha alcanzado el limite de 15 minutos."
 
-    } else {
-        await reply(inter, { content: "El juego ha acabado, se ha alcanzado el limite de 15 minutos.", embeds: [], components: [] })
-    }
+    //Create embed
+    const embed = createEmbed({
+        footer: { text: msg, iconURL: selector ? selector.displayAvatarURL() : inter.client.user.displayAvatarURL() },
+        color: color
+    })
+
+    //Show the result
+    await reply(inter, { embeds: [embed], components: [] })
 }
 
 // Word list

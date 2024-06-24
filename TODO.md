@@ -1,15 +1,12 @@
 - [ ] Test music commands in several servers at a time  
 - [ ] IA for RPS  
 - [ ] IA for TicTacToe  
-- [ ] Trivia unhandled rejection when an error occurs during awaitMessageComponent
 - [ ] Generalise embed colors
 - [ ] Check several permissions for commands at the same time
 - [ ] Check every file
 - [ ] Check if @ can be deleted from require statements -> use ES6 import instead of CommonJS require
 - [ ] Intercionalize the bot
 - [ ] Throw error inside promises to check if it's caught(tictactoe,trivia)
-- [ ] Intial hangman embed is ugly, use embeds for every message
-- [ ] En hangman aunque no te unas puedes jugar -> solo pasa con botones. Ademas, si es esccribiendo, no se descubren las letras pero si se borra el mensaje, las palabras si van
   
 - [ ] tictactoe
 - [ ] trivia
