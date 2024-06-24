@@ -21,23 +21,21 @@ module.exports = {
 
     run: async (client, inter) => {
 
-        await deferReply(inter)
-
+        //Get the player and the song
         const player = useMainPlayer()
         const song = inter.options.getString('song')
 
-        const results = await player.search(song, {
-            requestedBy: inter.member,
-            searchEngine: QueryType.AUTO
-        })
-        if (!results.hasTracks()) {
-            return await reply(inter, {
-                embeds: [noResults(client)],
-                ephemeral: true,
-                deleteTime: 2
-            })
-        }
+        //Defer the reply
+        await deferReply(inter)
 
+        //Search for the song
+        const results = await player.search(song, { requestedBy: inter.member, searchEngine: QueryType.AUTO })
+
+        //If there are no results
+        if (!results.hasTracks())
+            return await reply(inter, { embeds: [noResults(client)], ephemeral: true, deleteTime: 2 })
+
+        //Play the song
         await player.play(inter.member.voice.channel, results, {
             nodeOptions: {
                 metadata: {
@@ -53,11 +51,7 @@ module.exports = {
             }
         })
 
-        await reply(inter, {
-            embeds: [results.playlist
-                ? addToQueueMany(results)
-                : addToQueue(results.tracks[0])]
-        })
-
+        //Send the added to queue embed
+        await reply(inter, { embeds: [results.playlist ? addToQueueMany(results) : addToQueue(results.tracks[0])] })
     }
 }

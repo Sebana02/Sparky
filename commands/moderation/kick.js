@@ -1,8 +1,10 @@
 const { ApplicationCommandOptionType, PermissionsBitField } = require('discord.js')
+const { reply, deferReply } = require('@utils/interactionUtils.js')
 
 /**
  * Command that kicks a member from the server
- * The member will be able to join the server again
+ * The member will be able to join the server again if he has the invite link
+ * Only available for administrators
  */
 module.exports = {
     name: 'kick',
@@ -28,25 +30,16 @@ module.exports = {
         const reason = inter.options.getString('reason')
 
         //Defer reply
-        await inter.deferReply({ ephemeral: true })
+        await deferReply(inter, { ephemeral: true })
 
         //Check the member is not the bot, the author of the interaction and that the member is kickable
-        if (member.id === inter.user.id) return await inter.editReply({ content: 'No puedes expulsarte a ti mismo', ephemeral: true })
-        if (member.user.bot) return await inter.editReply({ content: 'No puedes expulsar a un bot', ephemeral: true })
-        if (!member.kickable) return await inter.editReply({ content: 'No se pudo expulsar al miembro del servidor', ephemeral: true })
+        if (member.id === inter.user.id) return await reply(inter, { content: 'No puedes expulsarte a ti mismo', ephemeral: true })
+        if (member.user.bot) return await reply(inter, { content: 'No puedes expulsar a un bot', ephemeral: true })
+        if (!member.kickable) return await reply(inter, { content: 'No se pudo expulsar al miembro del servidor', ephemeral: true })
 
         //Try to kick the member and send a DM to him explaining the reason
         await member.kick(reason)
-            .then(async () => {
-                await member.send(`Has sido expulsado del servidor ${inter.guild.name} por '${reason}'`)
-                    .catch(err => console.error('El miembro tiene los DM desactivados: ' + err))
-
-                await inter.editReply({ content: `${member} ha sido expulsado del servidor`, ephemeral: true })
-            })
-            .catch(err => {
-                inter.editReply({ content: 'No se pudo expulsar al miembro del servidor', ephemeral: true })
-                console.error(err)
-            })
-
+        await reply(inter, { content: `${member} ha sido expulsado del servidor`, ephemeral: true, propagate: false })
+        await member.send(`Has sido expulsado del servidor ${inter.guild.name} por '${reason}'`)
     }
 }

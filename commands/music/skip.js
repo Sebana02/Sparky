@@ -1,5 +1,5 @@
 const { useQueue, usePlayer } = require('discord-player')
-const { reply, deferReply } = require('@utils/interactionUtils')
+const { reply } = require('@utils/interactionUtils')
 const { noQueue, skip } = require('@utils/embedMusicPresets')
 
 /**
@@ -11,23 +11,19 @@ module.exports = {
     voiceChannel: true,
 
     run: async (client, inter) => {
-        await deferReply(inter)
 
+        //Get the queue and the player
         const queue = useQueue(inter.guildId)
         const player = usePlayer(inter.guildId)
 
-        if (!queue || !queue.isPlaying()) {
-            return await reply(inter, {
-                embeds: [noQueue(client)],
-                ephemeral: true,
-                deleteTime: 2
-            })
-        }
+        //Check if there is a queue and if it is playing
+        if (!queue || !queue.isPlaying())
+            return await reply(inter, { embeds: [noQueue(client)], ephemeral: true, deleteTime: 2 })
 
+        //Skip the song
         player.skip()
 
-        await reply(inter, {
-            embeds: [skip(queue.currentTrack)]
-        })
+        //Send the skip embed
+        await reply(inter, { embeds: [skip(queue.currentTrack)] })
     },
 }

@@ -11,26 +11,21 @@ module.exports = {
     voiceChannel: true,
 
     run: async (client, inter) => {
-        await deferReply(inter, { ephemeral: true })
 
+        //Get the queue
         const queue = useQueue(inter.guildId)
 
-        if (!queue || !queue.isPlaying()) {
-            return await reply(inter, {
-                embeds: [noQueue(client)],
-                ephemeral: true,
-                deleteTime: 2
-            })
-        }
+        //Check if there is a queue and if it is playing
+        if (!queue || !queue.isPlaying())
+            return await reply(inter, { embeds: [noQueue(client)], ephemeral: true, deleteTime: 2 })
 
-        await inter.member.send({
-            embeds: [savePrivate(queue.currentTrack)]
-        })
+        //Defer the reply
+        await deferReply(inter, { ephemeral: true })
 
-        await reply(inter, {
-            embeds: [save(queue.currentTrack)],
-            ephemeral: true,
-            deleteTime: 2
-        })
+        //Send the save embed to the user
+        await inter.member.send({ embeds: [savePrivate(queue.currentTrack)] })
+
+        //Send the save embed to the user
+        await reply(inter, { embeds: [save(queue.currentTrack)], ephemeral: true, deleteTime: 2 })
     }
 }

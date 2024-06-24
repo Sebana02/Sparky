@@ -1,6 +1,6 @@
 const { useQueue } = require('discord-player')
 const { noQueue, shuffle } = require('@utils/embedMusicPresets')
-const { reply, deferReply } = require('@utils/interactionUtils')
+const { reply } = require('@utils/interactionUtils')
 
 /**
  * Command for shuffling the queue
@@ -11,22 +11,18 @@ module.exports = {
     voiceChannel: true,
 
     run: async (client, inter) => {
-        await deferReply(inter)
 
+        //Get the queue
         const queue = useQueue(inter.guildId)
 
-        if (!queue || !queue.isPlaying()) {
-            return await reply(inter, {
-                embeds: [noQueue(client)],
-                ephemeral: true,
-                deleteTime: 2
-            })
-        }
+        //Check if there is a queue and if it is playing
+        if (!queue || !queue.isPlaying())
+            return await reply(inter, { embeds: [noQueue(client)], ephemeral: true, deleteTime: 2 })
 
+        //Shuffle the queue
         queue.tracks.shuffle()
 
-        await reply(inter, {
-            embeds: [shuffle(queue)]
-        })
+        //Send the shuffle embed
+        await reply(inter, { embeds: [shuffle(queue)] })
     },
 }

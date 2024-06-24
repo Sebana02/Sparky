@@ -1,8 +1,15 @@
 //hangman repository : https://github.com/Zheoni/Hanger-Bot
 
 const { ApplicationCommandOptionType, ActionRowBuilder, ButtonBuilder, EmbedBuilder } = require('discord.js')
+const { deferReply, reply, fetchReply } = require('@utils/interactionUtils.js')
+const { createEmbed } = require('@utils/embedUtils.js')
 
-
+/**
+ * Command for playing hangman
+ * Two types of games: custom and random
+ * Custom: players choose a word
+ * Random: bot chooses a word
+ */
 module.exports = {
     name: 'hangman',
     description: 'Juego del ahorcado',
@@ -20,34 +27,59 @@ module.exports = {
     ],
     run: async (client, inter) => {
 
+        //Defer the reply
+        await deferReply(inter)
+
+        //Create the game
         let game, players, selector
         const gameInfo = await startGame(inter)
-        if (gameInfo) {
-            game = gameInfo.game
-            players = gameInfo.players
-            selector = gameInfo.selector
-            await runGame(inter, game, players)
-            await showResult(inter, game, selector)
-        }
+
+        //If created successfully, run the game, else show error message
+        if (!(gameInfo && gameInfo.game && gameInfo.players))
+            return await reply(inter, { content: "Ha ocurrido un error al iniciar el juego.", embeds: [], components: [], deleteTime: 2 })
+
+        game = gameInfo.game
+        players = gameInfo.players
+        selector = gameInfo.selector
+
+        //Run the game
+        await runGame(inter, game, players)
+
+        //Show the result
+        await showResult(inter, game, selector)
+
     }
 }
 
+/**
+ * Replaces a character in a string at a given index
+ * @param {number} index 
+ * @param {string} replacement 
+ * @returns 
+ */
 String.prototype.replaceAt = function (index, replacement) {
     return this.slice(0, index) + replacement + this.slice(index + replacement.length)
 }
 
 
-//class hangman
+/**
+ * Class for the hangman game
+ */
 class hangman {
     constructor(word) {
-        this.word = word
-        this.lives = 6
-        this.progress = hangman.hyphenString(word.length)
-        this.remaining = word.length
-        this.misses = []
-        this.status = "in progress"
+        this.word = word //word to guess
+        this.lives = 6 //lives
+        this.progress = hangman.hyphenString(word.length) //progress
+        this.remaining = word.length //remaining letters to guess 
+        this.misses = [] //misses
+        this.status = "in progress" //game status
     }
 
+    /**
+     * Returns a string with n hyphens
+     * @param {number} n number of hyphens
+     * @returns {string} string with n hyphens
+     */
     static hyphenString(n) {
         let str = ""
         for (let i = 0; i < n; ++i) {
@@ -56,28 +88,41 @@ class hangman {
         return str
     }
 
+    /**
+     * Guess a letter
+     * @param {string} c - Letter to guess
+     * @returns {object} Game status
+     * @returns {string} returns.status - The current game status
+     * @returns {string} returns.progress - The current progress of the word
+     * @returns {string[]} returns.misses - The missed letters
+     * @returns {number} returns.lifes - The remaining lives
+     */
     guess(c) {
-        if (this.progress.includes(c)) {
+        if (this.progress.includes(c)) { //letter already guessed
             --this.lives
-        } else if (this.word.includes(c)) {
+        }
+        else if (this.word.includes(c)) { //letter is in the word, update progress
             for (let i = 0; i < this.word.length; ++i) {
                 if (this.word[i] === c) {
                     this.progress = this.progress.replaceAt(i, this.word[i])
                     --this.remaining
                 }
             }
-        } else {
+        }
+        else { //letter is not in the word, add to misses
             if (!this.misses.includes(c)) {
                 this.misses.push(c)
             }
             --this.lives
         }
 
-        if (this.lives == 0) {
+        //update game status
+        if (this.lives == 0)
             this.status = "lost"
-        } else if (this.remaining == 0) {
+        else if (this.remaining == 0)
             this.status = "won"
-        }
+
+        //return game status
         return {
             status: this.status,
             progress: this.progress,
@@ -86,122 +131,148 @@ class hangman {
         }
     }
 
+    /**
+     * Guess the whole word
+     * @param {string} word word to guess
+     * @returns {boolean} true if the word is guessed, false otherwise
+     */
     guessAll(word) {
-        if (this.word === word) {
+        if (this.word === word) { //word is guessed
             this.progress = this.word
             this.status = "won"
-        } else {
+        }
+        else { //word is not guessed
             --this.lives
         }
+
+        //return whether the word is guessed
         return this.status === "won"
     }
 }
 
+// Hangman figure to show the progress of the game
 const figure = [`
  +---+
- |   |      wordHere
+ |   |      
      |
-     |      numerOfLives
-     |      missC
+     |      
+     |      
      |
-==========  gameStatus
+==========  
 `, `
  +---+
- |   |      wordHere
+ |   |      
  O   |
-     |      numerOfLives
-     |      missC
+     |      
+     |      
      |
-==========  gameStatus
+==========  
 `, `
  +---+
- |   |      wordHere
+ |   |      
  O   |
- |   |      numerOfLives
-     |      missC
+ |   |      
+     |      
      |
-==========  gameStatus
+==========  
 `, `
  +---+
- |   |      wordHere
+ |   |      
  O   |
-/|   |      numerOfLives
-     |      missC
+/|   |      
+     |      
      |
-==========  gameStatus
+==========  
 `, `
  +---+
- |   |      wordHere
+ |   |      
  O   |
-/|\\  |      numerOfLives
-     |      missC
+/|\\  |      
+     |      
      |
-==========  gameStatus
+==========  
 `, `
  +---+
- |   |      wordHere
+ |   |      
  O   |
-/|\\  |      numerOfLives
-/    |      missC
+/|\\  |      
+/    |      
      |
-==========  gameStatus
+==========  
 `, `
  +---+
- |   |      wordHere
+ |   |      
  O   |
-/|\\  |      numerOfLives
-/ \\  |      missC
+/|\\  |      
+/ \\  |      
      |
-==========  gameStatus
+==========  
 `]
 
 
-//START GAME
+/**
+ * Function to start the game
+ * @param {Interaction} inter 
+ * @returns {object} game - The game object
+ */
 async function startGame(inter) {
 
+    //gather players and game type
     const players = await gatherPlayers(inter)
     const gameType = await inter.options.getString('type')
 
-    if (players.length == 0) {
-        await inter.editReply({ content: "Nadie se ha unido al juego...", embeds: [], components: [] })
-        return
-    }
+    //check if enough players have joined
+    if (players.length == 0)
+        return await reply(inter, { content: "Nadie se ha unido al juego...", embeds: [], components: [] })
+    if (gameType === "custom" && players.length < 2)
+        return await reply(inter, { content: "Para una partida custom, se necesitan al menos 2 jugadores.", embeds: [], components: [] })
 
-    if (gameType === "custom" && players.length < 2) {
-        await inter.editReply({ content: "Para una partida custom, se necesitan al menos 2 jugadores.", embeds: [], components: [] })
-        return
-    }
 
+    //choose word according to game type
     let word
     let selector
     switch (gameType) {
+        //random word
         case "random":
             word = wordList[Math.floor(Math.random() * wordList.length)]
             break
 
+        //ask a player to choose a word
         case "custom":
-            await inter.editReply({ content: players.length + " jugadores se han unido. Seleccionando a un jugador para que elija la palabra. Mirad los DMs!!", embeds: [], components: [] })
+            await reply(inter, { content: players.length + " jugadores se han unido. Seleccionando a un jugador para que elija la palabra. Mirad los DMs!!", embeds: [], components: [] })
 
+            //get word from players
             let userSelection = await getWordFromPlayers(players, inter)
 
-            if (!userSelection) return
-            else {
-                word = userSelection.word
-                selector = userSelection.selector
-            }
+            //check if a word was chosen
+            if (!userSelection || !userSelection.word || !userSelection.selector) return
+
+            //set word and selector
+            word = userSelection.word
+            selector = userSelection.selector
 
             break
     }
+
+    //create the game
     const game = new hangman(word)
 
+    //return the game object
     return {
         game,
         players,
         selector
     }
 }
+
+/**
+ * Function to gather players
+ * @param {Interaction} inter
+ * @returns {Promise<Array>} The players that have joined the game
+ */
 async function gatherPlayers(inter) {
 
+    //Initial message and buttons to join the game
     const embed = new EmbedBuilder()
         .setTitle('Hangman')
         .setColor(0x36393e)
@@ -219,89 +290,130 @@ async function gatherPlayers(inter) {
 
     const row = new ActionRowBuilder().addComponents(participar, no_participar)
 
-    let msg = await inter.reply({ embeds: [embed], components: [row] })
+    //Send initial message
+    await reply(inter, { embeds: [embed], components: [row] })
+    let msg = await fetchReply(inter)
+
+    //Create a collector to gather players
     const filter = (i) => JSON.parse(i.customId).type === 'participar' || JSON.parse(i.customId).type === 'no_participar'
-    const collector = msg.createMessageComponentCollector({ filter, time: 10000 })
+    const collector = await msg.createMessageComponentCollector({ filter, time: 10000 })
 
+    //Return a promise that resolves with the list of players when the collector ends
+    return await new Promise((resolve, reject) => {
 
-    return new Promise((resolve, reject) => {
+        //List of players
         let players = []
+
         collector.on('collect', async i => {
-            if (JSON.parse(i.customId).type === 'participar') {
-                if (!players.find(p => p.id === i.user.id))
-                    players.push(i.user)
 
-                await i.reply({ content: 'Te has unido al juego!', ephemeral: true })
-                    .then(setTimeout(() => i.deleteReply(), 3000))
+            try {
+                //Player wants to join
+                if (JSON.parse(i.customId).type === 'participar') {
 
+                    //Add player to the list if they haven't joined yet
+                    if (!players.find(p => p.id === i.user.id))
+                        players.push(i.user)
 
-            }
-            else if (JSON.parse(i.customId).type === 'no_participar') {
-                players = players.filter(p => p.id != i.user.id)
-                await i.reply({ content: 'Has abandonado el juego!', ephemeral: true })
-                    .then(setTimeout(() => i.deleteReply(), 3000))
+                    //Reply to the player
+                    await reply(i, { content: 'Te has unido al juego!', ephemeral: true, deleteTime: 3, propagate: false })
+                }
+
+                //Player doesn't want to join
+                else if (JSON.parse(i.customId).type === 'no_participar') {
+
+                    //Remove player from the list
+                    players = players.filter(p => p.id != i.user.id)
+
+                    //Reply to the player
+                    await reply(i, { content: 'Has abandonado el juego!', ephemeral: true, deleteTime: 3, propagate: false })
+                }
+            } catch (error) {
+                reject(error)
             }
 
         })
 
+        //Resolve the promise when the collector ends
         collector.on('end', async collected => {
-            await inter.editReply({ embeds: [embed], components: [] })
+            collector.stop()
             resolve(players)
         })
     })
 }
+
+/**
+ * Function to get a word from a player
+ * @param {Array} players - The players that have joined the game
+ * @param {Interaction} inter
+ * @returns {object} The word and the player that chose it
+*/
 async function getWordFromPlayers(players, inter) {
+
+    //If no word is chosen and there is more than one player, choose a player to select a word
     let word
     let chosenOne
     while (!word && players.length > 1) {
 
+        //Choose a player
         let index = Math.floor((Math.random() * 1000) % players.length)
         chosenOne = players[index]
         players = players.splice(index, 1)
 
+        //Send a DM to the player
         const dm = await chosenOne.createDM()
         await dm.send("Eres el elegido!! Escribe tu palabra. Tienes 30 segundos. Recuerda, no participas en la partida.")
 
+        //Get the word from the player, if the player doesn't respond in time or makes more than 3 tries, choose another player
         let finish = false
         let tries = 0
         let msgCollection
-
         while (!finish && tries < 3) {
+
+            //Try to get the word from the player
             try {
                 msgCollection = await getNextMessage(dm, 30000)
 
             } catch (collected) {
                 await dm.send("Se ha acabado el tiempo, estás descalificado.")
-                await inter.editReply({ content: "El elegido no ha respondido a tiempo, eligiendo a otro jugador." })
+                await reply(inter, { content: "El elegido no ha respondido a tiempo, eligiendo a otro jugador." })
                 finish = true
                 continue
             }
 
+            //Check if the message is a valid word, if not, try again up to 3 times
             const msg = msgCollection.first().content
             if (msg.match(`^[A-Za-zÀ-ú]{3,}$`)) {
                 word = msg.toLowerCase()
                 finish = true
                 dm.send("Buena palabra!, volviendo al server.")
-            } else {
+            }
+            else {
                 await dm.send("Palabra invalida. Sin espacios y con al menos 3 caracteres.")
-                ++tries
-                if (tries == 3) {
+                if (++tries == 3)
                     await dm.send("Muchas palabras invalidas. Estás descalificado.")
-                }
+
             }
         }
     }
 
-    if (!word && players.length <= 1) {
-        inter.editReply({ content: "Nos hemos quedado sin jugadores... try again." })
-        return
-    }
+    //If no word is chosen and there is only one player left, return
+    if (!word && players.length <= 1)
+        return reply(inter, { content: "Nos hemos quedado sin jugadores..." })
 
+
+    //Return the word and the player that chose it
     return {
         word: word,
         selector: chosenOne
     }
 }
+
+/**
+ * Function to get the next message from a channel
+ * @param {TextChannel} channel - The channel to get the message from
+ * @param {number} maxTime - The maximum time to wait for a message
+ * @returns {Promise<Message>} The message
+ */
 async function getNextMessage(channel, maxTime) {
     const filter = msg => !msg.author.bot
     return await channel.awaitMessages({
@@ -316,10 +428,16 @@ async function getNextMessage(channel, maxTime) {
 }
 
 
-//RUN GAME
+/**
+ * Function to run the game
+ * @param {Interaction} inter
+ * @param {hangman} game
+ * @param {Array} players
+ * @returns {Promise} A promise that resolves when the game ends
+ */
 async function runGame(inter, game, players) {
 
-
+    //Create buttons for the letters
     let buttons = []
     let letters = ['a', 'á', 'b', 'c', 'd', 'e', 'é', 'f', 'g', 'h', 'i', 'í', 'j', 'k', 'l', 'm', 'n', 'ñ', 'o', 'ó', 'p', 'q', 'r', 's', 't', 'u', 'ú', 'v', 'w', 'x', 'y', 'z']
     letters.forEach(letter => {
@@ -330,205 +448,204 @@ async function runGame(inter, game, players) {
         buttons.push(button)
     })
 
+    //Create next page button
     let nextButton = new ButtonBuilder()
         .setLabel('>>')
         .setCustomId(JSON.stringify({ letter: 'next' }))
         .setStyle('Secondary')
 
-
+    //Create object with buttons
     buttonsObject = {
         buttons: buttons,
         nextButton: nextButton,
         nextPage: false
     }
 
+    //Show the progress
     await showProgress(inter, buttonsObject, game, false)
 
-    //button collector
-    let msg = await inter.fetchReply()
+    //Create a collector for the buttons
+    let msg = await fetchReply(inter)
     const filter = ((m) => players.find((p) => (p.id === inter.user.id)))
-    const buttonCollector = msg.createMessageComponentCollector({ filter: filter })
+    const buttonCollector = await msg.createMessageComponentCollector({ filter: filter })
 
-
-
-    //message collector
+    //Create a collector for the messages
     const filterM = (m) => !m.author.bot && players.find(p => p.id === m.author.id)
-    const collector = inter.channel.createMessageCollector({ filter: filterM, time: (15 * 1000 * 60) }) // max of 15 minutes per game
+    const collector = await inter.channel.createMessageCollector({ filter: filterM, time: (15 * 1000 * 60) }) // max of 15 minutes per game
 
-
+    //Return a promise that resolves when the game ends
     return new Promise((resolve, reject) => {
 
-
-        //button collectorhangm
+        //Button collector
         buttonCollector.on('collect', async i => {
-            let letter = await JSON.parse(i.customId).letter
 
-            if (letter == 'next') buttonsObject.nextPage = !buttonsObject.nextPage
-            else {
-                buttonsObject.buttons = buttonsObject.buttons.filter(b => JSON.parse(b.data.custom_id).letter !== letter)
-                game.guess(letter)
-            }
+            try {
+                //Get the letter from the button
+                let letter = await JSON.parse(i.customId).letter
 
-            await i.reply({ content: `Has seleccionado la letra '${letter}'`, ephemeral: true })
-                .then(setTimeout(() => i.deleteReply(), 1000))
-
-            await showProgress(inter, buttonsObject, game, false)
-
-            if (game.status !== "in progress") {
-                collector.stop()
-                buttonCollector.stop()
-            } else if (players.length < 1) {
-                collector.stop()
-                buttonCollector.stop()
-                game.status = "lost"
-            }
-        })
-
-
-        //message collector
-        collector.on('collect', async (m) => {
-            const c = m.content.toLowerCase()
-
-            m.delete()
-            if (m.content.match(`^[A-Za-zÀ-ú]{2,}$`)) {
-                if (game.guessAll(c) == false) {
-                    players = players.splice(players.find(p => m.author.id == p.id), 1)
+                //Check if the letter is 'next' or a letter
+                if (letter == 'next')
+                    buttonsObject.nextPage = !buttonsObject.nextPage
+                else {
+                    buttonsObject.buttons = buttonsObject.buttons.filter(b => JSON.parse(b.data.custom_id).letter !== letter)
+                    game.guess(letter)
                 }
-            } else return
 
-            await showProgress(inter, buttonsObject, game, false)
+                //Reply to the player
+                await reply(i, { content: `Has seleccionado la letra '${letter}'`, ephemeral: true, deleteTime: 1, propagate: false })
 
-            if (game.status !== "in progress") {
+                //Show the progress
+                await showProgress(inter, buttonsObject, game, false)
+
+                //Check if the game has ended, if so, stop the collectors
+                if (game.status !== "in progress") {
+                    collector.stop()
+                    buttonCollector.stop()
+                }
+                else if (players.length < 1) {
+                    collector.stop()
+                    buttonCollector.stop()
+                    game.status = "lost"
+                }
+            } catch (error) {
                 collector.stop()
                 buttonCollector.stop()
-            } else if (players.length < 1) {
-                collector.stop()
-                buttonCollector.stop()
-                game.status = "lost"
+                reject(error)
             }
         })
 
 
+        //Message collector
+        collector.on('collect', async (m) => {
+
+            try {
+                //Get letter, erase message and check if it's a valid letter
+                const c = m.content.toLowerCase()
+                m.delete()
+                if (!m.content.match(`^[A-Za-zÀ-ú]{2,}$`)) return
+                if (game.guessAll(c) == false)
+                    players = players.splice(players.find(p => m.author.id == p.id), 1)
+
+                //Show the progress
+                await showProgress(inter, buttonsObject, game, false)
+
+                //Check if the game has ended, if so, stop the collectors
+                if (game.status !== "in progress") {
+                    collector.stop()
+                    buttonCollector.stop()
+                } else if (players.length < 1) {
+                    collector.stop()
+                    buttonCollector.stop()
+                    game.status = "lost"
+                }
+            } catch (error) {
+                collector.stop()
+                reject(error)
+            }
+        })
+
+        //End the game when the collectors end, resolve the promise and show the result
         collector.on('end', async (collected) => {
             await showProgress(inter, {}, game, true)
             resolve()
         })
     })
 }
+
+/**
+ * Function to show the progress of the game
+ * @param {Interaction} inter
+ * @param {Array<ButtonBuilder>} buttonsObject
+ * @param {hangman} game
+ * @param {boolean} gameOver
+ */
+
 async function showProgress(inter, buttonsObject, game, gameOver) {
-    const figureStep = figure[6 - game.lives]
-    let progress = game.progress
-    let lives = ""
-    for (let i = 0; i < 6; ++i) {
-        if (i < game.lives) {
-            lives += "❤️"
-        } else {
-            lives += "🖤"
-        }
-    }
-    let misses = "Fallos: "
-    for (let i = 0; i < game.misses.length; ++i) {
-        misses += (game.misses[i] + " ")
-    }
+    //Set the information to show in the screen and create embed
+    const embed = createEmbed({
+        title: "Ahorcado",
+        description: "```\n" + figure[6 - game.lives] + `\n${game.progress}` + "\n```",
+        color: 0xFFD700,
+        fields: [
+            { name: "Vidas", value: "💖 ".repeat(game.lives) + "🖤 ".repeat(6 - game.lives), inline: true },
+            { name: "Fallos", value: game.misses.join(" "), inline: true }
+        ]
+    })
 
-    let screen = figureStep.replace("wordHere", progress)
-        .replace("numerOfLives", lives)
-        .replace("missC", misses)
+    //Distribute the buttons in rows
+    if (!buttonsObject.buttons || buttonsObject.buttons.length === 0)
+        return await reply(inter, { embeds: [embed], components: [] })
 
-    const embed = new EmbedBuilder()
-    if (gameOver) {
-        if (game.status === "won") {
-            embed.setColor(0x00CC00)
-            screen = screen.replace("gameStatus", "Has ganado!")
-        } else {
-            embed.setColor(0xE50000)
-            screen = screen.replace("gameStatus", "Game over")
-        }
-    } else {
-        screen = screen.replace("gameStatus", " ")
-        embed.setColor(0xFFD700)
-    }
-    embed.setDescription("```\n" + screen + "```")
-
-
-    if (!buttonsObject.buttons || buttonsObject.buttons.length === 0) {
-        await inter.editReply({ embeds: [embed], components: [] })
-        return
-    }
 
     let length = buttonsObject.buttons.length
     let rowLength = 5
     let pageLength = 25
-
-
     let components = []
 
-    if (length > 25) { // mas de una pagina de botones
+    if (length > 25) {//More than one page of buttons
 
-        if (!buttonsObject.nextPage) { // pagina 1, se añaden 24 botones y el boton de siguiente pagina
-            for (let i = 0; i < pageLength - rowLength; i += rowLength) { // 4 rows enteras
-                let row = new ActionRowBuilder()
-                    .addComponents(buttonsObject.buttons.slice(i, i + rowLength))
-                components.push(row)
-            }
+        if (!buttonsObject.nextPage) { //Page 1, add 24 buttons and the next page button
+            for (let i = 0; i < pageLength - rowLength; i += rowLength) // 4 rows of 5 buttons
+                components.push(new ActionRowBuilder()
+                    .addComponents(buttonsObject.buttons.slice(i, i + rowLength)))
 
-            let row = new ActionRowBuilder() //4 botones + next button
-                .addComponents(buttonsObject.buttons.slice(pageLength - rowLength, pageLength - rowLength + 4)).addComponents(buttonsObject.nextButton)
-            components.push(row)
-
+            components.push(new ActionRowBuilder() //1 row of 4 buttons and the next page button
+                .addComponents(buttonsObject.buttons.slice(pageLength - rowLength, pageLength - rowLength + 4)).addComponents(buttonsObject.nextButton))
         }
-        else { // pagina 2, se añaden los botones restantes y el boton de pagina anterior
-            let numRows = Math.ceil(((length - 24) / 5)) //rows necesarias para mostrar los botones restantes
+        else { //Page 2, add the remaining buttons and the previous page button
+            let numRows = Math.ceil(((length - 24) / 5)) //Needed rows to show the remaining buttons
             for (let i = 0; i < numRows; i++) {
-                let ini = 24 + i * 5 //indice inicial de los botones de la fila
-                let row = new ActionRowBuilder()
-                if (i === numRows - 1) //ultima fila, se añaden los botones restantes y el boton de pagina anterior
-                    row.addComponents(buttonsObject.buttons.slice(ini, ini + (length - ini))).addComponents(buttonsObject.nextButton)
-                else //se añaden 5 botones
-                    row.addComponents(buttonsObject.buttons.slice(ini, ini + 5))
+                let ini = 24 + i * 5 //Initial index of the buttons in the row
 
-                components.push(row)
+                if (i === numRows - 1) //Last row, add the remaining buttons and the previous page button
+                    components.push(new ActionRowBuilder().addComponents(buttonsObject.buttons.slice(ini, ini + (length - ini))).addComponents(buttonsObject.nextButton))
+                else //Add 5 buttons
+                    components.push(new ActionRowBuilder().addComponents(buttonsObject.buttons.slice(ini, ini + 5)))
             }
         }
 
     }
-    else { // una sola pagina de botones, se añaden todos
-        let numRows = Math.ceil((length / 5)) //rows necesarias para mostrar los botones restantes
+    else { //Only one page of buttons, add all buttons
+        let numRows = Math.ceil((length / 5)) //Needed rows to show all buttons
         for (let i = 0; i < numRows; i++) {
-            let ini = i * 5 //indice inicial de los botones de la fila
-            let row = new ActionRowBuilder()
+            let ini = i * 5 //Initial index of the buttons in the row
+
             if (i === numRows - 1) //ultima fila, se añaden los botones restantes y el boton de pagina anterior
-                row.addComponents(buttonsObject.buttons.slice(ini, ini + (length - ini)))
+                components.push(new ActionRowBuilder().addComponents(buttonsObject.buttons.slice(ini, ini + (length - ini))))
             else //se añaden 5 botones
-                row.addComponents(buttonsObject.buttons.slice(ini, ini + 5))
-
-            components.push(row)
+                components.push(new ActionRowBuilder().addComponents(buttonsObject.buttons.slice(ini, ini + 5)))
         }
     }
-    await inter.editReply({ embeds: [embed], components: components })
-
+    await reply(inter, { embeds: [embed], components: components })
 }
 
 
-//SHOW RESULT
+/**
+ * Function to show the result of the game
+ * @param {Interaction} inter
+ * @param {hangman} game
+ * @param {User} selector
+ */
 async function showResult(inter, game, selector) {
+
     if (game.status === "won") {
-        if (selector) {
-            await inter.editReply({ content: `Has ganado !! ${selector.username}... intenta elegir una palabra mas dificil la próxima vez.`, embeds: [], components: [] })
-        } else {
-            await inter.editReply({ content: "Esta vez has ganado, pero no te confies, la proxima vez puede ser diferente.", embeds: [], components: [] })
-        }
+        if (selector)
+            await reply(inter, { content: `Has ganado !! ${selector.username}... intenta elegir una palabra mas dificil la próxima vez.`, embeds: [], components: [] })
+        else
+            await reply(inter, { content: "Esta vez has ganado, pero no te confies, la proxima vez puede ser diferente.", embeds: [], components: [] })
+
     } else if (game.status === "lost") {
-        if (selector) {
-            await inter.editReply({ content: `${selector.username} ha ganado!!. La palabra era ${game.word}.`, embeds: [], components: [] })
-        } else {
-            await inter.editReply({ content: `He ganado !!. La palabra era ${game.word}.`, embeds: [], components: [] })
-        }
+        if (selector)
+            await reply(inter, { content: `${selector.username} ha ganado!!. La palabra era ${game.word}.`, embeds: [], components: [] })
+        else
+            await reply(inter, { content: `He ganado !!. La palabra era ${game.word}.`, embeds: [], components: [] })
+
     } else {
-        await inter.editReply({ content: "El juego ha acabado, se ha alcanzado el limite de 15 minutos.", embeds: [], components: [] })
+        await reply(inter, { content: "El juego ha acabado, se ha alcanzado el limite de 15 minutos.", embeds: [], components: [] })
     }
 }
 
+// Word list
 let wordList = ['a', 'abajo', 'abandonar', 'abrir', 'absoluta', 'absoluto', 'abuelo', 'acabar', 'acaso', 'acciones',
     'acción', 'aceptar', 'acercar', 'acompañar', 'acordar', 'actitud', 'actividad', 'acto', 'actual', 'actuar',
     'acudir', 'acuerdo', 'adelante', 'además', 'adquirir', 'advertir', 'afectar', 'afirmar', 'agua', 'ahora',

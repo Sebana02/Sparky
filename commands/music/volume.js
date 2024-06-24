@@ -1,8 +1,11 @@
 const { ApplicationCommandOptionType } = require('discord.js')
 const { useQueue, usePlayer } = require('discord-player')
-const { reply, deferReply } = require('@utils/interactionUtils')
+const { reply } = require('@utils/interactionUtils')
 const { noQueue, volume } = require('@utils/embedMusicPresets')
 
+/**
+ * Command for changing the volume of the music
+ */
 module.exports = {
     name: 'volume',
     description: 'Cambiar el volumen de la música',
@@ -20,24 +23,19 @@ module.exports = {
 
     run: async (client, inter) => {
 
-        await deferReply(inter)
-
+        //Get the queue, the player and the volume
         const queue = useQueue(inter.guildId)
         const player = usePlayer(inter.guildId)
         const vol = inter.options.getNumber('volume')
 
-        if (!queue || !queue.isPlaying()) {
-            return await reply(inter, {
-                embeds: [noQueue(client)],
-                ephemeral: true,
-                deleteTime: 2
-            })
-        }
+        //Check if there is a queue and if it is playing
+        if (!queue || !queue.isPlaying())
+            return await reply(inter, { embeds: [noQueue(client)], ephemeral: true, deleteTime: 2 })
 
+        //Set the volume
         player.setVolume(vol)
 
-        await reply(inter, {
-            embeds: [volume(vol, queue.currentTrack)]
-        })
+        //Send the volume embed
+        await reply(inter, { embeds: [volume(vol, queue.currentTrack)] })
     },
 }

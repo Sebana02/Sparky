@@ -1,7 +1,10 @@
-const { PermissionsBitField, ApplicationCommandOptionType } = require('discord.js');
+const { PermissionsBitField, ApplicationCommandOptionType } = require('discord.js')
+const { reply } = require('@utils/interactionUtils.js')
 
-//Command that deletes the given number of messages
-//Only available for administrators
+/**
+ * Command that deletes the given number of messages
+ * Only available for administrators
+ */
 module.exports = {
     name: 'purge',
     description: 'Borra el número de mensajes indicado',
@@ -17,9 +20,8 @@ module.exports = {
         }
     ],
     run: async (client, inter) => {
-        await inter.reply({ content: `Borrando ${inter.options.getNumber('cantidad')} mensajes...`, ephemeral: true })
-            .then(setTimeout(async () => await inter.deleteReply(), 2000))
-
+        //Reply to the interaction and delete the messages
+        await reply(inter, { content: `Borrando ${inter.options.getNumber('cantidad')} mensajes...`, ephemeral: true, deleteTime: 2 })
         await inter.channel.bulkDelete(inter.options.getNumber('cantidad'), true)
     }
 }

@@ -14,31 +14,25 @@ module.exports = {
     voiceChannel: true,
 
     run: async (client, inter) => {
-        await deferReply(inter)
 
+        //Get the queue
         const queue = useQueue(inter.guildId)
 
-        if (!queue || !queue.isPlaying()) {
-            return await reply(inter, {
-                embeds: [noQueue(client)],
-                ephemeral: true,
-                deleteTime: 2
-            })
-        }
+        //Check if there is a queue and if it is playing
+        if (!queue || !queue.isPlaying())
+            return await reply(inter, { embeds: [noQueue(client)], ephemeral: true, deleteTime: 2 })
 
+        //Defer the reply
+        await deferReply(inter)
+
+        //Search for the lyrics
         const lyricsData = await genius.search(queue.currentTrack.title)
 
-        if (!lyricsData) {
-            return await reply(inter, {
-                embeds: [noLyrics(queue.currentTrack.title)],
-                ephemeral: true,
-                deleteTime: 2
-            })
-        }
+        //If there are no lyrics
+        if (!lyricsData)
+            return await reply(inter, { embeds: [noLyrics(queue.currentTrack.title)], ephemeral: true, deleteTime: 2 })
 
-        await reply(inter, {
-            embeds: [lyrics(lyricsData)]
-        })
-
+        //Send the lyrics embed
+        await reply(inter, { embeds: [lyrics(lyricsData)] })
     }
 }

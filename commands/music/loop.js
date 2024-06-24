@@ -1,6 +1,6 @@
 const { QueueRepeatMode, useQueue } = require('discord-player')
 const { ApplicationCommandOptionType, } = require('discord.js')
-const { reply, deferReply } = require('@utils/interactionUtils')
+const { reply } = require('@utils/interactionUtils')
 const { noQueue, loop } = require('@utils/embedMusicPresets')
 
 /**
@@ -26,23 +26,17 @@ module.exports = {
     ],
     run: async (client, inter) => {
 
-        await deferReply(inter)
-
+        //Get the queue
         const queue = useQueue(inter.guildId)
 
-        if (!queue || !queue.isPlaying()) {
-            return await reply(inter, {
-                embeds: [noQueue(client)],
-                ephemeral: true,
-                deleteTime: 2
-            })
+        //Check if there is a queue and if it is playing
+        if (!queue || !queue.isPlaying())
+            return await reply(inter, { embeds: [noQueue(client)], ephemeral: true, deleteTime: 2 })
 
-        }
-
+        //Set the repeat mode
         queue.setRepeatMode(inter.options.getNumber('action'))
 
-        return reply(inter, {
-            embeds: [loop(queue.repeatMode, queue.currentTrack)]
-        })
-    },
+        //Send the loop embed
+        await reply(inter, { embeds: [loop(queue.repeatMode, queue.currentTrack)] })
+    }
 }

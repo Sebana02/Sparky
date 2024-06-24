@@ -7,34 +7,9 @@
 - Check every file
 - Check if @ can be deleted from require statements
 - Intercionalize the bot
-
-  - Commands:
-    - fun
-      - hangman
-      - rps
-      - tictactoe
-    -moderation
-      - ban
-      - kick
-      - mute
-      - purge
-      - timeout
-      - unban
-      - unmute   
-    - music
-      - back
-      - clear
-      - loop
-      - lyrics
-      - nowplaying
-      - pause
-      - play
-      - playnext
-      - queue
-      - resume
-      - save
-      - shuffle
-      - skip
-      - stop
-      - trivia
-      - volume
+- Throw error inside promises to check if it's caught(poll,hangman,rps,tictactoe,trivia)
+- Intial hangman embed is ugly, use embeds for every message
+- En hangman aunque no te unas puedes jugar
+  
+- tictactoe
+- trivia

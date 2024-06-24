@@ -1,6 +1,11 @@
-const { ApplicationCommandOptionType, PermissionsBitField } = require('discord.js');
+const { ApplicationCommandOptionType, PermissionsBitField } = require('discord.js')
+const { reply, deferReply } = require('@utils/interactionUtils.js')
 
-//Unbans a member from the server
+/**
+ * Command that unbans a member from the server
+ * The member will be able to join the server again
+ * Only available for administrators
+ */
 module.exports = {
     name: 'unban',
     description: 'Desbanea a un miembro del servidor.',
@@ -20,26 +25,21 @@ module.exports = {
         }
     ],
     run: async (client, inter) => {
-        const member = inter.options.getString('member');
-        const reason = inter.options.getString('reason');
+        //Get member and reason
+        const member = inter.options.getString('member')
+        const reason = inter.options.getString('reason')
 
-        await inter.deferReply({ ephemeral: true });
+        //Defer reply
+        await deferReply(inter, { ephemeral: true })
 
-        const bannedList = await inter.guild.bans.fetch();
-        const bannedMember = bannedList.find(ban => ban.user.username === member);
+        //Check if the member is banned
+        const bannedList = await inter.guild.bans.fetch()
+        const bannedMember = bannedList.find(ban => ban.user.username === member)
+        if (!bannedMember) return await reply(inter, { content: `${member} no está baneado del servidor`, ephemeral: true })
 
-        if (!bannedMember) return await inter.editReply({ content: `${member} no está baneado del servidor`, ephemeral: true });
+        //Unban the member and send a DM to him explaining the reason
         await inter.guild.members.unban(bannedMember.user.id, reason)
-            .then(async () => {
-                await bannedMember.user.send(`Has sido desbaneado del servidor ${inter.guild.name} por '${reason}'`)
-                    .catch(err => console.error('El miembro tiene los DM desactivados: ' + err));
-
-                await inter.editReply({ content: `${member} ha sido desbaneado del servidor`, ephemeral: true });
-            })
-            .catch(err => {
-                console.error(err);
-                return inter.editReply({ content: 'No se pudo desbanear al miembro del servidor', ephemeral: true });
-            });
-
+        await reply(inter, { content: `${member} ha sido desbaneado del servidor`, ephemeral: true, propagate: false })
+        await bannedMember.user.send(`Has sido desbaneado del servidor ${inter.guild.name} por '${reason}'`)
     }
 }

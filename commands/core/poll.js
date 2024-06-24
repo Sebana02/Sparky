@@ -148,10 +148,11 @@ async function createCollection(inter, votes, poll, components) {
     const collector = msg.createMessageComponentCollector({ filter, time: inter.options.getNumber('tiempo') * 1000 })
 
     //This promise resolves with the final votes when the collector ends or rejects if there is an error
-    return new Promise(async (resolve, reject) => {
+    return await new Promise(async (resolve, reject) => {
 
         //When a user votes
         collector.on('collect', async (interaction) => {
+
             try {
                 //Get the index of the option voted
                 const index = parseInt(interaction.customId.split('_')[1])
@@ -166,14 +167,14 @@ async function createCollection(inter, votes, poll, components) {
                 votes[index].value++
 
                 //Reply to the user
-                await reply(interaction, { content: `Has votado por '**${votes[index].option}**' `, ephemeral: true, deleteTime: 2 }, propagate = false)
+                await reply(interaction, { content: `Has votado por '**${votes[index].option}**' `, ephemeral: true, deleteTime: 2, propagate: false })
 
                 //Update the poll embed
                 const embedResult = createPollEmbed(inter, poll, votes, false)
                 await reply(inter, { embeds: [embedResult], components: components })
 
             } catch (error) {
-                //If there is an error, reject the promise
+                collector.stop()
                 reject(error)
             }
         })

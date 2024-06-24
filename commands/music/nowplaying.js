@@ -1,6 +1,6 @@
 const { useQueue, usePlayer } = require('discord-player')
 const { noQueue, nowPlaying } = require('@utils/embedMusicPresets')
-const { reply, deferReply } = require('@utils/interactionUtils')
+const { reply } = require('@utils/interactionUtils')
 
 /**
  * Command for showing the current playing song
@@ -11,21 +11,16 @@ module.exports = {
     voiceChannel: true,
 
     run: async (client, inter) => {
-        await deferReply(inter)
 
+        //Get the queue and player
         const queue = useQueue(inter.guildId)
         const player = usePlayer(inter.guildId)
 
-        if (!queue || !queue.isPlaying()) {
-            return await reply(inter, {
-                embeds: [noQueue(client)],
-                ephemeral: true,
-                deleteTime: 2
-            })
-        }
+        //Check if there is a queue and if it is playing
+        if (!queue || !queue.isPlaying())
+            return await reply(inter, { embeds: [noQueue(client)], ephemeral: true, deleteTime: 2 })
 
-        await reply(inter, {
-            embeds: [nowPlaying(queue, player)]
-        })
-    },
+        //Send the now playing embed
+        await reply(inter, { embeds: [nowPlaying(queue, player)] })
+    }
 }
