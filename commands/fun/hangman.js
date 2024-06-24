@@ -520,8 +520,14 @@ async function showResult(inter, game, selector) {
     } else
         msg = "El juego ha acabado, se ha alcanzado el limite de 15 minutos."
 
+
     //Create embed
     const embed = createEmbed({
+        description: "```\n" + figure[6 - game.lives] + `\n${game.progress}` + "\n```",
+        fields: [
+            { name: "Vidas", value: "💖 ".repeat(game.lives) + "🖤 ".repeat(6 - game.lives), inline: true },
+            { name: "Fallos", value: game.misses.join(" "), inline: true }
+        ],
         footer: { text: msg, iconURL: selector ? selector.displayAvatarURL() : inter.client.user.displayAvatarURL() },
         color: color
     })
