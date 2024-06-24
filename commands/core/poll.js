@@ -154,6 +154,7 @@ async function createCollection(inter, votes, poll, components) {
         collector.on('collect', async (interaction) => {
 
             try {
+
                 //Get the index of the option voted
                 const index = parseInt(interaction.customId.split('_')[1])
 
@@ -172,10 +173,9 @@ async function createCollection(inter, votes, poll, components) {
                 //Update the poll embed
                 const embedResult = createPollEmbed(inter, poll, votes, false)
                 await reply(inter, { embeds: [embedResult], components: components })
-
             } catch (error) {
-                collector.stop()
                 reject(error)
+                collector.stop()
             }
         })
 

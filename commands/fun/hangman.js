@@ -329,13 +329,13 @@ async function gatherPlayers(inter) {
                 }
             } catch (error) {
                 reject(error)
+                collector.stop()
             }
 
         })
 
         //Resolve the promise when the collector ends
-        collector.on('end', async collected => {
-            collector.stop()
+        collector.on('end', () => {
             resolve(players)
         })
     })
@@ -466,8 +466,8 @@ async function runGame(inter, game, players) {
 
     //Create a collector for the buttons
     let msg = await fetchReply(inter)
-    const filter = ((m) => players.find((p) => (p.id === inter.user.id)))
-    const buttonCollector = await msg.createMessageComponentCollector({ filter: filter })
+    const filter = (m) => !m.author.bot && players.find(p => p.id === m.author.id)
+    const buttonCollector = await msg.createMessageComponentCollector({ filter: filter, time: (15 * 1000 * 60) })
 
     //Create a collector for the messages
     const filterM = (m) => !m.author.bot && players.find(p => p.id === m.author.id)
@@ -508,9 +508,9 @@ async function runGame(inter, game, players) {
                     game.status = "lost"
                 }
             } catch (error) {
+                reject(error)
                 collector.stop()
                 buttonCollector.stop()
-                reject(error)
             }
         })
 
@@ -522,9 +522,12 @@ async function runGame(inter, game, players) {
                 //Get letter, erase message and check if it's a valid letter
                 const c = m.content.toLowerCase()
                 m.delete()
-                if (!m.content.match(`^[A-Za-zÀ-ú]{2,}$`)) return
-                if (game.guessAll(c) == false)
-                    players = players.splice(players.find(p => m.author.id == p.id), 1)
+                if (m.content.match(`^[A-Za-zÀ-ú]{2,}$`)) {
+                    if (game.guessAll(c) == false)
+                        players = players.splice(players.find(p => m.author.id == p.id), 1)
+                }
+                else
+                    game.guess(c)
 
                 //Show the progress
                 await showProgress(inter, buttonsObject, game, false)
@@ -539,8 +542,8 @@ async function runGame(inter, game, players) {
                     game.status = "lost"
                 }
             } catch (error) {
-                collector.stop()
                 reject(error)
+                collector.stop()
             }
         })
 

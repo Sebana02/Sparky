@@ -126,8 +126,8 @@ class RPS {
                         }
                     }
                 } catch (error) {
-                    collector.stop()
                     reject(error)
+                    collector.stop()
                 }
             })
         })
