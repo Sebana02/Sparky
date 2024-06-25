@@ -346,8 +346,7 @@ async function getWordFromPlayers(players, inter) {
         players = players.splice(index, 1)
 
         //Send a DM to the player
-        const dm = await chosenOne.createDM()
-        await dm.send("Eres el elegido! Tienes 30 segundos para escribir tu palabra. Recuerda, no participas en la partida")
+        await chosenOne.send("Eres el elegido! Tienes 30 segundos para escribir tu palabra. Recuerda, no participas en la partida")
 
         //Get the word from the player, if the player doesn't respond in time or makes more than 3 tries, choose another player
         let finish = false

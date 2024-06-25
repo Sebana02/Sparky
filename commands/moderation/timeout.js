@@ -1,5 +1,6 @@
-const { ApplicationCommandOptionType, PermissionsBitField } = require('discord.js')
+const { ApplicationCommandOptionType } = require('discord.js')
 const { reply, deferReply } = require('@utils/interactionUtils.js')
+const { permissions } = require('@utils/permissions.js')
 
 /**
  * Command that timeouts a member from the server
@@ -9,7 +10,7 @@ const { reply, deferReply } = require('@utils/interactionUtils.js')
 module.exports = {
     name: 'timeout',
     description: 'Silencia a un miembro del servidor x tiempo',
-    permissions: PermissionsBitField.Flags.Administrator,
+    permissions: permissions.Administrator,
     options: [
         {
             name: 'member',
@@ -25,7 +26,7 @@ module.exports = {
         },
         {
             name: 'time',
-            description: 'El tiempo que se silenciará al miembro en minutos',
+            description: 'El tiempo que se aislará al miembro en minutos',
             type: ApplicationCommandOptionType.Number,
             required: true,
             min_value: 1,
@@ -41,12 +42,21 @@ module.exports = {
         await deferReply(inter, { ephemeral: true })
 
         //Check the member is not the bot or the author of the interaction
-        if (member.id === inter.user.id) return await reply(inter, { content: 'No puedes silenciarte a ti mismo', ephemeral: true })
-        if (member.user.bot) return await reply(inter, { content: 'No puedes silenciar a un bot', ephemeral: true })
+        if (member.id === inter.user.id) return await reply(inter, { content: 'No puedes aislarte a ti mismo', ephemeral: true, deleteTime: 2 })
+        if (member.user.bot) return await reply(inter, { content: 'No puedes aislar a un bot', ephemeral: true, deleteTime: 2 })
 
-        //Try to timeout the member and send a DM to him explaining the reason
+        //Send a DM to the member explaining the reason of the timeout
+        //Note: This will not work if the member has DMs disabled
+        let dmMessagge = await member.send(`Has sido aislado del servidor **${inter.guild.name}** por **${reason}** durante **${time}** minutos`).catch(() => null)
+
+        //Timeout the member
         await member.timeout(time * 60 * 1000, reason)
-        await reply(inter, { content: `${member} ha sido silenciado del servidor por ${time}`, ephemeral: true, propagate: false })
-        await member.send(`Has sido silenciado del servidor ${inter.guild.name} por '${reason}'`)
+            .catch((error) => {// If this catch statement is reached, the member was not timed out, so we need to delete the DM we sent in case it was sent
+                if (dmMessagge) dmMessagge.delete().catch(() => null)
+                throw error
+            })
+
+        //Send message confirming the timeout
+        await reply(inter, { content: `**${member}** ha sido aislado del servidor durante **${time}** minuto(s)`, ephemeral: true, propagate: false, deleteTime: 2 })
     }
 }

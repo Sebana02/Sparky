@@ -1,5 +1,6 @@
-const { ApplicationCommandOptionType, PermissionsBitField } = require('discord.js')
+const { ApplicationCommandOptionType } = require('discord.js')
 const { reply, deferReply } = require('@utils/interactionUtils.js')
+const { permissions } = require('@utils/permissions.js')
 
 /**
  * Command that kicks a member from the server
@@ -8,8 +9,8 @@ const { reply, deferReply } = require('@utils/interactionUtils.js')
  */
 module.exports = {
     name: 'kick',
-    description: 'Explusar a un miembro del servidor.',
-    permissions: PermissionsBitField.Flags.Administrator,
+    description: 'Explusar a un miembro del servidor',
+    permissions: permissions.Administrator,
     options: [
         {
             name: 'member',
@@ -33,13 +34,22 @@ module.exports = {
         await deferReply(inter, { ephemeral: true })
 
         //Check the member is not the bot, the author of the interaction and that the member is kickable
-        if (member.id === inter.user.id) return await reply(inter, { content: 'No puedes expulsarte a ti mismo', ephemeral: true })
-        if (member.user.bot) return await reply(inter, { content: 'No puedes expulsar a un bot', ephemeral: true })
-        if (!member.kickable) return await reply(inter, { content: 'No se pudo expulsar al miembro del servidor', ephemeral: true })
+        if (member.id === inter.user.id) return await reply(inter, { content: 'No puedes expulsarte a ti mismo', ephemeral: true, deleteTime: 2 })
+        if (member.user.bot) return await reply(inter, { content: 'No puedes expulsar a un bot', ephemeral: true, deleteTime: 2 })
+        if (!member.kickable) return await reply(inter, { content: 'No se pudo expulsar al miembro del servidor', ephemeral: true, deleteTime: 2 })
 
-        //Try to kick the member and send a DM to him explaining the reason
+        //Send a DM to the member explaining the reason
+        //Note: This will not work if the member has DMs disabled
+        let dmMessagge = await member.send(`Has sido expulsado del servidor **${inter.guild.name}** por **${reason}**`).catch(() => null)
+
+        //Kick the member
         await member.kick(reason)
-        await reply(inter, { content: `${member} ha sido expulsado del servidor`, ephemeral: true, propagate: false })
-        await member.send(`Has sido expulsado del servidor ${inter.guild.name} por '${reason}'`)
+            .catch((error) => {// If this catch statement is reached, the member was not kicked, so we need to delete the DM we sent in case it was sent
+                if (dmMessagge) dmMessagge.delete().catch(() => null)
+                throw error
+            })
+
+        //Send message confirming the kick
+        await reply(inter, { content: `**${member}** ha sido expulsado del servidor`, ephemeral: true, propagate: false, deleteTime: 2 })
     }
 }

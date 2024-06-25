@@ -1,5 +1,6 @@
-const { PermissionsBitField, ApplicationCommandOptionType } = require('discord.js')
+const { ApplicationCommandOptionType } = require('discord.js')
 const { reply } = require('@utils/interactionUtils.js')
+const { permissions } = require('@utils/permissions.js')
 
 /**
  * Command that deletes the given number of messages
@@ -8,7 +9,7 @@ const { reply } = require('@utils/interactionUtils.js')
 module.exports = {
     name: 'purge',
     description: 'Borra el número de mensajes indicado',
-    permissions: PermissionsBitField.Flags.Administrator,
+    permissions: permissions.Administrator,
     options: [
         {
             name: 'cantidad',

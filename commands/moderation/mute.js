@@ -1,5 +1,7 @@
-const { ApplicationCommandOptionType, PermissionsBitField } = require('discord.js')
+const { ApplicationCommandOptionType } = require('discord.js')
 const { reply, deferReply } = require('@utils/interactionUtils.js')
+const { permissions } = require('@utils/permissions.js')
+
 
 /**
  * Command that mutes a member from the server
@@ -9,11 +11,11 @@ const { reply, deferReply } = require('@utils/interactionUtils.js')
 module.exports = {
     name: 'mute',
     description: 'Mutea a un miembro del servidor',
-    permissions: PermissionsBitField.Flags.Administrator,
+    permissions: permissions.Administrator,
     options: [
         {
             name: 'member',
-            description: 'El miembro a mutear del servidor.',
+            description: 'El miembro a mutear del servidor',
             type: ApplicationCommandOptionType.User,
             required: true
         },
@@ -33,8 +35,8 @@ module.exports = {
         await deferReply(inter, { ephemeral: true })
 
         //Check the member is not the bot or the author of the interaction
-        if (member.id === inter.user.id) return await reply(inter, { content: 'No puedes mutearte a ti mismo', ephemeral: true })
-        if (member.user.bot) return await reply(inter, { content: 'No puedes mutear a un bot', ephemeral: true })
+        if (member.id === inter.user.id) return await reply(inter, { content: 'No puedes mutearte a ti mismo', ephemeral: true, deleteTime: 2 })
+        if (member.user.bot) return await reply(inter, { content: 'No puedes mutear a un bot', ephemeral: true, deleteTime: 2 })
 
         //Check if the role "Muted" exists, if not, create it
         let muteRole = await inter.guild.roles.cache.find(role => role.name === 'Muted')
@@ -58,11 +60,14 @@ module.exports = {
         }
 
         //Check if the member is already muted
-        if (member.roles.cache.has(muteRole.id)) return await reply(inter, { content: 'El miembro ya está muteado', ephemeral: true })
+        if (member.roles.cache.has(muteRole.id)) return await reply(inter, { content: 'El miembro ya está muteado', ephemeral: true, deleteTime: 2 })
 
-        //Mute the member and send a DM to him explaining the reason
+        //Mute the member
         await member.roles.set([muteRole.id])
-        await reply(inter, { content: `El miembro ${member} ha sido muteado`, ephemeral: true, propagate: false })
-        await member.send(`Has sido muteado en ${inter.guild.name} por - ${reason}`)
+        await reply(inter, { content: `El miembro **${member}** ha sido muteado`, ephemeral: true, propagate: false, deleteTime: 2 })
+
+        //Send a DM to the member
+        //Note: This will not work if the member has DMs disabled
+        await member.send(`Has sido muteado en **${inter.guild.name}** por **${reason}**`).catch(() => null)
     }
 }

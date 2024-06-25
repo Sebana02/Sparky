@@ -1,5 +1,6 @@
-const { ApplicationCommandOptionType, PermissionsBitField } = require('discord.js')
+const { ApplicationCommandOptionType } = require('discord.js')
 const { reply, deferReply } = require('@utils/interactionUtils.js')
+const { permissions } = require('@utils/permissions.js')
 
 /**
  * Command that bans a member from the server
@@ -8,8 +9,8 @@ const { reply, deferReply } = require('@utils/interactionUtils.js')
  */
 module.exports = {
     name: 'ban',
-    description: 'Banea a un miembro del servidor.',
-    permissions: PermissionsBitField.Flags.Administrator,
+    description: 'Banea a un miembro del servidor',
+    permissions: permissions.Administrator,
     options: [
         {
             name: 'member',
@@ -34,15 +35,24 @@ module.exports = {
 
         //Check the member is not the bot, the author of the interaction and that the member is bannable
         if (member.id === inter.user.id)
-            return await reply(inter, { content: 'No puedes banearte a ti mismo', ephemeral: true })
+            return await reply(inter, { content: 'No puedes banearte a ti mismo', ephemeral: true, deleteTime: 2 })
         if (member.user.bot)
-            return await reply(inter, { content: 'No puedes banear a un bot', ephemeral: true })
+            return await reply(inter, { content: 'No puedes banear a un bot', ephemeral: true, deleteTime: 2 })
         if (!member.bannable)
-            return await reply(inter, { content: 'No se pudo banear al miembro del servidor', ephemeral: true })
+            return await reply(inter, { content: 'No se pudo banear al miembro del servidor', ephemeral: true, deleteTime: 2 })
 
-        //Try to ban the member and send a DM to him explaining the reason
+        //Send a DM to him explaining the reason of the ban 
+        //Note: This will not work if the member has DMs disabled
+        let dmMessagge = await member.send(`Has sido baneado del servidor **${inter.guild.name}** por **${reason}**`).catch(() => null)
+
+        //Ban the member
         await member.ban({ reason: reason, deleteMessageSeconds: 0 })
-        await reply(inter, { content: `${member} ha sido baneado del servidor`, ephemeral: true, propagate: false })
-        await member.send(`Has sido baneado del servidor ${inter.guild.name} por '${reason}'`)
+            .catch((error) => {// If this catch statement is reached, the member was not banned, so we need to delete the DM we sent in case it was sent
+                if (dmMessagge) dmMessagge.delete().catch(() => null)
+                throw error
+            })
+
+        //Send message confirming the ban
+        await reply(inter, { content: `**${member}** ha sido baneado del servidor`, ephemeral: true, propagate: false, deleteTime: 2 })
     }
 }
