@@ -31,7 +31,7 @@ module.exports = {
      * You can find them in: https://discord.com/developers/docs/topics/permissions#permissions-bitwise-permission-flags
      * Or use the permissions object in the utils folder in file permissions.js
      */
-    permissions: PermissionsBitField.Flags.ADMINISTRATOR,
+    permissions: PermissionsBitField.Flags.Administrator,
 
     /**
      * Command requires user to be in a voice channel

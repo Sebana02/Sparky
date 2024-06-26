@@ -1,6 +1,5 @@
 const { reply, deferReply } = require('@utils/interactionUtils.js')
-const { permissions } = require('@utils/permissions.js')
-const { ApplicationCommandOptionType, ChannelType } = require('discord.js')
+const { ApplicationCommandOptionType, ChannelType, PermissionsBitField } = require('discord.js')
 
 /**
  * Command that unlocks a channel so no one can send messages
@@ -9,7 +8,7 @@ const { ApplicationCommandOptionType, ChannelType } = require('discord.js')
 module.exports = {
     name: 'unmutechannel',
     description: 'Desbloquea un canal para que todos puedan hablar',
-    permissions: permissions.ManageChannels,
+    permissions: PermissionsBitField.Flags.ManageChannels,
     options: [
         {
             name: 'channel',

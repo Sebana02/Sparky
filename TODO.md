@@ -6,11 +6,6 @@
 - [ ] Intercionalize the bot  
 - [ ] More checks regarding moderation commands both checking who can use them and checking if the user can receive them
 - [ ] Embeds in moderation commands
-- 
-- [ ] Do the same as did with permissions but with options
-- [ ] Think about if permissions list is a good idea
-- 
-- [ ] Welcome event
 - [ ] Add a way to avoid users using commands in certain channels
 
 

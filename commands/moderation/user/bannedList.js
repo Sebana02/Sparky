@@ -1,6 +1,6 @@
 const { reply, deferReply } = require('@utils/interactionUtils.js')
-const { permissions } = require('@utils/permissions.js')
 const { createEmbed } = require('@utils/embedUtils.js')
+const { PermissionsBitField } = require('discord.js')
 
 /**
  * Command that shows the banned members from the server
@@ -8,7 +8,7 @@ const { createEmbed } = require('@utils/embedUtils.js')
 module.exports = {
     name: 'bannedlist',
     description: 'Muestra los miembros baneados del servidor',
-    permissions: permissions.BanMembers,
+    permissions: PermissionsBitField.Flags.BanMembers,
     run: async (client, inter) => {
 
         //Defer reply

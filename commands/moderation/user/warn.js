@@ -1,6 +1,5 @@
-const { ApplicationCommandOptionType } = require('discord.js')
+const { ApplicationCommandOptionType, PermissionsBitField } = require('discord.js')
 const { reply, deferReply } = require('@utils/interactionUtils.js')
-const { permissions } = require('@utils/permissions.js')
 
 /**
  * Command that warns a member from the server
@@ -9,7 +8,7 @@ const { permissions } = require('@utils/permissions.js')
 module.exports = {
     name: 'warn',
     description: 'Advierte a un miembro del servidor',
-    permissions: permissions.KickMembers,
+    permissions: PermissionsBitField.Flags.KickMembers,
     options: [
         {
             name: 'member',
