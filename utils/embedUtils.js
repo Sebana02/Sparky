@@ -130,7 +130,7 @@ function modifyEmbed(embed, embedContent, options = { propagate: true }) {
             embedContent.setTimestamp ? embed.setTimestamp() : embed.setTimestamp(null)
 
         if ('fields' in embedContent)
-            embedContent.fields.length ? fields.forEach(field => { if (field.name && field.value) embed.addFields(field) }) : embed.data.fields = []
+            embedContent.fields.length ? embedContent.fields.forEach(field => { if (field.name && field.value) embed.addFields(field) }) : embed.data.fields = []
 
         // Check if the embed is empty
         if (!isValidEmbed(embed))
