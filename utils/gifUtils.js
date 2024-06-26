@@ -1,6 +1,14 @@
-const { createEmbed } = require('@utils/embedUtils.js')
+const { modifyEmbed, createEmbed } = require('@utils/embedUtils.js')
 const { reply, deferReply } = require('@utils/interactionUtils.js')
 const { ChatInputCommandInteraction } = require('discord.js')
+
+/**
+ * Utils for interacting with GIFs
+ */
+module.exports = {
+    sendRandomGif,
+    getRandomGif
+}
 
 /**
  *  Max number of gifs to get
@@ -73,13 +81,13 @@ async function getRandomGif(category, options = { propagate: true }) {
  * Sends a random GIF based on the specified category and title
  * @param {ChatInputCommandInteraction} inter - The interaction object
  * @param {string} category - The category of the GIF
- * @param {string} title - The title of the GIF
+ * @param {EmbedBuilder} embed - The title of the GIF
  * @param {Object} [options={}] - The options for the function
  * @param {boolean} [options.propagate=true] - Whether to propagate any errors that occur during the sending of the GIF
  * @returns {Promise<void>}
  * @throws {Error} - If the GIF is not found or if there is an error in sending the GIF
  */
-async function sendRandomGif(inter, category, title, options = { propagate: true }) {
+async function sendRandomGif(inter, category, embed, options = { propagate: true }) {
 
     try {
 
@@ -100,13 +108,7 @@ async function sendRandomGif(inter, category, title, options = { propagate: true
         }
 
         //Create embed with gif and send it
-        const embed = createEmbed({
-            color: 0x2c2d30,
-            image: gifURL,
-            title: title,
-            footer: { text: inter.user.username, iconURL: inter.user.displayAvatarURL({ size: 1024, dynamic: true }) },
-            setTimestamp: true
-        })
+        modifyEmbed(embed, { image: gifURL })
 
         await reply(inter, { embeds: [embed] })
     }
@@ -114,12 +116,4 @@ async function sendRandomGif(inter, category, title, options = { propagate: true
         if (options.propagate) throw new Error(`sending gif failed: ${error.message}`)
         else console.error(`Error: sending gif failed: ${error.message}`)
     }
-}
-
-/**
- * Utils for interacting with GIFs
- */
-module.exports = {
-    sendRandomGif,
-    getRandomGif
 }

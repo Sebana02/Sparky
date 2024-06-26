@@ -5,12 +5,11 @@ const { permissions } = require('@utils/permissions.js')
 /**
  * Command that bans a member from the server
  * The member will not be able to join the server again until someone unban him
- * Only available for administrators
  */
 module.exports = {
     name: 'ban',
     description: 'Banea a un miembro del servidor',
-    permissions: permissions.Administrator,
+    permissions: permissions.BanMembers,
     options: [
         {
             name: 'member',

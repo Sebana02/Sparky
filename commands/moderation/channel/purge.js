@@ -4,12 +4,11 @@ const { permissions } = require('@utils/permissions.js')
 
 /**
  * Command that deletes the given number of messages
- * Only available for administrators
  */
 module.exports = {
     name: 'purge',
     description: 'Borra el número de mensajes indicado',
-    permissions: permissions.Administrator,
+    permissions: permissions.ManageMessages,
     options: [
         {
             name: 'cantidad',

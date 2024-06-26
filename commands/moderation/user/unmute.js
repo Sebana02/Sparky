@@ -5,12 +5,11 @@ const { permissions } = require('@utils/permissions.js')
 /**
  * Command that unmutes a member from the server
  * The member will be able to talk again
- * Only available for administrators
  */
 module.exports = {
     name: 'unmute',
     description: 'Desmutea a un miembro del servidor',
-    permissions: permissions.Administrator,
+    permissions: permissions.MuteMembers,
     options: [
         {
             name: 'member',

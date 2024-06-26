@@ -3,7 +3,6 @@ const { permissions } = require('@utils/permissions.js')
 
 /**
  * Command that disconnects the bot
- * Only available for administrators
  */
 module.exports = {
     name: 'disconnect',

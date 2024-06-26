@@ -5,12 +5,11 @@ const { permissions } = require('@utils/permissions.js')
 /**
  * Command that timeouts a member from the server
  * The member will not be able to send messages in the server for the given time
- * Only available for administrators
  */
 module.exports = {
     name: 'timeout',
     description: 'Silencia a un miembro del servidor x tiempo',
-    permissions: permissions.Administrator,
+    permissions: permissions.KickMembers,
     options: [
         {
             name: 'member',

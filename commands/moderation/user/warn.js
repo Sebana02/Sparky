@@ -9,7 +9,7 @@ const { permissions } = require('@utils/permissions.js')
 module.exports = {
     name: 'warn',
     description: 'Advierte a un miembro del servidor',
-    permissions: permissions.Administrator,
+    permissions: permissions.KickMembers,
     options: [
         {
             name: 'member',

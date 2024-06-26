@@ -5,12 +5,11 @@ const { permissions } = require('@utils/permissions.js')
 /**
  * Command that kicks a member from the server
  * The member will be able to join the server again if he has the invite link
- * Only available for administrators
  */
 module.exports = {
     name: 'kick',
     description: 'Explusar a un miembro del servidor',
-    permissions: permissions.Administrator,
+    permissions: permissions.KickMembers,
     options: [
         {
             name: 'member',

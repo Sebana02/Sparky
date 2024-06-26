@@ -1,7 +1,7 @@
 const { ApplicationCommandOptionType } = require('discord.js')
 const { sendRandomGif } = require('@utils/gifUtils.js')
+const { createEmbed } = require('@utils/embedUtils.js')
 
-//Command that tells a user to shut up
 /**
  * Command that tells a user to shut up via gif
  */
@@ -17,7 +17,16 @@ module.exports = {
         }
     ],
     run: async (client, inter) => {
+
+        //Create embed
+        const embed = createEmbed({
+            color: 0x9fa8da,
+            description: `¡Quiero que te calles, ${inter.options.getUser('usuario')}! 🤫`,
+            footer: { text: inter.user.username, iconURL: inter.user.displayAvatarURL({ size: 1024, dynamic: true }) },
+            setTimestamp: true
+        })
+
         //Reply with a random gif, telling the user to shut up
-        await sendRandomGif(inter, 'shut up', `Quiero que te calles ${inter.options.getUser('usuario').username}`)
+        await sendRandomGif(inter, 'shut up', embed)
     }
 }

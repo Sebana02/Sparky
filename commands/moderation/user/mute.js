@@ -6,12 +6,11 @@ const { permissions } = require('@utils/permissions.js')
 /**
  * Command that mutes a member from the server
  * The member will not be able to send messages, add reactions, speak or connect to voice channels
- * Only available for administrators
  */
 module.exports = {
     name: 'mute',
     description: 'Mutea a un miembro del servidor',
-    permissions: permissions.Administrator,
+    permissions: permissions.MuteMembers,
     options: [
         {
             name: 'member',
