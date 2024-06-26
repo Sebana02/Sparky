@@ -93,6 +93,8 @@ function createEmbed(embedContent, options = { propagate: true }) {
  * @returns {EmbedBuilder} - The modified Discord embed
  * @throws {Error} - If the modified embed is empty
  * @note Make sure to provide at least one of the following properties: title, description, fields, image, thumbnail, author, or footer, otherwise an error will be thrown
+ * @note The embedContent properties will overwrite the existing properties of the embed
+ * @note If a field wants to be removed, set the value to an empty object whose type corresponds to the field type (e.g. fields:[], footer:{}, author:{},description: '', etc.)
  */
 function modifyEmbed(embed, embedContent, options = { propagate: true }) {
     try {
