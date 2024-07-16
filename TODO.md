@@ -2,21 +2,23 @@
 - [ ] IA for RPS  
 - [ ] IA for TicTacToe  
 - [ ] Generalise embed colors
-- [ ] Check every file
 - [ ] Intercionalize the bot  
-- [ ] More checks regarding moderation commands both checking who can use them and checking if the user can receive them
+- [ ] More checks regarding moderation commands both checking who can receive them
 - [ ] Embeds in moderation commands
 - [ ] Add a way to avoid users using commands in certain channels
-
+- [ ] Maybe create command and event base classes and make the rest of the commands inherit from them
+- [ ] Consider using permissions.js 
 
 moderation commands
 - [ ] Addrole,command
 - [ ] Removerole,command
-- [ ] createrole,command
+- [ ] createrole,command, maybe add the posibbility to add role with permissions
 - [ ] deleterole,command
 - [ ] Show permissions,command
 - [ ] Show roles of a user, command
 - [ ] Bannedlist and mutedlist need to include option to show all and show reason
+- [ ] Create channel command
+- [ ] Delete channel command
 
 #### Utility Commands
 1. **`userinfo`** - Shows information about a user.
@@ -38,7 +40,3 @@ moderation commands
 4. **`uptime`** - Shows how long the bot has been online.
 5. **`define`** - Defines a word.
 6. **`wikipedia`** - Searches a term on Wikipedia.
-
-#### Game Commands
-1. **`slots`** - Plays slot machines.
-2. **`coinflip`** - Flips a coin.
