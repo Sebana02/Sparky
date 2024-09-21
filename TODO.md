@@ -8,6 +8,7 @@
 - [ ] Add a way to avoid users using commands in certain channels
 - [ ] Maybe create command and event base classes and make the rest of the commands inherit from them
 - [ ] Consider using permissions.js 
+- [ ] Error printing isnt the best, solve it
 
 moderation commands
 - [ ] Addrole,command
@@ -35,8 +36,6 @@ moderation commands
 
 #### Information Commands
 1. **`news`** - Shows the latest news from a specific source.
-2. **`covid`** - Shows current COVID-19 statistics for a specific country.
 3. **`stats`** - Shows bot statistics.
 4. **`uptime`** - Shows how long the bot has been online.
 5. **`define`** - Defines a word.
-6. **`wikipedia`** - Searches a term on Wikipedia.

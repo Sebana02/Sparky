@@ -7,7 +7,7 @@
 
 module.exports = {
     /**
-     * Command name
+     * Command name, important that it is in lowercase entirely
      */
     name: 'yourCommandName',
 
