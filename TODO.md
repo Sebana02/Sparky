@@ -6,11 +6,10 @@
 - [ ] More checks regarding moderation commands both checking who can receive them
 - [ ] Embeds in moderation commands
 - [ ] Add a way to avoid users using commands in certain channels
-- [ ] Maybe create command and event base classes and make the rest of the commands inherit from them
 - [ ] Consider using permissions.js 
 - [ ] Error printing isnt the best, solve it
 
-moderation commands
+### Moderation commands
 - [ ] Addrole,command
 - [ ] Removerole,command
 - [ ] createrole,command, maybe add the posibbility to add role with permissions
@@ -22,13 +21,8 @@ moderation commands
 - [ ] Delete channel command
 
 #### Utility Commands
-1. **`userinfo`** - Shows information about a user.
-2. **`serverinfo`** - Shows information about the server.
-3. **`roleinfo`** - Shows information about a specific role.
-4. **`avatar`** - Shows a user's avatar.
-5. **`remind`** - Sets a reminder.
-6. **`translate`** - Translates text to another language.
-7. **`weather`** - Shows the current weather in a specific location.
+2. **`remind`** - Sets a reminder.
+3. **`translate`** - Translates text to another language.
 
 #### Fun Commands
 1. **`joke`** - Tells a joke.
@@ -36,6 +30,7 @@ moderation commands
 
 #### Information Commands
 1. **`news`** - Shows the latest news from a specific source.
-3. **`stats`** - Shows bot statistics.
-4. **`uptime`** - Shows how long the bot has been online.
-5. **`define`** - Defines a word.
+2. **`weather`** - Shows the current weather in a specific location.
+3. **`roleinfo`** - Shows information about a specific role.
+
+

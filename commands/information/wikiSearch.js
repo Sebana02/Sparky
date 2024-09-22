@@ -26,6 +26,9 @@ function search(keywords) {
     ].join('')
 }
 
+/**
+ * Command for searching Wikipedia
+ */
 module.exports = {
     name: 'wikisearch',
     description: 'Busca en Wikipedia',
