@@ -18,16 +18,25 @@ module.exports = {
 
             try {
                 //Create stream to log file
-                const stream = fs.createWriteStream(process.env.LOG_FILE, {
-                    flags: 'a',
-                    autoClose: true
-                })
+                const logStream = fs.createWriteStream(process.env.LOG_FILE, { flags: 'a', autoClose: true })
 
-                //Change console stream to log file
-                console = new Console({
-                    stdout: stream,
-                    stderr: stream,
-                })
+                //Create new console object
+                const logConsole = new Console({ stdout: logStream, stderr: logStream, })
+
+                //Redirect original console
+                const originalLog = console.log
+                const originalError = console.error
+
+                //Override console.log and console.error
+                console.log = (...args) => {
+                    originalLog(...args)
+                    logConsole.log(...args)
+                }
+
+                console.error = (...args) => {
+                    originalError(...args)
+                    logConsole.error(...args)
+                }
 
             } catch (error) { //If error occurs, log error message but continue
                 console.error(`Error: setting up logger: ${error.message}`)

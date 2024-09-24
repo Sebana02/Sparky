@@ -7,7 +7,7 @@
 - [ ] Embeds in moderation commands
 - [ ] Add a way to avoid users using commands in certain channels
 - [ ] Consider using permissions.js 
-- [ ] Error printing isnt the best, solve it
+- [ ] Error printing isnt the best, solve it -> ansi codes problem
 
 ### Moderation commands
 - [ ] Addrole,command
@@ -21,8 +21,7 @@
 - [ ] Delete channel command
 
 #### Utility Commands
-2. **`remind`** - Sets a reminder.
-3. **`translate`** - Translates text to another language.
+1. **`translate`** - Translates text to another language.
 
 #### Fun Commands
 1. **`joke`** - Tells a joke.

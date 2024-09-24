@@ -1,6 +1,7 @@
 require('module-alias/register')
 const { Client, GatewayIntentBits, Partials } = require('discord.js')
 const { Player } = require('discord-player')
+const { YoutubeiExtractor } = require("discord-player-youtubei")
 
 const client = new Client({ // client setup
     intents: [
@@ -24,7 +25,8 @@ const client = new Client({ // client setup
 })
 
 const player = new Player(client) // player setup
-player.extractors.loadDefault() // load default extractors
+player.extractors.loadDefault((ext) => ext !== 'YouTubeExtractor') // load default extractors, except youtube
+player.extractors.register(YoutubeiExtractor, {}) // load youtube support
 
 require('dotenv').config() // load .env variables
 
