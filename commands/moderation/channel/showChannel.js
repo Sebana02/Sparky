@@ -1,5 +1,6 @@
 const { reply, deferReply } = require('@utils/interactionUtils.js')
-const { ApplicationCommandOptionType, PermissionsBitField } = require('discord.js')
+const { ApplicationCommandOptionType } = require('discord.js')
+const permissions = require('@utils/permissions.js')
 
 /**
  * Command that shows a previously hidden channel
@@ -8,7 +9,7 @@ const { ApplicationCommandOptionType, PermissionsBitField } = require('discord.j
 module.exports = {
     name: 'showchannel',
     description: 'Muestra un canal previamente escondido',
-    permissions: PermissionsBitField.Flags.ManageChannels,
+    permissions: permissions.ManageChannels,
     options: [
         {
             name: 'channel',

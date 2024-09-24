@@ -1,5 +1,6 @@
 const { reply, deferReply } = require('@utils/interactionUtils.js')
-const { ApplicationCommandOptionType, PermissionsBitField } = require('discord.js')
+const { ApplicationCommandOptionType } = require('discord.js')
+const permissions = require('@utils/permissions.js')
 
 /**
  * Command that resets the nickname of a user
@@ -15,7 +16,7 @@ module.exports = {
             required: true
         }
     ],
-    permissions: PermissionsBitField.Flags.ManageNicknames,
+    permissions: permissions.ManageNicknames,
     run: async (client, inter) => {
         //Get member
         const member = inter.options.getMember('user')

@@ -1,5 +1,6 @@
-const { ApplicationCommandOptionType, PermissionsBitField } = require('discord.js')
+const { ApplicationCommandOptionType } = require('discord.js')
 const { reply, deferReply } = require('@utils/interactionUtils.js')
+const permissions = require('@utils/permissions.js')
 
 
 /**
@@ -9,7 +10,7 @@ const { reply, deferReply } = require('@utils/interactionUtils.js')
 module.exports = {
     name: 'mute',
     description: 'Mutea a un miembro del servidor',
-    permissions: PermissionsBitField.Flags.MuteMembers,
+    permissions: permissions.MuteMembers,
     options: [
         {
             name: 'member',

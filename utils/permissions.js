@@ -2,7 +2,7 @@ const { PermissionsBitField } = require('discord.js')
 
 /**
  * Permissions object that contains all the permissions available in Discord
- * You can use this object to set the permissions needed to run a command
+ * You can use this object to set the permissions needed to run a command or use it as a reference
  */
 const permissions = {
     CreateInstantInvite: PermissionsBitField.Flags.CreateInstantInvite, // Allows creation of instant invites

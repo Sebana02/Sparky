@@ -1,12 +1,10 @@
-- [ ] Test music commands in several servers at a time  
 - [ ] IA for RPS  
 - [ ] IA for TicTacToe  
-- [ ] Generalise embed colors
+- [ ] Generalise embed colors -> color scheme in embedUtils
 - [ ] Intercionalize the bot  
 - [ ] More checks regarding moderation commands both checking who can receive them
 - [ ] Embeds in moderation commands
 - [ ] Add a way to avoid users using commands in certain channels
-- [ ] Consider using permissions.js 
 - [ ] Error printing isnt the best, solve it -> ansi codes problem
 
 ### Moderation commands
@@ -30,6 +28,3 @@
 #### Information Commands
 1. **`news`** - Shows the latest news from a specific source.
 2. **`weather`** - Shows the current weather in a specific location.
-3. **`roleinfo`** - Shows information about a specific role.
-
-

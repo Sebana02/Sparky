@@ -1,5 +1,6 @@
 const { reply, deferReply } = require('@utils/interactionUtils.js')
-const { ApplicationCommandOptionType, PermissionsBitField } = require('discord.js')
+const { ApplicationCommandOptionType } = require('discord.js')
+const { permissions } = require('@utils/permissions.js')
 
 /**
  * Command that hides a channel so no one can view it
@@ -8,7 +9,7 @@ const { ApplicationCommandOptionType, PermissionsBitField } = require('discord.j
 module.exports = {
     name: 'hidechannel',
     description: 'Esconde un canal para que nadie pueda leerlo',
-    permissions: PermissionsBitField.Flags.ManageChannels,
+    permissions: permissions.ManageChannels,
     options: [
         {
             name: 'channel',

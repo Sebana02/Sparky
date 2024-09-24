@@ -1,5 +1,7 @@
-const { ApplicationCommandOptionType, PermissionsBitField } = require('discord.js')
+const { ApplicationCommandOptionType } = require('discord.js')
 const { reply, deferReply } = require('@utils/interactionUtils.js')
+const permissions = require('@utils/permissions.js')
+
 /**
  * Command that bans a member from the server
  * The member will not be able to join the server again until someone unban him
@@ -7,7 +9,7 @@ const { reply, deferReply } = require('@utils/interactionUtils.js')
 module.exports = {
     name: 'ban',
     description: 'Banea a un miembro del servidor',
-    permissions: PermissionsBitField.Flags.BanMembers,
+    permissions: permissions.BanMembers,
     options: [
         {
             name: 'member',

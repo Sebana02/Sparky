@@ -1,5 +1,6 @@
 const { reply, deferReply } = require('@utils/interactionUtils.js')
-const { ApplicationCommandOptionType, ChannelType, PermissionsBitField } = require('discord.js')
+const { ApplicationCommandOptionType, ChannelType } = require('discord.js')
+const permissions = require('@utils/permissions.js')
 
 /**
  * Command that locks a channel so no one can send messages
@@ -8,7 +9,7 @@ const { ApplicationCommandOptionType, ChannelType, PermissionsBitField } = requi
 module.exports = {
     name: 'mutechannel',
     description: 'Bloquea un canal para que nadie pueda hablar',
-    permissions: PermissionsBitField.Flags.ManageChannels,
+    permissions: permissions.ManageChannels,
     options: [
         {
             name: 'channel',

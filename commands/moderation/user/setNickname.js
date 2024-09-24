@@ -1,5 +1,6 @@
 const { reply, deferReply } = require('@utils/interactionUtils.js')
-const { ApplicationCommandOptionType, PermissionsBitField } = require('discord.js')
+const { ApplicationCommandOptionType } = require('discord.js')
+const permissions = require('@utils/permissions.js')
 
 /**
  * Command that sets a nickname for a user
@@ -7,7 +8,7 @@ const { ApplicationCommandOptionType, PermissionsBitField } = require('discord.j
 module.exports = {
     name: 'setnickname',
     description: 'Establece un apodo para un usuario',
-    permissions: PermissionsBitField.Flags.ManageNicknames,
+    permissions: permissions.ManageNicknames,
     options: [
         {
             name: 'member',

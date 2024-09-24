@@ -1,6 +1,7 @@
-const { ApplicationCommandOptionType, PermissionsBitField } = require('discord.js')
+const { ApplicationCommandOptionType } = require('discord.js')
 const { createEmbed } = require('@utils/embedUtils.js')
 const { reply, deferReply } = require('@utils/interactionUtils.js')
+const permissions = require('@utils/permissions.js')
 
 /**
  * Command that creates a role with the specified name and color
@@ -8,7 +9,7 @@ const { reply, deferReply } = require('@utils/interactionUtils.js')
 module.exports = {
     name: 'createrole',
     description: 'Crea un rol con el nombre y color especificado',
-    permissions: PermissionsBitField.Flags.ManageRoles,
+    permissions: permissions.ManageRoles,
     options: [
         {
             name: 'nombre',

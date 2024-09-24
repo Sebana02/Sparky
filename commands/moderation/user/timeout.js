@@ -1,5 +1,6 @@
-const { ApplicationCommandOptionType, PermissionsBitField } = require('discord.js')
+const { ApplicationCommandOptionType } = require('discord.js')
 const { reply, deferReply } = require('@utils/interactionUtils.js')
+const permissions = require('@utils/permissions.js')
 
 /**
  * Command that timeouts a member from the server
@@ -8,7 +9,7 @@ const { reply, deferReply } = require('@utils/interactionUtils.js')
 module.exports = {
     name: 'timeout',
     description: 'Silencia a un miembro del servidor x tiempo',
-    permissions: PermissionsBitField.Flags.KickMembers,
+    permissions: permissions.KickMembers,
     options: [
         {
             name: 'member',

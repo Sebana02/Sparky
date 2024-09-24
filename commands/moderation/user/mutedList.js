@@ -1,6 +1,6 @@
 const { reply, deferReply } = require('@utils/interactionUtils.js')
 const { createEmbed } = require('@utils/embedUtils.js')
-const { PermissionsBitField } = require('discord.js')
+const permissions = require('@utils/permissions.js')
 
 /**
  * Command that shows the muted members from the server
@@ -8,7 +8,7 @@ const { PermissionsBitField } = require('discord.js')
 module.exports = {
     name: 'mutedlist',
     description: 'Muestra los miembros silenciados del servidor',
-    permissions: PermissionsBitField.Flags.MuteMembers,
+    permissions: permissions.MuteMembers,
     run: async (client, inter) => {
 
         //Defer reply
