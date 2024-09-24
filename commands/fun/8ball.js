@@ -1,6 +1,6 @@
 const { ApplicationCommandOptionType } = require('discord.js')
 const { reply } = require('@utils/interactionUtils.js')
-const { createEmbed } = require('@utils/embedUtils.js')
+const { createEmbed, ColorScheme } = require('@utils/embedUtils.js')
 
 /**
  * Command that asks a question to the magic 8ball and gets a random response
@@ -19,7 +19,10 @@ module.exports = {
     run: async (client, inter) => {
         //Create embed with random response
         const embed = createEmbed({
-            description: `🎱${responses[Math.floor(Math.random() * responses.length)]}`
+            title: `🎱 ${responses[Math.floor(Math.random() * responses.length)]}`,
+            color: ColorScheme.fun,
+            setTimestamp: true,
+            footer: { text: `${inter.user.username} ha preguntado: ${inter.options.getString('pregunta')}`, iconURL: inter.user.displayAvatarURL({ size: 1024, dynamic: true }) }
         })
 
         //Reply to the interaction

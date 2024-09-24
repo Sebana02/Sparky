@@ -5,10 +5,10 @@ const { LyricsData } = require('@discord-player/extractor')
 
 
 const ColorScheme = {
-  error: 0xff2222,
-  playing: 0x13f857,
-  added: 0x40e0d0,
-  general: 0xffa500
+  error: 0xff2222, // Dark red for errors
+  playing: 0x13f857, // Green for playing
+  added: 0x40e0d0, // Turquoise for added
+  general: 0xffa500 // Orange for general
 }
 
 /**
@@ -256,7 +256,6 @@ module.exports = {
     return createEmbed({
       color: ColorScheme.general,
       thumbnail: queue.currentTrack.thumbnail,
-      setTimestamp: true,
       description: `${tracks.slice(0, 5).join('\n')}\n\n${nextSongs}`,
       author: {
         name: `${queue.currentTrack.title} | ${queue.currentTrack.author} ${methods[queue.repeatMode]}`

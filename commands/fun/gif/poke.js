@@ -1,6 +1,6 @@
 const { ApplicationCommandOptionType } = require('discord.js')
 const { sendRandomGif } = require('@utils/gifUtils.js')
-const { createEmbed } = require('@utils/embedUtils.js')
+const { createEmbed, ColorScheme } = require('@utils/embedUtils.js')
 
 /**
  * Command that sends a random gif from the category poke, poke the user
@@ -20,9 +20,9 @@ module.exports = {
 
         //Create embed
         const embed = createEmbed({
-            color: 0x9fa8da,
+            color: ColorScheme.fun,
             description: `¡Poketeo para ti, ${inter.options.getUser('usuario')}! 👉`,
-            footer: { text: inter.user.username, iconURL: inter.user.displayAvatarURL({ size: 1024, dynamic: true }) },
+            footer: { text: `${inter.user.username} te poketea...`, iconURL: inter.user.displayAvatarURL({ size: 1024, dynamic: true }) },
             setTimestamp: true
         })
 

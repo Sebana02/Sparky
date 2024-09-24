@@ -108,7 +108,10 @@ async function sendRandomGif(inter, category, embed, options = { propagate: true
         }
 
         //Create embed with gif and send it
-        modifyEmbed(embed, { image: gifURL })
+        if (embed)
+            modifyEmbed(embed, { image: gifURL })
+        else
+            embed = createEmbed({ image: gifURL })
 
         await reply(inter, { embeds: [embed] })
     }

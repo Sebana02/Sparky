@@ -34,7 +34,7 @@ module.exports = {
     description: 'Busca en Wikipedia',
     options: [
         {
-            name: 'término',
+            name: 'termino',
             description: 'Término a buscar en Wikipedia',
             type: ApplicationCommandOptionType.String,
             required: true,
@@ -45,7 +45,7 @@ module.exports = {
         await deferReply(inter)
 
         //Get search term
-        const searchTerm = inter.options.getString('término')
+        const searchTerm = inter.options.getString('termino')
 
         //Search Wikipedia
         const response = await fetch(search(searchTerm))
@@ -59,7 +59,7 @@ module.exports = {
 
         //Check if there are any results
         if (data.query.search.length === 0)
-            return await reply(inter, { content: `No se encontraron resultados para: ${searchTerm}` })
+            return await reply(inter, { content: `No se encontraron resultados para: ${searchTerm}`, deleteTime: 3 })
 
 
         // Extracting the first search result

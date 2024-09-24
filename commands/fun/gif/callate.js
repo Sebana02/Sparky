@@ -1,6 +1,6 @@
 const { ApplicationCommandOptionType } = require('discord.js')
 const { sendRandomGif } = require('@utils/gifUtils.js')
-const { createEmbed } = require('@utils/embedUtils.js')
+const { createEmbed, ColorScheme } = require('@utils/embedUtils.js')
 
 /**
  * Command that tells a user to shut up via gif
@@ -20,9 +20,9 @@ module.exports = {
 
         //Create embed
         const embed = createEmbed({
-            color: 0x9fa8da,
+            color: ColorScheme.fun,
             description: `¡Quiero que te calles, ${inter.options.getUser('usuario')}! 🤫`,
-            footer: { text: inter.user.username, iconURL: inter.user.displayAvatarURL({ size: 1024, dynamic: true }) },
+            footer: { text: `${inter.user.username} te manda callar...`, iconURL: inter.user.displayAvatarURL({ size: 1024, dynamic: true }) },
             setTimestamp: true
         })
 
