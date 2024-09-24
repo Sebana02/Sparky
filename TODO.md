@@ -7,7 +7,6 @@
 - [ ] TicTacToe
 
 ### Embeds
-- [ ] Use embed color shemes by category
 - [ ] Embeds in moderation commands
 
 ### Moderation commands

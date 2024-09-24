@@ -1,6 +1,6 @@
 const { ActionRowBuilder, ButtonBuilder, ApplicationCommandOptionType } = require('discord.js')
 const { reply, deferReply, fetchReply } = require('@utils/interactionUtils.js')
-const { createEmbed } = require('@utils/embedUtils.js')
+const { createEmbed, ColorScheme } = require('@utils/embedUtils.js')
 
 /**
  * Command that creates a poll
@@ -86,7 +86,7 @@ function createPollEmbed(inter, poll, votes, end = false) {
 
     //Create the embed and return it
     return createEmbed({
-        color: 0xff0000,
+        color: ColorScheme.utility,
         title: poll,
         fields: votation,
         footer: { text: inter.user.username, iconURL: inter.user.displayAvatarURL({ size: 1024, dynamic: true }) },

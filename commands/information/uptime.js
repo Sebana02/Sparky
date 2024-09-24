@@ -1,4 +1,4 @@
-const { createEmbed } = require('@utils/embedUtils.js')
+const { createEmbed, ColorScheme } = require('@utils/embedUtils.js')
 const { reply } = require('@utils/interactionUtils.js')
 
 /**
@@ -19,7 +19,7 @@ module.exports = {
 
         //Create the embed
         const embed = createEmbed({
-            color: 0x9fa8da,
+            color: ColorScheme.information,
             footer: {
                 text: `El bot ha estado en línea por ${days} días, ${hours} horas, ${minutes} minutos y ${seconds} segundos`,
                 iconURL: inter.user.displayAvatarURL({ size: 1024, dynamic: true })

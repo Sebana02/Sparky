@@ -2,7 +2,7 @@
 
 const { ApplicationCommandOptionType, ActionRowBuilder, ButtonBuilder } = require('discord.js')
 const { deferReply, reply, fetchReply } = require('@utils/interactionUtils.js')
-const { createEmbed } = require('@utils/embedUtils.js')
+const { createEmbed, ColorScheme } = require('@utils/embedUtils.js')
 
 /**
  * Command for playing hangman
@@ -261,7 +261,7 @@ async function gatherPlayers(inter) {
 
     //Initial message and buttons to join the game
     const embed = createEmbed({
-        color: 0x36393e,
+        color: ColorScheme.game,
         footer: { text: 'Hangman: Teneis 10 segundos para uniros al juego', iconURL: inter.user.displayAvatarURL() }
     })
 
@@ -482,7 +482,7 @@ async function showProgress(inter, game, players) {
     //Set the information to show in the screen and create embed
     const embed = createEmbed({
         description: "```\n" + figure[6 - game.lives] + `\n${game.progress}` + "\n```",
-        color: 0xFFD700,
+        color: ColorScheme.game,
         fields: [
             { name: "Vidas", value: "💖 ".repeat(game.lives) + "🖤 ".repeat(6 - game.lives), inline: true },
             { name: "Fallos", value: game.misses.join(" "), inline: true }
@@ -501,17 +501,14 @@ async function showProgress(inter, game, players) {
  */
 async function showResult(inter, game, selector) {
 
-    //Set the message and color according to the game status
+    //Set the message according to the game status
     let msg = ''
-    let color = 0xFFD700
     if (game.status === hangman.gameStatus.win) {
-        color = 0x13f857
         if (selector)
             msg = `Has ganado!! ${selector.username}... intenta elegir una palabra mas dificil la próxima vez`
         else
             msg = "Esta vez has ganado, pero no te confies, la proxima vez puede ser diferente"
     } else if (game.status === hangman.gameStatus.lose) {
-        color = 0xff2222
         if (selector)
             msg = `${selector.username} ha ganado!! La palabra era '${game.word}'`
         else
@@ -528,7 +525,7 @@ async function showResult(inter, game, selector) {
             { name: "Fallos", value: game.misses.join(" "), inline: true }
         ],
         footer: { text: msg, iconURL: selector ? selector.displayAvatarURL() : inter.client.user.displayAvatarURL() },
-        color: color
+        color: ColorScheme.game
     })
 
     //Show the result

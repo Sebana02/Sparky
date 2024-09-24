@@ -1,6 +1,6 @@
 const { ApplicationCommandOptionType } = require('discord.js')
 const { reply } = require('@utils/interactionUtils.js')
-const { createEmbed } = require('@utils/embedUtils.js')
+const { createEmbed, ColorScheme } = require('@utils/embedUtils.js')
 
 /**
  * Command that sets up a reminder
@@ -74,7 +74,8 @@ module.exports = {
             const embed = createEmbed({
                 description: message,
                 setTimestamp: true,
-                footer: { text: `Recordatorio de ${inter.user.tag}`, iconURL: inter.user.displayAvatarURL({ dynamic: true }) }
+                footer: { text: `Recordatorio de ${inter.user.tag}`, iconURL: inter.user.displayAvatarURL({ dynamic: true }) },
+                color: ColorScheme.utility
             })
             await inter.channel.send({ embeds: [embed] })
         }, futureDate - Date.now())

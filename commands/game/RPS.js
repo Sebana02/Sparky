@@ -1,6 +1,6 @@
 const { ApplicationCommandOptionType, ButtonBuilder, ActionRowBuilder } = require('discord.js')
 const { reply, deferReply, fetchReply } = require('@utils/interactionUtils.js')
-const { createEmbed, modifyEmbed } = require('@utils/embedUtils.js')
+const { createEmbed, modifyEmbed, ColorScheme } = require('@utils/embedUtils.js')
 
 /**
  * Command that allows users to play rock, paper, scissors with a friend
@@ -44,7 +44,7 @@ class RPS {
      */
     async createGame() {
         //Create the embed and buttons
-        const embed = createEmbed({ title: `${this.inter.user.username} vs ${this.inter.options.getUser('oponent').username}`, color: 0x323437 })
+        const embed = createEmbed({ title: `${this.inter.user.username} vs ${this.inter.options.getUser('oponent').username}`, color: ColorScheme.game })
         const buttons = this.createButtons()
 
         //Send the embed and buttons
@@ -58,7 +58,6 @@ class RPS {
 
         //Show the result
         modifyEmbed(embed, {
-            color: winner.includes('Empate') ? 0x323437 : winner.includes(this.inter.user.username) ? 0x2ECC71 : 0xE74C3C,
             description: winner,
             title: `${elecciones[0].user.username} ${this.icons[elecciones[0].index]} 
             vs ${this.icons[elecciones[1].index]} ${elecciones[1].user.username}`

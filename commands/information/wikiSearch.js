@@ -1,4 +1,4 @@
-const { createEmbed } = require('@utils/embedUtils.js')
+const { createEmbed, ColorScheme } = require('@utils/embedUtils.js')
 const { reply, deferReply } = require('@utils/interactionUtils.js')
 const { ApplicationCommandOptionType } = require('discord.js')
 
@@ -69,7 +69,7 @@ module.exports = {
 
         // Create embed with search result
         const embed = createEmbed({
-            color: 0x9fa8da,
+            color: ColorScheme.information,
             title: result.title,
             description: result.snippet.replace(/<\/?[^>]+(>|$)/g, ""), // Removing HTML tags from snippet
             url: pageUrl,

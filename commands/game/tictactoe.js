@@ -1,5 +1,5 @@
 const { ApplicationCommandOptionType, ButtonBuilder, ActionRowBuilder } = require('discord.js')
-const { createEmbed, modifyEmbed } = require('@utils/embedUtils.js')
+const { createEmbed, modifyEmbed, ColorScheme } = require('@utils/embedUtils.js')
 const { reply, deferReply, fetchReply } = require('@utils/interactionUtils.js')
 
 /**
@@ -69,7 +69,7 @@ class TicTacToe {
             title: 'Tic Tac Toe',
             description: this.createBoard(),
             footer: { text: `${this.turn.username} es tu turno`, iconURL: this.turn.displayAvatarURL() },
-            color: 0xFFD700
+            color: ColorScheme.game
         })
 
         //Initial message

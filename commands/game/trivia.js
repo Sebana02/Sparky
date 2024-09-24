@@ -2,7 +2,7 @@ const { deferReply, reply, fetchReply } = require('@utils/interactionUtils')
 const { QueryType, useQueue, useMainPlayer, usePlayer, SearchResult } = require('discord-player')
 const { ApplicationCommandOptionType, ActionRowBuilder, ButtonBuilder, InteractionType, EmbedBuilder } = require('discord.js')
 const { noResults, noPlaylist } = require('@utils/embedMusicPresets')
-const { createEmbed } = require('@utils/embedUtils')
+const { createEmbed, ColorScheme } = require('@utils/embedUtils')
 
 /**
  * Command that allows user to play trivia with songs
@@ -131,7 +131,7 @@ function createLeaderboard(players, end) {
     return createEmbed({
         footer: { text: !end ? 'Adivina la canción' : 'Se ha acabado el trivia!' },
         description: (playersSorted.length > 0 ? '**Puntuación**\n' : '') + playersSorted.map(p => `***${p.user.username} : ${p.score}***`).join('\n'),
-        color: 0xffa500
+        color: ColorScheme.game
     })
 }
 
@@ -193,7 +193,7 @@ async function awaitInteraction(inter, players, correctSong, results, toBePlayed
         //Send message
         const result = createEmbed({
             author: { name: 'Se ha parado el trivia!', iconURL: buttonInteraction.user.displayAvatarURL() },
-            color: 0xffa500
+            color: ColorScheme.game
         })
         await reply(buttonInteraction, { embeds: [result], deleteTime: 1.5, propagate: false })
 
@@ -212,7 +212,7 @@ async function awaitInteraction(inter, players, correctSong, results, toBePlayed
             const result = createEmbed({
                 author: { name: `Correcto, ${buttonInteraction.user.tag}, +1 punto!`, iconURL: buttonInteraction.user.displayAvatarURL() },
                 footer: { text: `La canción era ${(correctSong.title + ' - ' + correctSong.author).substring(0, 80)}` },
-                color: 0xffa500
+                color: ColorScheme.game
             })
             await reply(buttonInteraction, { embeds: [result], deleteTime: 1.5, propagate: false })
         }
@@ -222,7 +222,7 @@ async function awaitInteraction(inter, players, correctSong, results, toBePlayed
             const result = createEmbed({
                 author: { name: `Incorrecto, ${buttonInteraction.user.tag}, tal vez la próxima vez!`, iconURL: buttonInteraction.user.displayAvatarURL() },
                 footer: { text: `La canción era ${(correctSong.title + ' - ' + correctSong.author).substring(0, 80)}` },
-                color: 0xffa500
+                color: ColorScheme.game
             })
             await reply(buttonInteraction, { embeds: [result], deleteTime: 1.5, propagate: false })
         }
