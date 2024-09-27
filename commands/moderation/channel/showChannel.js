@@ -1,6 +1,7 @@
 const { reply, deferReply } = require('@utils/interactionUtils.js')
 const { ApplicationCommandOptionType } = require('discord.js')
-const permissions = require('@utils/permissions.js')
+const { permissions } = require('@utils/permissions.js')
+const { createEmbed, ColorScheme } = require('@utils/embedUtils')
 
 /**
  * Command that shows a previously hidden channel
@@ -32,7 +33,13 @@ module.exports = {
         //Show the channel
         await channel.permissionOverwrites.edit(inter.guild.id, { ViewChannel: null })
 
+        //Create embed
+        const embed = createEmbed({
+            description: `Canal ${channel} mostrado correctamente`,
+            color: ColorScheme.moderation
+        })
+
         //Reply
-        await reply(inter, { content: 'Canal mostrado correctamente', ephemeral: true, deleteTime: 2 })
+        await reply(inter, { embeds: [embed], ephemeral: true, deleteTime: 2 })
     }
 }

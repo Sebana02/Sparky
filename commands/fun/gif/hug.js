@@ -21,7 +21,7 @@ module.exports = {
         //Create embed
         const embed = createEmbed({
             color: ColorScheme.fun,
-            description: `¡Un abrazo para ti, ${inter.options.getUser('usuario')}! 🤗`,
+            description: `${inter.options.getUser('usuario')}, ¡un abrazo para ti! 🤗`,
             footer: { text: `${inter.user.username} te manda un abrazo...`, iconURL: inter.user.displayAvatarURL({ size: 1024, dynamic: true }) },
             setTimestamp: true
         })

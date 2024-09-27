@@ -1,4 +1,4 @@
-const { modifyEmbed, createEmbed } = require('@utils/embedUtils.js')
+const { modifyEmbed, createEmbed, ColorScheme } = require('@utils/embedUtils.js')
 const { reply, deferReply } = require('@utils/interactionUtils.js')
 const { ChatInputCommandInteraction } = require('discord.js')
 
@@ -100,7 +100,7 @@ async function sendRandomGif(inter, category, embed, options = { propagate: true
         //If no gif is found, send error message to user
         if (!gifURL) {
             const noGifEmbed = createEmbed({
-                color: 0xff2222,
+                color: ColorScheme.error,
                 author: { name: `No hay resultados para '${category}'` },
             })
 

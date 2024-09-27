@@ -1,6 +1,7 @@
 const { reply, deferReply } = require('@utils/interactionUtils.js')
 const { ApplicationCommandOptionType } = require('discord.js')
 const { permissions } = require('@utils/permissions.js')
+const { createEmbed, ColorScheme } = require('@utils/embedUtils')
 
 /**
  * Command that hides a channel so no one can view it
@@ -32,7 +33,13 @@ module.exports = {
         //Hide the channel
         await channel.permissionOverwrites.edit(inter.guild.id, { ViewChannel: false })
 
+        //Create embed
+        const embed = createEmbed({
+            description: `Canal ${channel} escondido correctamente`,
+            color: ColorScheme.moderation
+        })
+
         //Reply
-        await reply(inter, { content: 'Canal escondido correctamente', ephemeral: true, deleteTime: 2 })
+        await reply(inter, { embeds: [embed], ephemeral: true, deleteTime: 2 })
     }
 }

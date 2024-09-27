@@ -21,7 +21,7 @@ module.exports = {
         //Create embed
         const embed = createEmbed({
             color: ColorScheme.fun,
-            description: `¡Poketeo para ti, ${inter.options.getUser('usuario')}! 👉`,
+            description: `${inter.options.getUser('usuario')}, ¡poketeo para ti! 👉`,
             footer: { text: `${inter.user.username} te poketea...`, iconURL: inter.user.displayAvatarURL({ size: 1024, dynamic: true }) },
             setTimestamp: true
         })

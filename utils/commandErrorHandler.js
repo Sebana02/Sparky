@@ -1,4 +1,4 @@
-const { createEmbed } = require('@utils/embedUtils')
+const { createEmbed, ColorScheme } = require('@utils/embedUtils')
 const { reply } = require('@utils/interactionUtils')
 
 /**
@@ -24,7 +24,7 @@ module.exports = {
 
             // Create an error embed
             const errorEmbed = createEmbed({
-                color: 0xff2222,
+                color: ColorScheme.error,
                 author: { name: 'Ha ocurrido un error', iconURL: client.user.displayAvatarURL() },
             })
 
