@@ -32,6 +32,7 @@
     - [`Embeds`](#embeds)
     - [`Moderation commands`](#moderation-commands-1)
     - [`Security`](#security)
+  - [Known Issues](#known-issues)
   - [License](#license)
 
 ## Features
@@ -330,17 +331,21 @@ You can always modify the bot to support your language.
 
 - [ ] Addrole command
 - [ ] Removerole command
+- [ ] Createrole command
 - [ ] Deleterole command
 - [ ] Show permissions command
 - [ ] Show roles of a user command
 - [ ] Bannedlist and mutedlist need to include option to show all and show reason
 - [ ] Create channel command
 - [ ] Delete channel command
+- [ ] In general, improve visuals of moderation commands
 
 ### `Security`
 
 - [ ] Add a way to avoid users using commands in certain channels
 - [ ] More checks regarding who can receive certain commands
+
+## Known Issues
 
 ## License
 

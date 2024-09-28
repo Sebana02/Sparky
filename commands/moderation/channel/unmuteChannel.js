@@ -1,6 +1,6 @@
 const { reply, deferReply } = require('@utils/interactionUtils.js')
 const { ApplicationCommandOptionType, ChannelType } = require('discord.js')
-const permissions = require('@utils/permissions.js')
+const { permissions } = require('@utils/permissions.js')
 
 /**
  * Command that unlocks a channel so no one can send messages

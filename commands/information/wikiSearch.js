@@ -34,7 +34,7 @@ module.exports = {
     description: 'Busca en Wikipedia',
     options: [
         {
-            name: 'term',
+            name: 'termino',
             description: 'Término a buscar en Wikipedia',
             type: ApplicationCommandOptionType.String,
             required: true,

@@ -154,13 +154,12 @@ async function createCollection(inter, votes, poll, components) {
         collector.on('collect', async (interaction) => {
 
             try {
-
                 //Get the index of the option voted
                 const index = parseInt(interaction.customId.split('_')[1])
 
                 //Remove previous user vote 
                 const previousVote = countReactions.get(interaction.user.id)
-                if (previousVote)
+                if (previousVote !== undefined)
                     votes[previousVote].value--
 
                 //Add new vote
@@ -168,7 +167,7 @@ async function createCollection(inter, votes, poll, components) {
                 votes[index].value++
 
                 //Reply to the user
-                await reply(interaction, { content: `Has votado por '**${votes[index].option}**' `, ephemeral: true, deleteTime: 2, propagate: false })
+                reply(interaction, { content: `Has votado por '**${votes[index].option}**' `, ephemeral: true, deleteTime: 2, propagate: false })
 
                 //Update the poll embed
                 const embedResult = createPollEmbed(inter, poll, votes, false)
