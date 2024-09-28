@@ -12,13 +12,13 @@ module.exports = {
     permissions: permissions.BanMembers,
     options: [
         {
-            name: 'member',
+            name: 'usuario',
             description: 'El miembro a desbanear del servidor',
             type: ApplicationCommandOptionType.String,
             required: true
         },
         {
-            name: 'reason',
+            name: 'motivo',
             description: 'La razón por la que se desbanea al miembro',
             type: ApplicationCommandOptionType.String,
             required: true
@@ -26,8 +26,8 @@ module.exports = {
     ],
     run: async (client, inter) => {
         //Get member and reason
-        const member = inter.options.getString('member')
-        const reason = inter.options.getString('reason')
+        const member = inter.options.getString('usuario')
+        const reason = inter.options.getString('motivo')
 
         //Defer reply
         await deferReply(inter, { ephemeral: true })

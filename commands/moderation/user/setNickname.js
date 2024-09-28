@@ -11,7 +11,7 @@ module.exports = {
     permissions: permissions.ManageNicknames,
     options: [
         {
-            name: 'member',
+            name: 'usuario',
             description: 'El miembro al que se le establecerá el apodo',
             type: ApplicationCommandOptionType.User,
             required: true
@@ -25,7 +25,7 @@ module.exports = {
     ],
     run: async (client, inter) => {
         //Get member and nickname
-        const member = inter.options.getMember('member')
+        const member = inter.options.getMember('usuario')
         const nickname = inter.options.getString('nickname')
 
         //Defer reply

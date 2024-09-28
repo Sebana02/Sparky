@@ -10,8 +10,8 @@ module.exports = {
     description: 'Juega al tictactoe con un amigo',
     options: [
         {
-            name: 'oponent',
-            description: 'Menciona a tu oponente',
+            name: 'opponente',
+            description: 'Menciona a tu opponente',
             type: ApplicationCommandOptionType.User,
             required: true
         }
@@ -19,7 +19,7 @@ module.exports = {
     run: async (client, inter) => {
 
         //Check if the opponent is a bot or the author
-        const opponent = inter.options.getUser('oponent')
+        const opponent = inter.options.getUser('opponente')
         if (opponent.bot)
             return await reply(inter, { content: 'No puedes jugar contra un bot', ephemeral: true, deleteTime: 2 })
         if (opponent === inter.user)

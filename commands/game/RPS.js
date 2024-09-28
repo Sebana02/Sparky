@@ -10,15 +10,15 @@ module.exports = {
     description: 'Juega al piedra/papel/tijeras con un amigo',
     options: [
         {
-            name: 'oponent',
-            description: 'Menciona a tu oponente',
+            name: 'opponente',
+            description: 'Menciona a tu opponente',
             type: ApplicationCommandOptionType.User,
             required: true
         }
     ],
     run: async (client, inter) => {
         //Get the opponent and check if it is a bot or the author of the interaction
-        const opponent = inter.options.getUser('oponent')
+        const opponent = inter.options.getUser('opponente')
         if (opponent.bot) return await reply(inter, { content: 'No puedes jugar contra un bot', ephemeral: true, deleteTime: 2 })
         if (opponent === inter.user) return await reply(inter, { content: 'No puedes jugar contra ti mismo', ephemeral: true, deleteTime: 2 })
 
@@ -44,7 +44,7 @@ class RPS {
      */
     async createGame() {
         //Create the embed and buttons
-        const embed = createEmbed({ title: `${this.inter.user.username} vs ${this.inter.options.getUser('oponent').username}`, color: ColorScheme.game })
+        const embed = createEmbed({ title: `${this.inter.user.username} vs ${this.inter.options.getUser('opponente').username}`, color: ColorScheme.game })
         const buttons = this.createButtons()
 
         //Send the embed and buttons
@@ -112,7 +112,7 @@ class RPS {
                     await reply(i, { content: `Has escogido ${this.icons[JSON.parse(i.customId).index]}`, ephemeral: true, deleteTime: 2, propagate: false })
 
                     //If the interaction is from the author or the opponent, store their move
-                    if (i.user === this.inter.options.getUser('oponent') || i.user === this.inter.user) {
+                    if (i.user === this.inter.options.getUser('opponente') || i.user === this.inter.user) {
 
                         //Delete theyre previous election if they have chosen again and store the new one
                         elecciones.filter((person) => person.user !== i.user)

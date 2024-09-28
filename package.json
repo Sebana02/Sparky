@@ -1,7 +1,7 @@
 {
-  "name": "bmo",
+  "name": "sparky",
   "version": "1.0.0",
-  "description": "Discord bot for private usage",
+  "description": "This Discord bot is designed to be an easy and customizable solution for your servers. Ideal for groups of friends, the bot offers a variety of fun and useful commands that enhance chat experience and community interaction.",
   "main": "main.js",
   "type": "commonjs",
   "scripts": {
@@ -9,8 +9,8 @@
     "start": "node main.js"
   },
   "keywords": [],
-  "author": "Khlozer",
-  "license": "ISC",
+  "author": "Sebana02",
+  "license": "MIT",
   "dependencies": {
     "@discord-player/extractor": "^4.5.1",
     "@ffmpeg-installer/ffmpeg": "^1.1.0",

@@ -12,7 +12,7 @@ module.exports = {
     voiceChannel: true,
     options: [
         {
-            name: 'song',
+            name: 'cancion',
             description: 'La canción que quieres reproducir a continuación',
             type: ApplicationCommandOptionType.String,
             required: true,
@@ -23,7 +23,7 @@ module.exports = {
 
         //Get the queue and the song
         const queue = useQueue(inter.guildId)
-        const song = inter.options.getString('song')
+        const song = inter.options.getString('cancion')
 
         //Check if there is a queue and if it is playing
         if (!queue || !queue.isPlaying())

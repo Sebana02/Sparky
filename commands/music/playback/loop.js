@@ -12,14 +12,14 @@ module.exports = {
     voiceChannel: true,
     options: [
         {
-            name: 'action',
+            name: 'accion',
             description: 'Que quieres hacer con el loop',
             type: ApplicationCommandOptionType.Number,
             required: true,
             choices: [
-                { name: 'Off', value: QueueRepeatMode.OFF },
-                { name: 'Track', value: QueueRepeatMode.TRACK },
-                { name: 'Queue', value: QueueRepeatMode.QUEUE },
+                { name: 'Apagado', value: QueueRepeatMode.OFF },
+                { name: 'Cancion', value: QueueRepeatMode.TRACK },
+                { name: 'Lista', value: QueueRepeatMode.QUEUE },
                 { name: 'Autoplay', value: QueueRepeatMode.AUTOPLAY }
             ],
         }
@@ -34,7 +34,7 @@ module.exports = {
             return await reply(inter, { embeds: [noQueue(client)], ephemeral: true, deleteTime: 2 })
 
         //Set the repeat mode
-        queue.setRepeatMode(inter.options.getNumber('action'))
+        queue.setRepeatMode(inter.options.getNumber('accion'))
 
         //Send the loop embed
         await reply(inter, { embeds: [loop(queue.repeatMode, queue.currentTrack)] })

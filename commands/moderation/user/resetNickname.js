@@ -10,7 +10,7 @@ module.exports = {
     description: 'Reset the nickname of a user',
     options: [
         {
-            name: 'user',
+            name: 'usuario',
             description: 'The user to reset the nickname',
             type: ApplicationCommandOptionType.User,
             required: true
@@ -19,7 +19,7 @@ module.exports = {
     permissions: permissions.ManageNicknames,
     run: async (client, inter) => {
         //Get member
-        const member = inter.options.getMember('user')
+        const member = inter.options.getMember('usuario')
 
         //Defer reply
         await deferReply(inter, { ephemeral: true })

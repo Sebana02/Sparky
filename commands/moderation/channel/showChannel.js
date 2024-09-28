@@ -13,7 +13,7 @@ module.exports = {
     permissions: permissions.ManageChannels,
     options: [
         {
-            name: 'channel',
+            name: 'canal',
             description: 'Canal a mostrar',
             type: ApplicationCommandOptionType.Channel,
             required: false
@@ -24,7 +24,7 @@ module.exports = {
         await deferReply(inter, { ephemeral: true })
 
         //Get the channel to show
-        const channel = inter.options.getChannel('channel') || inter.channel
+        const channel = inter.options.getChannel('canal') || inter.channel
 
         //Check if the channel is already visible
         if (channel.permissionOverwrites.cache.find(overwrite => overwrite.id === inter.guild.id && overwrite.allow.has(permissions.ViewChannel)))

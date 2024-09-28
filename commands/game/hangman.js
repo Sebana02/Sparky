@@ -15,7 +15,7 @@ module.exports = {
     description: 'Juego del ahorcado',
     options: [
         {
-            name: 'type',
+            name: 'gamemode',
             description: 'Tipo de partida',
             type: ApplicationCommandOptionType.String,
             required: true,
@@ -203,7 +203,7 @@ async function startGame(inter) {
 
     //gather players and game type
     const players = await gatherPlayers(inter)
-    const gameType = await inter.options.getString('type')
+    const gameType = await inter.options.getString('gamemode')
 
     //check if enough players have joined
     if (players.length == 0)

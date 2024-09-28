@@ -12,19 +12,19 @@ module.exports = {
     permissions: permissions.KickMembers,
     options: [
         {
-            name: 'member',
+            name: 'usuario',
             description: 'El miembro a silenciar del servidor.',
             type: ApplicationCommandOptionType.User,
             required: true
         },
         {
-            name: 'reason',
+            name: 'motivo',
             description: 'La razón por la que se silencia al miembro',
             type: ApplicationCommandOptionType.String,
             required: true
         },
         {
-            name: 'time',
+            name: 'tiempo',
             description: 'El tiempo que se aislará al miembro en minutos',
             type: ApplicationCommandOptionType.Number,
             required: true,
@@ -33,9 +33,9 @@ module.exports = {
     ],
     run: async (client, inter) => {
         //Get member, reason and time
-        const member = inter.options.getMember('member')
-        const reason = inter.options.getString('reason')
-        const time = inter.options.getNumber('time')
+        const member = inter.options.getMember('usuario')
+        const reason = inter.options.getString('motivo')
+        const time = inter.options.getNumber('tiempo')
 
         //Defer reply
         await deferReply(inter, { ephemeral: true })

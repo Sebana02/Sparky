@@ -12,7 +12,7 @@ module.exports = {
     voiceChannel: true,
     options: [
         {
-            name: 'song',
+            name: 'cancion',
             description: 'La canción que quieres reproducir',
             type: ApplicationCommandOptionType.String,
             required: true,
@@ -23,7 +23,7 @@ module.exports = {
 
         //Get the player and the song
         const player = useMainPlayer()
-        const song = inter.options.getString('song')
+        const song = inter.options.getString('cancion')
 
         //Defer the reply
         await deferReply(inter)

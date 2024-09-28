@@ -12,7 +12,7 @@ module.exports = {
     voiceChannel: true,
     options: [
         {
-            name: 'volume',
+            name: 'volumen',
             description: 'El volumen que quieres poner',
             type: ApplicationCommandOptionType.Number,
             required: true,
@@ -26,7 +26,7 @@ module.exports = {
         //Get the queue, the player and the volume
         const queue = useQueue(inter.guildId)
         const player = usePlayer(inter.guildId)
-        const vol = inter.options.getNumber('volume')
+        const vol = inter.options.getNumber('volumen')
 
         //Check if there is a queue and if it is playing
         if (!queue || !queue.isPlaying())
