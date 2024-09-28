@@ -98,6 +98,12 @@ To install and run the bot locally, follow these steps:
    npm run dev
    ```
 
+   This will start the bot with `nodemon` package and will automatically restart the bot when changes are made. In order to stop the bot and exit the process, press `Ctrl + C` twice. To install `nodemon` package, run:
+
+   ```bash
+   npm install -g nodemon
+   ```
+
 8. The bot should now be running and connected to your Discord server!
 
 ## Configuration
