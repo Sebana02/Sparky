@@ -27,5 +27,9 @@
     "@events": "events/",
     "@commands": "commands/",
     "@utils": "utils/"
-  }
+  },
+  "bugs": {
+    "url": "https://github.com/Sebana02/sparky/issues"
+  },
+  "homepage": "https://github.com/Sebana02/sparky#readme"
 }
