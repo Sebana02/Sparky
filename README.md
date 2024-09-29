@@ -143,7 +143,7 @@ Any event must be placed in the `events` folder, specifically in the emmiter's f
 
 `Events` must be `.js` files and must export an object with the following parameters:
 
-- `name`: The name of the event. This name must correspond to any of the list of events provided by the emitter it belongs to.
+- `event`: The name of the event. This name must correspond to any of the list of events provided by the emitter it belongs to.
 - `callback (client, args) => { }`: The function that will be executed when the event is emitted. It receives the `client` object and any `other parameters` that the event emits. (Look at the emitter's documentation to know which parameters are emitted.)
 
 A template event is provided in the repository as [`event.js`](templates/event.js), which have more details about the event structure and can be used as a base for new events.
