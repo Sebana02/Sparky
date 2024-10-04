@@ -79,7 +79,6 @@ module.exports = {
      * @param {Client} client - The Discord client.
      */
     config: (client) => {
-
         try {
             // Load events
             console.log('-> Loading events...')

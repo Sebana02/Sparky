@@ -32,6 +32,8 @@ require('dotenv').config() // load .env variables
 
 require('@src/logger.js').config() //Change console stream to log file
 
+require('@src/langLoader.js').config() //Load languages
+
 require('@src/loader.js').config(client) //Load commands and events
 
 

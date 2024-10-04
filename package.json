@@ -26,7 +26,8 @@
     "@src": "src/",
     "@events": "events/",
     "@commands": "commands/",
-    "@utils": "utils/"
+    "@utils": "utils/",
+    "@languages": "languages/"
   },
   "bugs": {
     "url": "https://github.com/Sebana02/sparky/issues"
