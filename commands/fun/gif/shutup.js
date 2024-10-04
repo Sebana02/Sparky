@@ -1,17 +1,18 @@
 const { ApplicationCommandOptionType } = require('discord.js')
 const { sendRandomGif } = require('@utils/gifUtils.js')
 const { createEmbed, ColorScheme } = require('@utils/embedUtils.js')
+const { resolveCommandLiteral } = require('@utils/langUtils')
 
 /**
  * Command that tells a user to shut up via gif
  */
 module.exports = {
-    name: 'callate',
-    description: 'Manda a callar a un usuario',
+    name: 'shutup',
+    description: resolveCommandLiteral('shutup.description'),
     options: [
         {
-            name: 'usuario',
-            description: 'El usuario que quieres que se calle',
+            name: resolveCommandLiteral('shutup.user'),
+            description: resolveCommandLiteral('shutup.userDescription'),
             type: ApplicationCommandOptionType.User,
             required: true,
         }
@@ -21,8 +22,12 @@ module.exports = {
         //Create embed
         const embed = createEmbed({
             color: ColorScheme.fun,
-            description: `🤫 Silencio, ${inter.options.getUser('usuario')}`,
-            footer: { text: `${inter.user.username} te manda callar...`, iconURL: inter.user.displayAvatarURL({ size: 1024, dynamic: true }) },
+            description: resolveCommandLiteral('shutup.embedDescription',
+                inter.options.getUser(resolveCommandLiteral('shutup.user'))),
+            footer: {
+                text: resolveCommandLiteral('shutup.embedFooter', inter.user.username),
+                iconURL: inter.user.displayAvatarURL({ size: 1024, dynamic: true })
+            },
             setTimestamp: true
         })
 

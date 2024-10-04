@@ -1,17 +1,18 @@
 const { ApplicationCommandOptionType } = require('discord.js')
 const { sendRandomGif } = require('@utils/gifUtils.js')
 const { createEmbed, ColorScheme } = require('@utils/embedUtils.js')
+const { resolveCommandLiteral } = require('@utils/langUtils')
 
 /**
  * Command that sends a random gif from the category poke, poke the user
  */
 module.exports = {
     name: 'poke',
-    description: 'Da un toque a un usuario, molesta a alguien',
+    description: resolveCommandLiteral('poke.description'),
     options: [
         {
-            name: 'usuario',
-            description: 'El usuario al que quieras molestar',
+            name: resolveCommandLiteral('poke.user'),
+            description: resolveCommandLiteral('poke.userDescription'),
             type: ApplicationCommandOptionType.User,
             required: true,
         }
@@ -21,8 +22,12 @@ module.exports = {
         //Create embed
         const embed = createEmbed({
             color: ColorScheme.fun,
-            description: `${inter.options.getUser('usuario')}, ¡poketeo para ti! 👉`,
-            footer: { text: `${inter.user.username} te poketea...`, iconURL: inter.user.displayAvatarURL({ size: 1024, dynamic: true }) },
+            description: resolveCommandLiteral('poke.embedDescription',
+                inter.options.getUser(resolveCommandLiteral('poke.user')).username),
+            footer: {
+                text: resolveCommandLiteral('poke.embedFooter', inter.user.username),
+                iconURL: inter.user.displayAvatarURL({ size: 1024, dynamic: true })
+            },
             setTimestamp: true
         })
 

@@ -1,29 +1,36 @@
 const { ApplicationCommandOptionType } = require('discord.js')
 const { sendRandomGif } = require('@utils/gifUtils.js')
 const { createEmbed, ColorScheme } = require('@utils/embedUtils.js')
+const { resolveCommandLiteral } = require('@utils/langUtils')
+
 /**
  * Command that sends random gif(s) from the specified category
  */
 module.exports = {
     name: 'gif',
-    description: 'Muestra un gif aleatorio de la categoria indicada',
+    description: resolveCommandLiteral('gif.description'),
     options: [
         {
-            name: 'categoría',
-            description: 'Categoría que quieras buscar',
+            name: resolveCommandLiteral('gif.category'),
+            description: resolveCommandLiteral('gif.categoryDescription'),
             type: ApplicationCommandOptionType.String,
             required: true,
         }
     ],
     run: async (client, inter) => {
+        //Get the category
+        const category = inter.options.getString(resolveCommandLiteral('gif.category'))
         //Create embed
         const embed = createEmbed({
-            footer: { text: `${inter.user.username} manda un gif de "${inter.options.getString('categoría')}"...`, iconURL: inter.user.displayAvatarURL({ size: 1024, dynamic: true }) },
+            footer: {
+                text: resolveCommandLiteral('gif.embed', inter.user.username, category),
+                iconURL: inter.user.displayAvatarURL({ size: 1024, dynamic: true })
+            },
             color: ColorScheme.fun,
             setTimestamp: true
         })
 
         //Reply with a random gif from the specified category
-        await sendRandomGif(inter, inter.options.getString('categoría'), embed)
+        await sendRandomGif(inter, category, embed)
     },
 }

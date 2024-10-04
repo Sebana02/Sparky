@@ -156,18 +156,18 @@ The bot can be invoked using Discord's slash commands. Sparky offers a variety o
 
 These commands are designed to add fun and entertainment to the chat experience. They include GIFs, memes, and interactive actions like hugs, pokes, and slaps.
 
-| Command             | Description                                           | Example                          | Category | File                                        |
-| ------------------- | ----------------------------------------------------- | -------------------------------- | -------- | ------------------------------------------- |
-| `/callate <user>`   | Sends a GIF telling the mentioned `user` to shut up.  | `/callate @Dave`                 | GIFs     | [`callate.js`](commands/fun/gif/callate.js) |
-| `/cat`              | Sends a random cat GIF                                | `/cat`                           | GIFs     | [`cat.js`](commands/fun/gif/cat.js)         |
-| `/dog`              | Sends a random dog GIF                                | `/dog`                           | GIFs     | [`dog.js`](commands/fun/gif/dog.js)         |
-| `/gif <category>`   | Sends a random GIF based on the specified `category`. | `/gif weird`                     | GIFs     | [`gif.js`](commands/fun/gif/gif.js)         |
-| `/hug <user>`       | Sends a GIF giving a hug to a specified `user`.       | `/hug @Dave`                     | GIFs     | [`hug.js`](commands/fun/gif/hug.js)         |
-| `/meme`             | Sends a random meme GIF.                              | `/meme`                          | GIFs     | [`meme.js`](commands/fun/gif/meme.js)       |
-| `/poke <user>`      | Sends a GIF poking a specified `user`.                | `/poke @Dave`                    | GIFs     | [`poke.js`](commands/fun/gif/poke.js)       |
-| `/slap <user>`      | Sends a GIF slapping a specified `user`.              | `/slap @Dave`                    | GIFs     | [`slap.js`](commands/fun/gif/slap.js)       |
-| `/8ball <question>` | Answers a `question` with a random 8-ball response.   | `/8ball Will I win the lottery?` | None     | [`8ball.js`](commands/fun/8ball.js)         |
-| `/coinflip`         | Flips a coin and returns heads or tails.              | `/coinflip`                      | None     | [`coinflip.js`](commands/fun/coinflip.js)   |
+| Command             | Description                                           | Example                          | Category | File                                      |
+| ------------------- | ----------------------------------------------------- | -------------------------------- | -------- | ----------------------------------------- |
+| `/shutup <user>`    | Sends a GIF telling the mentioned `user` to shut up.  | `/shutup @Dave`                  | GIFs     | [`shutup.js`](commands/fun/gif/shutup.js) |
+| `/cat`              | Sends a random cat GIF                                | `/cat`                           | GIFs     | [`cat.js`](commands/fun/gif/cat.js)       |
+| `/dog`              | Sends a random dog GIF                                | `/dog`                           | GIFs     | [`dog.js`](commands/fun/gif/dog.js)       |
+| `/gif <category>`   | Sends a random GIF based on the specified `category`. | `/gif weird`                     | GIFs     | [`gif.js`](commands/fun/gif/gif.js)       |
+| `/hug <user>`       | Sends a GIF giving a hug to a specified `user`.       | `/hug @Dave`                     | GIFs     | [`hug.js`](commands/fun/gif/hug.js)       |
+| `/meme`             | Sends a random meme GIF.                              | `/meme`                          | GIFs     | [`meme.js`](commands/fun/gif/meme.js)     |
+| `/poke <user>`      | Sends a GIF poking a specified `user`.                | `/poke @Dave`                    | GIFs     | [`poke.js`](commands/fun/gif/poke.js)     |
+| `/slap <user>`      | Sends a GIF slapping a specified `user`.              | `/slap @Dave`                    | GIFs     | [`slap.js`](commands/fun/gif/slap.js)     |
+| `/8ball <question>` | Answers a `question` with a random 8-ball response.   | `/8ball Will I win the lottery?` | None     | [`8ball.js`](commands/fun/8ball.js)       |
+| `/coinflip`         | Flips a coin and returns heads or tails.              | `/coinflip`                      | None     | [`coinflip.js`](commands/fun/coinflip.js) |
 
 ### `Game commands`
 
