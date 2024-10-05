@@ -11,8 +11,8 @@ module.exports = {
     description: fetchCommandLit('fun.hug.description'),
     options: [
         {
-            name: fetchCommandLit('fun.hug.user'),
-            description: fetchCommandLit('fun.hug.userDescription'),
+            name: fetchCommandLit('fun.hug.option.name'),
+            description: fetchCommandLit('fun.hug.option.description'),
             type: ApplicationCommandOptionType.User,
             required: true,
         }
@@ -22,13 +22,12 @@ module.exports = {
         //Create embed
         const embed = createEmbed({
             color: ColorScheme.fun,
-            description: fetchCommandLit('fun.hug.embedDescription',
-                inter.options.getUser(fetchCommandLit('fun.hug.user'))),
+            description: fetchCommandLit('fun.hug.response.description',
+                inter.options.getUser(fetchCommandLit('fun.hug.option.name'))),
             footer: {
-                text: fetchCommandLit('fun.hug.embedFooter', inter.user.username),
+                text: fetchCommandLit('fun.hug.response.footer', inter.user.username),
                 iconURL: inter.user.displayAvatarURL({ size: 1024, dynamic: true })
-            },
-            setTimestamp: true
+            }
         })
 
         //Reply with a random gif, hugging the user

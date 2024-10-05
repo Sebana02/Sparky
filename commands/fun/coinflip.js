@@ -12,14 +12,13 @@ module.exports = {
         //Create embed with random response
         const embed = createEmbed({
             footer: {
-                text: fetchCommandLit('fun.coinflip.embedFooter', inter.user.username),
+                text: fetchCommandLit('fun.coinflip.response.footer', inter.user.username),
                 iconURL: inter.user.displayAvatarURL({ size: 1024, dynamic: true })
             },
             title: `${Math.random() < 0.5 ?
-                fetchCommandLit('fun.coinflip.resultHeads') :
-                fetchCommandLit('fun.coinflip.resultTails')}`,
+                fetchCommandLit('fun.coinflip.response.heads') :
+                fetchCommandLit('fun.coinflip.response.tails')}`,
             color: ColorScheme.fun,
-            setTimestamp: true
         })
 
         //Reply to the interaction

@@ -11,8 +11,8 @@ module.exports = {
     description: fetchCommandLit('fun.8ball.description'),
     options: [
         {
-            name: fetchCommandLit('fun.8ball.question'),
-            description: fetchCommandLit('fun.8ball.questionDescription'),
+            name: fetchCommandLit('fun.8ball.option.name'),
+            description: fetchCommandLit('fun.8ball.option.description'),
             type: ApplicationCommandOptionType.String,
             required: true,
         }
@@ -22,9 +22,9 @@ module.exports = {
         const embed = createEmbed({
             title: `🎱 ${responses[Math.floor(Math.random() * responses.length)]}`,
             color: ColorScheme.fun,
-            setTimestamp: true,
             footer: {
-                text: fetchCommandLit('fun.8ball.embedFooter', inter.user.username, inter.options.getString(fetchCommandLit('fun.8ball.question'))),
+                text: fetchCommandLit('fun.8ball.response.footer', inter.user.username,
+                    inter.options.getString(fetchCommandLit('fun.8ball.option.name'))),
                 iconURL: inter.user.displayAvatarURL({ size: 1024, dynamic: true })
             }
         })
@@ -35,19 +35,19 @@ module.exports = {
 }
 
 const responses = [
-    fetchCommandLit('fun.8ball.responses.yes'),
-    fetchCommandLit('fun.8ball.responses.no'),
-    fetchCommandLit('fun.8ball.responses.maybe'),
-    fetchCommandLit('fun.8ball.responses.probable'),
-    fetchCommandLit('fun.8ball.responses.idk'),
-    fetchCommandLit('fun.8ball.responses.ofCourse'),
-    fetchCommandLit('fun.8ball.responses.definitelyNot'),
-    fetchCommandLit('fun.8ball.responses.noDoubt'),
-    fetchCommandLit('fun.8ball.responses.unlikely'),
-    fetchCommandLit('fun.8ball.responses.askAgain'),
-    fetchCommandLit('fun.8ball.responses.cannotAnswer'),
-    fetchCommandLit('fun.8ball.responses.sure'),
-    fetchCommandLit('fun.8ball.responses.dontCountOnIt'),
-    fetchCommandLit('fun.8ball.responses.bestOption'),
-    fetchCommandLit('fun.8ball.responses.depends'),
+    fetchCommandLit('fun.8ball.response.answers.yes'),
+    fetchCommandLit('fun.8ball.response.answers.no'),
+    fetchCommandLit('fun.8ball.response.answers.maybe'),
+    fetchCommandLit('fun.8ball.response.answers.probable'),
+    fetchCommandLit('fun.8ball.response.answers.idk'),
+    fetchCommandLit('fun.8ball.response.answers.ofCourse'),
+    fetchCommandLit('fun.8ball.response.answers.definitelyNot'),
+    fetchCommandLit('fun.8ball.response.answers.noDoubt'),
+    fetchCommandLit('fun.8ball.response.answers.unlikely'),
+    fetchCommandLit('fun.8ball.response.answers.askAgain'),
+    fetchCommandLit('fun.8ball.response.answers.cannotAnswer'),
+    fetchCommandLit('fun.8ball.response.answers.sure'),
+    fetchCommandLit('fun.8ball.response.answers.dontCountOnIt'),
+    fetchCommandLit('fun.8ball.response.answers.bestOption'),
+    fetchCommandLit('fun.8ball.response.answers.depends'),
 ]

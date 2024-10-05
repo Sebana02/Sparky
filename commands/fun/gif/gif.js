@@ -11,24 +11,23 @@ module.exports = {
     description: fetchCommandLit('fun.gif.description'),
     options: [
         {
-            name: fetchCommandLit('fun.gif.category'),
-            description: fetchCommandLit('fun.gif.categoryDescription'),
+            name: fetchCommandLit('fun.gif.option.name'),
+            description: fetchCommandLit('fun.gif.option.description'),
             type: ApplicationCommandOptionType.String,
             required: true,
         }
     ],
     run: async (client, inter) => {
         //Get the category
-        const category = inter.options.getString(fetchCommandLit('fun.gif.category'))
+        const category = inter.options.getString(fetchCommandLit('fun.gif.option.name'))
 
         //Create embed
         const embed = createEmbed({
             footer: {
-                text: fetchCommandLit('fun.gif.embed', inter.user.username, category),
+                text: fetchCommandLit('fun.gif.response', inter.user.username, category),
                 iconURL: inter.user.displayAvatarURL({ size: 1024, dynamic: true })
             },
-            color: ColorScheme.fun,
-            setTimestamp: true
+            color: ColorScheme.fun
         })
 
         //Reply with a random gif from the specified category

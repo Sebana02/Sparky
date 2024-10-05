@@ -11,8 +11,8 @@ module.exports = {
     description: fetchCommandLit('fun.poke.description'),
     options: [
         {
-            name: fetchCommandLit('fun.poke.user'),
-            description: fetchCommandLit('fun.poke.userDescription'),
+            name: fetchCommandLit('fun.poke.option.name'),
+            description: fetchCommandLit('fun.poke.option.description'),
             type: ApplicationCommandOptionType.User,
             required: true,
         }
@@ -22,13 +22,12 @@ module.exports = {
         //Create embed
         const embed = createEmbed({
             color: ColorScheme.fun,
-            description: fetchCommandLit('fun.poke.embedDescription',
-                inter.options.getUser(fetchCommandLit('fun.poke.user')).username),
+            description: fetchCommandLit('fun.poke.response.description',
+                inter.options.getUser(fetchCommandLit('fun.poke.option.name'))),
             footer: {
-                text: fetchCommandLit('fun.poke.embedFooter', inter.user.username),
+                text: fetchCommandLit('fun.poke.response.footer', inter.user.username),
                 iconURL: inter.user.displayAvatarURL({ size: 1024, dynamic: true })
-            },
-            setTimestamp: true
+            }
         })
 
         //Reply with a random gif, poking the user

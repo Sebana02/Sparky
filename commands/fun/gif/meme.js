@@ -12,11 +12,10 @@ module.exports = {
         //Create embed
         const embed = createEmbed({
             footer: {
-                text: fetchCommandLit('fun.meme.embed', inter.user.username),
+                text: fetchCommandLit('fun.meme.response', inter.user.username),
                 iconURL: inter.user.displayAvatarURL({ size: 1024, dynamic: true })
             },
-            color: ColorScheme.fun,
-            setTimestamp: true
+            color: ColorScheme.fun
         })
 
         //Reply with a random gif from the category meme

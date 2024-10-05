@@ -12,10 +12,9 @@ module.exports = {
         const embed = createEmbed({
             color: ColorScheme.fun,
             footer: {
-                text: fetchCommandLit('fun.cat.embed', inter.user.username)
+                text: fetchCommandLit('fun.cat.response', inter.user.username)
                 , iconURL: inter.user.displayAvatarURL({ size: 1024, dynamic: true })
-            },
-            setTimestamp: true
+            }
         })
 
         //Reply with a random cat gif

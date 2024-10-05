@@ -2,78 +2,154 @@
   "fun": {
     "cat": {
       "description": "Sends a random cat",
-      "embed": "{0} sends a cat 🐱"
+      "response": "{0} sends a cat 🐱"
     },
     "dog": {
       "description": "Sends a random dog",
-      "embed": "{0} sends a dog 🐶"
+      "response": "{0} sends a dog 🐶"
     },
     "gif": {
-      "description": "Shows a random gif from the specified category",
-      "category": "category",
-      "categoryDescription": "Category you want to search for",
-      "embed": "{0} sends a gif from \"{1}\"..."
+      "description": "Shows a random gif of the indicated category",
+      "option": {
+        "name": "category",
+        "description": "Category you want to search"
+      },
+      "response": "{0} sends a gif from \"{1}\"..."
     },
     "hug": {
       "description": "Hug a user",
-      "user": "user",
-      "userDescription": "The user you want to hug",
-      "embedDescription": "{0}, a hug for you! 🤗",
-      "embedFooter": "{0} sends you a hug..."
+      "option": {
+        "name": "user",
+        "description": "The user you want to hug"
+      },
+      "response": {
+        "description": "{0}, a hug for you! 🤗",
+        "footer": "{0} sends you a hug..."
+      }
     },
     "meme": {
       "description": "Sends a random meme",
-      "embed": "{0} sends a meme..."
+      "response": "{0} sends a meme..."
     },
     "poke": {
       "description": "Poke a user, annoy someone",
-      "user": "user",
-      "userDescription": "The user you want to poke",
-      "embedDescription": "{0}, a poke for you! 👉",
-      "embedFooter": "{0} pokes you..."
+      "option": {
+        "name": "user",
+        "description": "The user you want to annoy"
+      },
+      "response": {
+        "description": "{0}, a poke for you! 👉",
+        "footer": "{0} pokes you..."
+      }
     },
     "shutup": {
-      "description": "Tell a user to shut up",
-      "user": "user",
-      "userDescription": "The user you want to tell to shut up",
-      "embedDescription": "🤫 Silence, {0}",
-      "embedFooter": "{0} tells you to shut up..."
+      "description": "Tell a user to be quiet",
+      "option": {
+        "name": "user",
+        "description": "The user you want to tell to be quiet"
+      },
+      "response": {
+        "description": "🤫 Silence, {0}",
+        "footer": "{0} tells you to be quiet..."
+      }
     },
     "slap": {
       "description": "Slap a user",
-      "user": "user",
-      "userDescription": "The user you want to slap",
-      "embedDescription": "{0}, a slap in the face! 👋",
-      "embedFooter": "{0} slaps you..."
+      "option": {
+        "name": "user",
+        "description": "The user you want to slap"
+      },
+      "response": {
+        "description": "{0}, right in the face! 👋",
+        "footer": "{0} slaps you..."
+      }
     },
     "8ball": {
-      "description": "Ask the magic 8-ball a question",
-      "question": "question",
-      "questionDescription": "Your question for the magic 8-ball",
-      "embedFooter": "{0} asked: {1}",
-      "responses": {
-        "yes": "Yes",
-        "no": "No",
-        "maybe": "Maybe",
-        "probable": "It is probable",
-        "idk": "I don't know",
-        "ofCourse": "Of course",
-        "definitelyNot": "Definitely not",
-        "noDoubt": "No doubt about it",
-        "unlikely": "It's unlikely",
-        "askAgain": "Ask again later",
-        "cannotAnswer": "I can't answer that",
-        "sure": "Absolutely!",
-        "dontCountOnIt": "Don't count on it",
-        "bestOption": "It's probably the best option",
-        "depends": "Depends on the circumstances"
+      "description": "Ask the magic ball a question",
+      "option": {
+        "name": "question",
+        "description": "Your question for the magic ball"
+      },
+      "response": {
+        "footer": "{0} asked: {1}",
+        "answers": {
+          "yes": "Yes",
+          "no": "No",
+          "maybe": "Maybe",
+          "probable": "It’s likely",
+          "idk": "I don’t know",
+          "ofCourse": "Of course",
+          "definitelyNot": "Definitely not",
+          "noDoubt": "Without a doubt",
+          "unlikely": "It’s unlikely",
+          "askAgain": "Ask again later",
+          "cannotAnswer": "I can’t answer that",
+          "sure": "Sure!",
+          "dontCountOnIt": "Don’t count on it",
+          "bestOption": "It’s probably the best option",
+          "depends": "Depends on the circumstances"
+        }
       }
     },
     "coinflip": {
-      "description": "Flip the coin to see if it lands heads or tails",
-      "embedFooter": "{0} flipped a coin and it landed on...",
-      "resultHeads": "😄 Heads 😄",
-      "resultTails": "❌ Tails ❌"
+      "description": "Flip a coin to see if it lands heads or tails",
+      "response": {
+        "footer": "{0} flipped a coin and it landed on...",
+        "heads": "😄 Heads 😄",
+        "tails": "❌ Tails ❌"
+      }
     }
+  },
+  "game": {
+    "hangman": {},
+    "RPS": {},
+    "tictactoe": {},
+    "trivia": {}
+  },
+  "info": {
+    "uptime": {},
+    "wikiSearch": {}
+  },
+  "mod": {
+    "hideChannel": {},
+    "muteChannel": {},
+    "purge": {},
+    "showChannel": {},
+    "unmuteChannel": {},
+    "createRole": {},
+    "ban": {},
+    "bannedList": {},
+    "kick": {},
+    "mute": {},
+    "mutedList": {},
+    "resetNickname": {},
+    "setNickname": {},
+    "timeout": {},
+    "unban": {},
+    "unmute": {},
+    "warn": {}
+  },
+  "music": {
+    "lyrics": {},
+    "nowplaying": {},
+    "save": {},
+    "back": {},
+    "loop": {},
+    "pause": {},
+    "play": {},
+    "playnext": {},
+    "resume": {},
+    "skip": {},
+    "stop": {},
+    "volume": {},
+    "clear": {},
+    "queue": {},
+    "shuffle": {}
+  },
+  "util": {
+    "disconnect": {},
+    "ping": {},
+    "poll": {},
+    "remind": {}
   }
 }

@@ -11,8 +11,8 @@ module.exports = {
     description: fetchCommandLit('fun.slap.description'),
     options: [
         {
-            name: fetchCommandLit('fun.slap.user'),
-            description: fetchCommandLit('fun.slap.userDescription'),
+            name: fetchCommandLit('fun.slap.option.name'),
+            description: fetchCommandLit('fun.slap.option.description'),
             type: ApplicationCommandOptionType.User,
             required: true,
         }
@@ -22,13 +22,12 @@ module.exports = {
         //Create embed
         const embed = createEmbed({
             color: ColorScheme.fun,
-            description: fetchCommandLit('fun.slap.embedDescription',
-                inter.options.getUser(fetchCommandLit('fun.slap.user'))),
+            description: fetchCommandLit('fun.slap.response.description',
+                inter.options.getUser(fetchCommandLit('fun.slap.option.name'))),
             footer: {
-                text: fetchCommandLit('fun.slap.embedFooter', inter.user.username),
+                text: fetchCommandLit('fun.slap.response.footer', inter.user.username),
                 iconURL: inter.user.displayAvatarURL({ size: 1024, dynamic: true })
-            },
-            setTimestamp: true
+            }
         })
 
         //Reply with a random gif, slapping the user
