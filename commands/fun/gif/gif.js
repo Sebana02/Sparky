@@ -20,6 +20,7 @@ module.exports = {
     run: async (client, inter) => {
         //Get the category
         const category = inter.options.getString(resolveCommandLiteral('gif.category'))
+
         //Create embed
         const embed = createEmbed({
             footer: {

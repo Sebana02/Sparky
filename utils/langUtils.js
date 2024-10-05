@@ -6,24 +6,35 @@ String.format = function (str, ...args) {
 }
 
 /**
- * Get the value of a literal in the language file stored in process.language
+ * Get the value of a literal in the language file stored in process.language or process.defaultLanguage
  * @param {string} pathToLiteral - The literal path to get (e.g., 'src.loader.js.hello').
  * @param {string[]} args - Arguments to format the literal.
  * @returns {string|null} The value of the literal, or null if not found.
  **/
 function resolveLiteral(pathToLiteral, ...args) {
-    // Split the path and get the value of the literal
-    const result = pathToLiteral.split('.').reduce((obj, key) => (obj ? obj[key] : null), process.language)
 
-    // Log an error if the literal is not found
+    // Split the path and get the value of the literal
+    let result = pathToLiteral.split('.').reduce((obj, key) => (obj ? obj[key] : null), process.language)
+
+    // Log an error if the literal is not found, and search for it in the default language
     if (!result) {
-        console.error(`Error: literal not found: ${pathToLiteral}`)
-        return null
+        console.error(`Error: literal not found: ${pathToLiteral}, using default language`)
+
+        // Get the value of the literal in the default language
+        result = pathToLiteral.split('.').reduce((obj, key) => (obj ? obj[key] : null), process.defaultLanguage)
+
+        // Log an error if the literal is not found in the default language
+        if (!result)
+            return console.error(`Error: literal not found in default language: ${pathToLiteral}`)
     }
-    else if (args.length > 0)    // Return the value of the literal
+
+    // Format the literal if arguments are provided
+    if (args.length > 0)
         return String.format(result, ...args)
-    else
-        return result
+
+    //Return result literal
+    return result
+
 }
 
 /**
