@@ -40,7 +40,7 @@
 - **Music Control**: Sparky provides full music functionality including play, pause, skip, queue management, volume adjustment, and looping. It supports various music platforms like YouTube, Spotify, and SoundCloud.
 - **Moderation Commands**: Sparky helps keep your server under control with commands for banning, kicking, muting, and managing channels. You can also create and manage roles easily.
 - **Fun Commands**: Add fun to your server with meme GIFs, cat and dog images, virtual hugs, slaps, and other interactive commands that make the chat experience more lively.
-- **Game Commands**: Engage users with built-in games like hangman, rock-paper-scissors (RPS), and tic-tac-toe. Users can challenge each other and compete in these fun, light-hearted games.
+- **Game Commands**: Engage users with built-in games like hangman, rock-paper-scissors (rps), and tic-tac-toe. Users can challenge each other and compete in these fun, light-hearted games.
 - **Utility Commands**: Sparky includes useful tools like polls for gathering opinions, reminders for scheduling tasks, and a ping command to check latency.
 - **Information Commands**: Get quick insights such as bot uptime or perform Wikipedia searches right from the chat.
 - **Configurable Settings**: With the `.env` file, you can customize the bot’s behavior, including token configuration, activity status, DJ role permissions, and more.
@@ -187,7 +187,7 @@ These commands provide quick insights and information to users, including the bo
 | Command               | Description                                  | Example               | Category | File                                                  |
 | --------------------- | -------------------------------------------- | --------------------- | -------- | ----------------------------------------------------- |
 | `/uptime`             | Displays the bot's uptime                    | `/uptime`             | None     | [`uptime.js`](commands/information/uptime.js)         |
-| `/wikiSearch <query>` | Searches Wikipedia for the specified `query` | `/wikiSearch Discord` | None     | [`wikiSearch.js`](commands/information/wikiSearch.js) |
+| `/wikisearch <query>` | Searches Wikipedia for the specified `query` | `/wikisearch Discord` | None     | [`wikisearch.js`](commands/information/wikisearch.js) |
 
 ### `Moderation Commands`
 
@@ -320,7 +320,7 @@ You can always modify the bot to support your language.
 
 ### `IAs`
 
-- [ ] RPS
+- [ ] rps
 - [ ] TicTacToe
 
 ### `Embeds`

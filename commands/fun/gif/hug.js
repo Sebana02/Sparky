@@ -1,18 +1,18 @@
 const { ApplicationCommandOptionType } = require('discord.js')
 const { sendRandomGif } = require('@utils/gifUtils.js')
 const { createEmbed, ColorScheme } = require('@utils/embedUtils.js')
-const { resolveCommandLiteral } = require('@utils/langUtils')
+const { fetchCommandLit } = require('@utils/langUtils')
 
 /**
  * Command that sends a random gif from the category hug, hug the user
  */
 module.exports = {
     name: 'hug',
-    description: resolveCommandLiteral('hug.description'),
+    description: fetchCommandLit('fun.hug.description'),
     options: [
         {
-            name: resolveCommandLiteral('hug.user'),
-            description: resolveCommandLiteral('hug.userDescription'),
+            name: fetchCommandLit('fun.hug.user'),
+            description: fetchCommandLit('fun.hug.userDescription'),
             type: ApplicationCommandOptionType.User,
             required: true,
         }
@@ -22,10 +22,10 @@ module.exports = {
         //Create embed
         const embed = createEmbed({
             color: ColorScheme.fun,
-            description: resolveCommandLiteral('hug.embedDescription',
-                inter.options.getUser(resolveCommandLiteral('hug.user'))),
+            description: fetchCommandLit('fun.hug.embedDescription',
+                inter.options.getUser(fetchCommandLit('fun.hug.user'))),
             footer: {
-                text: resolveCommandLiteral('hug.embedFooter', inter.user.username),
+                text: fetchCommandLit('fun.hug.embedFooter', inter.user.username),
                 iconURL: inter.user.displayAvatarURL({ size: 1024, dynamic: true })
             },
             setTimestamp: true

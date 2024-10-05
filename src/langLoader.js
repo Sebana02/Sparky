@@ -9,8 +9,6 @@ const path = require('path')
  **/
 function loadLanguageFile(category, language) {
 
-    console.log(`-> Loading language: ${language}: ${category} file`)
-
     // Check if the category file exists in the specified language
     const langPath = path.resolve(__dirname, `../languages/${language}/${category}.json`)
     if (!fs.existsSync(langPath))
@@ -28,8 +26,6 @@ function loadLanguageFile(category, language) {
  **/
 function loadLanguage(language) {
 
-    console.log(`-> Loading language: ${language}`)
-
     // Check if the language folder exists
     const langPath = path.resolve(__dirname, `../languages/${language}`)
     if (!fs.existsSync(langPath))
@@ -43,8 +39,13 @@ function loadLanguage(language) {
         utils: loadLanguageFile('utils', language)
     }
 
-    // Return the language file if every file was loaded, otherwise return null
-    return (languageObject.commands && languageObject.events && languageObject.utils) ? languageObject : null
+    // Check if the language files were loaded
+    if (!languageObject.commands || !languageObject.events || !languageObject.utils)
+        return console.error(`-> Error: missing language files in ${language}`)
+
+    // Log the loaded language and return the language object
+    console.log(`-> Loaded language: ${language}`)
+    return languageObject
 }
 
 

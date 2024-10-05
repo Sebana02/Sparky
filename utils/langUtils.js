@@ -11,14 +11,14 @@ String.format = function (str, ...args) {
  * @param {string[]} args - Arguments to format the literal.
  * @returns {string|null} The value of the literal, or null if not found.
  **/
-function resolveLiteral(pathToLiteral, ...args) {
+function fetchLiteral(pathToLiteral, ...args) {
 
     // Split the path and get the value of the literal
     let result = pathToLiteral.split('.').reduce((obj, key) => (obj ? obj[key] : null), process.language)
 
     // Log an error if the literal is not found, and search for it in the default language
     if (!result) {
-        console.error(`Error: literal not found: ${pathToLiteral}, using default language`)
+        console.error(`Error: literal not found in selected language: ${pathToLiteral}, using default language`)
 
         // Get the value of the literal in the default language
         result = pathToLiteral.split('.').reduce((obj, key) => (obj ? obj[key] : null), process.defaultLanguage)
@@ -43,12 +43,12 @@ function resolveLiteral(pathToLiteral, ...args) {
  * @param {string[]} args - Arguments to format the literal.  
  * @returns {string|null} The value of the literal, or null if not found.
  */
-function resolveCommandLiteral(pathToLiteral, ...args) {
+function fetchCommandLit(pathToLiteral, ...args) {
     // Add 'commands.' to the path 
     pathToLiteral = `commands.${pathToLiteral}`
 
     // Get and return the value of the literal
-    return resolveLiteral(pathToLiteral, ...args)
+    return fetchLiteral(pathToLiteral, ...args)
 }
 
 /**
@@ -57,12 +57,12 @@ function resolveCommandLiteral(pathToLiteral, ...args) {
  * @param {string[]} args - Arguments to format the literal.
  * @returns {string|null} The value of the literal, or null if not found.
  */
-function resolveEventLiteral(pathToLiteral, ...args) {
+function fetchEventLit(pathToLiteral, ...args) {
     // Add 'events.' to the path 
     pathToLiteral = `events.${pathToLiteral}`
 
     // Get and return the value of the literal
-    return resolveLiteral(pathToLiteral, ...args)
+    return fetchLiteral(pathToLiteral, ...args)
 }
 
 /**
@@ -71,12 +71,12 @@ function resolveEventLiteral(pathToLiteral, ...args) {
  * @param {string[]} args - Arguments to format the literal.
  * @returns {string|null} The value of the literal, or null if not found.
  */
-function resolveUtilsLiteral(pathToLiteral, ...args) {
+function fetchUtilsLit(pathToLiteral, ...args) {
     // Add 'utils.' to the path 
     pathToLiteral = `utils.${pathToLiteral}`
 
     // Get and return the value of the literal
-    return resolveLiteral(pathToLiteral, ...args)
+    return fetchLiteral(pathToLiteral, ...args)
 }
 
 
@@ -85,8 +85,8 @@ function resolveUtilsLiteral(pathToLiteral, ...args) {
  * Utils for language
  */
 module.exports = {
-    resolveLiteral,
-    resolveCommandLiteral,
-    resolveEventLiteral,
-    resolveUtilsLiteral
+    fetchLiteral,
+    fetchCommandLit,
+    fetchEventLit,
+    fetchUtilsLit
 }

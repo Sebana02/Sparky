@@ -1,77 +1,79 @@
 {
-  "cat": {
-    "description": "Sends a random cat",
-    "embed": "{0} sends a cat 🐱"
-  },
-  "dog": {
-    "description": "Sends a random dog",
-    "embed": "{0} sends a dog 🐶"
-  },
-  "gif": {
-    "description": "Shows a random gif from the specified category",
-    "category": "category",
-    "categoryDescription": "Category you want to search for",
-    "embed": "{0} sends a gif from \"{1}\"..."
-  },
-  "hug": {
-    "description": "Hug a user",
-    "user": "user",
-    "userDescription": "The user you want to hug",
-    "embedDescription": "{0}, a hug for you! 🤗",
-    "embedFooter": "{0} sends you a hug..."
-  },
-  "meme": {
-    "description": "Sends a random meme",
-    "embed": "{0} sends a meme..."
-  },
-  "poke": {
-    "description": "Poke a user, annoy someone",
-    "user": "user",
-    "userDescription": "The user you want to poke",
-    "embedDescription": "{0}, a poke for you! 👉",
-    "embedFooter": "{0} pokes you..."
-  },
-  "shutup": {
-    "description": "Tell a user to shut up",
-    "user": "user",
-    "userDescription": "The user you want to tell to shut up",
-    "embedDescription": "🤫 Silence, {0}",
-    "embedFooter": "{0} tells you to shut up..."
-  },
-  "slap": {
-    "description": "Slap a user",
-    "user": "user",
-    "userDescription": "The user you want to slap",
-    "embedDescription": "{0}, a slap in the face! 👋",
-    "embedFooter": "{0} slaps you..."
-  },
-  "8ball": {
-    "description": "Ask the magic 8-ball a question",
-    "question": "question",
-    "questionDescription": "Your question for the magic 8-ball",
-    "embedFooter": "{0} asked: {1}",
-    "responses": {
-      "yes": "Yes",
-      "no": "No",
-      "maybe": "Maybe",
-      "probable": "It is probable",
-      "idk": "I don't know",
-      "ofCourse": "Of course",
-      "definitelyNot": "Definitely not",
-      "noDoubt": "No doubt about it",
-      "unlikely": "It's unlikely",
-      "askAgain": "Ask again later",
-      "cannotAnswer": "I can't answer that",
-      "sure": "Absolutely!",
-      "dontCountOnIt": "Don't count on it",
-      "bestOption": "It's probably the best option",
-      "depends": "Depends on the circumstances"
+  "fun": {
+    "cat": {
+      "description": "Sends a random cat",
+      "embed": "{0} sends a cat 🐱"
+    },
+    "dog": {
+      "description": "Sends a random dog",
+      "embed": "{0} sends a dog 🐶"
+    },
+    "gif": {
+      "description": "Shows a random gif from the specified category",
+      "category": "category",
+      "categoryDescription": "Category you want to search for",
+      "embed": "{0} sends a gif from \"{1}\"..."
+    },
+    "hug": {
+      "description": "Hug a user",
+      "user": "user",
+      "userDescription": "The user you want to hug",
+      "embedDescription": "{0}, a hug for you! 🤗",
+      "embedFooter": "{0} sends you a hug..."
+    },
+    "meme": {
+      "description": "Sends a random meme",
+      "embed": "{0} sends a meme..."
+    },
+    "poke": {
+      "description": "Poke a user, annoy someone",
+      "user": "user",
+      "userDescription": "The user you want to poke",
+      "embedDescription": "{0}, a poke for you! 👉",
+      "embedFooter": "{0} pokes you..."
+    },
+    "shutup": {
+      "description": "Tell a user to shut up",
+      "user": "user",
+      "userDescription": "The user you want to tell to shut up",
+      "embedDescription": "🤫 Silence, {0}",
+      "embedFooter": "{0} tells you to shut up..."
+    },
+    "slap": {
+      "description": "Slap a user",
+      "user": "user",
+      "userDescription": "The user you want to slap",
+      "embedDescription": "{0}, a slap in the face! 👋",
+      "embedFooter": "{0} slaps you..."
+    },
+    "8ball": {
+      "description": "Ask the magic 8-ball a question",
+      "question": "question",
+      "questionDescription": "Your question for the magic 8-ball",
+      "embedFooter": "{0} asked: {1}",
+      "responses": {
+        "yes": "Yes",
+        "no": "No",
+        "maybe": "Maybe",
+        "probable": "It is probable",
+        "idk": "I don't know",
+        "ofCourse": "Of course",
+        "definitelyNot": "Definitely not",
+        "noDoubt": "No doubt about it",
+        "unlikely": "It's unlikely",
+        "askAgain": "Ask again later",
+        "cannotAnswer": "I can't answer that",
+        "sure": "Absolutely!",
+        "dontCountOnIt": "Don't count on it",
+        "bestOption": "It's probably the best option",
+        "depends": "Depends on the circumstances"
+      }
+    },
+    "coinflip": {
+      "description": "Flip the coin to see if it lands heads or tails",
+      "embedFooter": "{0} flipped a coin and it landed on...",
+      "resultHeads": "😄 Heads 😄",
+      "resultTails": "❌ Tails ❌"
     }
-  },
-  "coinflip": {
-    "description": "Flip the coin to see if it lands heads or tails",
-    "embedFooter": "{0} flipped a coin and it landed on...",
-    "resultHeads": "😄 Heads 😄",
-    "resultTails": "❌ Tails ❌"
   }
 }

@@ -1,18 +1,18 @@
 const { ApplicationCommandOptionType } = require('discord.js')
 const { sendRandomGif } = require('@utils/gifUtils.js')
 const { createEmbed, ColorScheme } = require('@utils/embedUtils.js')
-const { resolveCommandLiteral } = require('@utils/langUtils')
+const { fetchCommandLit } = require('@utils/langUtils')
 
 /**
  * Command that sends a random gif from the category slap, slap the user
  */
 module.exports = {
     name: 'slap',
-    description: resolveCommandLiteral('slap.description'),
+    description: fetchCommandLit('fun.slap.description'),
     options: [
         {
-            name: resolveCommandLiteral('slap.user'),
-            description: resolveCommandLiteral('slap.userDescription'),
+            name: fetchCommandLit('fun.slap.user'),
+            description: fetchCommandLit('fun.slap.userDescription'),
             type: ApplicationCommandOptionType.User,
             required: true,
         }
@@ -22,10 +22,10 @@ module.exports = {
         //Create embed
         const embed = createEmbed({
             color: ColorScheme.fun,
-            description: resolveCommandLiteral('slap.embedDescription',
-                inter.options.getUser(resolveCommandLiteral('slap.user'))),
+            description: fetchCommandLit('fun.slap.embedDescription',
+                inter.options.getUser(fetchCommandLit('fun.slap.user'))),
             footer: {
-                text: resolveCommandLiteral('slap.embedFooter', inter.user.username),
+                text: fetchCommandLit('fun.slap.embedFooter', inter.user.username),
                 iconURL: inter.user.displayAvatarURL({ size: 1024, dynamic: true })
             },
             setTimestamp: true
