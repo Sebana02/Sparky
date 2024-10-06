@@ -163,7 +163,6 @@ module.exports = {
             // Load languages
             console.log('-> Loading languages...')
             loadLanguages(path.resolve(__dirname, '../languages'))
-
         } catch (error) {
             console.error(`Error: loading languages: ${error}`)
         }

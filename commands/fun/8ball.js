@@ -18,6 +18,8 @@ module.exports = {
         }
     ],
     run: async (client, inter) => {
+
+        const responses = fetchCommandLit('fun.8ball.response.answers')
         //Create embed with random response
         const embed = createEmbed({
             title: `🎱 ${responses[Math.floor(Math.random() * responses.length)]}`,
@@ -33,21 +35,3 @@ module.exports = {
         await reply(inter, { embeds: [embed] })
     }
 }
-
-const responses = [
-    fetchCommandLit('fun.8ball.response.answers.yes'),
-    fetchCommandLit('fun.8ball.response.answers.no'),
-    fetchCommandLit('fun.8ball.response.answers.maybe'),
-    fetchCommandLit('fun.8ball.response.answers.probable'),
-    fetchCommandLit('fun.8ball.response.answers.idk'),
-    fetchCommandLit('fun.8ball.response.answers.ofCourse'),
-    fetchCommandLit('fun.8ball.response.answers.definitelyNot'),
-    fetchCommandLit('fun.8ball.response.answers.noDoubt'),
-    fetchCommandLit('fun.8ball.response.answers.unlikely'),
-    fetchCommandLit('fun.8ball.response.answers.askAgain'),
-    fetchCommandLit('fun.8ball.response.answers.cannotAnswer'),
-    fetchCommandLit('fun.8ball.response.answers.sure'),
-    fetchCommandLit('fun.8ball.response.answers.dontCountOnIt'),
-    fetchCommandLit('fun.8ball.response.answers.bestOption'),
-    fetchCommandLit('fun.8ball.response.answers.depends'),
-]

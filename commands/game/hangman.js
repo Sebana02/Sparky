@@ -3,7 +3,7 @@
 const { ApplicationCommandOptionType, ActionRowBuilder, ButtonBuilder } = require('discord.js')
 const { deferReply, reply, fetchReply } = require('@utils/interactionUtils.js')
 const { createEmbed, ColorScheme } = require('@utils/embedUtils.js')
-
+const { fetchCommandLit } = require('@utils/langUtils.js')
 /**
  * Command for playing hangman
  * Two types of games: custom and random
@@ -12,16 +12,16 @@ const { createEmbed, ColorScheme } = require('@utils/embedUtils.js')
  */
 module.exports = {
     name: 'hangman',
-    description: 'Juego del ahorcado',
+    description: fetchCommandLit('game.hangman.description'),
     options: [
         {
-            name: 'gamemode',
-            description: 'Tipo de partida',
+            name: fetchCommandLit('game.hangman.option.name'),
+            description: fetchCommandLit('game.hangman.option.description'),
             type: ApplicationCommandOptionType.String,
             required: true,
             choices: [
-                { name: 'Custom', value: 'custom' },
-                { name: 'Random', value: 'random' },
+                { name: fetchCommandLit('game.hangman.option.choices.custom'), value: 'custom' },
+                { name: fetchCommandLit('game.hangman.option.choices.random'), value: 'random' },
             ],
         }
     ],
@@ -203,13 +203,20 @@ async function startGame(inter) {
 
     //gather players and game type
     const players = await gatherPlayers(inter)
-    const gameType = await inter.options.getString('gamemode')
+    const gameType = inter.options.getString(fetchCommandLit('game.hangman.option.name'))
 
     //check if enough players have joined
     if (players.length == 0)
-        return await reply(inter, { content: "Nadie se ha unido al juego", embeds: [], components: [], deleteTime: 2 })
+        return await reply(inter, {
+            content: fetchCommandLit('game.hangman.checkings.noPlayers'),
+            embeds: [], components: [], deleteTime: 2
+        })
+
     if (gameType === "custom" && players.length < 2)
-        return await reply(inter, { content: "Para una partida custom, se necesitan al menos 2 jugadores", embeds: [], components: [], deleteTime: 2 })
+        return await reply(inter, {
+            content: fetchCommandLit('game.hangman.checkings.notEnoughPlayers'),
+            embeds: [], components: [], deleteTime: 2
+        })
 
 
     //choose word according to game type
@@ -217,6 +224,7 @@ async function startGame(inter) {
     switch (gameType) {
         //random word
         case "random":
+            const wordList = fetchCommandLit('game.hangman.wordlist')
             word = wordList[Math.floor(Math.random() * wordList.length)]
             break
 
@@ -242,7 +250,10 @@ async function startGame(inter) {
 
     //If created successfully, run the game, else show error message
     if (!(game && players))
-        return await reply(inter, { content: "Ha ocurrido un error al iniciar el juego", embeds: [], deleteTime: 2 })
+        return await reply(inter, {
+            content: fetchCommandLit('game.hangman.startError'),
+            embeds: [], deleteTime: 2
+        })
 
     //return the game object
     return {
@@ -259,19 +270,25 @@ async function startGame(inter) {
  */
 async function gatherPlayers(inter) {
 
+    //Time to wait for players to join
+    const time = 10
+
     //Initial message and buttons to join the game
     const embed = createEmbed({
         color: ColorScheme.game,
-        footer: { text: 'Hangman: Teneis 10 segundos para uniros al juego', iconURL: inter.user.displayAvatarURL() }
+        footer: {
+            text: fetchCommandLit('game.hangman.gatherPlayers.embed', time),
+            iconURL: inter.user.displayAvatarURL()
+        }
     })
 
     const join = new ButtonBuilder()
-        .setLabel('Unirse al juego')
+        .setLabel(fetchCommandLit('game.hangman.gatherPlayers.buttons.join'))
         .setCustomId(JSON.stringify({ type: 'join' }))
         .setStyle('Primary')
 
     const exit = new ButtonBuilder()
-        .setLabel('Salir del juego')
+        .setLabel(fetchCommandLit('game.hangman.gatherPlayers.buttons.exit'))
         .setCustomId(JSON.stringify({ type: 'exit' }))
         .setStyle('Secondary')
 
@@ -283,7 +300,7 @@ async function gatherPlayers(inter) {
 
     //Create a collector to gather players
     const filter = (i) => JSON.parse(i.customId).type === 'join' || JSON.parse(i.customId).type === 'exit'
-    const collector = await msg.createMessageComponentCollector({ filter, time: 10000 })
+    const collector = await msg.createMessageComponentCollector({ filter, time: time * 1000 })
 
     //Return a promise that resolves with the list of players when the collector ends
     return await new Promise((resolve, reject) => {
@@ -291,7 +308,7 @@ async function gatherPlayers(inter) {
         //List of players
         let players = []
 
-        collector.on('collect', async i => {
+        collector.on('collect', i => {
 
             try {
                 //Player wants to join
@@ -302,7 +319,10 @@ async function gatherPlayers(inter) {
                         players.push(i.user)
 
                     //Reply to the player
-                    await reply(i, { content: 'Te has unido al juego!', ephemeral: true, deleteTime: 2, propagate: false })
+                    reply(i, {
+                        content: fetchCommandLit('game.hangman.gatherPlayers.confirmation.join'),
+                        ephemeral: true, deleteTime: 2, propagate: false
+                    })
                 }
 
                 //Player doesn't want to join
@@ -312,7 +332,10 @@ async function gatherPlayers(inter) {
                     players = players.filter(p => p.id != i.user.id)
 
                     //Reply to the player
-                    await reply(i, { content: 'Has abandonado el juego!', ephemeral: true, deleteTime: 2, propagate: false })
+                    reply(i, {
+                        content: fetchCommandLit('game.hangman.gatherPlayers.confirmation.exit'),
+                        ephemeral: true, deleteTime: 2, propagate: false
+                    })
                 }
             } catch (error) {
                 reject(error)
@@ -345,8 +368,11 @@ async function getWordFromPlayers(players, inter) {
         chosenOne = players[index]
         players = players.splice(index, 1)
 
+        // Time to wait for the player to choose a word
+        const time = 30
+
         //Send a DM to the player
-        await chosenOne.send("Eres el elegido! Tienes 30 segundos para escribir tu palabra. Recuerda, no participas en la partida")
+        await chosenOne.send(fetchCommandLit('game.hangman.gatherWord.chosenOne', time))
 
         //Get the word from the player, if the player doesn't respond in time or makes more than 3 tries, choose another player
         let finish = false
@@ -356,11 +382,13 @@ async function getWordFromPlayers(players, inter) {
 
             //Try to get the word from the player
             try {
-                msgCollection = await getNextMessage(dm, 30000)
+                msgCollection = await getNextMessage(dm, time * 1000)
 
             } catch (collected) {
-                await dm.send("Se ha acabado el tiempo, estás descalificado.")
-                await reply(inter, { content: "El elegido no ha respondido a tiempo, eligiendo a otro jugador" })
+                await dm.send(fetchCommandLit('game.hangman.gatherWord.noWordGiven.dm'))
+                await reply(inter, {
+                    content: fetchCommandLit('game.hangman.gatherWord.noWordGiven.channel', chosenOne)
+                })
                 finish = true
                 continue
             }
@@ -370,12 +398,12 @@ async function getWordFromPlayers(players, inter) {
             if (msg.match(`^[A-Za-zÀ-ú]{3,}$`)) {
                 word = msg.toLowerCase()
                 finish = true
-                await dm.send("Buena palabra, volviendo al server")
+                await dm.send(fetchCommandLit('game.hangman.gatherWord.wordGiven.validWord'))
             }
             else {
-                await dm.send("Palabra invalida, no uses caracteres especiales ni espacios y que tenga al menos 3 letras. Intenta de nuevo")
+                await dm.send(fetchCommandLit('game.hangman.gatherWord.wordGiven.invalidWord'))
                 if (++tries == 3)
-                    await dm.send("Muchas palabras invalidas, estás descalificado")
+                    await dm.send(fetchCommandLit('game.hangman.gatherWord.wordGiven.tooManyTries'))
 
             }
         }
@@ -383,7 +411,10 @@ async function getWordFromPlayers(players, inter) {
 
     //If no word is chosen and there is only one player left, return
     if (!word && players.length <= 1)
-        return await reply(inter, { content: "Nos hemos quedado sin jugadores", embeds: [], components: [], deleteTime: 2 })
+        return await reply(inter, {
+            content: fetchCommandLit('game.hangman.gatherWord.wordGiven.noPlayersLeft'),
+            embeds: [], components: [], deleteTime: 2
+        })
 
 
     //Return the word and the player that chose it
@@ -484,10 +515,16 @@ async function showProgress(inter, game, players) {
         description: "```\n" + figure[6 - game.lives] + `\n${game.progress}` + "\n```",
         color: ColorScheme.game,
         fields: [
-            { name: "Vidas", value: "💖 ".repeat(game.lives) + "🖤 ".repeat(6 - game.lives), inline: true },
-            { name: "Fallos", value: game.misses.join(" "), inline: true }
+            {
+                name: fetchCommandLit('game.hangman.progress.lives'),
+                value: "💖 ".repeat(game.lives) + "🖤 ".repeat(6 - game.lives), inline: true
+            },
+            {
+                name: fetchCommandLit('game.hangman.progress.faults'),
+                value: game.misses.join(" "), inline: true
+            }
         ],
-        footer: { text: `Jugadores: ${players.map(p => p.username).join(", ")}` }
+        footer: { text: fetchCommandLit('game.hangman.progress.players', players.map(p => p.username).join(", ")) }
     })
 
     await reply(inter, { embeds: [embed] })
@@ -504,141 +541,34 @@ async function showResult(inter, game, selector) {
     //Set the message according to the game status
     let msg = ''
     if (game.status === hangman.gameStatus.win) {
-        if (selector)
-            msg = `Has ganado!! ${selector.username}... intenta elegir una palabra mas dificil la próxima vez`
-        else
-            msg = "Esta vez has ganado, pero no te confies, la proxima vez puede ser diferente"
+        msg = selector
+            ? fetchCommandLit('game.hangman.results.custom.win', selector.username)
+            : fetchCommandLit('game.hangman.results.random.win')
     } else if (game.status === hangman.gameStatus.lose) {
-        if (selector)
-            msg = `${selector.username} ha ganado!! La palabra era '${game.word}'`
-        else
-            msg = `He ganado!! La palabra era '${game.word}'`
+        msg = selector
+            ? fetchCommandLit('game.hangman.results.custom.lose', selector.username, game.word)
+            : fetchCommandLit('game.hangman.results.random.lose', game.word)
     } else
-        msg = "El juego ha acabado, se ha alcanzado el limite de 15 minutos."
+        msg = fetchCommandLit('game.hangman.results.timeout')
 
 
     //Create embed
     const embed = createEmbed({
         description: "```\n" + figure[6 - game.lives] + `\n${game.progress}` + "\n```",
+        color: ColorScheme.game,
         fields: [
-            { name: "Vidas", value: "💖 ".repeat(game.lives) + "🖤 ".repeat(6 - game.lives), inline: true },
-            { name: "Fallos", value: game.misses.join(" "), inline: true }
+            {
+                name: fetchCommandLit('game.hangman.progress.lives'),
+                value: "💖 ".repeat(game.lives) + "🖤 ".repeat(6 - game.lives), inline: true
+            },
+            {
+                name: fetchCommandLit('game.hangman.progress.faults'),
+                value: game.misses.join(" "), inline: true
+            }
         ],
-        footer: { text: msg, iconURL: selector ? selector.displayAvatarURL() : inter.client.user.displayAvatarURL() },
-        color: ColorScheme.game
+        footer: { text: msg }
     })
 
     //Show the result
     await reply(inter, { embeds: [embed], components: [] })
 }
-
-// Word list
-let wordList = ['a', 'abajo', 'abandonar', 'abrir', 'absoluta', 'absoluto', 'abuelo', 'acabar', 'acaso', 'acciones',
-    'acción', 'aceptar', 'acercar', 'acompañar', 'acordar', 'actitud', 'actividad', 'acto', 'actual', 'actuar',
-    'acudir', 'acuerdo', 'adelante', 'además', 'adquirir', 'advertir', 'afectar', 'afirmar', 'agua', 'ahora',
-    'ahí', 'aire', 'al', 'alcanzar', 'alejar', 'alemana', 'alemán', 'algo', 'alguien', 'alguna',
-    'alguno', 'algún', 'allá', 'allí', 'alma', 'alta', 'alto', 'altura', 'amar', 'ambas',
-    'ambos', 'americana', 'americano', 'amiga', 'amigo', 'amor', 'amplia', 'amplio', 'andar', 'animal',
-    'ante', 'anterior', 'antigua', 'antiguo', 'anunciar', 'análisis', 'aparecer', 'apenas', 'aplicar', 'apoyar',
-    'aprender', 'aprovechar', 'aquel', 'aquella', 'aquello', 'aquí', 'arma', 'arriba', 'arte', 'asegurar',
-    'aspecto', 'asunto', 'así', 'atenciones', 'atención', 'atreverse', 'atrás', 'aumentar', 'aun', 'aunque',
-    'autor', 'autora', 'autoridad', 'auténtica', 'auténtico', 'avanzar', 'ayer', 'ayuda', 'ayudar', 'azul',
-    'añadir', 'año', 'aún', 'baja', 'bajar', 'barrio', 'base', 'bastante', 'bastar', 'beber',
-    'bien', 'blanca', 'blanco', 'boca', 'brazo', 'buen', 'buscar', 'caballo', 'caber', 'cabeza',
-    'cabo', 'cada', 'cadena', 'caer', 'calle', 'cama', 'cambiar', 'cambio', 'caminar', 'camino',
-    'campaña', 'campo', 'cantar', 'cantidad', 'capaces', 'capacidad', 'capaz', 'capital', 'cara', 'caracteres',
-    'carne', 'carrera', 'carta', 'carácter', 'casa', 'casar', 'casi', 'caso', 'catalán', 'causa',
-    'celebrar', 'central', 'centro', 'cerebro', 'cerrar', 'chica', 'chico', 'cielo', 'ciencia', 'ciento',
-    'científica', 'científico', 'cierta', 'cierto', 'cinco', 'cine', 'circunstancia', 'ciudad', 'ciudadana', 'ciudadano',
-    'civil', 'clara', 'claro', 'clase', 'coche', 'coger', 'colocar', 'color', 'comentar', 'comenzar',
-    'comer', 'como', 'compañera', 'compañero', 'compañía', 'completo', 'comprar', 'comprender', 'comprobar', 'comunes',
-    'comunicaciones', 'comunicación', 'común', 'con', 'concepto', 'conciencia', 'concreto', 'condición', 'condisiones', 'conducir',
-    'conjunto', 'conocer', 'conocimiento', 'consecuencia', 'conseguir', 'conservar', 'considerar', 'consistir', 'constante', 'constituir',
-    'construir', 'contacto', 'contar', 'contemplar', 'contener', 'contestar', 'continuar', 'contra', 'contrario', 'control',
-    'controlar', 'convencer', 'conversación', 'convertir', 'corazón', 'correr', 'corresponder', 'corriente', 'cortar', 'cosa',
-    'costumbre', 'crear', 'crecer', 'creer', 'crisis', 'cruzar', 'cuadro', 'cual', 'cualquier', 'cuando',
-    'cuanto', 'cuarta', 'cuarto', 'cuatro', 'cubrir', 'cuenta', 'cuerpo', 'cuestiones', 'cuestión', 'cultura',
-    'cultural', 'cumplir', 'cuya', 'cuyo', 'cuál', 'cuánto', 'célula', 'cómo', 'dar', 'dato',
-    'de', 'deber', 'decidir', 'decir', 'decisión', 'declarar', 'dedicar', 'dedo', 'defender', 'defensa',
-    'definir', 'definitivo', 'dejar', 'del', 'demasiado', 'democracia', 'demostrar', 'demás', 'depender', 'derecha',
-    'derecho', 'desaparecer', 'desarrollar', 'desarrollo', 'desconocer', 'descubrir', 'desde', 'desear', 'deseo', 'despertar',
-    'después', 'destino', 'detener', 'determinar', 'diaria', 'diario', 'diez', 'diferencia', 'diferente', 'dificultad',
-    'difícil', 'dinero', 'dios', 'diosa', 'dirección', 'directo', 'director', 'directora', 'dirigir', 'disponer',
-    'distancia', 'distinto', 'diverso', 'doble', 'doctor', 'doctora', 'dolor', 'don', 'donde', 'dormir',
-    'dos', 'duda', 'durante', 'duro', 'día', 'dónde', 'e', 'echar', 'económico', 'edad',
-    'efecto', 'ejemplo', 'ejército', 'el', 'elección', 'elegir', 'elemento', 'elevar', 'ella', 'empezar',
-    'empresa', 'en', 'encender', 'encima', 'encontrar', 'encuentro', 'energía', 'enfermedad', 'enfermo', 'enorme',
-    'enseñar', 'entender', 'enterar', 'entonces', 'entrada', 'entrar', 'entre', 'entregar', 'enviar', 'equipo',
-    'error', 'esa', 'escapar', 'escribir', 'escritor', 'escritora', 'escuchar', 'ese', 'esfuerzo', 'eso',
-    'espacio', 'espalda', 'españa', 'español', 'española', 'especial', 'especie', 'esperanza', 'esperar', 'espíritu',
-    'esta', 'establecer', 'estado', 'estar', 'este', 'esto', 'estrella', 'estructura', 'estudiar', 'estudio',
-    'etapa', 'europa', 'europea', 'europeo', 'evidente', 'evitar', 'exacta', 'exacto', 'exigir', 'existencia',
-    'existir', 'experiencia', 'explicar', 'expresión', 'extender', 'exterior', 'extranjera', 'extranjero', 'extraño', 'extremo',
-    'falta', 'faltar', 'familia', 'familiar', 'famoso', 'fenómeno', 'fiesta', 'figura', 'fijar', 'fin',
-    'final', 'flor', 'fondo', 'forma', 'formar', 'francesa', 'francia', 'francés', 'frase', 'frecuencia',
-    'frente', 'fría', 'frío', 'fuego', 'fuente', 'fuerte', 'fuerza', 'funcionar', 'función', 'fundamental',
-    'futuro', 'fácil', 'físico', 'fútbol', 'ganar', 'general', 'gente', 'gesto', 'gobierno', 'golpe',
-    'gracia', 'gran', 'grande', 'grave', 'gritar', 'grupo', 'guardar', 'guerra', 'gustar', 'gusto',
-    'haber', 'habitación', 'habitual', 'hablar', 'hacer', 'hacia', 'hallar', 'hasta', 'hecha', 'hecho',
-    'hermana', 'hermano', 'hermosa', 'hermoso', 'hija', 'hijo', 'historia', 'histórico', 'hombre', 'hombro',
-    'hora', 'hoy', 'humana', 'humano', 'idea', 'iglesia', 'igual', 'imagen', 'imaginar', 'impedir',
-    'imponer', 'importancia', 'importante', 'importar', 'imposible', 'imágenes', 'incluir', 'incluso', 'indicar', 'individuo',
-    'informaciones', 'información', 'informar', 'inglesa', 'inglés', 'iniciar', 'inmediata', 'inmediato', 'insistir', 'instante',
-    'intentar', 'interesar', 'intereses', 'interior', 'internacional', 'interés', 'introducir', 'ir', 'izquierda', 'jamás',
-    'jefa', 'jefe', 'joven', 'juego', 'jugador', 'jugar', 'juicio', 'junto', 'justo', 'labio',
-    'lado', 'lanzar', 'largo', 'lector', 'lectora', 'leer', 'lengua', 'lenguaje', 'lento', 'levantar',
-    'ley', 'libertad', 'libre', 'libro', 'limitar', 'literatura', 'llamar', 'llegar', 'llenar', 'lleno',
-    'llevar', 'llorar', 'lo', 'loca', 'loco', 'lograr', 'lucha', 'luego', 'lugar', 'luz',
-    'línea', 'madre', 'mal', 'mala', 'malo', 'mandar', 'manera', 'manifestar', 'mano', 'mantener',
-    'mar', 'marcar', 'marcha', 'marchar', 'marido', 'mas', 'masa', 'matar', 'materia', 'material',
-    'mayor', 'mayoría', 'mañana', 'media', 'mediante', 'medida', 'medio', 'mejor', 'memoria', 'menor',
-    'menos', 'menudo', 'mercado', 'merecer', 'mes', 'mesa', 'meter', 'metro', 'mi', 'miedo',
-    'miembro', 'mientras', 'mil', 'militar', 'millón', 'ministra', 'ministro', 'minuto', 'mirada', 'mirar',
-    'mis', 'mismo', 'mitad', 'modelo', 'moderna', 'moderno', 'modo', 'momento', 'moral', 'morir',
-    'mostrar', 'motivo', 'mover', 'movimiento', 'muchacha', 'muchacho', 'mucho', 'muerte', 'mujer', 'mujeres',
-    'mundial', 'mundo', 'muy', 'máquina', 'más', 'máximo', 'médica', 'médico', 'método', 'mí',
-    'mía', 'mínima', 'mínimo', 'mío', 'música', 'nacer', 'nacional', 'nada', 'nadie', 'natural',
-    'naturaleza', 'necesaria', 'necesario', 'necesidad', 'necesitar', 'negar', 'negocio', 'negra', 'negro', 'ni',
-    'ninguna', 'ninguno', 'ningún', 'nivel', 'niña', 'niño', 'no', 'noche', 'nombre', 'normal',
-    'norteamericana', 'norteamericano', 'notar', 'noticia', 'novela', 'nuestra', 'nuestro', 'nueva', 'nuevo', 'nunca',
-    'número', 'o', 'objetivo', 'objeto', 'obligar', 'obra', 'observar', 'obtener', 'ocasiones', 'ocasión',
-    'ocho', 'ocupar', 'ocurrir', 'oficial', 'ofrecer', 'ojo', 'olvidar', 'operación', 'opinión', 'origen',
-    'oro', 'orígenes', 'oscura', 'oscuro', 'otra', 'otro', 'oír', 'paciente', 'padre', 'pagar',
-    'palabra', 'papel', 'par', 'para', 'parar', 'parecer', 'pared', 'pareja', 'parte', 'participar',
-    'particular', 'partido', 'partir', 'pasa', 'pasado', 'pasar', 'paso', 'paz', 'país', 'países',
-    'pecho', 'pedir', 'peligro', 'pelo', 'película', 'pena', 'pensamiento', 'pensar', 'peor', 'pequeña',
-    'pequeño', 'perder', 'perfecto', 'periodista', 'periódica', 'periódico', 'permanecer', 'permitir', 'pero', 'perra',
-    'perro', 'persona', 'personaje', 'personal', 'pertenecer', 'pesar', 'peso', 'pie', 'piedra', 'piel',
-    'pierna', 'piso', 'placer', 'plan', 'plantear', 'plaza', 'pleno', 'poblaciones', 'población', 'pobre',
-    'poca', 'poco', 'poder', 'policía', 'política', 'político', 'poner', 'por', 'porque', 'poseer',
-    'posibilidad', 'posible', 'posiciones', 'posición', 'precio', 'precisa', 'preciso', 'preferir', 'pregunta', 'preguntar',
-    'prensa', 'preocupar', 'preparar', 'presencia', 'presentar', 'presente', 'presidente', 'pretender', 'primer', 'primera',
-    'primero', 'principal', 'principio', 'privar', 'probable', 'problema', 'proceso', 'producir', 'producto', 'profesional',
-    'profesor', 'profesora', 'profunda', 'profundo', 'programa', 'pronta', 'pronto', 'propia', 'propio', 'proponer',
-    'provocar', 'proyecto', 'prueba', 'práctico', 'próxima', 'próximo', 'publicar', 'pueblo', 'puerta', 'pues',
-    'puesto', 'punto', 'pura', 'puro', 'página', 'pública', 'público', 'que', 'quedar', 'querer',
-    'quien', 'quitar', 'quizá', 'quién', 'qué', 'radio', 'rato', 'razones', 'razón', 'real',
-    'realidad', 'realizar', 'recibir', 'reciente', 'recoger', 'reconocer', 'recordar', 'recorrer', 'recuerdo', 'recuperar',
-    'reducir', 'referir', 'regresar', 'relaciones', 'relación', 'religiosa', 'religioso', 'repetir', 'representar', 'resolver',
-    'responder', 'responsable', 'respuesta', 'resto', 'resultado', 'resultar', 'reuniones', 'reunir', 'reunión', 'revista',
-    'rey', 'reír', 'rica', 'rico', 'riesgo', 'rodear', 'roja', 'rojo', 'romper', 'ropa',
-    'rostro', 'rápida', 'rápido', 'régimen', 'río', 'saber', 'sacar', 'sala', 'salida', 'salir',
-    'sangre', 'secreta', 'secreto', 'sector', 'seguir', 'segundo', 'segura', 'seguridad', 'seguro', 'según',
-    'seis', 'semana', 'semejante', 'sensaciones', 'sensación', 'sentar', 'sentida', 'sentido', 'sentimiento', 'sentir',
-    'separar', 'ser', 'seria', 'serie', 'serio', 'servicio', 'servir', 'sexo', 'sexual', 'señalar',
-    'señor', 'señora', 'si', 'sido', 'siempre', 'siete', 'siglo', 'significar', 'siguiente', 'silencio',
-    'simple', 'sin', 'sino', 'sistema', 'sitio', 'situaciones', 'situación', 'situar', 'sobre', 'social',
-    'socialista', 'sociedad', 'sol', 'sola', 'solo', 'soluciones', 'solución', 'sombra', 'someter', 'sonar',
-    'sonreír', 'sonrisa', 'sorprender', 'sostener', 'su', 'subir', 'suceder', 'suelo', 'suerte', 'sueño',
-    'suficiente', 'sufrir', 'superar', 'superior', 'suponer', 'surgir', 'suya', 'suyo', 'sí', 'sólo',
-    'tal', 'también', 'tampoco', 'tan', 'tanta', 'tanto', 'tarde', 'tarea', 'televisiones', 'televisión',
-    'tema', 'temer', 'tender', 'tener', 'teoría', 'tercer', 'terminar', 'texto', 'tiempo', 'tierra',
-    'tipa', 'tipo', 'tirar', 'tocar', 'toda', 'todavía', 'todo', 'tomar', 'tono', 'total',
-    'trabajar', 'trabajo', 'traer', 'tras', 'tratar', 'tres', 'tu', 'técnica', 'técnico', 'término',
-    'tía', 'tío', 'título', 'un', 'una', 'unidad', 'unir', 'uno', 'usar', 'uso',
-    'usted', 'utilizar', 'vacía', 'vacío', 'valer', 'valor', 'varias', 'varios', 'veces', 'vecina',
-    'vecino', 'veinte', 'velocidad', 'vender', 'venir', 'ventana', 'ver', 'verano', 'verdad', 'verdadera',
-    'verdadero', 'verde', 'vestir', 'vez', 'viaje', 'vida', 'vieja', 'viejo', 'viento', 'violencia',
-    'vista', 'viva', 'vivir', 'vivo', 'voces', 'voluntad', 'volver', 'voz', 'vuelta', 'y',
-    'ya', 'yo', 'zona', 'árbol', 'él', 'época', 'ésta', 'éste', 'éxito', 'última',
-    'último', 'única', 'único']

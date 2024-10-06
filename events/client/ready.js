@@ -11,10 +11,6 @@ module.exports = {
      * @returns {Promise<void>}
      */
     callback: async (client) => {
-
-        //Log ready
-        console.log(`-> Logged in as ${client.user.username}\n-> Ready in a total of ${client.guilds.cache.size} servers for ${client.users.cache.size} users`)
-
         //Set activity, if PLAYING_ACTIVITY environment variable is not set, set no activity
         client.user.setActivity(process.env.PLAYING_ACTIVITY || '')
 
@@ -29,5 +25,8 @@ module.exports = {
 
             await guild.commands.set(client.commands)
         }
+
+        //Log ready
+        console.log(`-> Logged in as ${client.user.username}\n-> Ready in a total of ${client.guilds.cache.size} servers for ${client.users.cache.size} users`)
     }
 }
