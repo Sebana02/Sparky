@@ -128,14 +128,22 @@ function loadCommands(folderPath, client) {
                 return console.log(`-> Skipping non-JS file command: ${file}`)
 
             const command = require(filePath)
-            const commandName = command.name
+
+            const commandName = command.name?.toLowerCase().replace(/ /g, '')
             const commandDescription = command.description
             const commandRun = command.run
+            command.options?.forEach(option => { if (option.name) option.name = option.name.toLowerCase() })
+            const validOptions = !command.options || command.options.every(option =>
+                option.name && option.description && option.type !== undefined &&
+                (!option.choices || option.choices.every(choice =>
+                    choice.name && choice.value !== undefined)))
 
-            if (!commandName || !commandDescription || !commandRun)
+
+            if (!commandName || !commandDescription || !commandRun || !validOptions)
                 return console.error(`-> Error: Invalid command file: ${file}`)
 
-            client.commands.set(commandName.toLowerCase(), command)
+
+            client.commands.set(commandName, command)
             console.log(`-> Loaded command: ${commandName}`)
         }
     })
