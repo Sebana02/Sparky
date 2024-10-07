@@ -362,7 +362,17 @@
         "timeout": "¡Se ha acabado el tiempo! La palabra era: {0}"
       }
     },
-    "RPS": {},
+    "RPS": {
+      "description": "Juega a piedra, papel, tijera con alguien",
+      "option": {
+        "name": "oponente",
+        "description": "Menciona a tu oponente"
+      },
+      "checkings": {
+        "againstBot": "No puedes jugar contra un bot",
+        "againstSelf": "No puedes jugar contra ti mismo"
+      }
+    },
     "tictactoe": {},
     "trivia": {}
   },

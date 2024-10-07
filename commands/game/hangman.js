@@ -33,6 +33,8 @@ module.exports = {
         //Create the game
         const gameInfo = await startGame(inter)
 
+        if (!gameInfo) return
+
         //Run the game
         await runGame(inter, gameInfo.game, gameInfo.players)
 

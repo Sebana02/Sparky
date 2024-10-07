@@ -14,7 +14,7 @@ const limit = 10
  */
 function search(keywords) {
     return [
-        `https://es.wikipedia.org/w/api.php?action=query`,
+        `https://${process.env.LANGUAGE}.wikipedia.org/w/api.php?action=query`,
         `&list=search`,
         `&prop=info`,
         `&inprop=url`,
@@ -64,7 +64,7 @@ module.exports = {
 
         // Extracting the first search result
         const result = data.query.search[0]
-        const pageUrl = `https://es.wikipedia.org/?curid=${result.pageid}`
+        const pageUrl = `https://${process.env.LANGUAGE}.wikipedia.org/?curid=${result.pageid}`
 
 
         // Create embed with search result

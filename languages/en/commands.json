@@ -115,8 +115,7 @@
         "noPlayers": "No one has joined the game",
         "notEnoughPlayers": "There are not enough players to start"
       },
-
-      "wordList": [
+      "wordlist": [
         "a",
         "above",
         "abandon",

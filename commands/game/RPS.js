@@ -1,7 +1,7 @@
 const { ApplicationCommandOptionType, ButtonBuilder, ActionRowBuilder } = require('discord.js')
 const { reply, deferReply, fetchReply } = require('@utils/interactionUtils.js')
 const { createEmbed, modifyEmbed, ColorScheme } = require('@utils/embedUtils.js')
-
+const { fetchCommandLit } = require('@utils/langUtils.js')
 /**
  * Command that allows users to play rock, paper, scissors with a friend
  */
