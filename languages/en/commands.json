@@ -475,7 +475,22 @@
         "timeout": "Time is up! The word was: {0}"
       }
     },
-    "RPS": {},
+    "rps": {
+      "description": "Play rock, paper, scissors with someone",
+      "option": {
+        "name": "opponent",
+        "description": "Mention your opponent"
+      },
+      "checkings": {
+        "againstBot": "You cannot play against a bot",
+        "againstSelf": "You cannot play against yourself"
+      },
+      "selection": "You have selected: {0}",
+      "results": {
+        "win": "{0} has won!",
+        "tie": "It's a tie!"
+      }
+    },
     "tictactoe": {},
     "trivia": {}
   },

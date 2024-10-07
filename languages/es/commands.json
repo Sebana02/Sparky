@@ -362,7 +362,7 @@
         "timeout": "¡Se ha acabado el tiempo! La palabra era: {0}"
       }
     },
-    "RPS": {
+    "rps": {
       "description": "Juega a piedra, papel, tijera con alguien",
       "option": {
         "name": "oponente",
@@ -371,6 +371,11 @@
       "checkings": {
         "againstBot": "No puedes jugar contra un bot",
         "againstSelf": "No puedes jugar contra ti mismo"
+      },
+      "selection": "Has seleccionado: {0}",
+      "results": {
+        "win": "¡{0} ha ganado!",
+        "tie": "¡Empate!"
       }
     },
     "tictactoe": {},

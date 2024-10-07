@@ -7,20 +7,27 @@ const { fetchCommandLit } = require('@utils/langUtils.js')
  */
 module.exports = {
     name: 'rps',
-    description: 'Juega al piedra/papel/tijeras con un amigo',
+    description: fetchCommandLit('game.rps.description'),
     options: [
         {
-            name: 'opponente',
-            description: 'Menciona a tu opponente',
+            name: fetchCommandLit('game.rps.option.name'),
+            description: fetchCommandLit('game.rps.option.description'),
             type: ApplicationCommandOptionType.User,
             required: true
         }
     ],
     run: async (client, inter) => {
         //Get the opponent and check if it is a bot or the author of the interaction
-        const opponent = inter.options.getUser('opponente')
-        if (opponent.bot) return await reply(inter, { content: 'No puedes jugar contra un bot', ephemeral: true, deleteTime: 2 })
-        if (opponent === inter.user) return await reply(inter, { content: 'No puedes jugar contra ti mismo', ephemeral: true, deleteTime: 2 })
+        const opponent = inter.options.getUser(fetchCommandLit('game.rps.option.name'))
+        if (opponent.bot) return await reply(inter, {
+            content: fetchCommandLit('game.rps.checkings.againstBot'),
+            ephemeral: true, deleteTime: 2
+        })
+        if (opponent === inter.user)
+            return await reply(inter, {
+                content: fetchCommandLit('game.rps.checkings.againstSelf'),
+                ephemeral: true, deleteTime: 2
+            })
 
         //Defer reply
         await deferReply(inter)
@@ -44,23 +51,26 @@ class RPS {
      */
     async createGame() {
         //Create the embed and buttons
-        const embed = createEmbed({ title: `${this.inter.user.username} vs ${this.inter.options.getUser('opponente').username}`, color: ColorScheme.game })
+        const embed = createEmbed({
+            title: `${this.inter.user.username} vs ${this.inter.options.getUser(fetchCommandLit('game.rps.option.name')).username}`
+            , color: ColorScheme.game
+        })
         const buttons = this.createButtons()
 
         //Send the embed and buttons
         await reply(this.inter, { embeds: [embed], components: [buttons] })
 
         //Wait for the players to choose their move
-        let elecciones = await this.collectInteracion()
+        let elections = await this.collectInteracion()
 
         //Check the winner
-        const winner = this.checkWinner(elecciones)
+        const winner = this.checkWinner(elections)
 
         //Show the result
         modifyEmbed(embed, {
             description: winner,
-            title: `${elecciones[0].user.username} ${this.icons[elecciones[0].index]} 
-            vs ${this.icons[elecciones[1].index]} ${elecciones[1].user.username}`
+            title: `${elections[0].user.username} ${this.icons[elections[0].index]} 
+            vs ${this.icons[elections[1].index]} ${elections[1].user.username}`
         })
 
         //Send the result
@@ -93,7 +103,7 @@ class RPS {
     async collectInteracion() {
 
         //Array to store the moves of the players
-        let elecciones = []
+        let elections = []
 
         //Wait for the players to choose their move, promise resolves with the elections when both players have chosen
         return await new Promise(async (resolve, reject) => {
@@ -109,19 +119,23 @@ class RPS {
 
                 try {
                     //When the player chooses a move, reply to them
-                    await reply(i, { content: `Has escogido ${this.icons[JSON.parse(i.customId).index]}`, ephemeral: true, deleteTime: 2, propagate: false })
+                    reply(i, {
+                        content: fetchCommandLit('game.rps.selection', this.icons[JSON.parse(i.customId).index]),
+                        ephemeral: true, deleteTime: 2, propagate: false
+                    })
 
                     //If the interaction is from the author or the opponent, store their move
-                    if (i.user === this.inter.options.getUser('opponente') || i.user === this.inter.user) {
+                    if (i.user === this.inter.options.getUser(fetchCommandLit('game.rps.option.name'))
+                        || i.user === this.inter.user) {
 
                         //Delete theyre previous election if they have chosen again and store the new one
-                        elecciones.filter((person) => person.user !== i.user)
-                        elecciones.push({ user: i.user, index: JSON.parse(i.customId).index })
+                        elections.filter((person) => person.user !== i.user)
+                        elections.push({ user: i.user, index: JSON.parse(i.customId).index })
 
                         //If both players have chosen, resolve the promise
-                        if (elecciones.length === 2) {
+                        if (elections.length === 2) {
                             collector.stop()
-                            resolve(elecciones)
+                            resolve(elections)
                         }
                     }
                 } catch (error) {
@@ -134,13 +148,14 @@ class RPS {
 
     /**
      * Checks the winner of the game
-     * @param {Array} elecciones The moves of the players
+     * @param {Array} elections The moves of the players
      * @returns {String} The winner of the game
      */
-    checkWinner(elecciones) {
-        if (elecciones[0].index === elecciones[1].index) return 'Empate!'
-        else if ((elecciones[0].index + 1) % 3 === elecciones[1].index) return `${elecciones[0].user.username} ha ganado!`
-        else return `${elecciones[1].user.username} ha ganado!`
+    checkWinner(elections) {
+        if (elections[0].index === elections[1].index) return fetchCommandLit('game.rps.results.tie')
+        else return (elections[0].index + 1) % 3 === elections[1].index
+            ? fetchCommandLit('game.rps.results.win', elections[0].user.username)
+            : fetchCommandLit('game.rps.results.win', elections[1].user.username)
     }
 }
 
