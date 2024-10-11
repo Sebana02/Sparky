@@ -4,6 +4,48 @@ const { ApplicationCommandOptionType, ActionRowBuilder, ButtonBuilder } = requir
 const { deferReply, reply, fetchReply } = require('@utils/interactionUtils.js')
 const { createEmbed, ColorScheme } = require('@utils/embedUtils.js')
 const { fetchCommandLit } = require('@utils/langUtils.js')
+
+// Preload literals
+const literals = {
+    description: fetchCommandLit('game.hangman.description'),
+    optionName: fetchCommandLit('game.hangman.option.name'),
+    optionDescription: fetchCommandLit('game.hangman.option.description'),
+    choiceCustom: fetchCommandLit('game.hangman.option.choices.custom'),
+    choiceRandom: fetchCommandLit('game.hangman.option.choices.random'),
+
+    gatherPlayersEmbed: (time) => fetchCommandLit('game.hangman.gatherPlayers.embed', time),
+    butttonJoin: fetchCommandLit('game.hangman.gatherPlayers.buttons.join'),
+    buttonExit: fetchCommandLit('game.hangman.gatherPlayers.buttons.exit'),
+    confirmationJoin: fetchCommandLit('game.hangman.gatherPlayers.confirmation.join'),
+    confirmationExit: fetchCommandLit('game.hangman.gatherPlayers.confirmation.exit'),
+
+    noPlayers: fetchCommandLit('game.hangman.checkings.noPlayers'),
+    notEnoughPlayers: fetchCommandLit('game.hangman.checkings.notEnoughPlayers'),
+
+    wordlist: fetchCommandLit('game.hangman.wordList'),
+
+    customSelectPlayer: (playersNumber) => fetchCommandLit('game.hangman.customSelectPlayer', playersNumber),
+    gatherWordChosenOne: (time) => fetchCommandLit('game.hangman.gatherWord.chosenOne', time),
+    noWordGivenDM: fetchCommandLit('game.hangman.gatherWord.noWordGiven.dm'),
+    noWordGivenChannel: (player) => fetchCommandLit('game.hangman.gatherWord.noWordGiven.channel', player),
+    wordGivenValid: fetchCommandLit('game.hangman.gatherWord.wordGiven.validWord'),
+    wordGivenInvalid: fetchCommandLit('game.hangman.gatherWord.wordGiven.invalidWord'),
+    wordGivenTooManyTries: fetchCommandLit('game.hangman.gatherWord.wordGiven.tooManyTries'),
+    wordGivenNoPlayersLeft: fetchCommandLit('game.hangman.gatherWord.wordGiven.noPlayersLeft'),
+
+    startError: fetchCommandLit('game.hangman.startError'),
+
+    progressLives: fetchCommandLit('game.hangman.progress.lives'),
+    progressFaults: fetchCommandLit('game.hangman.progress.faults'),
+    progressPlayers: (players) => fetchCommandLit('game.hangman.progress.players', players),
+
+    resultWinCustom: (winner) => fetchCommandLit('game.hangman.results.custom.win', winner),
+    resultWinRandom: fetchCommandLit('game.hangman.results.random.win'),
+    resultLoseCustom: (loser, word) => fetchCommandLit('game.hangman.results.custom.lose', loser, word),
+    resultLoseRandom: (word) => fetchCommandLit('game.hangman.results.random.lose', word),
+    resultTimeout: fetchCommandLit('game.hangman.results.timeout'),
+}
+
 /**
  * Command for playing hangman
  * Two types of games: custom and random
@@ -12,16 +54,16 @@ const { fetchCommandLit } = require('@utils/langUtils.js')
  */
 module.exports = {
     name: 'hangman',
-    description: fetchCommandLit('game.hangman.description'),
+    description: literals.description,
     options: [
         {
-            name: fetchCommandLit('game.hangman.option.name'),
-            description: fetchCommandLit('game.hangman.option.description'),
+            name: literals.optionName,
+            description: literals.optionDescription,
             type: ApplicationCommandOptionType.String,
             required: true,
             choices: [
-                { name: fetchCommandLit('game.hangman.option.choices.custom'), value: 'custom' },
-                { name: fetchCommandLit('game.hangman.option.choices.random'), value: 'random' },
+                { name: literals.choiceCustom, value: 'custom' },
+                { name: literals.choiceRandom, value: 'random' },
             ],
         }
     ],
@@ -137,63 +179,15 @@ class hangman {
 }
 
 // Hangman figure to show the progress of the game
-const figure = [`
- +---+
- |   |      
-     |
-     |      
-     |      
-     |
-==========  
-`, `
- +---+
- |   |      
- O   |
-     |      
-     |      
-     |
-==========  
-`, `
- +---+
- |   |      
- O   |
- |   |      
-     |      
-     |
-==========  
-`, `
- +---+
- |   |      
- O   |
-/|   |      
-     |      
-     |
-==========  
-`, `
- +---+
- |   |      
- O   |
-/|\\  |      
-     |      
-     |
-==========  
-`, `
- +---+
- |   |      
- O   |
-/|\\  |      
-/    |      
-     |
-==========  
-`, `
- +---+
- |   |      
- O   |
-/|\\  |      
-/ \\  |      
-     |
-==========  
-`]
+const figure = [
+    ` +---+\n |   |      \n     |\n     |      \n     |      \n     |\n==========  `,
+    ` +---+\n |   |      \n O   |\n     |      \n     |      \n     |\n==========  `,
+    ` +---+\n |   |      \n O   |\n |   |      \n     |      \n     |\n==========  `,
+    ` +---+\n |   |      \n O   |\n/|   |      \n     |      \n     |\n==========  `,
+    ` +---+\n |   |      \n O   |\n/|\\  |      \n     |      \n     |\n==========  `,
+    ` +---+\n |   |      \n O   |\n/|\\  |      \n/    |      \n     |\n==========  `,
+    ` +---+\n |   |      \n O   |\n/|\\  |      \n/ \\  |      \n     |\n==========  `
+]
 
 
 /**
@@ -205,18 +199,18 @@ async function startGame(inter) {
 
     //gather players and game type
     const players = await gatherPlayers(inter)
-    const gameType = inter.options.getString(fetchCommandLit('game.hangman.option.name'))
+    const gameType = inter.options.getString(literals.optionName)
 
     //check if enough players have joined
     if (players.length == 0)
         return await reply(inter, {
-            content: fetchCommandLit('game.hangman.checkings.noPlayers'),
+            content: literals.noPlayers,
             embeds: [], components: [], deleteTime: 2
         })
 
     if (gameType === "custom" && players.length < 2)
         return await reply(inter, {
-            content: fetchCommandLit('game.hangman.checkings.notEnoughPlayers'),
+            content: literals.notEnoughPlayers,
             embeds: [], components: [], deleteTime: 2
         })
 
@@ -226,13 +220,15 @@ async function startGame(inter) {
     switch (gameType) {
         //random word
         case "random":
-            const wordList = fetchCommandLit('game.hangman.wordlist')
-            word = wordList[Math.floor(Math.random() * wordList.length)]
+            word = literals.wordlist[Math.floor(Math.random() * literals.wordlist.length)]
             break
 
         //ask a player to choose a word
         case "custom":
-            await reply(inter, { content: players.length + " jugadores se han unido. Seleccionando a un jugador para que elija la palabra. Mirad los DMs!!", embeds: [], components: [] })
+            await reply(inter, {
+                content: literals.customSelectPlayer(players.length),
+                embeds: [], components: []
+            })
 
             //get word from players
             let userSelection = await getWordFromPlayers(players, inter)
@@ -253,7 +249,7 @@ async function startGame(inter) {
     //If created successfully, run the game, else show error message
     if (!(game && players))
         return await reply(inter, {
-            content: fetchCommandLit('game.hangman.startError'),
+            content: literals.startError,
             embeds: [], deleteTime: 2
         })
 
@@ -279,18 +275,18 @@ async function gatherPlayers(inter) {
     const embed = createEmbed({
         color: ColorScheme.game,
         footer: {
-            text: fetchCommandLit('game.hangman.gatherPlayers.embed', time),
+            text: literals.gatherPlayersEmbed(time),
             iconURL: inter.user.displayAvatarURL()
         }
     })
 
     const join = new ButtonBuilder()
-        .setLabel(fetchCommandLit('game.hangman.gatherPlayers.buttons.join'))
+        .setLabel(literals.butttonJoin)
         .setCustomId(JSON.stringify({ type: 'join' }))
         .setStyle('Primary')
 
     const exit = new ButtonBuilder()
-        .setLabel(fetchCommandLit('game.hangman.gatherPlayers.buttons.exit'))
+        .setLabel(literals.buttonExit)
         .setCustomId(JSON.stringify({ type: 'exit' }))
         .setStyle('Secondary')
 
@@ -322,7 +318,7 @@ async function gatherPlayers(inter) {
 
                     //Reply to the player
                     reply(i, {
-                        content: fetchCommandLit('game.hangman.gatherPlayers.confirmation.join'),
+                        content: literals.confirmationJoin,
                         ephemeral: true, deleteTime: 2, propagate: false
                     })
                 }
@@ -335,7 +331,7 @@ async function gatherPlayers(inter) {
 
                     //Reply to the player
                     reply(i, {
-                        content: fetchCommandLit('game.hangman.gatherPlayers.confirmation.exit'),
+                        content: literals.confirmationJoin,
                         ephemeral: true, deleteTime: 2, propagate: false
                     })
                 }
@@ -374,7 +370,8 @@ async function getWordFromPlayers(players, inter) {
         const time = 30
 
         //Send a DM to the player
-        await chosenOne.send(fetchCommandLit('game.hangman.gatherWord.chosenOne', time))
+        const dm = await chosenOne.createDM()
+        await dm.send(literals.gatherWordChosenOne(time))
 
         //Get the word from the player, if the player doesn't respond in time or makes more than 3 tries, choose another player
         let finish = false
@@ -387,9 +384,9 @@ async function getWordFromPlayers(players, inter) {
                 msgCollection = await getNextMessage(dm, time * 1000)
 
             } catch (collected) {
-                await dm.send(fetchCommandLit('game.hangman.gatherWord.noWordGiven.dm'))
+                await dm.send(literals.noWordGivenDM)
                 await reply(inter, {
-                    content: fetchCommandLit('game.hangman.gatherWord.noWordGiven.channel', chosenOne)
+                    content: literals.noWordGivenChannel(chosenOne)
                 })
                 finish = true
                 continue
@@ -400,12 +397,12 @@ async function getWordFromPlayers(players, inter) {
             if (msg.match(`^[A-Za-zÀ-ú]{3,}$`)) {
                 word = msg.toLowerCase()
                 finish = true
-                await dm.send(fetchCommandLit('game.hangman.gatherWord.wordGiven.validWord'))
+                await dm.send(literals.wordGivenValid)
             }
             else {
-                await dm.send(fetchCommandLit('game.hangman.gatherWord.wordGiven.invalidWord'))
+                await dm.send(literals.wordGivenInvalid)
                 if (++tries == 3)
-                    await dm.send(fetchCommandLit('game.hangman.gatherWord.wordGiven.tooManyTries'))
+                    await dm.send(literals.wordGivenTooManyTries)
 
             }
         }
@@ -414,7 +411,7 @@ async function getWordFromPlayers(players, inter) {
     //If no word is chosen and there is only one player left, return
     if (!word && players.length <= 1)
         return await reply(inter, {
-            content: fetchCommandLit('game.hangman.gatherWord.wordGiven.noPlayersLeft'),
+            content: literals.wordGivenNoPlayersLeft,
             embeds: [], components: [], deleteTime: 2
         })
 
@@ -518,15 +515,15 @@ async function showProgress(inter, game, players) {
         color: ColorScheme.game,
         fields: [
             {
-                name: fetchCommandLit('game.hangman.progress.lives'),
+                name: literals.progressLives,
                 value: "💖 ".repeat(game.lives) + "🖤 ".repeat(6 - game.lives), inline: true
             },
             {
-                name: fetchCommandLit('game.hangman.progress.faults'),
+                name: literals.progressFaults,
                 value: game.misses.join(" "), inline: true
             }
         ],
-        footer: { text: fetchCommandLit('game.hangman.progress.players', players.map(p => p.username).join(", ")) }
+        footer: { text: literals.progressPlayers(players.map(p => p.username).join(", ")) }
     })
 
     await reply(inter, { embeds: [embed] })
@@ -544,14 +541,14 @@ async function showResult(inter, game, selector) {
     let msg = ''
     if (game.status === hangman.gameStatus.win) {
         msg = selector
-            ? fetchCommandLit('game.hangman.results.custom.win', selector.username)
-            : fetchCommandLit('game.hangman.results.random.win')
+            ? literals.resultWinCustom(selector.username)
+            : literals.resultWinRandom
     } else if (game.status === hangman.gameStatus.lose) {
         msg = selector
-            ? fetchCommandLit('game.hangman.results.custom.lose', selector.username, game.word)
-            : fetchCommandLit('game.hangman.results.random.lose', game.word)
+            ? literals.resultLoseCustom(selector.username, game.word)
+            : literals.resultLoseRandom(game.word)
     } else
-        msg = fetchCommandLit('game.hangman.results.timeout')
+        msg = literals.resultTimeout
 
 
     //Create embed
@@ -560,11 +557,11 @@ async function showResult(inter, game, selector) {
         color: ColorScheme.game,
         fields: [
             {
-                name: fetchCommandLit('game.hangman.progress.lives'),
+                name: literals.progressLives,
                 value: "💖 ".repeat(game.lives) + "🖤 ".repeat(6 - game.lives), inline: true
             },
             {
-                name: fetchCommandLit('game.hangman.progress.faults'),
+                name: literals.progressFaults,
                 value: game.misses.join(" "), inline: true
             }
         ],

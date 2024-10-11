@@ -11,7 +11,7 @@
     "gif": {
       "description": "Muestra un gif aleatorio de la categoría indicada",
       "option": {
-        "name": "category",
+        "name": "categoría",
         "description": "Categoría que quieras buscar"
       },
       "response": "{0} manda un gif de \"{1}\"..."
@@ -19,7 +19,7 @@
     "hug": {
       "description": "Abraza a un usuario",
       "option": {
-        "name": "user",
+        "name": "usuario",
         "description": "El usuario que quieres abrazar"
       },
       "response": {
@@ -34,7 +34,7 @@
     "poke": {
       "description": "Da un toque a un usuario, molesta a alguien",
       "option": {
-        "name": "user",
+        "name": "usuario",
         "description": "El usuario al que quieras molestar"
       },
       "response": {
@@ -45,7 +45,7 @@
     "shutup": {
       "description": "Manda a callar a un usuario",
       "option": {
-        "name": "user",
+        "name": "usuario",
         "description": "El usuario al que quieras mandar a callar"
       },
       "response": {
@@ -56,7 +56,7 @@
     "slap": {
       "description": "Da una bofetada a un usuario",
       "option": {
-        "name": "user",
+        "name": "usuario",
         "description": "El usuario al que quieras abofetear"
       },
       "response": {
@@ -109,6 +109,17 @@
         "choices": {
           "custom": "Personalizado",
           "random": "Aleatorio"
+        }
+      },
+      "gatherPlayers": {
+        "embed": "Hangman: Teneis {0} segundos para uniros al juego",
+        "buttons": {
+          "join": "Unirse al juego",
+          "exit": "Salir del juego"
+        },
+        "confirmation": {
+          "join": "Te has unido al juego!",
+          "exit": "Has abandonado el juego!"
         }
       },
       "checkings": {
@@ -320,17 +331,7 @@
         "yo",
         "zero"
       ],
-      "gatherPlayers": {
-        "embed": "Hangman: Teneis {0] segundos para uniros al juego",
-        "buttons": {
-          "join": "Unirse al juego",
-          "exit": "Salir del juego"
-        },
-        "confirmation": {
-          "join": "Te has unido al juego!",
-          "exit": "Has abandonado el juego!"
-        }
-      },
+      "customSelectPlayer": "{0} jugadores se han unido al juego. Seleccionando jugador aleatorio...",
       "startError": "Ha ocurrido un error al inciar juego",
       "gatherWord": {
         "chosenOne": "Eres el elegido! Tienes {0} segundos para escribir tu palabra. Recuerda, no participas en la partida.",
@@ -378,11 +379,34 @@
         "tie": "¡Empate!"
       }
     },
-    "tictactoe": {},
+    "tictactoe": {
+      "description": "Juega al tres en raya con alguien",
+      "option": {
+        "name": "oponente",
+        "description": "Menciona a tu oponente"
+      },
+      "checkings": {
+        "againstBot": "No puedes jugar contra un bot",
+        "againstSelf": "No puedes jugar contra ti mismo"
+      },
+      "turn": "{0} es tu turno",
+      "select": {
+        "notYourTurn": "No es tu turno",
+        "selected": "Has elegido la casilla {0}"
+      },
+      "results": {
+        "timeout": "¡Tiempo agotado! Empate",
+        "win": "¡{0} ha ganado!",
+        "draw": "¡Empate!"
+      }
+    },
     "trivia": {}
   },
   "info": {
-    "uptime": {},
+    "uptime": {
+      "description": "Muestra el tiempo que el bot ha estado en línea",
+      "response": "El bot ha estado en línea por {0} días, {1} horas, {2} minutos y {3} segundos"
+    },
     "wikiSearch": {}
   },
   "mod": {

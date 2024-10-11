@@ -129,19 +129,49 @@ function loadCommands(folderPath, client) {
 
             const command = require(filePath)
 
-            const commandName = command.name?.toLowerCase().replace(/ /g, '')
+            let invalidMessage = `-> Error: Invalid command file: ${file}: `
+
+            const commandName = command.name
+            if (!commandName)
+                return console.error(invalidMessage + `no command name`)
+            else if (commandName !== commandName.toLowerCase() || commandName.includes(' '))
+                return console.error(invalidMessage + `command name must be lowercase and cannot contain spaces`)
+
             const commandDescription = command.description
+            if (!commandDescription)
+                return console.error(invalidMessage + `no command description`)
+
             const commandRun = command.run
-            command.options?.forEach(option => { if (option.name) option.name = option.name.toLowerCase() })
-            const validOptions = !command.options || command.options.every(option =>
-                option.name && option.description && option.type !== undefined &&
-                (!option.choices || option.choices.every(choice =>
-                    choice.name && choice.value !== undefined)))
+            if (!commandRun || typeof commandRun !== 'function')
+                return console.error(invalidMessage + `no command 'run' function`)
+
+            if (command.options) {
+                for (const option of command.options) {
+                    if (!option.name)
+                        return console.error(invalidMessage + `option is missing a name`)
+
+                    if (option.name !== option.name.toLowerCase() || option.name.includes(' '))
+                        return console.error(invalidMessage + `option name "${option.name}" must be lowercase and cannot contain spaces`)
+
+                    if (!option.description)
+                        return console.error(invalidMessage + `option "${option.name}" is missing a description`)
+
+                    if (option.type === undefined)
+                        return console.error(invalidMessage + `option "${option.name}" is missing a type`)
+
+                    if (option.choices) {
+                        for (const choice of option.choices) {
+                            if (!choice.name)
+                                return console.error(invalidMessage + `choice is missing a name for option "${option.name}"`)
+
+                            if (choice.value === undefined)
+                                return console.error(invalidMessage + `choice for option "${option.name}" is missing a value`)
+                        }
+                    }
+                }
 
 
-            if (!commandName || !commandDescription || !commandRun || !validOptions)
-                return console.error(`-> Error: Invalid command file: ${file}`)
-
+            }
 
             client.commands.set(commandName, command)
             console.log(`-> Loaded command: ${commandName}`)

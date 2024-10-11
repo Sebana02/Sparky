@@ -111,6 +111,17 @@
           "random": "Random"
         }
       },
+      "gatherPlayers": {
+        "embed": "Hangman: You have {0} seconds to join the game",
+        "buttons": {
+          "join": "Join the game",
+          "exit": "Leave the game"
+        },
+        "confirmation": {
+          "join": "You have joined the game!",
+          "exit": "You have left the game!"
+        }
+      },
       "checkings": {
         "noPlayers": "No one has joined the game",
         "notEnoughPlayers": "There are not enough players to start"
@@ -433,17 +444,7 @@
         "yours",
         "zero"
       ],
-      "gatherPlayers": {
-        "embed": "Hangman: You have {0} seconds to join the game",
-        "buttons": {
-          "join": "Join the game",
-          "exit": "Leave the game"
-        },
-        "confirmation": {
-          "join": "You have joined the game!",
-          "exit": "You have left the game!"
-        }
-      },
+      "customSelectPlayer": "{0} players have joined the game, selecting a random player...",
       "startError": "An error occurred while starting the game",
       "gatherWord": {
         "chosenOne": "You are the chosen one! You have {0} seconds to write your word. Remember, you are not playing in the game.",
@@ -475,22 +476,7 @@
         "timeout": "Time is up! The word was: {0}"
       }
     },
-    "rps": {
-      "description": "Play rock, paper, scissors with someone",
-      "option": {
-        "name": "opponent",
-        "description": "Mention your opponent"
-      },
-      "checkings": {
-        "againstBot": "You cannot play against a bot",
-        "againstSelf": "You cannot play against yourself"
-      },
-      "selection": "You have selected: {0}",
-      "results": {
-        "win": "{0} has won!",
-        "tie": "It's a tie!"
-      }
-    },
+    "RPS": {},
     "tictactoe": {},
     "trivia": {}
   },

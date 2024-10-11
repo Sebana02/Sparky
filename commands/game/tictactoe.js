@@ -1,17 +1,37 @@
 const { ApplicationCommandOptionType, ButtonBuilder, ActionRowBuilder } = require('discord.js')
 const { createEmbed, modifyEmbed, ColorScheme } = require('@utils/embedUtils.js')
 const { reply, deferReply, fetchReply } = require('@utils/interactionUtils.js')
+const { fetchCommandLit } = require('@utils/langUtils.js')
+const timeout = require('@commands/moderation/user/timeout')
+
+// Preload literals
+const literals = {
+    description: fetchCommandLit('game.tictactoe.description'),
+    optionName: fetchCommandLit('game.tictactoe.option.name'),
+    optionDescription: fetchCommandLit('game.tictactoe.option.description'),
+
+    checkAgainstBot: fetchCommandLit('game.tictactoe.checkings.againstBot'),
+    checkAgainstSelf: fetchCommandLit('game.tictactoe.checkings.againstSelf'),
+
+    turn: (player) => fetchCommandLit('game.tictactoe.turn', player),
+    notYourTurn: fetchCommandLit('game.tictactoe.select.notYourTurn'),
+    selected: (selected) => fetchCommandLit('game.tictactoe.select.selected', selected),
+
+    timeout: fetchCommandLit('game.tictactoe.results.timeout'),
+    win: (player) => fetchCommandLit('game.tictactoe.results.win', player),
+    draw: fetchCommandLit('game.tictactoe.results.draw')
+}
 
 /**
  * Command that allows user to play tic tac toe with a friend
  */
 module.exports = {
     name: 'tictactoe',
-    description: 'Juega al tictactoe con un amigo',
+    description: literals.description,
     options: [
         {
-            name: 'opponente',
-            description: 'Menciona a tu opponente',
+            name: literals.optionName,
+            description: literals.optionDescription,
             type: ApplicationCommandOptionType.User,
             required: true
         }
@@ -19,11 +39,17 @@ module.exports = {
     run: async (client, inter) => {
 
         //Check if the opponent is a bot or the author
-        const opponent = inter.options.getUser('opponente')
+        const opponent = inter.options.getUser(literals.optionName)
         if (opponent.bot)
-            return await reply(inter, { content: 'No puedes jugar contra un bot', ephemeral: true, deleteTime: 2 })
+            return await reply(inter, {
+                content: literals.checkAgainstBot,
+                ephemeral: true, deleteTime: 2
+            })
         if (opponent === inter.user)
-            return await reply(inter, { content: 'No puedes jugar contra ti mismo', ephemeral: true, deleteTime: 2 })
+            return await reply(inter, {
+                content: literals.checkAgainstSelf,
+                ephemeral: true, deleteTime: 2
+            })
 
         //Defer the reply
         await deferReply(inter)
@@ -68,7 +94,7 @@ class TicTacToe {
         const embed = createEmbed({
             title: 'Tic Tac Toe',
             description: this.createBoard(),
-            footer: { text: `${this.turn.username} es tu turno`, iconURL: this.turn.displayAvatarURL() },
+            footer: { text: literals.turn(this.turn.username), iconURL: this.turn.displayAvatarURL() },
             color: ColorScheme.game
         })
 
@@ -86,7 +112,7 @@ class TicTacToe {
             //Check if the player has not interacted, timeout
             if (row === undefined || column === undefined) {
                 game_over = true
-                await reply(this.inter, { content: `Tiempo agotado! Empate` })
+                await reply(this.inter, { content: literals.timeout })
                 break
             }
 
@@ -106,7 +132,10 @@ class TicTacToe {
             this.turn = this.turn === this.player_one ? this.player_two : this.player_one
 
             //Update the embed
-            modifyEmbed(embed, { description: this.createBoard(), footer: { text: `${this.turn.username} es tu turno`, iconURL: this.turn.displayAvatarURL() } })
+            modifyEmbed(embed, {
+                description: this.createBoard(),
+                footer: { text: literals.turn(this.turn.username), iconURL: this.turn.displayAvatarURL() }
+            })
 
             //Update the message
             await reply(this.inter, { embeds: [embed], components: this.createButtons() })
@@ -114,7 +143,12 @@ class TicTacToe {
         }
 
         //Update the embed with the winner
-        modifyEmbed(embed, { footer: { text: winner ? `${winner.username} ha ganado!` : 'Empate', iconURL: winner.displayAvatarURL() } })
+        modifyEmbed(embed, {
+            footer: {
+                text: winner ? literals.win(winner.username) : literals.draw,
+                iconURL: winner.displayAvatarURL()
+            }
+        })
 
         //Update the message
         await reply(this.inter, { embeds: [embed], components: [] })
@@ -230,7 +264,10 @@ class TicTacToe {
                 try {
                     //Ignore interactions from other players
                     if (interaction.user !== this.turn)
-                        return await reply(interaction, { content: `No es tu turno!`, ephemeral: true, deleteTime: 2 })
+                        return await reply(interaction, {
+                            content: literals.notYourTurn,
+                            ephemeral: true, deleteTime: 2
+                        })
 
                     // Stop collector and resolve Promise
                     collector.stop()
@@ -238,7 +275,10 @@ class TicTacToe {
                     const row = JSON.parse(interaction.customId).row
                     const column = JSON.parse(interaction.customId).column
 
-                    await reply(interaction, { content: `Has elegido la casilla [${row},${column}]`, ephemeral: true, deleteTime: 2 })
+                    await reply(interaction, {
+                        content: literals.selected(`[${row},${column}]`),
+                        ephemeral: true, deleteTime: 2
+                    })
 
                     resolve({ row, column })
                 } catch (error) {
