@@ -1,6 +1,16 @@
 const { createEmbed, ColorScheme } = require('@utils/embedUtils.js')
 const { reply, deferReply } = require('@utils/interactionUtils.js')
 const { ApplicationCommandOptionType } = require('discord.js')
+const { fetchCommandLit } = require('@utils/langUtils.js')
+
+//Preolad literals
+const literals = {
+    description: fetchCommandLit('info.wikiSearch.description'),
+    optionName: fetchCommandLit('info.wikiSearch.option.name'),
+    optionDescription: fetchCommandLit('info.wikiSearch.option.description'),
+    noResults: (searchTerm) => fetchCommandLit('info.wikiSearch.noResults', searchTerm),
+    response: (searchTerm) => fetchCommandLit('info.wikiSearch.response', searchTerm)
+}
 
 /**
  *  Max number of results to get

@@ -1,5 +1,11 @@
 const { createEmbed, ColorScheme } = require('@utils/embedUtils')
 const { reply } = require('@utils/interactionUtils')
+const { fetchUtilsLit } = require('@utils/langUtils.js')
+
+// Preload literals
+const literals = {
+    response: fetchUtilsLit('commandErrorHandler.response')
+}
 
 /**
  * Utils for handling errors in command calls
@@ -25,7 +31,7 @@ module.exports = {
             // Create an error embed
             const errorEmbed = createEmbed({
                 color: ColorScheme.error,
-                author: { name: 'Ha ocurrido un error', iconURL: client.user.displayAvatarURL() },
+                author: { name: literals.response, iconURL: client.user.displayAvatarURL() },
             })
 
             // Reply to the interaction with the error embed

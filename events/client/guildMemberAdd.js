@@ -1,3 +1,10 @@
+const { fetchEventLit } = require('@utils/langUtils.js')
+
+//Preolad literals
+const literals = {
+    response: (guildName, user) => fetchEventLit('client.guildMemberAdd.response', guildName, user)
+}
+
 /**
  * Event that is called when a member joins a guild
  * Logs the event and sends a welcome message to the member
@@ -17,6 +24,6 @@ module.exports = {
         console.log(`New member: ${member.user.tag} joined the server`)
 
         //Send a welcome message to the member
-        await member.send(`¡Bienvenido al servidor '${member.guild.name}', ${member.user.username}!`)
+        await member.send(literals.response(member.guild.name, member.user.username))
     }
 }

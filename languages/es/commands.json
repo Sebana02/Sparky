@@ -407,7 +407,15 @@
       "description": "Muestra el tiempo que el bot ha estado en línea",
       "response": "El bot ha estado en línea por {0} días, {1} horas, {2} minutos y {3} segundos"
     },
-    "wikiSearch": {}
+    "wikiSearch": {
+      "description": "Busca en Wikipedia",
+      "option": {
+        "name": "término",
+        "description": "Término que quieres buscar"
+      },
+      "noResults": "No se han encontrado resultados para: {0}",
+      "results": "Resultado de Wikipedia para \"{0}\""
+    }
   },
   "mod": {
     "hideChannel": {},

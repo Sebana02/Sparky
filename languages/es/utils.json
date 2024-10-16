@@ -1,1 +1,12 @@
-{}
+{
+  "commandErrorHandler": {
+    "response": "Ha ocurrido un error al ejecutar el comando"
+  },
+  "embedMusicPresets": {},
+  "embedUtils": {},
+  "eventErrorHandler": {},
+  "gifUtils": {},
+  "interactionUtils": {},
+  "langUtils": {},
+  "permissions": {}
+}
