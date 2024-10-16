@@ -2,15 +2,21 @@ const { useQueue } = require('discord-player')
 const { lyricsExtractor } = require('@discord-player/extractor')
 const { reply, deferReply } = require('@utils/interaction-utils')
 const { noQueue, noLyrics, lyrics } = require('@utils/embed/music-presets')
+const { fetchCommandLit } = require('@utils/language-utils.js')
 
 const genius = lyricsExtractor()
+
+// Prelaod literals
+const literals = {
+    description: fetchCommandLit('music.lyrics.description')
+}
 
 /**
  * Command for showing the lyrics of the current song
  */
 module.exports = {
     name: 'lyrics',
-    description: "Muestra la letra de la canción que se está reproduciendo",
+    description: literals.description,
     voiceChannel: true,
 
     run: async (client, inter) => {

@@ -437,21 +437,73 @@
     "warn": {}
   },
   "music": {
-    "lyrics": {},
-    "now_playing": {},
-    "save": {},
-    "back": {},
-    "loop": {},
-    "pause": {},
-    "play": {},
-    "play_next": {},
-    "resume": {},
-    "skip": {},
-    "stop": {},
-    "volume": {},
-    "clear": {},
-    "queue": {},
-    "shuffle": {}
+    "lyrics": {
+      "description": "Muestra la letra de la canción actual"
+    },
+    "now_playing": {
+      "description": "Muestra la canción que se está reproduciendo actualmente"
+    },
+    "save": {
+      "description": "Guarda la canción actual en un mensaje privado"
+    },
+    "back": {
+      "description": "Reproducir la canción anterior"
+    },
+    "loop": {
+      "description": "Activa o desactiva el bucle de una canción o de la cola",
+      "option": {
+        "name": "modo",
+        "description": "Modo de bucle",
+        "choices": {
+          "off": "Desactivado",
+          "track": "Canción",
+          "queue": "Cola",
+          "autoplay": "Autoplay"
+        }
+      }
+    },
+    "pause": {
+      "description": "Pausa la canción"
+    },
+    "play": {
+      "description": "Reproduce una canción o una lista de reproducción",
+      "option": {
+        "name": "canción",
+        "description": "Canción o lista de reproducción que quieres reproducir"
+      }
+    },
+    "play_next": {
+      "description": "Reproducir la canción que quieras a continuación",
+      "option": {
+        "name": "canción",
+        "description": "Canción que quieres reproducir a continuación"
+      }
+    },
+    "resume": {
+      "description": "Reanuda la canción"
+    },
+    "skip": {
+      "description": "Salta la canción actual"
+    },
+    "stop": {
+      "description": "Detiene la reproducción de música"
+    },
+    "volume": {
+      "description": "Cambia el volumen de la música",
+      "option": {
+        "name": "volumen",
+        "description": "Volumen de la música"
+      }
+    },
+    "clear": {
+      "description": "Vacía la cola de reproducción"
+    },
+    "queue": {
+      "description": "Muestra la cola de reproducción"
+    },
+    "shuffle": {
+      "description": "Baraja la cola de reproducción"
+    }
   },
   "utility": {
     "disconnect": {},

@@ -1,13 +1,19 @@
 const { useQueue, usePlayer } = require('discord-player')
 const { reply } = require('@utils/interaction-utils')
 const { noQueue, resume } = require('@utils/embed/music-presets')
+const { fetchCommandLit } = require('@utils/language-utils.js')
+
+// Prelaod literals
+const literals = {
+    description: fetchCommandLit('music.resume.description')
+}
 
 /**
  * Command for resuming the queue
  */
 module.exports = {
     name: 'resume',
-    description: 'Reanuda la canción',
+    description: literals.description,
     voiceChannel: true,
 
     run: async (client, inter) => {

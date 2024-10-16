@@ -1,13 +1,19 @@
 const { useQueue } = require("discord-player")
 const { reply, deferReply } = require('@utils/interaction-utils')
 const { noQueue, savePrivate, save } = require('@utils/embed/music-presets')
+const { fetchCommandLit } = require('@utils/language-utils.js')
+
+// Prelaod literals
+const literals = {
+    description: fetchCommandLit('music.save.description')
+}
 
 /**
  * Command for saving the current song in a private message
  */
 module.exports = {
     name: 'save',
-    description: 'Guardar la canción actual en un mensaje privado',
+    description: literals.description,
     voiceChannel: true,
 
     run: async (client, inter) => {

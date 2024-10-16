@@ -1,13 +1,19 @@
 const { useQueue } = require('discord-player')
 const { noQueue, shuffle } = require('@utils/embed/music-presets')
 const { reply } = require('@utils/interaction-utils')
+const { fetchCommandLit } = require('@utils/language-utils.js')
+
+// Prelaod literals
+const literals = {
+    description: fetchCommandLit('music.shuffle.description')
+}
 
 /**
  * Command for shuffling the queue
  */
 module.exports = {
     name: 'shuffle',
-    description: 'Barajar la cola de la música',
+    description: literals.description,
     voiceChannel: true,
 
     run: async (client, inter) => {

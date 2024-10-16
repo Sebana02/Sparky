@@ -1,13 +1,19 @@
 const { useQueue, usePlayer } = require('discord-player')
 const { reply } = require('@utils/interaction-utils')
 const { noQueue, pause } = require('@utils/embed/music-presets')
+const { fetchCommandLit } = require('@utils/language-utils.js')
+
+// Prelaod literals
+const literals = {
+    description: fetchCommandLit('music.pause.description')
+}
 
 /**
  * Command for pausing the queue
  */
 module.exports = {
     name: 'pause',
-    description: 'Pausa la canción',
+    description: literals.description,
     voiceChannel: true,
 
     run: async (client, inter) => {

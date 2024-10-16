@@ -1,13 +1,19 @@
 const { useQueue, usePlayer } = require('discord-player')
 const { reply } = require('@utils/interaction-utils')
 const { noQueue, skip } = require('@utils/embed/music-presets')
+const { fetchCommandLit } = require('@utils/language-utils.js')
+
+// Prelaod literals
+const literals = {
+    description: fetchCommandLit('music.skip.description')
+}
 
 /**
  * Command for skipping the current song
  */
 module.exports = {
     name: 'skip',
-    description: 'Salta la canción actual',
+    description: literals.description,
     voiceChannel: true,
 
     run: async (client, inter) => {

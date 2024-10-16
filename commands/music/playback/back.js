@@ -1,13 +1,19 @@
 const { useQueue, useHistory } = require('discord-player')
 const { reply, deferReply } = require('@utils/interaction-utils')
 const { noQueue, noHistory, previousTrack } = require('@utils/embed/music-presets')
+const { fetchCommandLit } = require('@utils/language-utils.js')
+
+// Prelaod literals
+const literals = {
+    description: fetchCommandLit('music.back.description')
+}
 
 /**
  * Command for playing the previous song
  */
 module.exports = {
     name: 'back',
-    description: "Reproducir la canción anterior",
+    description: literals.description,
     voiceChannel: true,
 
     run: async (client, inter) => {

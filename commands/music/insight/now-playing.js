@@ -1,13 +1,19 @@
 const { useQueue, usePlayer } = require('discord-player')
 const { noQueue, nowPlaying } = require('@utils/embed/music-presets')
 const { reply } = require('@utils/interaction-utils')
+const { fetchCommandLit } = require('@utils/language-utils.js')
+
+// Prelaod literals
+const literals = {
+    description: fetchCommandLit('music.now_playing.description')
+}
 
 /**
  * Command for showing the current playing song
  */
 module.exports = {
     name: 'nowplaying',
-    description: 'Muestra la cancion que se esta reproduciendo actualmente',
+    description: literals.description,
     voiceChannel: true,
 
     run: async (client, inter) => {

@@ -2,18 +2,26 @@ const { ApplicationCommandOptionType } = require('discord.js')
 const { QueryType, useQueue, useMainPlayer } = require('discord-player')
 const { reply, deferReply } = require('@utils/interaction-utils')
 const { noResults, addToQueue, noQueue } = require('@utils/embed/music-presets')
+const { fetchCommandLit } = require('@utils/language-utils.js')
+
+// Prelaod literals
+const literals = {
+    description: fetchCommandLit('music.play_next.description'),
+    optionName: fetchCommandLit('music.play_next.option.name'),
+    optionDescription: fetchCommandLit('music.play_next.option.description'),
+}
 
 /**
  * Command for playing a song next
  */
 module.exports = {
     name: 'playnext',
-    description: "Reproduce la canción que quieras a continuación",
+    description: literals.description,
     voiceChannel: true,
     options: [
         {
-            name: 'cancion',
-            description: 'La canción que quieres reproducir a continuación',
+            name: literals.optionName,
+            description: literals.optionDescription,
             type: ApplicationCommandOptionType.String,
             required: true,
         }
@@ -23,7 +31,7 @@ module.exports = {
 
         //Get the queue and the song
         const queue = useQueue(inter.guildId)
-        const song = inter.options.getString('cancion')
+        const song = inter.options.getString(literals.optionName)
 
         //Check if there is a queue and if it is playing
         if (!queue || !queue.isPlaying())

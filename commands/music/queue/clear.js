@@ -1,13 +1,19 @@
 const { useQueue } = require('discord-player')
 const { reply } = require('@utils/interaction-utils')
 const { noQueue, clear } = require('@utils/embed/music-presets')
+const { fetchCommandLit } = require('@utils/language-utils.js')
+
+// Prelaod literals
+const literals = {
+    description: fetchCommandLit('music.clear.description')
+}
 
 /**
  * Command for clearing the queue
  */
 module.exports = {
     name: 'clear',
-    description: 'Vacía la cola de reproducción',
+    description: literals.description,
     voiceChannel: true,
 
     run: async (client, inter) => {

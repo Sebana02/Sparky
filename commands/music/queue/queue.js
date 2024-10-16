@@ -1,13 +1,19 @@
 const { useQueue } = require('discord-player')
 const { reply } = require('@utils/interaction-utils')
 const { noQueue, currentQueue } = require('@utils/embed/music-presets')
+const { fetchCommandLit } = require('@utils/language-utils.js')
+
+// Prelaod literals
+const literals = {
+    description: fetchCommandLit('music.queue.description')
+}
 
 /**
  * Command for showing the queue
  */
 module.exports = {
     name: 'queue',
-    description: 'Muestra la cola de canciones',
+    description: literals.description,
     voiceChannel: true,
 
     run: async (client, inter) => {

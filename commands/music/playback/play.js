@@ -2,18 +2,26 @@ const { QueryType, useMainPlayer } = require('discord-player')
 const { ApplicationCommandOptionType } = require('discord.js')
 const { reply, deferReply } = require('@utils/interaction-utils')
 const { noResults, addToQueue, addToQueueMany } = require('@utils/embed/music-presets')
+const { fetchCommandLit } = require('@utils/language-utils.js')
+
+// Prelaod literals
+const literals = {
+    description: fetchCommandLit('music.play.description'),
+    optionName: fetchCommandLit('music.play.option.name'),
+    optionDescription: fetchCommandLit('music.play.option.description'),
+}
 
 /**
  * Command for playing a song
  */
 module.exports = {
     name: 'play',
-    description: "Reproduce la canción que quieras",
+    description: literals.description,
     voiceChannel: true,
     options: [
         {
-            name: 'cancion',
-            description: 'La canción que quieres reproducir',
+            name: literals.optionName,
+            description: literals.optionDescription,
             type: ApplicationCommandOptionType.String,
             required: true,
         }
@@ -23,7 +31,7 @@ module.exports = {
 
         //Get the player and the song
         const player = useMainPlayer()
-        const song = inter.options.getString('cancion')
+        const song = inter.options.getString(literals.optionName)
 
         //Defer the reply
         await deferReply(inter)
