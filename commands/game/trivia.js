@@ -3,18 +3,35 @@ const { QueryType, useQueue, useMainPlayer, usePlayer, SearchResult } = require(
 const { ApplicationCommandOptionType, ActionRowBuilder, ButtonBuilder, InteractionType, EmbedBuilder } = require('discord.js')
 const { noResults, noPlaylist } = require('@utils/embed/music-presets')
 const { createEmbed, ColorScheme } = require('@utils/embed/embed-utils')
+const { fetchCommandLit } = require('@utils/language-utils.js')
+
+// Prelaod literals
+const literals = {
+    description: fetchCommandLit('game.trivia.description'),
+    optionName: fetchCommandLit('game.trivia.option.name'),
+    optionDescription: fetchCommandLit('game.trivia.option.description'),
+
+    selectedStop: fetchCommandLit('game.trivia.selected.stopped'),
+    selectedCorrect: (user) => fetchCommandLit('game.trivia.selected.correct', user),
+    selectedIncorrect: (user) => fetchCommandLit('game.trivia.selected.incorrect', user),
+    selectedSong: (song) => fetchCommandLit('game.trivia.selected.song', song),
+
+    inProgress: fetchCommandLit('game.trivia.responses.in_progress'),
+    ended: fetchCommandLit('game.trivia.responses.ended'),
+    score: (score) => fetchCommandLit('game.trivia.responses.score', score)
+}
 
 /**
  * Command that allows user to play trivia with songs
  */
 module.exports = {
     name: 'trivia',
-    description: "Juega al trivia con canciones",
+    description: literals.description,
     voiceChannel: true,
     options: [
         {
-            name: 'playlist',
-            description: 'playlist para el trivia',
+            name: literals.optionName,
+            description: literals.optionDescription,
             type: ApplicationCommandOptionType.String,
             required: true,
         }
@@ -52,7 +69,7 @@ module.exports = {
 async function searchResults(inter) {
     //Get player and playlist
     const player = useMainPlayer()
-    const playlist = inter.options.getString('playlist')
+    const playlist = inter.options.getString(literals.optionName)
 
     //Search for playlist and return it
     return await player.search(playlist, { requestedBy: inter.member, searchEngine: QueryType.AUTO })
@@ -129,8 +146,8 @@ function createLeaderboard(players, end) {
 
     //Create embed
     return createEmbed({
-        footer: { text: !end ? 'Adivina la canción' : 'Se ha acabado el trivia!' },
-        description: (playersSorted.length > 0 ? '**Puntuación**\n' : '') + playersSorted.map(p => `***${p.user.username} : ${p.score}***`).join('\n'),
+        footer: { text: !end ? literals.inProgress : literals.ended },
+        description: literals.score(playersSorted.map(p => `***${p.user.username} : ${p.score}***`).join('\n')),
         color: ColorScheme.game
     })
 }
@@ -192,7 +209,7 @@ async function awaitInteraction(inter, players, correctSong, results, toBePlayed
 
         //Send message
         const result = createEmbed({
-            author: { name: 'Se ha parado el trivia!', iconURL: buttonInteraction.user.displayAvatarURL() },
+            author: { name: literals.selectedStop, iconURL: buttonInteraction.user.displayAvatarURL() },
             color: ColorScheme.game
         })
         await reply(buttonInteraction, { embeds: [result], deleteTime: 1.5, propagate: false })
@@ -210,8 +227,8 @@ async function awaitInteraction(inter, players, correctSong, results, toBePlayed
 
             //Send message
             const result = createEmbed({
-                author: { name: `Correcto, ${buttonInteraction.user.tag}, +1 punto!`, iconURL: buttonInteraction.user.displayAvatarURL() },
-                footer: { text: `La canción era ${(correctSong.title + ' - ' + correctSong.author).substring(0, 80)}` },
+                author: { name: literals.selectedCorrect(buttonInteraction.user.tag), iconURL: buttonInteraction.user.displayAvatarURL() },
+                footer: { text: literals.selectedSong(correctSong.title + ' - ' + correctSong.author).substring(0, 80) },
                 color: ColorScheme.game
             })
             await reply(buttonInteraction, { embeds: [result], deleteTime: 1.5, propagate: false })
@@ -220,8 +237,8 @@ async function awaitInteraction(inter, players, correctSong, results, toBePlayed
 
             //Send message
             const result = createEmbed({
-                author: { name: `Incorrecto, ${buttonInteraction.user.tag}, tal vez la próxima vez!`, iconURL: buttonInteraction.user.displayAvatarURL() },
-                footer: { text: `La canción era ${(correctSong.title + ' - ' + correctSong.author).substring(0, 80)}` },
+                author: { name: literals.selectedIncorrect(buttonInteraction.user.tag), iconURL: buttonInteraction.user.displayAvatarURL() },
+                footer: { text: literals.selectedSong(correctSong.title + ' - ' + correctSong.author).substring(0, 80) },
                 color: ColorScheme.game
             })
             await reply(buttonInteraction, { embeds: [result], deleteTime: 1.5, propagate: false })

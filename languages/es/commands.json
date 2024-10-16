@@ -400,7 +400,24 @@
         "draw": "¡Empate!"
       }
     },
-    "trivia": {}
+    "trivia": {
+      "description": "Juega al trivia con canciones",
+      "option": {
+        "name": "playlist",
+        "description": "Lista de reproducción para el trivia"
+      },
+      "selected": {
+        "stopped": "Se ha detenido el trivia",
+        "song": "La canción era {0}",
+        "correct": "Correcto, {0}, +1 punto!",
+        "incorrect": "Incorrecto, {0}, tal vez la próxima vez"
+      },
+      "responses": {
+        "in_progress": "Adivina la canción",
+        "ended": "Se ha acabado el trivia",
+        "score": "**Puntuación**\n{0}"
+      }
+    }
   },
   "info": {
     "uptime": {
