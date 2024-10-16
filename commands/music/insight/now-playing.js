@@ -1,6 +1,6 @@
 const { useQueue, usePlayer } = require('discord-player')
-const { noQueue, nowPlaying } = require('@utils/embedMusicPresets')
-const { reply } = require('@utils/interactionUtils')
+const { noQueue, nowPlaying } = require('@utils/embed/music-presets')
+const { reply } = require('@utils/interaction-utils')
 
 /**
  * Command for showing the current playing song

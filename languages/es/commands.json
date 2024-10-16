@@ -42,7 +42,7 @@
         "footer": "{0} te poketea..."
       }
     },
-    "shutup": {
+    "shut_up": {
       "description": "Manda a callar a un usuario",
       "option": {
         "name": "usuario",
@@ -91,7 +91,7 @@
         ]
       }
     },
-    "coinflip": {
+    "coin_flip": {
       "description": "Gira la moneda para ver si cae cara o cruz",
       "response": {
         "footer": "{0} ha tirado una moneda y ha salido...",
@@ -111,7 +111,7 @@
           "random": "Aleatorio"
         }
       },
-      "gatherPlayers": {
+      "gather_players": {
         "embed": "Hangman: Teneis {0} segundos para uniros al juego",
         "buttons": {
           "join": "Unirse al juego",
@@ -123,10 +123,10 @@
         }
       },
       "checkings": {
-        "noPlayers": "Nadie se ha unido al juego",
-        "notEnoughPlayers": "No hay suficientes jugadores para empezar"
+        "no_players": "Nadie se ha unido al juego",
+        "not_enough_players": "No hay suficientes jugadores para empezar"
       },
-      "wordList": [
+      "word_list": [
         "abandonar",
         "abajo",
         "abierto",
@@ -331,19 +331,19 @@
         "yo",
         "zero"
       ],
-      "customSelectPlayer": "{0} jugadores se han unido al juego. Seleccionando jugador aleatorio...",
-      "startError": "Ha ocurrido un error al inciar juego",
-      "gatherWord": {
-        "chosenOne": "Eres el elegido! Tienes {0} segundos para escribir tu palabra. Recuerda, no participas en la partida.",
-        "noWordGiven": {
+      "custom_select_player": "{0} jugadores se han unido al juego. Seleccionando jugador aleatorio...",
+      "start_error": "Ha ocurrido un error al inciar juego",
+      "gather_word": {
+        "chosen_one": "Eres el elegido! Tienes {0} segundos para escribir tu palabra. Recuerda, no participas en la partida.",
+        "no_word_given": {
           "dm": "No has dado ninguna palabra válida en el tiempo establecido, estas fuera de la partida",
           "channel": "{0} no ha dado ninguna palabra válida en el tiempo establecido, esta fuera de la partida"
         },
-        "wordGiven": {
-          "validWord": "Buena elección! Volviendo al juego...",
-          "invalidWord": "La palabra no es válida, intenta de nuevo",
-          "tooManyTries": "Muchas palabras inválidas, estas fuera de la partida",
-          "noPlayersLeft": "No hay jugadores suficientes para continuar"
+        "word_given": {
+          "valid_word": "Buena elección! Volviendo al juego...",
+          "invalid_word": "La palabra no es válida, intenta de nuevo",
+          "too_many_tries": "Muchas palabras inválidas, estas fuera de la partida",
+          "no_players_left": "No hay jugadores suficientes para continuar"
         }
       },
       "progress": {
@@ -407,30 +407,30 @@
       "description": "Muestra el tiempo que el bot ha estado en línea",
       "response": "El bot ha estado en línea por {0} días, {1} horas, {2} minutos y {3} segundos"
     },
-    "wikiSearch": {
+    "wiki_search": {
       "description": "Busca en Wikipedia",
       "option": {
         "name": "término",
         "description": "Término que quieres buscar"
       },
-      "noResults": "No se han encontrado resultados para: {0}",
+      "no_results": "No se han encontrado resultados para: {0}",
       "results": "Resultado de Wikipedia para \"{0}\""
     }
   },
   "mod": {
-    "hideChannel": {},
-    "muteChannel": {},
+    "hide_channel": {},
+    "mute_channel": {},
     "purge": {},
-    "showChannel": {},
-    "unmuteChannel": {},
-    "createRole": {},
+    "show_channel": {},
+    "unmute_channel": {},
+    "create_role": {},
     "ban": {},
-    "bannedList": {},
+    "banned_list": {},
     "kick": {},
     "mute": {},
-    "mutedList": {},
-    "resetNickname": {},
-    "setNickname": {},
+    "muted_list": {},
+    "reset_nickname": {},
+    "set_nickname": {},
     "timeout": {},
     "unban": {},
     "unmute": {},
@@ -438,13 +438,13 @@
   },
   "music": {
     "lyrics": {},
-    "nowplaying": {},
+    "now_playing": {},
     "save": {},
     "back": {},
     "loop": {},
     "pause": {},
     "play": {},
-    "playnext": {},
+    "play_next": {},
     "resume": {},
     "skip": {},
     "stop": {},
@@ -453,7 +453,7 @@
     "queue": {},
     "shuffle": {}
   },
-  "util": {
+  "utility": {
     "disconnect": {},
     "ping": {},
     "poll": {},

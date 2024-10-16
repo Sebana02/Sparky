@@ -1,5 +1,5 @@
-const { reply, deferReply } = require('@utils/interactionUtils.js')
-const { createEmbed } = require('@utils/embedUtils.js')
+const { reply, deferReply } = require('@utils/interaction-utils.js')
+const { createEmbed } = require('@utils/embed/embed-utils.js')
 const permissions = require('@utils/permissions.js')
 
 /**

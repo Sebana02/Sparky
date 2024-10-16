@@ -1,10 +1,10 @@
-const { createEmbed, ColorScheme } = require('@utils/embedUtils')
-const { reply } = require('@utils/interactionUtils')
-const { fetchUtilsLit } = require('@utils/langUtils.js')
+const { createEmbed, ColorScheme } = require('@utils/embed/embed-utils')
+const { reply } = require('@utils/interaction-utils')
+const { fetchUtilLit } = require('@utils/language-utils.js')
 
 // Preload literals
 const literals = {
-    response: fetchUtilsLit('commandErrorHandler.response')
+    response: fetchUtilLit('error_handler.command.response')
 }
 
 /**

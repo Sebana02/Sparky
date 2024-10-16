@@ -1,13 +1,13 @@
-const { reply } = require('@utils/interactionUtils.js')
-const { createEmbed, ColorScheme } = require('@utils/embedUtils.js')
-const { fetchCommandLit } = require('@utils/langUtils')
+const { reply } = require('@utils/interaction-utils.js')
+const { createEmbed, ColorScheme } = require('@utils/embed/embed-utils.js')
+const { fetchCommandLit } = require('@utils/language-utils')
 
 // Preload literals
 const literals = {
-    description: fetchCommandLit('fun.coinflip.description'),
-    responseFooter: (username) => fetchCommandLit('fun.coinflip.response.footer', username),
-    heads: fetchCommandLit('fun.coinflip.response.heads'),
-    tails: fetchCommandLit('fun.coinflip.response.tails')
+    description: fetchCommandLit('fun.coin_flip.description'),
+    responseFooter: (username) => fetchCommandLit('fun.coin_flip.response.footer', username),
+    heads: fetchCommandLit('fun.coin_flip.response.heads'),
+    tails: fetchCommandLit('fun.coin_flip.response.tails')
 }
 
 /**

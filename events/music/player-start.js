@@ -1,4 +1,4 @@
-const { playing } = require('@utils/embedMusicPresets')
+const { playing } = require('@utils/embed/music-presets')
 
 /**
  * Event emitted when the player starts playing a song

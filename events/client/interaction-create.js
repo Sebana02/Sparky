@@ -1,15 +1,15 @@
 const { useQueue } = require('discord-player')
-const { reply } = require('@utils/interactionUtils.js')
-const { commandErrorHandler } = require('@utils/commandErrorHandler.js')
-const { fetchEventLit } = require('@utils/langUtils.js')
+const { reply } = require('@utils/interaction-utils.js')
+const { commandErrorHandler } = require('@utils/error-handler/command-error-handler.js')
+const { fetchEventLit } = require('@utils/language-utils.js')
 
 //Preolad literals
 const literals = {
-    noPermissions: fetchEventLit('client.interactionCreate.noPermissions'),
-    noDJRole: fetchEventLit('client.interactionCreate.noDJRole'),
-    noCommandsTrivia: fetchEventLit('client.interactionCreate.noCommandsTrivia'),
-    noVoiceChannel: fetchEventLit('client.interactionCreate.noVoiceChannel'),
-    noSameVoiceChannel: fetchEventLit('client.interactionCreate.noSameVoiceChannel')
+    noPermissions: fetchEventLit('client.interaction_create.no_permissions'),
+    noDJRole: fetchEventLit('client.interaction_create.no_dj_role'),
+    noCommandsTrivia: fetchEventLit('client.interaction_create.no_commands_trivia'),
+    noVoiceChannel: fetchEventLit('client.interaction_create.no_voice_channel'),
+    noSameVoiceChannel: fetchEventLit('client.interaction_create.no_same_voice_channel')
 }
 
 /**

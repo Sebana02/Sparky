@@ -1,6 +1,6 @@
 const { useQueue } = require('discord-player')
-const { noQueue, shuffle } = require('@utils/embedMusicPresets')
-const { reply } = require('@utils/interactionUtils')
+const { noQueue, shuffle } = require('@utils/embed/music-presets')
+const { reply } = require('@utils/interaction-utils')
 
 /**
  * Command for shuffling the queue

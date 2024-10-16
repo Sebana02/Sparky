@@ -1,6 +1,6 @@
 const { useQueue, useHistory } = require('discord-player')
-const { reply, deferReply } = require('@utils/interactionUtils')
-const { noQueue, noHistory, previousTrack } = require('@utils/embedMusicPresets')
+const { reply, deferReply } = require('@utils/interaction-utils')
+const { noQueue, noHistory, previousTrack } = require('@utils/embed/music-presets')
 
 /**
  * Command for playing the previous song

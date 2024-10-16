@@ -1,7 +1,7 @@
 const { ApplicationCommandOptionType, ButtonBuilder, ActionRowBuilder } = require('discord.js')
-const { reply, deferReply, fetchReply } = require('@utils/interactionUtils.js')
-const { createEmbed, modifyEmbed, ColorScheme } = require('@utils/embedUtils.js')
-const { fetchCommandLit } = require('@utils/langUtils.js')
+const { reply, deferReply, fetchReply } = require('@utils/interaction-utils.js')
+const { createEmbed, modifyEmbed, ColorScheme } = require('@utils/embed/embed-utils.js')
+const { fetchCommandLit } = require('@utils/language-utils.js')
 
 // Preload literals
 const literals = {

@@ -1,4 +1,4 @@
-const { emptyQueue } = require('@utils/embedMusicPresets')
+const { emptyQueue } = require('@utils/embed/music-presets')
 /**
  * Event emitted when the queue is empty
  * Sends an empty queue embed to the channel where the music is playing

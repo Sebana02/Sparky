@@ -1,6 +1,6 @@
 const { ActionRowBuilder, ButtonBuilder, ApplicationCommandOptionType } = require('discord.js')
-const { reply, deferReply, fetchReply } = require('@utils/interactionUtils.js')
-const { createEmbed, ColorScheme } = require('@utils/embedUtils.js')
+const { reply, deferReply, fetchReply } = require('@utils/interaction-utils.js')
+const { createEmbed, ColorScheme } = require('@utils/embed/embed-utils.js')
 
 /**
  * Command that creates a poll

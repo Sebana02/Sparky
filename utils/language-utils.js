@@ -71,7 +71,7 @@ function fetchEventLit(pathToLiteral, ...args) {
  * @param {string[]} args - Arguments to format the literal.
  * @returns {string|null} The value of the literal, or null if not found.
  */
-function fetchUtilsLit(pathToLiteral, ...args) {
+function fetchUtilLit(pathToLiteral, ...args) {
     // Add 'utils.' to the path 
     pathToLiteral = `utils.${pathToLiteral}`
 
@@ -88,5 +88,5 @@ module.exports = {
     fetchLiteral,
     fetchCommandLit,
     fetchEventLit,
-    fetchUtilsLit
+    fetchUtilLit
 }

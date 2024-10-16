@@ -1,4 +1,4 @@
-const { emptyChannel } = require('@utils/embedMusicPresets')
+const { emptyChannel } = require('@utils/embed/music-presets')
 
 /**
  * Event emitted when the voice channel is empty

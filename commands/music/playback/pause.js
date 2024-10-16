@@ -1,6 +1,6 @@
 const { useQueue, usePlayer } = require('discord-player')
-const { reply } = require('@utils/interactionUtils')
-const { noQueue, pause } = require('@utils/embedMusicPresets')
+const { reply } = require('@utils/interaction-utils')
+const { noQueue, pause } = require('@utils/embed/music-presets')
 
 /**
  * Command for pausing the queue

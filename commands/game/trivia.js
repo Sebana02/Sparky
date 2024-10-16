@@ -1,8 +1,8 @@
-const { deferReply, reply, fetchReply } = require('@utils/interactionUtils')
+const { deferReply, reply, fetchReply } = require('@utils/interaction-utils')
 const { QueryType, useQueue, useMainPlayer, usePlayer, SearchResult } = require('discord-player')
 const { ApplicationCommandOptionType, ActionRowBuilder, ButtonBuilder, InteractionType, EmbedBuilder } = require('discord.js')
-const { noResults, noPlaylist } = require('@utils/embedMusicPresets')
-const { createEmbed, ColorScheme } = require('@utils/embedUtils')
+const { noResults, noPlaylist } = require('@utils/embed/music-presets')
+const { createEmbed, ColorScheme } = require('@utils/embed/embed-utils')
 
 /**
  * Command that allows user to play trivia with songs

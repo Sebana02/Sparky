@@ -1,4 +1,4 @@
-const { reply, deferReply } = require('@utils/interactionUtils.js')
+const { reply, deferReply } = require('@utils/interaction-utils.js')
 const { ApplicationCommandOptionType, ChannelType } = require('discord.js')
 const { permissions } = require('@utils/permissions.js')
 

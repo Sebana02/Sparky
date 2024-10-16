@@ -1,15 +1,15 @@
-const { createEmbed, ColorScheme } = require('@utils/embedUtils.js')
-const { reply, deferReply } = require('@utils/interactionUtils.js')
+const { createEmbed, ColorScheme } = require('@utils/embed/embed-utils.js')
+const { reply, deferReply } = require('@utils/interaction-utils.js')
 const { ApplicationCommandOptionType } = require('discord.js')
-const { fetchCommandLit } = require('@utils/langUtils.js')
+const { fetchCommandLit } = require('@utils/language-utils.js')
 
 //Preolad literals
 const literals = {
-    description: fetchCommandLit('info.wikiSearch.description'),
-    optionName: fetchCommandLit('info.wikiSearch.option.name'),
-    optionDescription: fetchCommandLit('info.wikiSearch.option.description'),
-    noResults: (searchTerm) => fetchCommandLit('info.wikiSearch.noResults', searchTerm),
-    response: (searchTerm) => fetchCommandLit('info.wikiSearch.response', searchTerm)
+    description: fetchCommandLit('info.wiki_search.description'),
+    optionName: fetchCommandLit('info.wiki_search.option.name'),
+    optionDescription: fetchCommandLit('info.wiki_search.option.description'),
+    noResults: (searchTerm) => fetchCommandLit('info.wiki_search.no_results', searchTerm),
+    response: (searchTerm) => fetchCommandLit('info.wiki_search.response', searchTerm)
 }
 
 /**

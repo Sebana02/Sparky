@@ -1,4 +1,4 @@
-const { musicError } = require('@utils/embedMusicPresets')
+const { musicError } = require('@utils/embed/music-presets')
 
 /**
  * Event emmited when an error occurs

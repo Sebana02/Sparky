@@ -1,7 +1,7 @@
 const { useQueue } = require('discord-player')
 const { lyricsExtractor } = require('@discord-player/extractor')
-const { reply, deferReply } = require('@utils/interactionUtils')
-const { noQueue, noLyrics, lyrics } = require('@utils/embedMusicPresets')
+const { reply, deferReply } = require('@utils/interaction-utils')
+const { noQueue, noLyrics, lyrics } = require('@utils/embed/music-presets')
 
 const genius = lyricsExtractor()
 

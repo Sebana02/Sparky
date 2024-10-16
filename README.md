@@ -156,18 +156,18 @@ The bot can be invoked using Discord's slash commands. Sparky offers a variety o
 
 These commands are designed to add fun and entertainment to the chat experience. They include GIFs, memes, and interactive actions like hugs, pokes, and slaps.
 
-| Command             | Description                                           | Example                          | Category | File                                      |
-| ------------------- | ----------------------------------------------------- | -------------------------------- | -------- | ----------------------------------------- |
-| `/shutup <user>`    | Sends a GIF telling the mentioned `user` to shut up.  | `/shutup @Dave`                  | GIFs     | [`shutup.js`](commands/fun/gif/shutup.js) |
-| `/cat`              | Sends a random cat GIF                                | `/cat`                           | GIFs     | [`cat.js`](commands/fun/gif/cat.js)       |
-| `/dog`              | Sends a random dog GIF                                | `/dog`                           | GIFs     | [`dog.js`](commands/fun/gif/dog.js)       |
-| `/gif <category>`   | Sends a random GIF based on the specified `category`. | `/gif weird`                     | GIFs     | [`gif.js`](commands/fun/gif/gif.js)       |
-| `/hug <user>`       | Sends a GIF giving a hug to a specified `user`.       | `/hug @Dave`                     | GIFs     | [`hug.js`](commands/fun/gif/hug.js)       |
-| `/meme`             | Sends a random meme GIF.                              | `/meme`                          | GIFs     | [`meme.js`](commands/fun/gif/meme.js)     |
-| `/poke <user>`      | Sends a GIF poking a specified `user`.                | `/poke @Dave`                    | GIFs     | [`poke.js`](commands/fun/gif/poke.js)     |
-| `/slap <user>`      | Sends a GIF slapping a specified `user`.              | `/slap @Dave`                    | GIFs     | [`slap.js`](commands/fun/gif/slap.js)     |
-| `/8ball <question>` | Answers a `question` with a random 8-ball response.   | `/8ball Will I win the lottery?` | None     | [`8ball.js`](commands/fun/8ball.js)       |
-| `/coinflip`         | Flips a coin and returns heads or tails.              | `/coinflip`                      | None     | [`coinflip.js`](commands/fun/coinflip.js) |
+| Command             | Description                                           | Example                          | Category | File                                        |
+| ------------------- | ----------------------------------------------------- | -------------------------------- | -------- | ------------------------------------------- |
+| `/shutup <user>`    | Sends a GIF telling the mentioned `user` to shut up.  | `/shutup @Dave`                  | GIFs     | [`shut-up.js`](commands/fun/gif/shut-up.js) |
+| `/cat`              | Sends a random cat GIF                                | `/cat`                           | GIFs     | [`cat.js`](commands/fun/gif/cat.js)         |
+| `/dog`              | Sends a random dog GIF                                | `/dog`                           | GIFs     | [`dog.js`](commands/fun/gif/dog.js)         |
+| `/gif <category>`   | Sends a random GIF based on the specified `category`. | `/gif weird`                     | GIFs     | [`gif.js`](commands/fun/gif/gif.js)         |
+| `/hug <user>`       | Sends a GIF giving a hug to a specified `user`.       | `/hug @Dave`                     | GIFs     | [`hug.js`](commands/fun/gif/hug.js)         |
+| `/meme`             | Sends a random meme GIF.                              | `/meme`                          | GIFs     | [`meme.js`](commands/fun/gif/meme.js)       |
+| `/poke <user>`      | Sends a GIF poking a specified `user`.                | `/poke @Dave`                    | GIFs     | [`poke.js`](commands/fun/gif/poke.js)       |
+| `/slap <user>`      | Sends a GIF slapping a specified `user`.              | `/slap @Dave`                    | GIFs     | [`slap.js`](commands/fun/gif/slap.js)       |
+| `/8ball <question>` | Answers a `question` with a random 8-ball response.   | `/8ball Will I win the lottery?` | None     | [`8ball.js`](commands/fun/8ball.js)         |
+| `/coinflip`         | Flips a coin and returns heads or tails.              | `/coinflip`                      | None     | [`coin-flip.js`](commands/fun/coin-flip.js) |
 
 ### `Game commands`
 
@@ -184,56 +184,56 @@ These commands are designed to engage users with fun and interactive games. User
 
 These commands provide quick insights and information to users, including the bot's uptime and Wikipedia searches.
 
-| Command               | Description                                  | Example               | Category | File                                                  |
-| --------------------- | -------------------------------------------- | --------------------- | -------- | ----------------------------------------------------- |
-| `/uptime`             | Displays the bot's uptime                    | `/uptime`             | None     | [`uptime.js`](commands/information/uptime.js)         |
-| `/wikisearch <query>` | Searches Wikipedia for the specified `query` | `/wikisearch Discord` | None     | [`wikisearch.js`](commands/information/wikisearch.js) |
+| Command               | Description                                  | Example               | Category | File                                             |
+| --------------------- | -------------------------------------------- | --------------------- | -------- | ------------------------------------------------ |
+| `/uptime`             | Displays the bot's uptime                    | `/uptime`             | None     | [`uptime.js`](commands/info/uptime.js)           |
+| `/wikisearch <query>` | Searches Wikipedia for the specified `query` | `/wikisearch Discord` | None     | [`wiki-search.js`](commands/info/wiki-search.js) |
 
 ### `Moderation Commands`
 
 These commands help maintain order and control in the server by providing tools for managing users, roles, and channels.
 
-| Command                               | Description                                                                                                                                                                                                           | Example                            | Category | File                                                               |
-| ------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------- | -------- | ------------------------------------------------------------------ |
-| `/hideChannel [channel]`              | Hides the specified `channel` from view for users, making it inaccessible until unhidden. If no channel is specified, it hides the channel where the command is used. It can be used both on text and voice channels. | `/hideChannel general`             | Channel  | [`hideChannel.js`](commands/moderation/channel/hideChannel.js)     |
-| `/showChannel [channel]`              | Unhides the specified `channel`, making it visible again to users who have access. If no channel is specified, it unhides the channel where the command is used. It can be used both on text and voice channels.      | `/showChannel general`             | Channel  | [`showChannel.js`](commands/moderation/channel/showChannel.js)     |
-| `/muteChannel [channel]`              | Mutes the specified `channel`, preventing users from sending messages in that channel. If no channel is specified, it mutes the channel where the command is used. It can be used both on text and voice channels.    | `/muteChannel general`             | Channel  | [`muteChannel.js`](commands/moderation/channel/muteChannel.js)     |
-| `/unmuteChannel [channel]`            | Unmutes the specified `channel`, allowing users to send messages once more. If no channel is specified, it unmutes the channel where the command is used. It can be used both on text and voice channels.             | `/unmuteChannel general`           | Channel  | [`unmuteChannel.js`](commands/moderation/channel/unmuteChannel.js) |
-| `/purge [amount]`                     | Deletes a specified `amount` of messages in the channel, helping to clean up chat clutter.                                                                                                                            | `/purge 10`                        | Channel  | [`purge.js`](commands/moderation/channel/purge.js)                 |
-| `/createRole <roleName> [color]`      | Creates a new role with the specified `roleName` and, optionally, a `color` in hexadecimal format (#abc123)                                                                                                           | `/createRole Admin #FFFFFF`        | Role     | [`createRole.js`](commands/moderation/role/createRole.js)          |
-| `/ban <user>`                         | Bans a specified `user` from the server, preventing them from joining or interacting with the server.                                                                                                                 | `/ban @Dave`                       | User     | [`ban.js`](commands/moderation/user/ban.js)                        |
-| `/unban <user>`                       | Unbans a specified `user` from the server, allowing them to rejoin and interact with the community.                                                                                                                   | `/unban @Dave`                     | User     | [`unban.js`](commands/moderation/user/unban.js)                    |
-| `/bannedList`                         | Displays a list of banned users, providing insight into who is currently banned from the server.                                                                                                                      | `/bannedList`                      | User     | [`bannedList.js`](commands/moderation/user/bannedList.js)          |
-| `/kick <user>`                        | Kicks a specified `user` from the server, temporarily removing them from the community.                                                                                                                               | `/kick @Dave`                      | User     | [`kick.js`](commands/moderation/user/kick.js)                      |
-| `/mute <user>`                        | Mutes a specified `user` in the server, preventing them from speaking in voice channels or sending messages in text channels.                                                                                         | `/mute @Dave`                      | User     | [`mute.js`](commands/moderation/user/mute.js)                      |
-| `/unmute <user>`                      | Unmutes a specified `user`, allowing them to speak in voice channels and send messages again.                                                                                                                         | `/unmute @Dave`                    | User     | [`unmute.js`](commands/moderation/user/unmute.js)                  |
-| `/mutedList`                          | Displays a list of muted users, showing who is currently unable to send messages or speak.                                                                                                                            | `/mutedList`                       | User     | [`mutedList.js`](commands/moderation/user/mutedList.js)            |
-| `/setNickname <user> <nickname>`      | Sets a `nickname` for a specified `user`, allowing for personalized identification within the server.                                                                                                                 | `/setNickname @Dave IamNotDave`    | User     | [`setNickname.js`](commands/moderation/user/setNickname.js)        |
-| `/resetNickname <user>`               | Resets the nickname for a specified `user` to their original username, removing any custom nickname they had.                                                                                                         | `/resetNickname @Dave`             | User     | [`resetNickname.js`](commands/moderation/user/resetNickname.js)    |
-| `/timeout <user> <reason> <duration>` | Times out a specified `user` for a `reason`, for `duration` minutes, preventing them from sending messages or speaking during that time.                                                                              | `/timeout @Dave 10`                | User     | [`timeout.js`](commands/moderation/user/timeout.js)                |
-| `/warn <user> <reason>`               | Issues a warning to a specified `user`, providing a `reason` for the warning to maintain accountability.                                                                                                              | `/warn @Dave Too many infractions` | User     | [`warn.js`](commands/moderation/user/warn.js)                      |
+| Command                               | Description                                                                                                                                                                                                           | Example                            | Category | File                                                                 |
+| ------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------- | -------- | -------------------------------------------------------------------- |
+| `/hidechannel [channel]`              | Hides the specified `channel` from view for users, making it inaccessible until unhidden. If no channel is specified, it hides the channel where the command is used. It can be used both on text and voice channels. | `/hidechannel general`             | Channel  | [`hide-channel.js`](commands/moderation/channel/hide-channel.js)     |
+| `/showchannel [channel]`              | Unhides the specified `channel`, making it visible again to users who have access. If no channel is specified, it unhides the channel where the command is used. It can be used both on text and voice channels.      | `/showchannel general`             | Channel  | [`show-channel.js`](commands/moderation/channel/show-channel.js)     |
+| `/mutechannel [channel]`              | Mutes the specified `channel`, preventing users from sending messages in that channel. If no channel is specified, it mutes the channel where the command is used. It can be used both on text and voice channels.    | `/mutechannel general`             | Channel  | [`mute-channel.js`](commands/moderation/channel/mute-channel.js)     |
+| `/unmutechannel [channel]`            | Unmutes the specified `channel`, allowing users to send messages once more. If no channel is specified, it unmutes the channel where the command is used. It can be used both on text and voice channels.             | `/unmutechannel general`           | Channel  | [`unmute-channel.js`](commands/moderation/channel/unmute-channel.js) |
+| `/purge [amount]`                     | Deletes a specified `amount` of messages in the channel, helping to clean up chat clutter.                                                                                                                            | `/purge 10`                        | Channel  | [`purge.js`](commands/moderation/channel/purge.js)                   |
+| `/createrole <roleName> [color]`      | Creates a new role with the specified `roleName` and, optionally, a `color` in hexadecimal format (#abc123)                                                                                                           | `/createrole Admin #FFFFFF`        | Role     | [`create-role.js`](commands/moderation/role/createrole.js)           |
+| `/ban <user>`                         | Bans a specified `user` from the server, preventing them from joining or interacting with the server.                                                                                                                 | `/ban @Dave`                       | User     | [`ban.js`](commands/moderation/user/ban.js)                          |
+| `/unban <user>`                       | Unbans a specified `user` from the server, allowing them to rejoin and interact with the community.                                                                                                                   | `/unban @Dave`                     | User     | [`unban.js`](commands/moderation/user/unban.js)                      |
+| `/bannedlist`                         | Displays a list of banned users, providing insight into who is currently banned from the server.                                                                                                                      | `/bannedlist`                      | User     | [`banned-list.js`](commands/moderation/user/banned-list.js)          |
+| `/kick <user>`                        | Kicks a specified `user` from the server, temporarily removing them from the community.                                                                                                                               | `/kick @Dave`                      | User     | [`kick.js`](commands/moderation/user/kick.js)                        |
+| `/mute <user>`                        | Mutes a specified `user` in the server, preventing them from speaking in voice channels or sending messages in text channels.                                                                                         | `/mute @Dave`                      | User     | [`mute.js`](commands/moderation/user/mute.js)                        |
+| `/unmute <user>`                      | Unmutes a specified `user`, allowing them to speak in voice channels and send messages again.                                                                                                                         | `/unmute @Dave`                    | User     | [`unmute.js`](commands/moderation/user/unmute.js)                    |
+| `/mutedlist`                          | Displays a list of muted users, showing who is currently unable to send messages or speak.                                                                                                                            | `/mutedlist`                       | User     | [`muted-list.js`](commands/moderation/user/muted-list.js)            |
+| `/setnickname <user> <nickname>`      | Sets a `nickname` for a specified `user`, allowing for personalized identification within the server.                                                                                                                 | `/setnickname @Dave IamNotDave`    | User     | [`set-nickname.js`](commands/moderation/user/set-nickname.js)        |
+| `/resetnickname <user>`               | Resets the nickname for a specified `user` to their original username, removing any custom nickname they had.                                                                                                         | `/resetnickname @Dave`             | User     | [`reset-nickname.js`](commands/moderation/user/reset-nickname.js)    |
+| `/timeout <user> <reason> <duration>` | Times out a specified `user` for a `reason`, for `duration` minutes, preventing them from sending messages or speaking during that time.                                                                              | `/timeout @Dave 10`                | User     | [`timeout.js`](commands/moderation/user/timeout.js)                  |
+| `/warn <user> <reason>`               | Issues a warning to a specified `user`, providing a `reason` for the warning to maintain accountability.                                                                                                              | `/warn @Dave Too many infractions` | User     | [`warn.js`](commands/moderation/user/warn.js)                        |
 
 ### `Music Commands`
 
 These commands are designed to control the music player and queue. Users can play, pause, skip, and manage the music queue with these commands.
 
-| Command             | Description                                                                                                                                                     | Example              | Category | File                                                    |
-| ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------- | -------- | ------------------------------------------------------- |
-| `/back`             | Plays the previous song in the queue.                                                                                                                           | `/back`              | Playback | [`back.js`](commands/music/playback/back.js)            |
-| `/clear`            | Clears the music queue.                                                                                                                                         | `/clear`             | Queue    | [`clear.js`](commands/music/queue/clear.js)             |
-| `/loop <mode>`      | Loops the current song or queue. `Mode` can be `song`, `queue`,`autoplay` or `off`.                                                                             | `/loop song`         | Playback | [`loop.js`](commands/music/playback/loop.js)            |
-| `/lyrics`           | Fetches and displays the lyrics of the currently playing song.                                                                                                  | `/lyrics`            | Insight  | [`lyrics.js`](commands/music/insight/lyrics.js)         |
-| `/nowplaying`       | Displays information about the currently playing song and the queue.                                                                                            | `/nowplaying`        | Insight  | [`nowplaying.js`](commands/music/insight/nowplaying.js) |
-| `/pause`            | Pauses the currently playing song.                                                                                                                              | `/pause`             | Playback | [`pause.js`](commands/music/playback/pause.js)          |
-| `/play <query>`     | Plays a song or playlist from YouTube or a supported URL, including Spotify, Souncloud and other sources. `Query` can be a URL, a song's name or even an author | `/play greedy`       | Playback | [`play.js`](commands/music/playback/play.js)            |
-| `/playnext <query>` | Adds a song to the queue to play after the current song.                                                                                                        | `/playnext Paramore` | Playback | [`playnext.js`](commands/music/playback/playnext.js)    |
-| `/queue`            | Shows the current music queue.                                                                                                                                  | `/queue`             | Queue    | [`queue.js`](commands/music/queue/queue.js)             |
-| `/resume`           | Resumes a paused song.                                                                                                                                          | `/resume`            | Playback | [`resume.js`](commands/music/playback/resume.js)        |
-| `/save`             | Saves the currently playing song to your DMs                                                                                                                    | `/save`              | Insight  | [`save.js`](commands/music/insight/save.js)             |
-| `/shuffle`          | Shuffles the songs in the current queue.                                                                                                                        | `/shuffle`           | Queue    | [`shuffle.js`](commands/music/queue/shuffle.js)         |
-| `/skip`             | Skips the current song.                                                                                                                                         | `/skip`              | Playback | [`skip.js`](commands/music/playback/skip.js)            |
-| `/stop`             | Stops the music and clears the queue.                                                                                                                           | `/stop`              | Playback | [`stop.js`](commands/music/playback/stop.js)            |
-| `/volume <level>`   | Adjusts the volume of the music player to the specified `level` (0-100).                                                                                        | `/volume 50`         | Playback | [`volume.js`](commands/music/playback/volume.js)        |
+| Command             | Description                                                                                                                                                     | Example              | Category | File                                                      |
+| ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------- | -------- | --------------------------------------------------------- |
+| `/back`             | Plays the previous song in the queue.                                                                                                                           | `/back`              | Playback | [`back.js`](commands/music/playback/back.js)              |
+| `/clear`            | Clears the music queue.                                                                                                                                         | `/clear`             | Queue    | [`clear.js`](commands/music/queue/clear.js)               |
+| `/loop <mode>`      | Loops the current song or queue. `Mode` can be `song`, `queue`,`autoplay` or `off`.                                                                             | `/loop song`         | Playback | [`loop.js`](commands/music/playback/loop.js)              |
+| `/lyrics`           | Fetches and displays the lyrics of the currently playing song.                                                                                                  | `/lyrics`            | Insight  | [`lyrics.js`](commands/music/insight/lyrics.js)           |
+| `/nowplaying`       | Displays information about the currently playing song and the queue.                                                                                            | `/nowplaying`        | Insight  | [`now-playing.js`](commands/music/insight/now-playing.js) |
+| `/pause`            | Pauses the currently playing song.                                                                                                                              | `/pause`             | Playback | [`pause.js`](commands/music/playback/pause.js)            |
+| `/play <query>`     | Plays a song or playlist from YouTube or a supported URL, including Spotify, Souncloud and other sources. `Query` can be a URL, a song's name or even an author | `/play greedy`       | Playback | [`play.js`](commands/music/playback/play.js)              |
+| `/playnext <query>` | Adds a song to the queue to play after the current song.                                                                                                        | `/playnext Paramore` | Playback | [`play-next.js`](commands/music/playback/play-next.js)    |
+| `/queue`            | Shows the current music queue.                                                                                                                                  | `/queue`             | Queue    | [`queue.js`](commands/music/queue/queue.js)               |
+| `/resume`           | Resumes a paused song.                                                                                                                                          | `/resume`            | Playback | [`resume.js`](commands/music/playback/resume.js)          |
+| `/save`             | Saves the currently playing song to your DMs                                                                                                                    | `/save`              | Insight  | [`save.js`](commands/music/insight/save.js)               |
+| `/shuffle`          | Shuffles the songs in the current queue.                                                                                                                        | `/shuffle`           | Queue    | [`shuffle.js`](commands/music/queue/shuffle.js)           |
+| `/skip`             | Skips the current song.                                                                                                                                         | `/skip`              | Playback | [`skip.js`](commands/music/playback/skip.js)              |
+| `/stop`             | Stops the music and clears the queue.                                                                                                                           | `/stop`              | Playback | [`stop.js`](commands/music/playback/stop.js)              |
+| `/volume <level>`   | Adjusts the volume of the music player to the specified `level` (0-100).                                                                                        | `/volume 50`         | Playback | [`volume.js`](commands/music/playback/volume.js)          |
 
 ### `Utility Commands`
 
@@ -254,47 +254,48 @@ The bot has a series of callbacks that are executed when certain events occur. T
 
 These events are emitted by the Discord client and are related to the bot's connection and status.
 
-| Event               | Description                                                | File                                                         |
-| ------------------- | ---------------------------------------------------------- | ------------------------------------------------------------ |
-| `ready`             | Emitted when the bot is ready to start receiving commands. | [`ready.js`](events/client/ready.js)                         |
-| `interactionCreate` | Emitted when an interaction is created.                    | [`interactionCreate.js`](events/client/interactionCreate.js) |
-| `guildMemberAdd`    | Emitted when a new member joins the server.                | [`guildMemberAdd.js`](events/client/guildMemberAdd.js)       |
+| Event               | Description                                                | File                                                           |
+| ------------------- | ---------------------------------------------------------- | -------------------------------------------------------------- |
+| `ready`             | Emitted when the bot is ready to start receiving commands. | [`ready.js`](events/client/ready.js)                           |
+| `interactionCreate` | Emitted when an interaction is created.                    | [`interaction-create.js`](events/client/interaction-create.js) |
+| `guildMemberAdd`    | Emitted when a new member joins the server.                | [`guild-member-add.js`](events/client/guild-member-add.js)     |
 
 ### `Music`
 
 These events are emitted by the music player and are related to the music player's status and actions.
 
-| Event          | Description                                    | File                                              |
-| -------------- | ---------------------------------------------- | ------------------------------------------------- |
-| `emptyQueue`   | Emitted when the queue is empty.               | [`emptyQueue.js`](events/music/emptyQueue.js)     |
-| `emptyChannel` | Emitted when the bot leaves the voice channel. | [`emptyChannel.js`](events/music/emptyChannel.js) |
-| `error`        | Emitted when an error occurs.                  | [`error.js`](events/music/error.js)               |
-| `playerError`  | Emitted when an error occurs in the player.    | [`playerError.js`](events/music/playerError.js)   |
-| `playerStart`  | Emitted when the player starts playing a song. | [`playerStart.js`](events/music/playerStart.js)   |
+| Event          | Description                                    | File                                                |
+| -------------- | ---------------------------------------------- | --------------------------------------------------- |
+| `emptyQueue`   | Emitted when the queue is empty.               | [`empty-queue.js`](events/music/empty-queue.js)     |
+| `emptyChannel` | Emitted when the bot leaves the voice channel. | [`empty-channel.js`](events/music/empty-channel.js) |
+| `error`        | Emitted when an error occurs.                  | [`error.js`](events/music/error.js)                 |
+| `playerError`  | Emitted when an error occurs in the player.    | [`player-error.js`](events/music/player-error.js)   |
+| `playerStart`  | Emitted when the player starts playing a song. | [`player-start.js`](events/music/player-start.js)   |
 
 ### `Process`
 
 These events are emitted by the process and are related to the node process status.
 
-| Event                | Description                                         | File                                                            |
-| -------------------- | --------------------------------------------------- | --------------------------------------------------------------- |
-| `exit`               | Emitted when the process is about to exit.          | [`exit.js`](events/process/exit.js)                             |
-| `SIGINT`             | Emitted when the process receives a SIGINT signal.  | [`SIGINT.js`](events/process/SIGINT.js)                         |
-| `unhandledRejection` | Emitted when an unhandled promise rejection occurs. | [`unhandledRejection.js`](events/process/unhandledRejection.js) |
+| Event                | Description                                         | File                                                              |
+| -------------------- | --------------------------------------------------- | ----------------------------------------------------------------- |
+| `exit`               | Emitted when the process is about to exit.          | [`exit.js`](events/process/exit.js)                               |
+| `SIGINT`             | Emitted when the process receives a SIGINT signal.  | [`SIGINT.js`](events/process/SIGINT.js)                           |
+| `unhandledRejection` | Emitted when an unhandled promise rejection occurs. | [`unhandled-rejection.js`](events/process/unhandled-rejection.js) |
+| `uncaughtException`  | Emitted when an uncaught exception occurs.          | [`uncaught-exception.js`](events/process/uncaught-exception.js)   |
 
 ## Utils
 
 In the `utils` folder, you can find a series of utility classes that can be used throughout the bot. These functions are designed to help with common tasks and can be used in any part of the bot:
 
-| Utility               | Description                                                 | File                                                     |
-| --------------------- | ----------------------------------------------------------- | -------------------------------------------------------- |
-| `CommandErrorHandler` | Wrapper class to handle errors in commands.                 | [`commandErrorHandler.js`](utils/commandErrorHandler.js) |
-| `EmbedMusicPresets`   | Functions to create embeds specifically for music commands. | [`embedMusicPresets.js`](utils/embedMusicPresets.js)     |
-| `EmbedUtils`          | Functions to create and manage embeds for various purposes. | [`embedUtils.js`](utils/embedUtils.js)                   |
-| `EventErrorHandler`   | Wrapper class to handle errors occurring in events.         | [`eventErrorHandler.js`](utils/eventErrorHandler.js)     |
-| `GifUtils`            | Utility class to retrieve and send GIFs.                    | [`gifUtils.js`](utils/gifUtils.js)                       |
-| `InteractionUtils`    | Wrapper class to simplify interaction management.           | [`interactionUtils.js`](utils/interactionUtils.js)       |
-| `Permissions`         | Utility class to check and manage user permissions.         | [`permissions.js`](utils/permissions.js)                 |
+| Utility               | Description                                                 | File                                                                       |
+| --------------------- | ----------------------------------------------------------- | -------------------------------------------------------------------------- |
+| `CommandErrorHandler` | Wrapper class to handle errors in commands.                 | [`command-error-handler.js`](utils/error-handler/command-error-handler.js) |
+| `MusicPresets`        | Functions to create embeds specifically for music commands. | [`music-presets.js`](utils/embed/music-presets.js)                         |
+| `EmbedUtils`          | Functions to create and manage embeds for various purposes. | [`embed_utils.js`](utils/embed_utils.js)                                   |
+| `EventErrorHandler`   | Wrapper class to handle errors occurring in events.         | [`event-error-handler.js`](utils/error-handler/event-error-handler.js)     |
+| `GifUtils`            | Utility class to retrieve and send GIFs.                    | [`gif-utils.js`](utils/gif-utils.js)                                       |
+| `InteractionUtils`    | Wrapper class to simplify interaction management.           | [`interaction-utils.js`](utils/interaction-utils.js)                       |
+| `Permissions`         | Utility class to check and manage user permissions.         | [`permissions.js`](utils/permissions.js)                                   |
 
 ## Supported languages
 

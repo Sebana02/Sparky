@@ -1,6 +1,6 @@
 const { useQueue } = require("discord-player")
-const { reply, deferReply } = require('@utils/interactionUtils')
-const { noQueue, savePrivate, save } = require('@utils/embedMusicPresets')
+const { reply, deferReply } = require('@utils/interaction-utils')
+const { noQueue, savePrivate, save } = require('@utils/embed/music-presets')
 
 /**
  * Command for saving the current song in a private message

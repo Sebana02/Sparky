@@ -1,5 +1,5 @@
 const { ApplicationCommandOptionType } = require('discord.js')
-const { reply } = require('@utils/interactionUtils.js')
+const { reply } = require('@utils/interaction-utils.js')
 const permissions = require('@utils/permissions.js')
 
 /**

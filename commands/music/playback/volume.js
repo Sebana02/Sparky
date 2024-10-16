@@ -1,7 +1,7 @@
 const { ApplicationCommandOptionType } = require('discord.js')
 const { useQueue, usePlayer } = require('discord-player')
-const { reply } = require('@utils/interactionUtils')
-const { noQueue, volume } = require('@utils/embedMusicPresets')
+const { reply } = require('@utils/interaction-utils')
+const { noQueue, volume } = require('@utils/embed/music-presets')
 
 /**
  * Command for changing the volume of the music

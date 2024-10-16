@@ -1,6 +1,6 @@
 const { ApplicationCommandOptionType } = require('discord.js')
-const { createEmbed } = require('@utils/embedUtils.js')
-const { reply, deferReply } = require('@utils/interactionUtils.js')
+const { createEmbed } = require('@utils/embed/embed-utils.js')
+const { reply, deferReply } = require('@utils/interaction-utils.js')
 const permissions = require('@utils/permissions.js')
 
 /**

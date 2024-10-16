@@ -1,4 +1,4 @@
-const { reply } = require('@utils/interactionUtils')
+const { reply } = require('@utils/interaction-utils')
 
 /**
  * Command to check the bot's ping

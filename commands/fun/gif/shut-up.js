@@ -1,15 +1,15 @@
 const { ApplicationCommandOptionType } = require('discord.js')
-const { sendRandomGif } = require('@utils/gifUtils.js')
-const { createEmbed, ColorScheme } = require('@utils/embedUtils.js')
-const { fetchCommandLit } = require('@utils/langUtils')
+const { sendRandomGif } = require('@utils/gif-utils.js')
+const { createEmbed, ColorScheme } = require('@utils/embed/embed-utils.js')
+const { fetchCommandLit } = require('@utils/language-utils')
 
 // Preload literals
 const literals = {
-    description: fetchCommandLit('fun.shutup.description'),
-    optionName: fetchCommandLit('fun.shutup.option.name'),
-    optionDescription: fetchCommandLit('fun.shutup.option.description'),
-    responseDescription: (user) => fetchCommandLit('fun.shutup.response.description', user),
-    responseFooter: (username) => fetchCommandLit('fun.shutup.response.footer', username)
+    description: fetchCommandLit('fun.shut_up.description'),
+    optionName: fetchCommandLit('fun.shut_up.option.name'),
+    optionDescription: fetchCommandLit('fun.shut_up.option.description'),
+    responseDescription: (user) => fetchCommandLit('fun.shut_up.response.description', user),
+    responseFooter: (username) => fetchCommandLit('fun.shut_up.response.footer', username)
 }
 
 /**

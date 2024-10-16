@@ -1,7 +1,7 @@
 const { ApplicationCommandOptionType } = require('discord.js')
-const { sendRandomGif } = require('@utils/gifUtils.js')
-const { createEmbed, ColorScheme } = require('@utils/embedUtils.js')
-const { fetchCommandLit } = require('@utils/langUtils')
+const { sendRandomGif } = require('@utils/gif-utils.js')
+const { createEmbed, ColorScheme } = require('@utils/embed/embed-utils.js')
+const { fetchCommandLit } = require('@utils/language-utils')
 
 // Preload literals
 const literals = {

@@ -1,8 +1,8 @@
-const { fetchEventLit } = require('@utils/langUtils.js')
+const { fetchEventLit } = require('@utils/language-utils.js')
 
 //Preolad literals
 const literals = {
-    response: (guildName, user) => fetchEventLit('client.guildMemberAdd.response', guildName, user)
+    response: (guildName, user) => fetchEventLit('client.guild_member_add.response', guildName, user)
 }
 
 /**

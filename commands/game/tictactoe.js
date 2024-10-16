@@ -1,7 +1,7 @@
 const { ApplicationCommandOptionType, ButtonBuilder, ActionRowBuilder } = require('discord.js')
-const { createEmbed, modifyEmbed, ColorScheme } = require('@utils/embedUtils.js')
-const { reply, deferReply, fetchReply } = require('@utils/interactionUtils.js')
-const { fetchCommandLit } = require('@utils/langUtils.js')
+const { createEmbed, modifyEmbed, ColorScheme } = require('@utils/embed/embed-utils.js')
+const { reply, deferReply, fetchReply } = require('@utils/interaction-utils.js')
+const { fetchCommandLit } = require('@utils/language-utils.js')
 const timeout = require('@commands/moderation/user/timeout')
 
 // Preload literals

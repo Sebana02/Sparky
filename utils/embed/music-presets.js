@@ -1,9 +1,56 @@
-const { createEmbed } = require('@utils/embedUtils')
+const { createEmbed } = require('@utils/embed/embed-utils')
 const { SearchResult, Track, GuildQueue } = require('discord-player')
 const { Client, EmbedBuilder } = require('discord.js')
 const { LyricsData } = require('@discord-player/extractor')
+const { fetchUtilLit } = require('@utils/language-utils.js')
+
+//Preload literals
+const literals = {
+  musicError: fetchUtilLit('embed.music_presets.error'),
+  noResults: fetchUtilLit('embed.music_presets.no_results'),
+  noPlaylist: fetchUtilLit('embed.music_presets.no_playlist'),
+  noQueue: fetchUtilLit('embed.music_presets.no_queue'),
+  noHistory: fetchUtilLit('embed.music_presets.no_history'),
+  noLyrics: fetchUtilLit('embed.music_presets.no_lyrics'),
+
+  addToQueue: fetchUtilLit('embed.music_presets.add_to_queue'),
+  addToQueueManyTitle: (amount) => fetchUtilLit('embed.music_presets.add_to_queue_many.title', amount),
+  addToQueueManyDesc: fetchUtilLit('embed.music_presets.add_to_queue_many.description'),
 
 
+  previousTrack: fetchUtilLit('embed.music_presets.previous_track'),
+  stop: fetchUtilLit('embed.music_presets.stop'),
+  pause: fetchUtilLit('embed.music_presets.pause'),
+  resume: fetchUtilLit('embed.music_presets.resume'),
+  clear: fetchUtilLit('embed.music_presets.clear'),
+
+  loopModeOff: fetchUtilLit('embed.music_presets.loop.modes.off'),
+  loopModeTrack: fetchUtilLit('embed.music_presets.loop.modes.track'),
+  loopModeQueue: fetchUtilLit('embed.music_presets.loop.modes.queue'),
+  loopModeAutoplay: fetchUtilLit('embed.music_presets.loop.modes.autoplay'),
+  loop: (mode) => fetchUtilLit('embed.music_presets.loop.response', mode),
+
+  currentQueueSongsAdd: (amount) => fetchUtilLit('embed.music_presets.current_queue.next_songs.add', amount),
+  currentQueueSongs: (amount) => fetchUtilLit('embed.music_presets.current_queue.next_songs.no_add', amount),
+  currentQueue: fetchUtilLit('embed.music_presets.current_queue.response'),
+
+  volume: (volume) => fetchUtilLit('embed.music_presets.volume', volume),
+  lyrics: fetchUtilLit('embed.music_presets.lyrics'),
+  skip: fetchUtilLit('embed.music_presets.skip'),
+
+  nowPlaying: (volume, duration, progress, loop, requestedBy) =>
+    fetchUtilLit('embed.music_presets.now_playing', volume, duration, progress, loop, requestedBy),
+
+  shuffleTitle: (songs) => fetchUtilLit('embed.music_presets.shuffle.title', songs),
+  shuffleDesc: fetchUtilLit('embed.music_presets.shuffle.description'),
+
+  save: fetchUtilLit('embed.music_presets.save'),
+  playing: fetchUtilLit('embed.music_presets.playing'),
+  emptyChannel: fetchUtilLit('embed.music_presets.empty_channel'),
+  emptyQueue: fetchUtilLit('embed.music_presets.empty_queue')
+}
+
+// Color scheme for the music embeds
 const ColorScheme = {
   error: 0xff2222, // Dark red for errors
   playing: 0x13f857, // Green for playing
@@ -24,7 +71,7 @@ module.exports = {
     return createEmbed({
       color: ColorScheme.error,
       author: {
-        name: "Ha ocurrido un error",
+        name: literals.musicError,
         iconURL: client.user.displayAvatarURL()
       }
     })
@@ -39,7 +86,7 @@ module.exports = {
     return createEmbed({
       color: ColorScheme.error,
       author: {
-        name: 'No hay resultados',
+        name: literals.noResults,
         iconURL: client.user.displayAvatarURL()
       }
     })
@@ -54,7 +101,7 @@ module.exports = {
     return createEmbed({
       color: ColorScheme.error,
       author: {
-        name: 'Asegúrate que el link sea de una playlist y tenga al menos 5 canciones',
+        name: literals.noPlaylist,
         iconURL: client.user.displayAvatarURL()
       }
     })
@@ -69,7 +116,7 @@ module.exports = {
     return createEmbed({
       color: ColorScheme.error,
       author: {
-        name: 'No hay música reproduciendose',
+        name: literals.noQueue,
         iconURL: client.user.displayAvatarURL()
       }
     })
@@ -84,7 +131,7 @@ module.exports = {
     return createEmbed({
       color: ColorScheme.error,
       author: {
-        name: 'No hay historial',
+        name: literals.noHistory,
         iconURL: client.user.displayAvatarURL()
       }
     })
@@ -99,7 +146,7 @@ module.exports = {
     return createEmbed({
       color: ColorScheme.error,
       author: {
-        name: 'No hay letra para esta canción',
+        name: literals.noLyrics,
         iconURL: track.thumbnail
       }
     })
@@ -118,7 +165,7 @@ module.exports = {
         iconURL: track.thumbnail
       },
       footer: {
-        text: 'añadida a la cola'
+        text: literals.addToQueue
       }
     })
   },
@@ -132,11 +179,11 @@ module.exports = {
     return createEmbed({
       color: ColorScheme.added,
       author: {
-        name: `${results.tracks.length} canciones`,
+        name: literals.addToQueueManyTitle(results.tracks.length),
         iconURL: results.tracks[0].thumbnail
       },
       footer: {
-        text: 'añadidas a la cola'
+        text: literals.addToQueueManyDesc
       }
     })
   },
@@ -154,7 +201,7 @@ module.exports = {
         iconURL: track.thumbnail
       },
       footer: {
-        text: 'reproduciendo canción anterior'
+        text: literals.previousTrack
       }
     })
   },
@@ -168,7 +215,7 @@ module.exports = {
     return createEmbed({
       color: ColorScheme.general,
       author: {
-        name: 'Se ha parado la música',
+        name: literals.stop,
         iconURL: client.user.displayAvatarURL()
       }
     })
@@ -187,7 +234,7 @@ module.exports = {
         iconURL: track.thumbnail
       },
       footer: {
-        text: 'pausada'
+        text: literals.pause
       }
     })
   },
@@ -205,7 +252,7 @@ module.exports = {
         iconURL: track.thumbnail
       },
       footer: {
-        text: 'reanudada'
+        text: literals.resume
       }
     })
   },
@@ -219,7 +266,7 @@ module.exports = {
     return createEmbed({
       color: ColorScheme.general,
       author: {
-        name: `Cola de reproducción vaciada`,
+        name: literals.clear,
         iconURL: client.user.displayAvatarURL()
       }
     })
@@ -232,12 +279,17 @@ module.exports = {
    * @returns {EmbedBuilder} - The loop embed
    */
   loop: (repeatMode, track) => {
-    const names = ['desactivado', 'canción', 'cola', 'autoplay']
+    const names = [
+      literals.loopModeOff,
+      literals.loopModeTrack,
+      literals.loopModeQueue,
+      literals.loopModeAutoplay
+    ]
 
     return createEmbed({
       color: ColorScheme.general,
       author: {
-        name: `Loop: ${names[repeatMode]}`,
+        name: literals.loop(names[repeatMode]),
         iconURL: track.thumbnail
       }
     })
@@ -250,7 +302,9 @@ module.exports = {
    */
   currentQueue: (queue) => {
     const methods = ['', '| 🔂', '| 🔁', '| 🔀']
-    const nextSongs = queue.getSize() > 5 ? `Y otras **${queue.getSize() - 5}** canciones...` : `**${queue.getSize()}** canciones...`
+    const nextSongs = queue.getSize() > 5 ?
+      literals.currentQueueSongsAdd(queue.getSize() - 5) :
+      literals.currentQueueSongs(queue.getSize())
     const tracks = queue.tracks.map((track, i) => `**${i + 1}** - ${track.title} | ${track.author} (requested by : ${track.requestedBy.username})`)
 
     return createEmbed({
@@ -261,7 +315,7 @@ module.exports = {
         name: `${queue.currentTrack.title} | ${queue.currentTrack.author} ${methods[queue.repeatMode]}`
       },
       footer: {
-        text: `en la cola`
+        text: literals.currentQueue
       }
     })
   },
@@ -275,7 +329,7 @@ module.exports = {
     return createEmbed({
       color: ColorScheme.general,
       author: {
-        name: `Se ha modificado el volumen a ${vol}%`,
+        name: literals.volume(vol),
         iconURL: track.thumbnail
       }
     })
@@ -316,7 +370,7 @@ module.exports = {
         iconURL: track.thumbnail
       },
       footer: {
-        text: 'saltada'
+        text: literals.skip
       }
     })
   },
@@ -328,13 +382,18 @@ module.exports = {
    */
   nowPlaying: (queue, player) => {
     const track = queue.currentTrack
-    const loopModes = ['desactivado', 'canción', 'cola', 'autoplay']
+    const loopModes = [
+      literals.loopModeOff,
+      literals.loopModeTrack,
+      literals.loopModeQueue,
+      literals.loopModeAutoplay
+    ]
 
     return createEmbed({
       color: ColorScheme.playing,
       thumbnail: track.thumbnail,
       title: `${track.title} | ${track.author}`,
-      description: `Volumen **${player.volume}%**\nDuración **${track.duration}**\nProgreso ${player.createProgressBar()}\nLoop mode **${loopModes[queue.repeatMode]}**\nRequested by ${track.requestedBy}`
+      description: literals.nowPlaying(player.volume, track.duration, player.createProgressBar(), loopModes[queue.repeatMode], track.requestedBy)
     })
   },
 
@@ -346,8 +405,8 @@ module.exports = {
   shuffle: (queue) => {
     return createEmbed({
       color: ColorScheme.general,
-      author: { name: `${queue.tracks.size} canciones`, iconURL: queue.currentTrack.thumbnail },
-      footer: { text: 'se han barajeado' }
+      author: { name: literals.shuffleTitle(queue.tracks.size), iconURL: queue.currentTrack.thumbnail },
+      footer: { text: literals.shuffleDesc }
     })
   },
 
@@ -379,7 +438,7 @@ module.exports = {
     return createEmbed({
       color: ColorScheme.general,
       author: { name: `${track.title} | ${track.author}`, iconURL: track.thumbnail },
-      footer: { text: 'enviada al privado' }
+      footer: { text: literals.save }
     })
   },
 
@@ -392,7 +451,7 @@ module.exports = {
     return createEmbed({
       color: ColorScheme.playing,
       author: { name: `${track.title} | ${track.author}`, iconURL: track.thumbnail },
-      footer: { text: `reproduciendo ahora` }
+      footer: { text: literals.playing }
     })
   },
 
@@ -404,7 +463,7 @@ module.exports = {
   emptyChannel: (client) => {
     return createEmbed({
       color: ColorScheme.general,
-      author: { name: `No hay nadie en el canal de voz, saliendo...`, iconURL: client.user.displayAvatarURL() }
+      author: { name: literals.emptyChannel, iconURL: client.user.displayAvatarURL() }
     })
   },
 
@@ -416,7 +475,7 @@ module.exports = {
   emptyQueue: (client) => {
     return createEmbed({
       color: ColorScheme.general,
-      author: { name: `No hay canciones en la cola, saliendo...`, iconURL: client.user.displayAvatarURL() }
+      author: { name: literals.emptyQueue, iconURL: client.user.displayAvatarURL() }
     })
   },
 

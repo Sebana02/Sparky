@@ -1,7 +1,7 @@
-const { reply, deferReply } = require('@utils/interactionUtils.js')
+const { reply, deferReply } = require('@utils/interaction-utils.js')
 const { ApplicationCommandOptionType } = require('discord.js')
 const { permissions } = require('@utils/permissions.js')
-const { createEmbed, ColorScheme } = require('@utils/embedUtils')
+const { createEmbed, ColorScheme } = require('@utils/embed/embed-utils')
 
 /**
  * Command that shows a previously hidden channel

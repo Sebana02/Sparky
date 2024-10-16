@@ -1,6 +1,6 @@
 const { ApplicationCommandOptionType } = require('discord.js')
-const { reply } = require('@utils/interactionUtils.js')
-const { createEmbed, ColorScheme } = require('@utils/embedUtils.js')
+const { reply } = require('@utils/interaction-utils.js')
+const { createEmbed, ColorScheme } = require('@utils/embed/embed-utils.js')
 
 /**
  * Command that sets up a reminder

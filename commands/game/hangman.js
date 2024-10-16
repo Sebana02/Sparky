@@ -1,9 +1,9 @@
 //hangman repository : https://github.com/Zheoni/Hanger-Bot
 
 const { ApplicationCommandOptionType, ActionRowBuilder, ButtonBuilder } = require('discord.js')
-const { deferReply, reply, fetchReply } = require('@utils/interactionUtils.js')
-const { createEmbed, ColorScheme } = require('@utils/embedUtils.js')
-const { fetchCommandLit } = require('@utils/langUtils.js')
+const { deferReply, reply, fetchReply } = require('@utils/interaction-utils.js')
+const { createEmbed, ColorScheme } = require('@utils/embed/embed-utils.js')
+const { fetchCommandLit } = require('@utils/language-utils.js')
 
 // Preload literals
 const literals = {
@@ -13,27 +13,27 @@ const literals = {
     choiceCustom: fetchCommandLit('game.hangman.option.choices.custom'),
     choiceRandom: fetchCommandLit('game.hangman.option.choices.random'),
 
-    gatherPlayersEmbed: (time) => fetchCommandLit('game.hangman.gatherPlayers.embed', time),
-    butttonJoin: fetchCommandLit('game.hangman.gatherPlayers.buttons.join'),
-    buttonExit: fetchCommandLit('game.hangman.gatherPlayers.buttons.exit'),
-    confirmationJoin: fetchCommandLit('game.hangman.gatherPlayers.confirmation.join'),
-    confirmationExit: fetchCommandLit('game.hangman.gatherPlayers.confirmation.exit'),
+    gatherPlayersEmbed: (time) => fetchCommandLit('game.hangman.gather_players.embed', time),
+    butttonJoin: fetchCommandLit('game.hangman.gather_players.buttons.join'),
+    buttonExit: fetchCommandLit('game.hangman.gather_players.buttons.exit'),
+    confirmationJoin: fetchCommandLit('game.hangman.gather_players.confirmation.join'),
+    confirmationExit: fetchCommandLit('game.hangman.gather_players.confirmation.exit'),
 
-    noPlayers: fetchCommandLit('game.hangman.checkings.noPlayers'),
-    notEnoughPlayers: fetchCommandLit('game.hangman.checkings.notEnoughPlayers'),
+    noPlayers: fetchCommandLit('game.hangman.checkings.no_players'),
+    notEnoughPlayers: fetchCommandLit('game.hangman.checkings.not_enough_players'),
 
-    wordlist: fetchCommandLit('game.hangman.wordList'),
+    wordlist: fetchCommandLit('game.hangman.word_list'),
 
-    customSelectPlayer: (playersNumber) => fetchCommandLit('game.hangman.customSelectPlayer', playersNumber),
-    gatherWordChosenOne: (time) => fetchCommandLit('game.hangman.gatherWord.chosenOne', time),
-    noWordGivenDM: fetchCommandLit('game.hangman.gatherWord.noWordGiven.dm'),
-    noWordGivenChannel: (player) => fetchCommandLit('game.hangman.gatherWord.noWordGiven.channel', player),
-    wordGivenValid: fetchCommandLit('game.hangman.gatherWord.wordGiven.validWord'),
-    wordGivenInvalid: fetchCommandLit('game.hangman.gatherWord.wordGiven.invalidWord'),
-    wordGivenTooManyTries: fetchCommandLit('game.hangman.gatherWord.wordGiven.tooManyTries'),
-    wordGivenNoPlayersLeft: fetchCommandLit('game.hangman.gatherWord.wordGiven.noPlayersLeft'),
+    customSelectPlayer: (playersNumber) => fetchCommandLit('game.hangman.custom_select_player', playersNumber),
+    gatherWordChosenOne: (time) => fetchCommandLit('game.hangman.gather_word.chosen_one', time),
+    noWordGivenDM: fetchCommandLit('game.hangman.gather_word.no_word_given.dm'),
+    noWordGivenChannel: (player) => fetchCommandLit('game.hangman.gather_word.no_word_given.channel', player),
+    wordGivenValid: fetchCommandLit('game.hangman.gather_word.word_given.valid_word'),
+    wordGivenInvalid: fetchCommandLit('game.hangman.gather_word.word_given.invalid_word'),
+    wordGivenTooManyTries: fetchCommandLit('game.hangman.gather_word.word_given.too_many_tries'),
+    wordGivenNoPlayersLeft: fetchCommandLit('game.hangman.gather_word.word_given.no_players_left'),
 
-    startError: fetchCommandLit('game.hangman.startError'),
+    startError: fetchCommandLit('game.hangman.start_error'),
 
     progressLives: fetchCommandLit('game.hangman.progress.lives'),
     progressFaults: fetchCommandLit('game.hangman.progress.faults'),

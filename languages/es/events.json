@@ -1,23 +1,23 @@
 {
   "client": {
-    "guildMemberAdd": {
+    "guild_member_add": {
       "response": "¡Bienvenid@ al servidor '{0}', {1}!"
     },
-    "interactionCreate": {
-      "noPermissions": "No tienes permisos para ejecutar este comando",
-      "noDJRole": "No tienes el rol de DJ para ejecutar este comando",
-      "noCommandsTrivia": "No puedes usar este comando mientras se esté jugando al trivia",
-      "noVoiceChannel": "Debes estar en un canal de voz para ejecutar este comando",
-      "noSameVoiceChannel": "Debes estar en el mismo canal de voz que yo para ejecutar este comando"
+    "interaction_create": {
+      "no_permissions": "No tienes permisos para ejecutar este comando",
+      "no_dj_role": "No tienes el rol de DJ para ejecutar este comando",
+      "no_commands_trivia": "No puedes usar este comando mientras se esté jugando al trivia",
+      "no_voice_channel": "Debes estar en un canal de voz para ejecutar este comando",
+      "no_same_voice_channel": "Debes estar en el mismo canal de voz que yo para ejecutar este comando"
     },
     "ready": {}
   },
   "music": {
-    "emptyChannel": {},
-    "emptyQueue": {},
+    "empty_channel": {},
+    "empty_queue": {},
     "error": {},
-    "playerError": {},
-    "playerStart": {}
+    "player_error": {},
+    "player_start": {}
   },
   "process": {
     "exit": {},
