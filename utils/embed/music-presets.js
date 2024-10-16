@@ -35,7 +35,6 @@ const literals = {
   currentQueue: fetchUtilLit('embed.music_presets.current_queue.response'),
 
   volume: (volume) => fetchUtilLit('embed.music_presets.volume', volume),
-  lyrics: fetchUtilLit('embed.music_presets.lyrics'),
   skip: fetchUtilLit('embed.music_presets.skip'),
 
   nowPlaying: (volume, duration, progress, loop, requestedBy) =>

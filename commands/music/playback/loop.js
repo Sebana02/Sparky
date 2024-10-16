@@ -9,10 +9,10 @@ const literals = {
     description: fetchCommandLit('music.loop.description'),
     optionName: fetchCommandLit('music.loop.option.name'),
     optionDescription: fetchCommandLit('music.loop.option.description'),
-    optionChoiceOff: fetchCommandLit('music.loop.option.choice.off'),
-    optionChoiceTrack: fetchCommandLit('music.loop.option.choice.track'),
-    optionChoiceQueue: fetchCommandLit('music.loop.option.choice.queue'),
-    optionChoiceAutoplay: fetchCommandLit('music.loop.option.choice.autoplay')
+    optionChoiceOff: fetchCommandLit('music.loop.option.choices.off'),
+    optionChoiceTrack: fetchCommandLit('music.loop.option.choices.track'),
+    optionChoiceQueue: fetchCommandLit('music.loop.option.choices.queue'),
+    optionChoiceAutoplay: fetchCommandLit('music.loop.option.choices.autoplay')
 }
 
 

@@ -1,29 +1,49 @@
 const { ActionRowBuilder, ButtonBuilder, ApplicationCommandOptionType } = require('discord.js')
 const { reply, deferReply, fetchReply } = require('@utils/interaction-utils.js')
 const { createEmbed, ColorScheme } = require('@utils/embed/embed-utils.js')
+const { fetchCommandLit } = require('@utils/language-utils.js')
+
+// Prelaod literals
+const literals = {
+    description: fetchCommandLit('utility.poll.description'),
+    questionName: fetchCommandLit('utility.poll.options.question.name'),
+    questionDesc: fetchCommandLit('utility.poll.options.question.description'),
+    optionsName: fetchCommandLit('utility.poll.options.options.name'),
+    optionsDesc: fetchCommandLit('utility.poll.options.options.description'),
+    timeName: fetchCommandLit('utility.poll.options.time.name'),
+    timeDesc: fetchCommandLit('utility.poll.options.time.description'),
+
+    insufficientOptions: fetchCommandLit('utility.poll.checkings.insufficient_options'),
+    tooManyOptions: fetchCommandLit('utility.poll.checkings.too_many_options'),
+
+    pollEnded: (votes) => fetchCommandLit('utility.poll.responses.ended', votes),
+    pollInProgress: (time) => fetchCommandLit('utility.poll.responses.in_progress', time),
+    vote: (option) => fetchCommandLit('utility.poll.responses.voted', option)
+
+}
 
 /**
  * Command that creates a poll
  */
 module.exports = {
     name: 'poll',
-    description: 'Crea una encuesta',
+    description: literals.description,
     options: [
         {
-            name: 'tema',
-            description: 'Tema de la encuesta',
+            name: literals.questionName,
+            description: literals.questionDesc,
             type: ApplicationCommandOptionType.String,
             required: true,
         },
         {
-            name: 'opciones',
-            description: 'Opciones de la encuesta (separadas por comas)',
+            name: literals.optionsName,
+            description: literals.optionsDesc,
             type: ApplicationCommandOptionType.String,
             required: true,
         },
         {
-            name: 'tiempo',
-            description: 'Tiempo que dura la encuesta en segundos',
+            name: literals.timeName,
+            description: literals.timeDesc,
             type: ApplicationCommandOptionType.Number,
             required: true,
             minValue: 10
@@ -31,14 +51,14 @@ module.exports = {
     ],
     run: async (client, inter) => {
         //Get options and check they fit the requirements
-        const options = inter.options.getString('opciones').split(',').map(e => e.trim()).filter(Boolean)
+        const options = inter.options.getString(literals.optionsName).split(',').map(e => e.trim()).filter(Boolean)
         if (options.length < 2)
-            return await reply(inter, { content: 'Pon al menos dos opciones', ephemeral: true, deleteTime: 2 })
+            return await reply(inter, { content: literals.insufficientOptions, ephemeral: true, deleteTime: 2 })
 
         else if (options.length > 10)
-            return await reply(inter, { content: 'Demasiadas opciones, pon como mucho 10', ephemeral: true, deleteTime: 2 })
+            return await reply(inter, { content: literals.tooManyOptions, ephemeral: true, deleteTime: 2 })
 
-        const poll = inter.options.getString('tema').trim()
+        const poll = inter.options.getString(literals.questionName).trim()
 
         //Defer reply
         await deferReply(inter)
@@ -91,7 +111,9 @@ function createPollEmbed(inter, poll, votes, end = false) {
         fields: votation,
         footer: { text: inter.user.username, iconURL: inter.user.displayAvatarURL({ size: 1024, dynamic: true }) },
         setTimestamp: true,
-        description: !end ? `Teneis ${inter.options.getNumber('tiempo')} segundos para votar\n` : `Votos totales: ${totalVotes}`
+        description: !end ?
+            literals.pollInProgress(inter.options.getNumber(literals.timeName)) :
+            literals.pollEnded(totalVotes)
     })
 }
 
@@ -145,7 +167,7 @@ async function createCollection(inter, votes, poll, components) {
     //Create a collector for the votes
     const filter = (i) => !i.user.bot && i.customId.startsWith('vote_')
     const countReactions = new Map()
-    const collector = msg.createMessageComponentCollector({ filter, time: inter.options.getNumber('tiempo') * 1000 })
+    const collector = msg.createMessageComponentCollector({ filter, time: inter.options.getNumber(literals.timeName) * 1000 })
 
     //This promise resolves with the final votes when the collector ends or rejects if there is an error
     return await new Promise(async (resolve, reject) => {
@@ -167,7 +189,10 @@ async function createCollection(inter, votes, poll, components) {
                 votes[index].value++
 
                 //Reply to the user
-                reply(interaction, { content: `Has votado por '**${votes[index].option}**' `, ephemeral: true, deleteTime: 2, propagate: false })
+                reply(interaction, {
+                    content: literals.vote(votes[index].option)
+                    , ephemeral: true, deleteTime: 2, propagate: false
+                })
 
                 //Update the poll embed
                 const embedResult = createPollEmbed(inter, poll, votes, false)

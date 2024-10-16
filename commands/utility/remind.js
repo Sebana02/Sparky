@@ -1,32 +1,45 @@
 const { ApplicationCommandOptionType } = require('discord.js')
 const { reply } = require('@utils/interaction-utils.js')
 const { createEmbed, ColorScheme } = require('@utils/embed/embed-utils.js')
+const { fetchCommandLit } = require('@utils/language-utils.js')
+
+// Prelaod literals
+const literals = {
+    description: fetchCommandLit('utility.remind.description'),
+    timeName: fetchCommandLit('utility.remind.options.time.name'),
+    timeDesc: fetchCommandLit('utility.remind.options.time.description'),
+    reminderName: fetchCommandLit('utility.remind.options.reminder.name'),
+    reminderDesc: fetchCommandLit('utility.remind.options.reminder.description'),
+    invalidTime: fetchCommandLit('utility.remind.invalid_time'),
+    reminderSet: (time) => fetchCommandLit('utility.remind.reminder_set', time),
+    response: (user) => fetchCommandLit('utility.remind.response', user)
+}
 
 /**
  * Command that sets up a reminder
  */
 module.exports = {
     name: 'remind',
-    description: 'Crea un recordatorio',
+    description: literals.description,
     options: [
         {
-            name: 'tiempo',
+            name: literals.timeName,
             type: ApplicationCommandOptionType.String,
-            description: 'Cuando quieres que te recuerde? (ejemplo: 1h 30m 1d 10s)',
+            description: literals.timeDesc,
             required: true
         },
         {
-            name: 'recordatorio',
+            name: literals.reminderName,
             type: ApplicationCommandOptionType.String,
-            description: 'Que quieres que te recuerde?',
+            description: literals.reminderDesc,
             required: true
         }
     ],
     async run(client, inter) {
 
         //Get time and message
-        const time = inter.options.getString('tiempo')
-        const message = inter.options.getString('recordatorio')
+        const time = inter.options.getString(literals.timeName)
+        const message = inter.options.getString(literals.reminderName)
 
         // Parse time
         const cont = time.replace(/\s+/g, '') // Get rid of spaces
@@ -35,7 +48,8 @@ module.exports = {
 
 
         //Check if time is valid
-        if (!cont) return await reply(inter, { content: 'Tiempo inválido', ephemeral: true, deleteTime: 5 })
+        if (!cont)
+            return await reply(inter, { content: literals.invalidTime, ephemeral: true, deleteTime: 5 })
 
         //Map time to object    
         const date = cont
@@ -46,7 +60,10 @@ module.exports = {
 
         //Send confirmation message
         //We do not wait for this to finish, as the reminder would be delayed
-        reply(inter, { content: `De acuerdo, te lo recordaré en ${date.map(({ num, unit }) => `${num}${unit}`).join(' ')}`, ephemeral: true, deleteTime: 5 })
+        reply(inter, {
+            content: literals.reminderSet(date.map(({ num, unit }) => `${num}${unit}`).join(' ')),
+            ephemeral: true, deleteTime: 5
+        })
 
 
         //Calculate future date
@@ -74,7 +91,10 @@ module.exports = {
             const embed = createEmbed({
                 description: message,
                 setTimestamp: true,
-                footer: { text: `Recordatorio de ${inter.user.tag}`, iconURL: inter.user.displayAvatarURL({ dynamic: true }) },
+                footer: {
+                    text: literals.response(inter.user.tag),
+                    iconURL: inter.user.displayAvatarURL({ dynamic: true })
+                },
                 color: ColorScheme.utility
             })
             await inter.channel.send({ embeds: [embed] })
