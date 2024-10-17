@@ -420,6 +420,10 @@
     }
   },
   "info": {
+    "help": {
+      "description": "Muestra la lista de comandos disponibles",
+      "response": "Lista de comandos disponibles: página {0}/{1}"
+    },
     "uptime": {
       "description": "Muestra el tiempo que el bot ha estado en línea",
       "response": "El bot ha estado en línea por {0} días, {1} horas, {2} minutos y {3} segundos"

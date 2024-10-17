@@ -213,5 +213,81 @@ module.exports = {
             if (propagate) throw new Error(`following up interaction: ${error.message}`)
             else console.error(`Error: following up interaction: ${error.message}`)
         }
+    },
+    /**
+     * Updates an interaction message. This method can be used to update the content, embeds, or components of an interaction message.
+     * @param {Interaction} interaction - The interaction to update.
+     * @param {Object} [options={}] - The options for updating the interaction.
+     * @param {string} [options.content=''] - The new content to send.
+     * @param {boolean} [options.ephemeral=false] - Whether the message should be ephemeral.
+     * @param {Array<EmbedBuilder>} [options.embeds=[]] - Array of embeds to include in the message.
+     * @param {Array<ActionRowBuilder>} [options.components=[]] - Array of components to include in the message.
+     * @param {boolean} [options.propagate=true] - Whether to propagate any errors that occur during the update.
+     * @throws {Error} - If the interaction is not provided or if neither content nor embeds are provided.
+     * @returns {Promise<void>} - A promise that resolves after the interaction is updated.
+     */
+    update: async (interaction, options = {}) => {
+        const {
+            content = '',
+            ephemeral = false,
+            embeds = [],
+            components = [],
+            propagate = true
+        } = options
+
+        try {
+            // Check if the interaction is provided
+            if (!interaction) {
+                throw new Error('interaction not provided')
+            }
+
+            // Check if either content or embeds are provided
+            if (content === '' && embeds.length === 0) {
+                throw new Error('Neither content nor embeds provided')
+            }
+
+            // Update the interaction
+            await interaction.update({ content, ephemeral, embeds, components })
+        } catch (error) {
+            if (propagate) {
+                throw new Error(`updating interaction: ${error.message}`)
+            } else {
+                console.error(`Error: updating interaction: ${error.message}`)
+            }
+        }
+    },
+    /**
+     * Defer an update to an interaction. This method can be used to defer an update to an interaction message.
+     * @param {Interaction} interaction - The interaction object
+     * @param {Object} [options={}] - The options for deferring the update
+     * @param {boolean} [options.propagate=true] - Whether to propagate any errors that occur during the deferral
+     * @param {boolean} [options.ephemeral=false] - Whether the deferred update should be ephemeral
+     * @throws {Error} - If the interaction is not provided
+     * @returns {Promise<void>} - A promise that resolves after the update is deferred
+     */
+    deferUpdate: async (interaction, options = {}) => {
+        const {
+            propagate = true,
+            ephemeral = false
+        } = options
+
+        try {
+            // Check if the interaction is provided
+            if (!interaction) {
+                throw new Error('interaction not provided')
+            }
+
+            // Defer the interaction if it's not already deferred or replied
+            if (!interaction.deferred && !interaction.replied) {
+                await interaction.deferUpdate({ ephemeral })
+            }
+        } catch (error) {
+            if (propagate) {
+                throw new Error(`deferring update: ${error.message}`)
+            } else {
+                console.error(`Error: deferring update: ${error.message}`)
+            }
+        }
     }
+
 }
