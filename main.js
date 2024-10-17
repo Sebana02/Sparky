@@ -10,7 +10,6 @@ const client = new Client({ // client setup
         GatewayIntentBits.MessageContent,
         GatewayIntentBits.GuildMembers,
         GatewayIntentBits.GuildVoiceStates,
-        GatewayIntentBits.GuildMembers,
         GatewayIntentBits.GuildMessageReactions,
         GatewayIntentBits.DirectMessages,
     ],
@@ -36,8 +35,10 @@ require('@src/loader.js').config(client) //Load commands, languages and events
 
 
 //Check if TOKEN environment variable is set
-if (!process.env.TOKEN || process.env.TOKEN.trim() === '')
-    return console.error('Error: TOKEN environment variable not found')
+if (!process.env.TOKEN || process.env.TOKEN.trim() === '') {
+    console.error('Error: TOKEN environment variable not found')
+    process.exit(1)
+}
 
 //Login to Discord
 client.login(process.env.TOKEN)

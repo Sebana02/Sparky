@@ -1,18 +1,27 @@
 const { ApplicationCommandOptionType } = require('discord.js')
 const { reply } = require('@utils/interaction-utils.js')
 const permissions = require('@utils/permissions.js')
+const { fecthCommandLit } = require('@utils/language-utils.js')
+
+// Preload literals
+const literals = {
+    description: fecthCommandLit('moderation.purge.description'),
+    optionName: fecthCommandLit('moderation.purge.option.name'),
+    optionDescription: fecthCommandLit('moderation.purge.option.description'),
+    response: (amount) => fecthCommandLit('moderation.purge.response', amount)
+}
 
 /**
  * Command that deletes the given number of messages
  */
 module.exports = {
     name: 'purge',
-    description: 'Borra el número de mensajes indicado',
+    description: literals.description,
     permissions: permissions.ManageMessages,
     options: [
         {
-            name: 'cantidad',
-            description: 'Cantidad de mensajes que quieras borrar',
+            name: literals.optionName,
+            description: literals.optionDescription,
             type: ApplicationCommandOptionType.Number,
             required: true,
             min_value: 1,
@@ -20,8 +29,17 @@ module.exports = {
         }
     ],
     run: async (client, inter) => {
-        //Reply to the interaction and delete the messages
-        await reply(inter, { content: `Borrando ${inter.options.getNumber('cantidad')} mensajes...`, ephemeral: true, deleteTime: 2 })
-        await inter.channel.bulkDelete(inter.options.getNumber('cantidad'), true)
+
+        // Get the number of messages to delete
+        const amount = inter.options.getNumber(literals.optionName)
+
+        //Reply to the interaction
+        await reply(inter, {
+            content: `Borrando ${amount} mensajes...`,
+            ephemeral: true, deleteTime: 2
+        })
+
+        //Delete the messages
+        await inter.channel.bulkDelete(amount, true)
     }
 }

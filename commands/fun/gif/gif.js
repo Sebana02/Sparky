@@ -26,6 +26,7 @@ module.exports = {
         }
     ],
     run: async (client, inter) => {
+
         // Get the category
         const category = inter.options.getString(literals.optionName)
 

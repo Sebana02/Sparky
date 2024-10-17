@@ -27,6 +27,7 @@ module.exports = {
         }
     ],
     run: async (client, inter) => {
+
         // Get the target user
         const targetUser = inter.options.getUser(literals.optionName)
 

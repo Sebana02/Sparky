@@ -8,7 +8,7 @@ const literals = {
     description: fetchCommandLit('fun.8ball.description'),
     optionName: fetchCommandLit('fun.8ball.option.name'),
     optionDescription: fetchCommandLit('fun.8ball.option.description'),
-    responses: fetchCommandLit('fun.8ball.response.answers'),
+    answers: fetchCommandLit('fun.8ball.response.answers'),
     responseFooter: (username, question) => fetchCommandLit('fun.8ball.response.footer', username, question)
 }
 
@@ -27,12 +27,13 @@ module.exports = {
         }
     ],
     run: async (client, inter) => {
+
         // Get the question
         const question = inter.options.getString(literals.optionName)
 
         // Create embed with random response
         const embed = createEmbed({
-            title: `🎱 ${literals.responses[Math.floor(Math.random() * literals.responses.length)]}`,
+            title: `🎱 ${literals.answers[Math.floor(Math.random() * literals.answers.length)]}`,
             color: ColorScheme.fun,
             footer: {
                 text: literals.responseFooter(inter.user.username, question),

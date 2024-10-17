@@ -2,6 +2,16 @@ const { reply, deferReply } = require('@utils/interaction-utils.js')
 const { ApplicationCommandOptionType } = require('discord.js')
 const { permissions } = require('@utils/permissions.js')
 const { createEmbed, ColorScheme } = require('@utils/embed/embed-utils')
+const { fecthCommandLit } = require('@utils/language-utils.js')
+
+// Preload literals
+const literals = {
+    description: fecthCommandLit('moderation.hide_channel.description'),
+    optionName: fecthCommandLit('moderation.hide_channel.option.name'),
+    optionDescription: fecthCommandLit('moderation.hide_channel.option.description'),
+    alreadyHidden: fecthCommandLit('moderation.hide_channel.already_hidden'),
+    response: (channel) => fecthCommandLit('moderation.hide_channel.response', channel)
+}
 
 /**
  * Command that hides a channel so no one can view it
@@ -9,33 +19,37 @@ const { createEmbed, ColorScheme } = require('@utils/embed/embed-utils')
  */
 module.exports = {
     name: 'hidechannel',
-    description: 'Esconde un canal para que nadie pueda leerlo',
+    description: literals.description,
     permissions: permissions.ManageChannels,
     options: [
         {
-            name: 'canal',
-            description: 'Canal a esconder',
+            name: literals.optionName,
+            description: literals.optionDescription,
             type: ApplicationCommandOptionType.Channel,
             required: false
         }
     ],
     run: async (client, inter) => {
+
         //Defer reply
         await deferReply(inter, { ephemeral: true })
 
         //Get the channel to hide
-        const channel = inter.options.getChannel('canal') || inter.channel
+        const channel = inter.options.getChannel(literals.optionName) || inter.channel
 
         //Check if the channel is already hidden
         if (channel.permissionOverwrites.cache.find(overwrite => overwrite.id === inter.guild.id && overwrite.deny.has(permissions.ViewChannel)))
-            return await reply(inter, { content: 'El canal ya está escondido', ephemeral: true, deleteTime: 2 })
+            return await reply(inter, {
+                content: literals.alreadyHidden,
+                ephemeral: true, deleteTime: 2
+            })
 
         //Hide the channel
         await channel.permissionOverwrites.edit(inter.guild.id, { ViewChannel: false })
 
         //Create embed
         const embed = createEmbed({
-            description: `Canal ${channel} escondido correctamente`,
+            description: literals.response(channel),
             color: ColorScheme.moderation
         })
 

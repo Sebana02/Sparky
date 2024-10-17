@@ -73,7 +73,7 @@ async function getRandomGif(category, options = { propagate: true }) {
         // e.o.c. return null
         const data = await response.json()
         return (data.results && data.results.length > 0)
-            ? data.results[Math.floor(Math.random() * data.results.length)].media_formats.gif.url
+            ? data.results[Math.floor(Math.random() * data.results.length)].media_formats.tinygif.url
             : null
 
 

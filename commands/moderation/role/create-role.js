@@ -40,7 +40,7 @@ module.exports = {
         if (inter.guild.roles.cache.find(role => role.name === roleName))
             return reply(inter, { content: 'Ya existe un rol con ese nombre', ephemeral: true, deleteTime: 2 })
 
-
+        //TODO: is not finished
     }
 
 }

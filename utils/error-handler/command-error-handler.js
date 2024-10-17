@@ -24,7 +24,7 @@ module.exports = {
     commandErrorHandler: async (commandName, commandFunction, client, inter, ...args) => {
         //Tries to execute the command function
         try {
-            await commandFunction(client, inter)
+            await commandFunction(client, inter, ...args)
         } catch (error) {
             console.error(`Error: in command "${commandName}": ${error.message}`)
 

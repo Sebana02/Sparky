@@ -186,6 +186,7 @@ These commands provide quick insights and information to users, including the bo
 
 | Command               | Description                                  | Example               | Category | File                                             |
 | --------------------- | -------------------------------------------- | --------------------- | -------- | ------------------------------------------------ |
+| `/help`               | Displays a list of available commands.       | `/help`               | None     | [`help.js`](commands/info/help.js)               |
 | `/uptime`             | Displays the bot's uptime                    | `/uptime`             | None     | [`uptime.js`](commands/info/uptime.js)           |
 | `/wikisearch <query>` | Searches Wikipedia for the specified `query` | `/wikisearch Discord` | None     | [`wiki-search.js`](commands/info/wiki-search.js) |
 
@@ -310,14 +311,15 @@ You can always modify the bot to support your language.
 
 ### `Laguages`
 
-- [ ] Make architecture to support multiple languages
+- [ ] Make architecture to support multiple languages,
+  - Missing moderation/user commands
 - [ ] Add English support
 
 ### `General`
 
-- [ ] Improve error printing -> Make Error classes
-- [ ] Delete ansi escape codes from logs
-- [ ] Add help command
+- [ ] Improve logging
+- [ ] Improve Errors handling
+- [x] Add help command
 
 ### `IAs`
 

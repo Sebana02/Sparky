@@ -82,7 +82,6 @@ module.exports = {
 
         //Show the result
         await showResult(inter, gameInfo.game, gameInfo.selector)
-
     }
 }
 

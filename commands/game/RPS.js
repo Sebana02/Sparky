@@ -30,12 +30,14 @@ module.exports = {
         }
     ],
     run: async (client, inter) => {
+
         // Get the opponent and check if it is a bot or the author of the interaction
         const opponent = inter.options.getUser(literals.optionName)
-        if (opponent.bot) return await reply(inter, {
-            content: literals.checkAgainstBot,
-            ephemeral: true, deleteTime: 2
-        })
+        if (opponent.bot)
+            return await reply(inter, {
+                content: literals.checkAgainstBot,
+                ephemeral: true, deleteTime: 2
+            })
         if (opponent === inter.user)
             return await reply(inter, {
                 content: literals.checkAgainstSelf,
@@ -138,7 +140,7 @@ class RPS {
                         || i.user === this.inter.user) {
 
                         // Delete their previous election if they have chosen again and store the new one
-                        elections.filter((person) => person.user !== i.user)
+                        elections = elections.filter((person) => person.user !== i.user)
                         elections.push({ user: i.user, index: JSON.parse(i.customId).index })
 
                         // If both players have chosen, resolve the promise

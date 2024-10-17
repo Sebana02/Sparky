@@ -2,6 +2,16 @@ const { reply, deferReply } = require('@utils/interaction-utils.js')
 const { ApplicationCommandOptionType } = require('discord.js')
 const { permissions } = require('@utils/permissions.js')
 const { createEmbed, ColorScheme } = require('@utils/embed/embed-utils')
+const { fecthCommandLit } = require('@utils/language-utils.js')
+
+// Preload literals
+const literals = {
+    description: fecthCommandLit('moderation.show_channel.description'),
+    optionName: fecthCommandLit('moderation.show_channel.option.name'),
+    optionDescription: fecthCommandLit('moderation.show_channel.option.description'),
+    alreadyShown: fecthCommandLit('moderation.show_channel.already_shown'),
+    response: (channel) => fecthCommandLit('moderation.show_channel.response', channel)
+}
 
 /**
  * Command that shows a previously hidden channel
@@ -9,33 +19,34 @@ const { createEmbed, ColorScheme } = require('@utils/embed/embed-utils')
  */
 module.exports = {
     name: 'showchannel',
-    description: 'Muestra un canal previamente escondido',
+    description: literals.description,
     permissions: permissions.ManageChannels,
     options: [
         {
-            name: 'canal',
-            description: 'Canal a mostrar',
+            name: literals.optionName,
+            description: literals.optionDescription,
             type: ApplicationCommandOptionType.Channel,
             required: false
         }
     ],
     run: async (client, inter) => {
+
         //Defer reply
         await deferReply(inter, { ephemeral: true })
 
         //Get the channel to show
-        const channel = inter.options.getChannel('canal') || inter.channel
+        const channel = inter.options.getChannel(literals.optionName) || inter.channel
 
         //Check if the channel is already visible
         if (channel.permissionOverwrites.cache.find(overwrite => overwrite.id === inter.guild.id && overwrite.allow.has(permissions.ViewChannel)))
-            return await reply(inter, { content: 'El canal ya está visible', ephemeral: true, deleteTime: 2 })
+            return await reply(inter, { content: literals.alreadyShown, ephemeral: true, deleteTime: 2 })
 
         //Show the channel
         await channel.permissionOverwrites.edit(inter.guild.id, { ViewChannel: null })
 
         //Create embed
         const embed = createEmbed({
-            description: `Canal ${channel} mostrado correctamente`,
+            description: literals.response(channel),
             color: ColorScheme.moderation
         })
 

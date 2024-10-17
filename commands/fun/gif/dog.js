@@ -15,6 +15,7 @@ module.exports = {
     name: 'dog',
     description: literals.description,
     run: async (client, inter) => {
+
         // Create embed
         const embed = createEmbed({
             color: ColorScheme.fun,

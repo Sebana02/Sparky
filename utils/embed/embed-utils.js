@@ -4,12 +4,12 @@ const { EmbedBuilder } = require('discord.js')
  * Color scheme for Discord embeds
  */
 const ColorScheme = {
-    error: 0x9b2222, // Dark red for errors
-    utility: 0x0056b3, // Dark blue for utilities
-    moderation: 0xc6b600, // Soft yellow for moderation
-    information: 0x1f6f8b, // Subtle cyan for information
-    game: 0x4a9e4d, // Soft green for games
-    fun: 0xe87c3f // Muted orange for fun
+    error: 0x9b2222,
+    utility: 0x062239,
+    moderation: 0x123552,
+    information: 0x2A4F6E,
+    game: 0x496C89,
+    fun: 0x718DA5
 }
 
 /**

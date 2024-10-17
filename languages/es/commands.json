@@ -2,11 +2,11 @@
   "fun": {
     "cat": {
       "description": "Manda un gato aleatorio",
-      "response": "{0} manda un gato 🐱"
+      "response": "{0} manda un gato 🐱 ..."
     },
     "dog": {
       "description": "Manda un perro aleatorio",
-      "response": "{0} manda un perro 🐶"
+      "response": "{0} manda un perro 🐶 ..."
     },
     "gif": {
       "description": "Muestra un gif aleatorio de la categoría indicada",
@@ -14,7 +14,7 @@
         "name": "categoría",
         "description": "Categoría que quieras buscar"
       },
-      "response": "{0} manda un gif de \"{1}\"..."
+      "response": "{0} manda un gif de \"{1}\" ..."
     },
     "hug": {
       "description": "Abraza a un usuario",
@@ -24,12 +24,12 @@
       },
       "response": {
         "description": "{0}, ¡un abrazo para ti! 🤗",
-        "footer": "{0} te manda un abrazo..."
+        "footer": "{0} te manda un abrazo ..."
       }
     },
     "meme": {
       "description": "Manda un meme aleatorio",
-      "response": "{0} manda un meme..."
+      "response": "{0} manda un meme ..."
     },
     "poke": {
       "description": "Da un toque a un usuario, molesta a alguien",
@@ -39,7 +39,7 @@
       },
       "response": {
         "description": "{0}, ¡poketeo para ti! 👉",
-        "footer": "{0} te poketea..."
+        "footer": "{0} te poketea ..."
       }
     },
     "shut_up": {
@@ -50,7 +50,7 @@
       },
       "response": {
         "description": "🤫 Silencio, {0}",
-        "footer": "{0} te manda callar..."
+        "footer": "{0} te manda callar ..."
       }
     },
     "slap": {
@@ -61,7 +61,7 @@
       },
       "response": {
         "description": "{0}, ¡en toda la boca! 👋",
-        "footer": "{0} te pega una bofetada..."
+        "footer": "{0} te pega una bofetada ..."
       }
     },
     "8ball": {
@@ -438,12 +438,53 @@
       "results": "Resultado de Wikipedia para \"{0}\""
     }
   },
-  "mod": {
-    "hide_channel": {},
-    "mute_channel": {},
-    "purge": {},
-    "show_channel": {},
-    "unmute_channel": {},
+  "moderation": {
+    "hide_channel": {
+      "description": "Oculta un canal",
+      "option": {
+        "name": "canal",
+        "description": "Canal que quieres ocultar"
+      },
+      "already_hidden": "El canal ya está oculto",
+      "response": "Canal {0} ocultado correctamente"
+    },
+    "mute_channel": {
+      "description": "Bloquea un canal para que nadie pueda hablar",
+      "option": {
+        "name": "canal",
+        "description": "Canal que quieres bloquear"
+      },
+      "already_blocked": "El canal ya está bloqueado",
+      "channel_not_supported": "No se puede bloquear este canal",
+      "response": "Canal {0} bloqueado correctamente"
+    },
+    "purge": {
+      "description": "Elimina mensajes de un canal",
+      "option": {
+        "name": "cantidad",
+        "description": "Cantidad de mensajes que quieres eliminar"
+      },
+      "response": "Borrando {0} mensajes..."
+    },
+    "show_channel": {
+      "description": "Muestra un canal oculto",
+      "option": {
+        "name": "canal",
+        "description": "Canal que quieres mostrar"
+      },
+      "already_shown": "El canal ya está visible",
+      "response": "Canal {0} mostrado correctamente"
+    },
+    "unmute_channel": {
+      "description": "Desbloquea un canal",
+      "option": {
+        "name": "canal",
+        "description": "Canal que quieres desbloquear"
+      },
+      "already_unblocked": "El canal ya está desbloqueado",
+      "channel_not_supported": "No se puede desbloquear este canal",
+      "response": "Canal {0} desbloqueado correctamente"
+    },
     "create_role": {},
     "ban": {},
     "banned_list": {},

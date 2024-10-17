@@ -15,6 +15,7 @@ module.exports = {
     name: 'meme',
     description: literals.description,
     run: async (client, inter) => {
+
         // Create embed
         const embed = createEmbed({
             footer: {

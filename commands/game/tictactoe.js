@@ -255,8 +255,6 @@ class TicTacToe {
         return new Promise(async (resolve, reject) => {
             // Ignore bot interactions and interactions that are not game buttons
             const filter = (i) => (!i.user.bot && JSON.parse(i.customId).row !== undefined && JSON.parse(i.customId).column !== undefined)
-
-            // Use destructuring to extract properties from the customId
             const collector = await msg.createMessageComponentCollector({ filter, time: 60000 })
 
             // Listen for 'collect' event

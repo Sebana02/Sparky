@@ -17,6 +17,7 @@ module.exports = {
     name: 'coinflip',
     description: literals.description,
     run: async (client, inter) => {
+
         // Create embed with random response
         const embed = createEmbed({
             footer: {
