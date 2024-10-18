@@ -1,5 +1,3 @@
-//hangman repository : https://github.com/Zheoni/Hanger-Bot
-
 const { ApplicationCommandOptionType, ActionRowBuilder, ButtonBuilder } = require('discord.js')
 const { deferReply, reply, fetchReply } = require('@utils/interaction-utils.js')
 const { createEmbed, ColorScheme } = require('@utils/embed/embed-utils.js')
@@ -100,19 +98,6 @@ String.prototype.replaceAt = function (index, replacement) {
  */
 class hangman {
     /**
-     * Returns a string with n hyphens
-     * @param {number} n number of hyphens
-     * @returns {string} string with n hyphens
-     */
-    static hyphenString(n) {
-        let str = ""
-        for (let i = 0; i < n; ++i) {
-            str += "-"
-        }
-        return str
-    }
-
-    /**
      * Represents the status of the game
      */
     static gameStatus = {
@@ -124,7 +109,7 @@ class hangman {
     constructor(word) {
         this.word = word //word to guess
         this.lives = 6 //lives
-        this.progress = hangman.hyphenString(word.length) //progress
+        this.progress = '-'.repeat(word.length) //progress
         this.remaining = word.length //remaining letters to guess 
         this.misses = [] //misses
         this.status = hangman.gameStatus.inProgress //game status
