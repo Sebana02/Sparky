@@ -2,15 +2,15 @@ const { reply, deferReply } = require('@utils/interaction-utils.js')
 const { ApplicationCommandOptionType } = require('discord.js')
 const { permissions } = require('@utils/permissions.js')
 const { createEmbed, ColorScheme } = require('@utils/embed/embed-utils')
-const { fecthCommandLit } = require('@utils/language-utils.js')
+const { fetchCommandLit } = require('@utils/language-utils.js')
 
 // Preload literals
 const literals = {
-    description: fecthCommandLit('moderation.hide_channel.description'),
-    optionName: fecthCommandLit('moderation.hide_channel.option.name'),
-    optionDescription: fecthCommandLit('moderation.hide_channel.option.description'),
-    alreadyHidden: fecthCommandLit('moderation.hide_channel.already_hidden'),
-    response: (channel) => fecthCommandLit('moderation.hide_channel.response', channel)
+    description: fetchCommandLit('moderation.hide_channel.description'),
+    optionName: fetchCommandLit('moderation.hide_channel.option.name'),
+    optionDescription: fetchCommandLit('moderation.hide_channel.option.description'),
+    alreadyHidden: fetchCommandLit('moderation.hide_channel.already_hidden'),
+    response: (channel) => fetchCommandLit('moderation.hide_channel.response', channel)
 }
 
 /**

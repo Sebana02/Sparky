@@ -2,15 +2,15 @@ const { reply, deferReply } = require('@utils/interaction-utils.js')
 const { ApplicationCommandOptionType } = require('discord.js')
 const { permissions } = require('@utils/permissions.js')
 const { createEmbed, ColorScheme } = require('@utils/embed/embed-utils')
-const { fecthCommandLit } = require('@utils/language-utils.js')
+const { fetchCommandLit } = require('@utils/language-utils.js')
 
 // Preload literals
 const literals = {
-    description: fecthCommandLit('moderation.show_channel.description'),
-    optionName: fecthCommandLit('moderation.show_channel.option.name'),
-    optionDescription: fecthCommandLit('moderation.show_channel.option.description'),
-    alreadyShown: fecthCommandLit('moderation.show_channel.already_shown'),
-    response: (channel) => fecthCommandLit('moderation.show_channel.response', channel)
+    description: fetchCommandLit('moderation.show_channel.description'),
+    optionName: fetchCommandLit('moderation.show_channel.option.name'),
+    optionDescription: fetchCommandLit('moderation.show_channel.option.description'),
+    alreadyShown: fetchCommandLit('moderation.show_channel.already_shown'),
+    response: (channel) => fetchCommandLit('moderation.show_channel.response', channel)
 }
 
 /**

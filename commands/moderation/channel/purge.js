@@ -1,14 +1,14 @@
 const { ApplicationCommandOptionType } = require('discord.js')
 const { reply } = require('@utils/interaction-utils.js')
 const permissions = require('@utils/permissions.js')
-const { fecthCommandLit } = require('@utils/language-utils.js')
+const { fetchCommandLit } = require('@utils/language-utils.js')
 
 // Preload literals
 const literals = {
-    description: fecthCommandLit('moderation.purge.description'),
-    optionName: fecthCommandLit('moderation.purge.option.name'),
-    optionDescription: fecthCommandLit('moderation.purge.option.description'),
-    response: (amount) => fecthCommandLit('moderation.purge.response', amount)
+    description: fetchCommandLit('moderation.purge.description'),
+    optionName: fetchCommandLit('moderation.purge.option.name'),
+    optionDescription: fetchCommandLit('moderation.purge.option.description'),
+    response: (amount) => fetchCommandLit('moderation.purge.response', amount)
 }
 
 /**

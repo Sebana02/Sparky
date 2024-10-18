@@ -51,12 +51,16 @@ module.exports = {
                         resolve()
                     }, deleteTime * 1000)
                 })
-                    .catch(error => { throw new Error(`deleting reply: ${error.message}`) })
+                    .catch(error => {
+                        error.message = `deleting reply: ${error.message}`
+                        throw error
+                    })
             }
         }
         catch (error) {
-            if (propagate) throw new Error(`replying interaction: ${error.message}`)
-            else console.error(`Error: replying interaction: ${error.message}`)
+            error.message = `replying interaction: ${error.message}`
+            if (propagate) throw error
+            else logger.error(error.stack)
         }
     },
 
@@ -86,8 +90,9 @@ module.exports = {
 
         }
         catch (error) {
-            if (propagate) throw new Error(`deferring reply: ${error.message}`)
-            else console.error(`Error: deferring reply: ${error.message}`)
+            error.message = `deferring reply: ${error.message}`
+            if (propagate) throw error
+            else logger.error(error.stack)
         }
 
     },
@@ -117,8 +122,9 @@ module.exports = {
             throw new Error('interaction has not been replied to')
         }
         catch (error) {
-            if (propagate) throw new Error(`fetching reply: ${error.message}`)
-            else console.error(`Error: fetching reply: ${error.message}`)
+            error.message = `fetching reply: ${error.message}`
+            if (propagate) throw error
+            else logger.error(error.stack)
         }
     },
 
@@ -156,8 +162,9 @@ module.exports = {
                 await interaction.deleteReply()
         }
         catch (error) {
-            if (propagate) throw new Error(`deleting reply: ${error.message}`)
-            else console.error(`Error: deleting reply: ${error.message}`)
+            error.message = `deleting reply: ${error.message}`
+            if (propagate) throw error
+            else logger.error(error.stack)
         }
     },
 
@@ -206,12 +213,16 @@ module.exports = {
                         resolve()
                     }, deleteTime * 1000)
                 })
-                    .catch(error => { throw new Error(`deleting reply: ${error.message}`) })
+                    .catch(error => {
+                        error.message = `deleting reply: ${error.message}`
+                        throw error
+                    })
             }
         }
         catch (error) {
-            if (propagate) throw new Error(`following up interaction: ${error.message}`)
-            else console.error(`Error: following up interaction: ${error.message}`)
+            error.message = `following up interaction: ${error.message}`
+            if (propagate) throw error
+            else logger.error(error.stack)
         }
     },
     /**
@@ -243,17 +254,15 @@ module.exports = {
 
             // Check if either content or embeds are provided
             if (content === '' && embeds.length === 0) {
-                throw new Error('Neither content nor embeds provided')
+                throw new Error('neither content nor embeds provided')
             }
 
             // Update the interaction
             await interaction.update({ content, ephemeral, embeds, components })
         } catch (error) {
-            if (propagate) {
-                throw new Error(`updating interaction: ${error.message}`)
-            } else {
-                console.error(`Error: updating interaction: ${error.message}`)
-            }
+            error.message = `updating interaction: ${error.message}`
+            if (propagate) throw error
+            else logger.error(error.stack)
         }
     },
     /**
@@ -282,11 +291,9 @@ module.exports = {
                 await interaction.deferUpdate({ ephemeral })
             }
         } catch (error) {
-            if (propagate) {
-                throw new Error(`deferring update: ${error.message}`)
-            } else {
-                console.error(`Error: deferring update: ${error.message}`)
-            }
+            error.message = `deferring interaction update: ${error.message}`
+            if (propagate) throw error
+            else logger.error(error.stack)
         }
     }
 

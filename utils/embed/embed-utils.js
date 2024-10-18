@@ -79,8 +79,9 @@ function createEmbed(embedContent, options = { propagate: true }) {
             throw new Error('embed is not valid')
 
     } catch (error) {
-        if (options.propagate) throw new Error(`creating embed: ${error.message}`)
-        else console.error(`Error: creating embed: ${error.message}`)
+        error.message = `creating embed: ${error.message}`
+        if (options.propagate) throw error
+        else logger.error(error.stack)
     }
 
     return embed
@@ -152,8 +153,9 @@ function modifyEmbed(embed, embedContent, options = { propagate: true }) {
             throw new Error('embed is not valid')
 
     } catch (error) {
-        if (options.propagate) throw new Error(`modifying embed: ${error.message}`)
-        else console.error(`Error: modifying embed: ${error.message}`)
+        error.message = `modifying embed: ${error.message}`
+        if (options.propagate) throw error
+        else logger.error(error.stack)
     }
 
     return embed
@@ -173,7 +175,7 @@ function cloneEmbed(embed, options = { propagate: true }) {
     try {
 
         // Check if the given embed is valid
-        if (!embed || !embed.data)
+        if (embed || !embed.data)
             throw new Error('given embed is not valid')
 
         // Clone the embed
@@ -186,8 +188,9 @@ function cloneEmbed(embed, options = { propagate: true }) {
         return clonedEmbed
 
     } catch (error) {
-        if (options.propagate) throw new Error(`cloning embed: ${error.message}`)
-        else console.error(`Error: cloning embed: ${error.message}`)
+        error.message = `cloning embed: ${error.message}`
+        if (options.propagate) throw error
+        else logger.error(error.stack)
     }
 }
 

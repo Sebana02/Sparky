@@ -65,7 +65,7 @@ async function getRandomGif(category, options = { propagate: true }) {
 
         // Check if the request was successful
         if (!response.ok)
-            throw new Error("Invalid HTTP request, code: " + response.status)
+            throw new Error("invalid HTTP request, code: " + response.status)
 
 
         // Parse the response
@@ -78,8 +78,9 @@ async function getRandomGif(category, options = { propagate: true }) {
 
 
     } catch (error) {
-        if (options.propagate) throw new Error(`fetching gifs failed: ${error.message}`)
-        else console.error(`Error: fetching gifs failed: ${error.message}`)
+        error.message = `fetching gifs failed: ${error.message}`
+        if (options.propagate) throw error
+        else logger.error(error.stack)
     }
 }
 
@@ -122,7 +123,8 @@ async function sendRandomGif(inter, category, embed, options = { propagate: true
         await reply(inter, { embeds: [embed] })
     }
     catch (error) {
-        if (options.propagate) throw new Error(`sending gif failed: ${error.message}`)
-        else console.error(`Error: sending gif failed: ${error.message}`)
+        error.message = `sending gif failed: ${error.message}`
+        if (options.propagate) throw error
+        else logger.error(error.stack)
     }
 }

@@ -335,8 +335,8 @@ async function gatherPlayers(inter) {
                     })
                 }
             } catch (error) {
-                reject(error)
                 collector.stop()
+                reject(error)
             }
 
         })
@@ -346,6 +346,7 @@ async function gatherPlayers(inter) {
             resolve(players)
         })
     })
+        .catch(error => { throw error })
 }
 
 /**
@@ -453,7 +454,7 @@ async function runGame(inter, game, players) {
 
     //Create a collector for the messages
     const filterM = (m) => !m.author.bot && players.find(p => p.id === m.author.id)
-    const collector = await inter.channel.createMessageCollector({ filter: filterM, time: (15 * 1000 * 60) }) // max of 15 minutes per game
+    const collector = await inter.channel.createMessageCollector({ filter: filterM, time: (10 * 1000 * 60) }) // max of 10 minutes per game
 
     //Return a promise that resolves when the game ends
     return new Promise((resolve, reject) => {
@@ -488,8 +489,8 @@ async function runGame(inter, game, players) {
                     }
                 }
             } catch (error) {
-                reject(error)
                 collector.stop()
+                reject(error)
             }
         })
 
@@ -498,6 +499,7 @@ async function runGame(inter, game, players) {
             resolve()
         })
     })
+        .catch(error => { throw error })
 }
 
 /**

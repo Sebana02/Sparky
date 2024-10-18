@@ -16,7 +16,7 @@ module.exports = {
         try {
             await eventCallback(client, ...args)
         } catch (error) {
-            console.error(`Error: in event "${eventName}": ${error.message}`)
+            logger.error(`An error ocurred at event "${eventName}":\n`, error.stack)
         }
     }
 }

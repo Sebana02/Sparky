@@ -21,12 +21,13 @@ module.exports = {
             const guild = client.guilds.cache.get(process.env.GUILD_ID)
 
             if (!guild)
-                throw new Error('Guild with the specified GUILD_ID not found')
-
-            await guild.commands.set(client.commands)
+                logger.error('Guild with the specified GUILD_ID not found, slash commands will not be registered')
+            else
+                await guild.commands.set(client.commands)
         }
 
         //Log ready
-        console.log(`-> Logged in as ${client.user.username}\n-> Ready in a total of ${client.guilds.cache.size} servers for ${client.users.cache.size} users`)
+        logger.info(`Logged in as ${client.user.username}`)
+        logger.info(`Ready in a total of ${client.guilds.cache.size} servers for ${client.users.cache.size} users`)
     }
 }

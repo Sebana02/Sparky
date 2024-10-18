@@ -11,6 +11,6 @@ module.exports = {
      * @param {number} code - The exit code
      */
     callback: (client, code) => {
-        console.log(`Disconnecting bot at ${new Date().toLocaleString()} with code ${code}`)
+        logger.info(`Disconnecting bot with code ${code}`)
     }
 }

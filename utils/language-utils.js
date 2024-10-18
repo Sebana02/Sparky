@@ -18,14 +18,14 @@ function fetchLiteral(pathToLiteral, ...args) {
 
     // Log an error if the literal is not found, and search for it in the default language
     if (!result) {
-        console.error(`Error: literal not found in selected language: ${pathToLiteral}, using default language`)
+        logger.error(`Literal not found in selected language: ${pathToLiteral}, using default language`)
 
         // Get the value of the literal in the default language
         result = pathToLiteral.split('.').reduce((obj, key) => (obj ? obj[key] : null), process.defaultLanguage)
 
         // Log an error if the literal is not found in the default language
         if (!result)
-            return console.error(`Error: literal not found in default language: ${pathToLiteral}`)
+            return logger.error(`Literal not found in default language: ${pathToLiteral}`)
     }
 
     // Format the literal if arguments are provided

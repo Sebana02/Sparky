@@ -13,6 +13,7 @@ const literals = {
     selection: (icon) => fetchCommandLit('game.rps.selection', icon),
     resultsTie: fetchCommandLit('game.rps.results.tie'),
     resultsWin: (winner) => fetchCommandLit('game.rps.results.win', winner),
+    resultsTimeout: fetchCommandLit('game.rps.results.timeout')
 }
 
 /**
@@ -78,15 +79,8 @@ class RPS {
         // Wait for the players to choose their move
         let elections = await this.collectInteracion()
 
-        // Check the winner
-        const winner = this.checkWinner(elections)
-
-        // Show the result
-        modifyEmbed(embed, {
-            description: winner,
-            title: `${elections[0].user.username} ${this.icons[elections[0].index]} 
-            vs ${this.icons[elections[1].index]} ${elections[1].user.username}`
-        })
+        // Modify the embed with the result
+        this.showResult(elections, embed)
 
         // Send the result
         await reply(this.inter, { embeds: [embed], components: [] })
@@ -125,7 +119,7 @@ class RPS {
 
             // Create the collector
             const filter = (i) => (!i.user.bot && JSON.parse(i.customId).index !== undefined)
-            const collector = await msg.createMessageComponentCollector({ filter, time: 60000 })
+            const collector = await msg.createMessageComponentCollector({ filter, time: 5000 })
 
             collector.on('collect', async (i) => {
                 try {
@@ -150,22 +144,45 @@ class RPS {
                         }
                     }
                 } catch (error) {
-                    reject(error)
                     collector.stop()
+                    reject(error)
                 }
             })
+
+            collector.on('end', (collected, reason) => {
+                if (reason === 'time')
+                    resolve([])
+
+            })
         })
+            .catch(error => { throw error })
     }
 
     /**
-     * Checks the winner of the game
+     * Checks the winner of the game and modifies the embed with the result
      * @param {Array} elections The moves of the players
+     * @param {EmbedBuilder} embed The embed to modify
      * @returns {String} The winner of the game
      */
-    checkWinner(elections) {
-        if (elections[0].index === elections[1].index) return literals.resultsTie
-        else return (elections[0].index + 1) % 3 === elections[1].index
-            ? literals.resultsWin(elections[0].user.username)
-            : literals.resultsWin(elections[1].user.username)
+    showResult(elections, embed) {
+
+        if (elections.length === 0)
+            modifyEmbed(embed, {
+                description: literals.resultsTimeout
+            })
+        else if (elections[0].index === elections[1].index)
+            modifyEmbed(embed, {
+                description: literals.resultsTie,
+                title: `${elections[0].user.username} ${this.icons[elections[0].index]} 
+            vs ${this.icons[elections[1].index]} ${elections[1].user.username}`
+            })
+        else
+            modifyEmbed(embed, {
+                description: (elections[0].index + 1) % 3 === elections[1].index
+                    ? literals.resultsWin(elections[0].user.username)
+                    : literals.resultsWin(elections[1].user.username),
+                title: `${elections[0].user.username} ${this.icons[elections[0].index]} 
+            vs ${this.icons[elections[1].index]} ${elections[1].user.username}`
+            })
     }
 }

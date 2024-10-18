@@ -11,7 +11,7 @@ module.exports = {
      * @param {Error} error - The error object
      */
     callback: (client, error) => {
-        console.error("Error: uncaught exception:", error.message)
+        logger.error("An uncaught exception ocurred:\n", error.stack)
 
         setTimeout(() => {
             process.exit(1)

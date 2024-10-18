@@ -34,7 +34,7 @@ module.exports = {
             inter.options.data.forEach(option => {
                 commandInfo += `${option.name}: ${option.value} `
             })
-            console.log(`Command: ${commandInfo} | User: ${inter.user.username} | Guild: ${inter.guild.name}` + " at " + new Date().toLocaleString())
+            logger.info(`Command: ${commandInfo} | User: ${inter.user.username} (id : ${inter.user}) | Guild: ${inter.guild.name} (id : ${inter.guildId})`)
 
 
             const command = client.commands.get(inter.commandName)

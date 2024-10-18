@@ -1,4 +1,5 @@
-require('module-alias/register')
+require('module-alias/register') // Register module-alias to use @ instead of relative paths
+
 const { Client, GatewayIntentBits, Partials } = require('discord.js')
 const { Player } = require('discord-player')
 const { YoutubeiExtractor } = require("discord-player-youtubei")
@@ -29,18 +30,19 @@ player.extractors.register(YoutubeiExtractor, {}) // load youtube support
 
 require('dotenv').config() // load .env variables
 
-require('@src/logger.js').config() //Change console stream to log file
+global.logger = require('@src/logger.js') // load logger
 
-require('@src/loader.js').config(client) //Load commands, languages and events
+require('@src/loader.js').config(client) // load commands, languages and events
+
 
 
 //Check if TOKEN environment variable is set
 if (!process.env.TOKEN || process.env.TOKEN.trim() === '') {
-    console.error('Error: TOKEN environment variable not found')
+    logger.error('TOKEN environment variable not found')
     process.exit(1)
 }
 
 //Login to Discord
 client.login(process.env.TOKEN)
-    .catch(error => console.error(`Error: during loging: ${error.message}`))
+    .catch(error => logger.error(`During loging: ${error.message}`))
 

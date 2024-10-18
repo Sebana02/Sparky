@@ -1,16 +1,16 @@
 const { reply, deferReply } = require('@utils/interaction-utils.js')
 const { ApplicationCommandOptionType, ChannelType } = require('discord.js')
 const { permissions } = require('@utils/permissions.js')
-const { fecthCommandLit } = require('@utils/language-utils.js')
+const { fetchCommandLit } = require('@utils/language-utils.js')
 
 // Preload literals
 const literals = {
-    description: fecthCommandLit('moderation.unmute_channel.description'),
-    optionName: fecthCommandLit('moderation.unmute_channel.option.name'),
-    optionDescription: fecthCommandLit('moderation.unmute_channel.option.description'),
-    alreadyUnblocked: fecthCommandLit('moderation.unmute_channel.already_unblocked'),
-    channelNotSupported: fecthCommandLit('moderation.unmute_channel.channel_not_supported'),
-    response: (channel) => fecthCommandLit('moderation.unmute_channel.response', channel)
+    description: fetchCommandLit('moderation.unmute_channel.description'),
+    optionName: fetchCommandLit('moderation.unmute_channel.option.name'),
+    optionDescription: fetchCommandLit('moderation.unmute_channel.option.description'),
+    alreadyUnblocked: fetchCommandLit('moderation.unmute_channel.already_unblocked'),
+    channelNotSupported: fetchCommandLit('moderation.unmute_channel.channel_not_supported'),
+    response: (channel) => fetchCommandLit('moderation.unmute_channel.response', channel)
 }
 
 /**

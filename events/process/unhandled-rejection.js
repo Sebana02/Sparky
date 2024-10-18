@@ -11,6 +11,6 @@ module.exports = {
      * @param {PromiseRejectionEvent} promiseRejectionEvent - The promise rejection event
      */
     callback: (client, promiseRejectionEvent) => {
-        console.error("Error: unhandled promise rejection:", promiseRejectionEvent.message)
+        logger.error("An unhandled promise rejection ocurred:\n", promiseRejectionEvent)
     }
 }

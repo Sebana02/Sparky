@@ -26,7 +26,7 @@ module.exports = {
         try {
             await commandFunction(client, inter, ...args)
         } catch (error) {
-            console.error(`Error: in command "${commandName}": ${error.message}`)
+            logger.error(`An error ocurred at command "${commandName}":\n`, error.stack)
 
             // Create an error embed
             const errorEmbed = createEmbed({

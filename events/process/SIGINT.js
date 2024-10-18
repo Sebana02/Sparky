@@ -11,7 +11,7 @@ module.exports = {
      * @returns {Promise<void>}
      */
     callback: async (client) => {
-        console.log("Bot received SIGINT signal, disconnecting...")
+        logger.info("Bot received SIGINT signal, disconnecting...")
 
         //Disconnect the bot and exit the process
         await client.destroy()

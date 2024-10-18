@@ -1,16 +1,16 @@
 const { reply, deferReply } = require('@utils/interaction-utils.js')
 const { ApplicationCommandOptionType, ChannelType } = require('discord.js')
 const { permissions } = require('@utils/permissions.js')
-const { fecthCommandLit } = require('@utils/language-utils.js')
+const { fetchCommandLit } = require('@utils/language-utils.js')
 
 // Preload literals
 const literals = {
-    description: fecthCommandLit('moderation.mute_channel.description'),
-    optionName: fecthCommandLit('moderation.mute_channel.option.name'),
-    optionDescription: fecthCommandLit('moderation.mute_channel.option.description'),
-    alreadyBlocked: fecthCommandLit('moderation.mute_channel.already_blocked'),
-    channelNotSupported: fecthCommandLit('moderation.mute_channel.channel_not_supported'),
-    response: (channel) => fecthCommandLit('moderation.mute_channel.response', channel)
+    description: fetchCommandLit('moderation.mute_channel.description'),
+    optionName: fetchCommandLit('moderation.mute_channel.option.name'),
+    optionDescription: fetchCommandLit('moderation.mute_channel.option.description'),
+    alreadyBlocked: fetchCommandLit('moderation.mute_channel.already_blocked'),
+    channelNotSupported: fetchCommandLit('moderation.mute_channel.channel_not_supported'),
+    response: (channel) => fetchCommandLit('moderation.mute_channel.response', channel)
 }
 
 /**

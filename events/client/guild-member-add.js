@@ -21,7 +21,7 @@ module.exports = {
     callback: async (client, member) => {
 
         //Log the event
-        console.log(`New member: ${member.user.tag} joined the server`)
+        logger.info(`New member: ${member.user.tag} (id : ${member.user}) joined the server`)
 
         //Send a welcome message to the member
         await member.send(literals.response(member.guild.name, member.user.username))

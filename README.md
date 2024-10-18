@@ -32,6 +32,7 @@
     - [`Embeds`](#embeds)
     - [`Moderation commands`](#moderation-commands-1)
     - [`Security`](#security)
+    - [`Update README`](#update-readme)
   - [Known Issues](#known-issues)
   - [License](#license)
 
@@ -114,7 +115,7 @@ To install and run the bot locally, follow these steps:
 The bot has the following configurations through the `.env` file:
 
 - `TOKEN`: The Discord authentication token. Required for the bot to connect to Discord.
-- `LOG_FILE`: The file where logs will be stored. It is optional and logs will be displayed in the console in any case.
+- `LOG_FILE`: The file where logs will be stored. If not specified, logs will be stored in .log file
 - `GUILD_ID`: The ID of the server where the bot will be used. If not specified, the bot will register commands globally, which can take up to an hour to be available.
 - `PLAYING_ACTIVITY`: The activity status of the bot. If left empty, the bot will not display any activity status.
 - `TENOR_API_KEY`: The API key for the Tenor GIF API. Required for GIF commands, you can get one [here](https://tenor.com/developer/keysignup).
@@ -317,8 +318,7 @@ You can always modify the bot to support your language.
 
 ### `General`
 
-- [ ] Improve logging
-- [ ] Improve Errors handling
+- [x] Improve logging
 - [x] Add help command
 
 ### `IAs`
@@ -347,6 +347,13 @@ You can always modify the bot to support your language.
 
 - [ ] Add a way to avoid users using commands in certain channels
 - [ ] More checks regarding who can receive certain commands
+
+### `Update README`
+
+- [ ] Logger
+- [ ] language system
+- [ ] How loading works
+- [ ] Template for language
 
 ## Known Issues
 
