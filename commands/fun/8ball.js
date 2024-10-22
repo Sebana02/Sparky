@@ -1,16 +1,10 @@
 const { ApplicationCommandOptionType } = require('discord.js')
 const { reply } = require('@utils/interaction-utils.js')
 const { createEmbed, ColorScheme } = require('@utils/embed/embed-utils.js')
-const { fetchCommandLit } = require('@utils/language-utils')
+const { fetchObject } = require('@utils/language-utils')
 
 // Preload literals
-const literals = {
-    description: fetchCommandLit('fun.8ball.description'),
-    optionName: fetchCommandLit('fun.8ball.option.name'),
-    optionDescription: fetchCommandLit('fun.8ball.option.description'),
-    answers: fetchCommandLit('fun.8ball.response.answers'),
-    responseFooter: (username, question) => fetchCommandLit('fun.8ball.response.footer', username, question)
-}
+const literals = fetchObject('commands.fun.8ball')
 
 /**
  * Command that asks a question to the magic 8ball and gets a random response
@@ -20,8 +14,8 @@ module.exports = {
     description: literals.description,
     options: [
         {
-            name: literals.optionName,
-            description: literals.optionDescription,
+            name: literals.option.name,
+            description: literals.option.description,
             type: ApplicationCommandOptionType.String,
             required: true,
         }
@@ -29,14 +23,14 @@ module.exports = {
     run: async (client, inter) => {
 
         // Get the question
-        const question = inter.options.getString(literals.optionName)
+        const question = inter.options.getString(literals.option.name)
 
         // Create embed with random response
         const embed = createEmbed({
-            title: `🎱 ${literals.answers[Math.floor(Math.random() * literals.answers.length)]}`,
+            title: `🎱 ${literals.response.answers[Math.floor(Math.random() * literals.response.answers.length)]}`,
             color: ColorScheme.fun,
             footer: {
-                text: literals.responseFooter(inter.user.username, question),
+                text: literals.response.footer(inter.user.username, question),
                 iconURL: inter.user.displayAvatarURL({ size: 1024, dynamic: true })
             }
         })

@@ -315,6 +315,7 @@ You can always modify the bot to support your language.
 - [ ] Make architecture to support multiple languages,
   - Missing moderation/user commands
 - [ ] Add English support
+- [ ] log in which language file a literal is missing
 
 ### `General`
 

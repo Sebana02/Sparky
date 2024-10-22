@@ -11,9 +11,23 @@ module.exports = {
      **/
     fetchLiteral: (pathToLiteral, ...args) => {
 
-        // Fetch the literal from the selected language or default language if not found
-        let fetchedLiteral = fetch(pathToLiteral, process.language) ||
-            fetch(pathToLiteral, process.defaultLanguage)
+        // Fetch the literal from the selected language
+        let fetchedLiteral = fetch(pathToLiteral, process.language)
+
+        // Log a warning if the literal is not found and try to fetch from the default language
+        if (!fetchedLiteral) {
+            if (process.defaultLanguage) {
+                logger.warn(`Literal not found in the selected language: ${pathToLiteral}, using default language`)
+                fetchedLiteral = fetch(pathToLiteral, process.defaultLanguage)
+
+                if (!fetchedLiteral) {
+                    logger.warn(`Literal not found in the default language: ${pathToLiteral}`)
+                }
+            }
+            else {
+                logger.warn(`Literal not found in the selected language: ${pathToLiteral}`)
+            }
+        }
 
         // Return formatted string if arguments are provided
         return (args.length > 0) ? String.format(fetchedLiteral, ...args) : fetchedLiteral
@@ -27,17 +41,32 @@ module.exports = {
      */
     fetchObject: (pathToLiteral) => {
 
-        // Fetch the literal
-        let selectedLangObj = fetch(pathToLiteral, process.language)
+        // If the default language is not set, fetch the literal from the selected language
+        if (!process.defaultLanguage) {
+            // Fetch the literal from the selected language
+            const langObj = fetch(pathToLiteral, process.language)
 
-        // Fetch the literal from the default language
-        let defaultLangObj = fetch(pathToLiteral, process.defaultLanguage)
+            // Log a warning if the literal is not found
+            if (!langObj)
+                return logger.warn(`Literal object not found in the selected language: ${pathToLiteral}`)
 
-        // Merge selected language with default language, logging any missing keys
-        let result = mergeLangObj(selectedLangObj, defaultLangObj)
+            // Process the literal object
+            return processLiterals(langObj)
+        }
+        else {
+            // Fetch the literal from the selected language
+            let selectedLangObj = fetch(pathToLiteral, process.language)
+            if (!selectedLangObj)
+                logger.warn(`Literal object not found in the selected language: ${pathToLiteral}`)
 
-        // Process the merged literal
-        return processLiterals(result)
+            // Fetch the literal from the default language
+            let defaultLangObj = fetch(pathToLiteral, process.defaultLanguage)
+            if (!defaultLangObj)
+                logger.warn(`Literal object not found in the default language: ${pathToLiteral}`)
+
+            if (!selectedLangObj && !defaultLangObj) return null
+            else return processLiterals(mergeLangObj(selectedLangObj, defaultLangObj))
+        }
     }
 }
 
@@ -62,13 +91,8 @@ function fetch(pathToLiteral, langObj) {
     // If the given langObj is null, return null
     if (!langObj) return null
 
-    // Fetch the literal from the language object
-    const fetchedLiteral = pathToLiteral.split('.').reduce((obj, key) => (obj ? obj[key] : null), langObj)
-
-    if (!fetchedLiteral)
-        logger.warn(`Literal not found: ${pathToLiteral}`)
-
-    return fetchedLiteral
+    // Return the value of the literal in the language object
+    return pathToLiteral.split('.').reduce((obj, key) => (obj ? obj[key] : null), langObj)
 }
 
 /**

@@ -1,14 +1,9 @@
 const { reply } = require('@utils/interaction-utils.js')
 const { createEmbed, ColorScheme } = require('@utils/embed/embed-utils.js')
-const { fetchCommandLit } = require('@utils/language-utils')
+const { fetchObject } = require('@utils/language-utils')
 
 // Preload literals
-const literals = {
-    description: fetchCommandLit('fun.coin_flip.description'),
-    responseFooter: (username) => fetchCommandLit('fun.coin_flip.response.footer', username),
-    heads: fetchCommandLit('fun.coin_flip.response.heads'),
-    tails: fetchCommandLit('fun.coin_flip.response.tails')
-}
+const literals = fetchObject('commands.fun.coin_flip')
 
 /**
  * Command that flips a coin to see if it lands on heads or tails
@@ -21,10 +16,10 @@ module.exports = {
         // Create embed with random response
         const embed = createEmbed({
             footer: {
-                text: literals.responseFooter(inter.user.username),
+                text: literals.response.footer(inter.user.username),
                 iconURL: inter.user.displayAvatarURL({ size: 1024, dynamic: true })
             },
-            title: `${Math.random() < 0.5 ? literals.heads : literals.tails}`,
+            title: `${Math.random() < 0.5 ? literals.response.heads : literals.response.tails}`,
             color: ColorScheme.fun,
         })
 
