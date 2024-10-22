@@ -1,12 +1,10 @@
 const { modifyEmbed, createEmbed, ColorScheme } = require('@utils/embed/embed-utils.js')
 const { reply, deferReply } = require('@utils/interaction-utils.js')
 const { ChatInputCommandInteraction } = require('discord.js')
-const { fetchUtilLit } = require('@utils/language-utils.js')
+const { fetchObject } = require('@utils/language-utils')
 
-//Preload literals
-const literals = {
-    noResults: (searchTerm) => fetchUtilLit('gif_utils.no_results', searchTerm)
-}
+// Preload literals
+const literals = fetchObject('utils.gif_utils')
 
 /**
  * Utils for interacting with GIFs
@@ -108,7 +106,7 @@ async function sendRandomGif(inter, category, embed, options = { propagate: true
         if (!gifURL) {
             const noGifEmbed = createEmbed({
                 color: ColorScheme.error,
-                author: { name: literals.noResults(category) },
+                author: { name: literals.no_results(category) },
             })
 
             return await reply(inter, { embeds: [noGifEmbed], ephemeral: true, deleteTime: 2 })

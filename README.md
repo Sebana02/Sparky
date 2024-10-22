@@ -318,8 +318,7 @@ You can always modify the bot to support your language.
 
 ### `General`
 
-- [x] Improve logging
-- [x] Add help command
+- [ ] Improve visuals and embeds
 
 ### `IAs`
 
@@ -327,8 +326,6 @@ You can always modify the bot to support your language.
 - [ ] TicTacToe
 
 ### `Embeds`
-
-- [ ] Embeds in moderation commands
 
 ### `Moderation commands`
 
@@ -338,10 +335,10 @@ You can always modify the bot to support your language.
 - [ ] Deleterole command
 - [ ] Show permissions command
 - [ ] Show roles of a user command
-- [ ] Bannedlist and mutedlist need to include option to show all and show reason
 - [ ] Create channel command
 - [ ] Delete channel command
-- [ ] In general, improve visuals of moderation commands
+
+- [ ] Add pagination to bannedlist and mutedlist
 
 ### `Security`
 
@@ -351,9 +348,8 @@ You can always modify the bot to support your language.
 ### `Update README`
 
 - [ ] Logger
-- [ ] language system
+- [ ] Language architecture, template for language
 - [ ] How loading works
-- [ ] Template for language
 
 ## Known Issues
 

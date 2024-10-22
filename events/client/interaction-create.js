@@ -1,16 +1,10 @@
 const { useQueue } = require('discord-player')
 const { reply } = require('@utils/interaction-utils.js')
 const { commandErrorHandler } = require('@utils/error-handler/command-error-handler.js')
-const { fetchEventLit } = require('@utils/language-utils.js')
+const { fetchObject } = require('@utils/language-utils')
 
-//Preolad literals
-const literals = {
-    noPermissions: fetchEventLit('client.interaction_create.no_permissions'),
-    noDJRole: fetchEventLit('client.interaction_create.no_dj_role'),
-    noCommandsTrivia: fetchEventLit('client.interaction_create.no_commands_trivia'),
-    noVoiceChannel: fetchEventLit('client.interaction_create.no_voice_channel'),
-    noSameVoiceChannel: fetchEventLit('client.interaction_create.no_same_voice_channel')
-}
+// Preload literals
+const literals = fetchObject('events.client.interaction_create')
 
 /**
  * Event that is called when the bot receives an interaction
@@ -47,27 +41,27 @@ module.exports = {
 
             //If command has permissions restrictions and user does not have them -> error
             if (command.permissions && !inter.member.permissions.has(command.permissions))
-                return await reply(inter, { content: literals.noPermissions, ephemeral: true, deleteTime: 2, propagate: false })
+                return await reply(inter, { content: literals.no_permissions, ephemeral: true, deleteTime: 2, propagate: false })
 
 
             //If command requires user to be in voice channel
             if (command.voiceChannel) {
                 //If DJ role is enabled for the command and user does not have DJ role -> error
                 if (process.env.DJ_ROLE && process.env.DJ_ROLE.trim() !== '' && !inter.member.roles.cache.some(role => role.id === process.env.DJ_ROLE))
-                    return await reply(inter, { content: literals.noDJRole, ephemeral: true, deleteTime: 2, propagate: false })
+                    return await reply(inter, { content: literals.no_dj_role, ephemeral: true, deleteTime: 2, propagate: false })
 
                 //If trivia is enabled -> error
                 const queue = useQueue(inter.guildId)
                 if (queue && queue.metadata.trivia)
-                    return await reply(inter, { content: literals.noCommandsTrivia, ephemeral: true, deleteTime: 2, propagate: false })
+                    return await reply(inter, { content: literals.no_commands_trivia, ephemeral: true, deleteTime: 2, propagate: false })
 
                 //User is not on a voice channel -> error
                 if (!inter.member.voice.channel)
-                    return await reply(inter, { content: literals.noVoiceChannel, ephemeral: true, deleteTime: 2, propagate: false })
+                    return await reply(inter, { content: literals.no_voice_channel, ephemeral: true, deleteTime: 2, propagate: false })
 
                 //User is not on the same voice channel as bot -> error
                 if (inter.guild.members.me.voice.channel && inter.member.voice.channel.id !== inter.guild.members.me.voice.channel.id)
-                    return await reply(inter, { content: literals.noSameVoiceChannel, ephemeral: true, deleteTime: 2, propagate: false })
+                    return await reply(inter, { content: literals.no_same_voice_channel, ephemeral: true, deleteTime: 2, propagate: false })
 
             }
             //Execute command

@@ -2,52 +2,10 @@ const { createEmbed } = require('@utils/embed/embed-utils')
 const { SearchResult, Track, GuildQueue } = require('discord-player')
 const { Client, EmbedBuilder } = require('discord.js')
 const { LyricsData } = require('@discord-player/extractor')
-const { fetchUtilLit } = require('@utils/language-utils.js')
+const { fetchObject } = require('@utils/language-utils.js')
 
 //Preload literals
-const literals = {
-  musicError: fetchUtilLit('embed.music_presets.error'),
-  noResults: fetchUtilLit('embed.music_presets.no_results'),
-  noPlaylist: fetchUtilLit('embed.music_presets.no_playlist'),
-  noQueue: fetchUtilLit('embed.music_presets.no_queue'),
-  noHistory: fetchUtilLit('embed.music_presets.no_history'),
-  noLyrics: fetchUtilLit('embed.music_presets.no_lyrics'),
-
-  addToQueue: fetchUtilLit('embed.music_presets.add_to_queue'),
-  addToQueueManyTitle: (amount) => fetchUtilLit('embed.music_presets.add_to_queue_many.title', amount),
-  addToQueueManyDesc: fetchUtilLit('embed.music_presets.add_to_queue_many.description'),
-
-
-  previousTrack: fetchUtilLit('embed.music_presets.previous_track'),
-  stop: fetchUtilLit('embed.music_presets.stop'),
-  pause: fetchUtilLit('embed.music_presets.pause'),
-  resume: fetchUtilLit('embed.music_presets.resume'),
-  clear: fetchUtilLit('embed.music_presets.clear'),
-
-  loopModeOff: fetchUtilLit('embed.music_presets.loop.modes.off'),
-  loopModeTrack: fetchUtilLit('embed.music_presets.loop.modes.track'),
-  loopModeQueue: fetchUtilLit('embed.music_presets.loop.modes.queue'),
-  loopModeAutoplay: fetchUtilLit('embed.music_presets.loop.modes.autoplay'),
-  loop: (mode) => fetchUtilLit('embed.music_presets.loop.response', mode),
-
-  currentQueueSongsAdd: (amount) => fetchUtilLit('embed.music_presets.current_queue.next_songs.add', amount),
-  currentQueueSongs: (amount) => fetchUtilLit('embed.music_presets.current_queue.next_songs.no_add', amount),
-  currentQueue: fetchUtilLit('embed.music_presets.current_queue.response'),
-
-  volume: (volume) => fetchUtilLit('embed.music_presets.volume', volume),
-  skip: fetchUtilLit('embed.music_presets.skip'),
-
-  nowPlaying: (volume, duration, progress, loop, requestedBy) =>
-    fetchUtilLit('embed.music_presets.now_playing', volume, duration, progress, loop, requestedBy),
-
-  shuffleTitle: (songs) => fetchUtilLit('embed.music_presets.shuffle.title', songs),
-  shuffleDesc: fetchUtilLit('embed.music_presets.shuffle.description'),
-
-  save: fetchUtilLit('embed.music_presets.save'),
-  playing: fetchUtilLit('embed.music_presets.playing'),
-  emptyChannel: fetchUtilLit('embed.music_presets.empty_channel'),
-  emptyQueue: fetchUtilLit('embed.music_presets.empty_queue')
-}
+const literals = fetchObject('utils.embed.music_presets')
 
 // Color scheme for the music embeds
 const ColorScheme = {
@@ -70,7 +28,7 @@ module.exports = {
     return createEmbed({
       color: ColorScheme.error,
       author: {
-        name: literals.musicError,
+        name: literals.error,
         iconURL: client.user.displayAvatarURL()
       }
     })
@@ -85,7 +43,7 @@ module.exports = {
     return createEmbed({
       color: ColorScheme.error,
       author: {
-        name: literals.noResults,
+        name: literals.no_results,
         iconURL: client.user.displayAvatarURL()
       }
     })
@@ -100,7 +58,7 @@ module.exports = {
     return createEmbed({
       color: ColorScheme.error,
       author: {
-        name: literals.noPlaylist,
+        name: literals.no_playlist,
         iconURL: client.user.displayAvatarURL()
       }
     })
@@ -115,7 +73,7 @@ module.exports = {
     return createEmbed({
       color: ColorScheme.error,
       author: {
-        name: literals.noQueue,
+        name: literals.no_queue,
         iconURL: client.user.displayAvatarURL()
       }
     })
@@ -130,7 +88,7 @@ module.exports = {
     return createEmbed({
       color: ColorScheme.error,
       author: {
-        name: literals.noHistory,
+        name: literals.no_history,
         iconURL: client.user.displayAvatarURL()
       }
     })
@@ -145,7 +103,7 @@ module.exports = {
     return createEmbed({
       color: ColorScheme.error,
       author: {
-        name: literals.noLyrics,
+        name: literals.no_lyrics,
         iconURL: track.thumbnail
       }
     })
@@ -164,7 +122,7 @@ module.exports = {
         iconURL: track.thumbnail
       },
       footer: {
-        text: literals.addToQueue
+        text: literals.add_to_queue
       }
     })
   },
@@ -178,11 +136,11 @@ module.exports = {
     return createEmbed({
       color: ColorScheme.added,
       author: {
-        name: literals.addToQueueManyTitle(results.tracks.length),
+        name: literals.add_to_queue_many.title(results.tracks.length),
         iconURL: results.tracks[0].thumbnail
       },
       footer: {
-        text: literals.addToQueueManyDesc
+        text: literals.add_to_queue_many.description
       }
     })
   },
@@ -200,7 +158,7 @@ module.exports = {
         iconURL: track.thumbnail
       },
       footer: {
-        text: literals.previousTrack
+        text: literals.previous_track
       }
     })
   },
@@ -279,10 +237,10 @@ module.exports = {
    */
   loop: (repeatMode, track) => {
     const names = [
-      literals.loopModeOff,
-      literals.loopModeTrack,
-      literals.loopModeQueue,
-      literals.loopModeAutoplay
+      literals.loop.modes.off,
+      literals.loop.modes.track,
+      literals.loop.modes.queue,
+      literals.loop.modes.autoplay
     ]
 
     return createEmbed({
@@ -302,8 +260,8 @@ module.exports = {
   currentQueue: (queue) => {
     const methods = ['', '| 🔂', '| 🔁', '| 🔀']
     const nextSongs = queue.getSize() > 5 ?
-      literals.currentQueueSongsAdd(queue.getSize() - 5) :
-      literals.currentQueueSongs(queue.getSize())
+      literals.current_queue.next_songs.add(queue.getSize() - 5) :
+      literals.current_queue.next_songs.no_add(queue.getSize())
     const tracks = queue.tracks.map((track, i) => `**${i + 1}** - ${track.title} | ${track.author} (requested by : ${track.requestedBy.username})`)
 
     return createEmbed({
@@ -314,7 +272,7 @@ module.exports = {
         name: `${queue.currentTrack.title} | ${queue.currentTrack.author} ${methods[queue.repeatMode]}`
       },
       footer: {
-        text: literals.currentQueue
+        text: literals.current_queue.response
       }
     })
   },
@@ -382,17 +340,17 @@ module.exports = {
   nowPlaying: (queue, player) => {
     const track = queue.currentTrack
     const loopModes = [
-      literals.loopModeOff,
-      literals.loopModeTrack,
-      literals.loopModeQueue,
-      literals.loopModeAutoplay
+      literals.loop.modes.off,
+      literals.loop.modes.track,
+      literals.loop.modes.queue,
+      literals.loop.modes.autoplay
     ]
 
     return createEmbed({
       color: ColorScheme.playing,
       thumbnail: track.thumbnail,
       title: `${track.title} | ${track.author}`,
-      description: literals.nowPlaying(player.volume, track.duration, player.createProgressBar(), loopModes[queue.repeatMode], track.requestedBy)
+      description: literals.now_playing(player.volume, track.duration, player.createProgressBar(), loopModes[queue.repeatMode], track.requestedBy)
     })
   },
 
@@ -404,8 +362,8 @@ module.exports = {
   shuffle: (queue) => {
     return createEmbed({
       color: ColorScheme.general,
-      author: { name: literals.shuffleTitle(queue.tracks.size), iconURL: queue.currentTrack.thumbnail },
-      footer: { text: literals.shuffleDesc }
+      author: { name: literals.shuffle.title(queue.tracks.size), iconURL: queue.currentTrack.thumbnail },
+      footer: { text: literals.shuffle.description }
     })
   },
 
@@ -462,7 +420,7 @@ module.exports = {
   emptyChannel: (client) => {
     return createEmbed({
       color: ColorScheme.general,
-      author: { name: literals.emptyChannel, iconURL: client.user.displayAvatarURL() }
+      author: { name: literals.empty_channel, iconURL: client.user.displayAvatarURL() }
     })
   },
 
@@ -474,7 +432,7 @@ module.exports = {
   emptyQueue: (client) => {
     return createEmbed({
       color: ColorScheme.general,
-      author: { name: literals.emptyQueue, iconURL: client.user.displayAvatarURL() }
+      author: { name: literals.empty_queue, iconURL: client.user.displayAvatarURL() }
     })
   },
 

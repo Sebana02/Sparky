@@ -1,12 +1,9 @@
 const { sendRandomGif } = require('@utils/gif-utils.js')
 const { createEmbed, ColorScheme } = require('@utils/embed/embed-utils.js')
-const { fetchCommandLit } = require('@utils/language-utils')
+const { fetchObject } = require('@utils/language-utils')
 
 // Preload literals
-const literals = {
-    description: fetchCommandLit('fun.cat.description'),
-    response: (username) => fetchCommandLit('fun.cat.response', username)
-}
+const literals = fetchObject('commands.fun.cat')
 
 /**
  * Command that sends random gif(s) from the category cat

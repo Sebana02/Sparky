@@ -95,15 +95,24 @@ function loadLanguages(folderPath) {
     const defaultLanguage = 'en'
     const language = process.env.LANGUAGE || defaultLanguage
 
-    // Load default language 
-    process.defaultLanguage = loadLanguage(defaultLanguage)
-    process.language = process.defaultLanguage
 
-    // Load language if it is not the default one
-    // If it does not exist, the default language is used
-    if (language !== defaultLanguage)
-        process.language = loadLanguage(language) || process.defaultLanguage
+    //Load default language
+    const defaultLangObj = loadLanguage(defaultLanguage)
 
+    // If selected language is default, load to process.language
+    if (language === defaultLanguage) {
+        process.language = defaultLangObj
+    }
+    else {
+        // Load selected language
+        process.language = loadLanguage(language)
+
+        // If it does not exist, asign default, else asign default to process.defaultLanguage
+        if (!process.language)
+            process.language = defaultLangObj
+        else
+            process.defaultLanguage = defaultLangObj
+    }
 }
 
 /**

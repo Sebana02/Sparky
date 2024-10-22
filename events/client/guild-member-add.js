@@ -1,9 +1,7 @@
-const { fetchEventLit } = require('@utils/language-utils.js')
+const { fetchObject } = require('@utils/language-utils')
 
-//Preolad literals
-const literals = {
-    response: (guildName, user) => fetchEventLit('client.guild_member_add.response', guildName, user)
-}
+// Preload literals
+const literals = fetchObject('events.client.guild_member_add')
 
 /**
  * Event that is called when a member joins a guild
