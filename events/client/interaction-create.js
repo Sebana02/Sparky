@@ -1,10 +1,10 @@
 const { useQueue } = require('discord-player')
 const { reply } = require('@utils/interaction-utils.js')
 const { commandErrorHandler } = require('@utils/error-handler/command-error-handler.js')
-const { fetchObject } = require('@utils/language-utils')
+const { fetchLiteral } = require('@utils/language-utils')
 
 // Preload literals
-const literals = fetchObject('events.client.interaction_create')
+const literals = fetchLiteral('events.client.interaction_create')
 
 /**
  * Event that is called when the bot receives an interaction

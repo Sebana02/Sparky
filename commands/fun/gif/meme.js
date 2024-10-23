@@ -1,9 +1,9 @@
 const { sendRandomGif } = require('@utils/gif-utils.js')
 const { createEmbed, ColorScheme } = require('@utils/embed/embed-utils.js')
-const { fetchObject } = require('@utils/language-utils')
+const { fetchLiteral } = require('@utils/language-utils')
 
 // Preload literals
-const literals = fetchObject('commands.fun.meme')
+const literals = fetchLiteral('commands.fun.meme')
 
 /**
  * Command that sends random gif(s) from the category meme

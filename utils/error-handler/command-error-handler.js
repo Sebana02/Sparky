@@ -1,9 +1,9 @@
 const { createEmbed, ColorScheme } = require('@utils/embed/embed-utils')
 const { reply } = require('@utils/interaction-utils')
-const { fetchObject } = require('@utils/language-utils')
+const { fetchLiteral } = require('@utils/language-utils')
 
 // Preload literals
-const literals = fetchObject('utils.error_handler.command_error_handler')
+const literals = fetchLiteral('utils.error_handler.command_error_handler')
 
 /**
  * Utils for handling errors in command calls

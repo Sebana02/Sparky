@@ -1,7 +1,7 @@
-const { fetchObject } = require('@utils/language-utils')
+const { fetchLiteral } = require('@utils/language-utils')
 
 // Preload literals
-const literals = fetchObject('events.client.guild_member_add')
+const literals = fetchLiteral('events.client.guild_member_add')
 
 /**
  * Event that is called when a member joins a guild

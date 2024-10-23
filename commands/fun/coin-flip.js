@@ -1,9 +1,9 @@
 const { reply } = require('@utils/interaction-utils.js')
 const { createEmbed, ColorScheme } = require('@utils/embed/embed-utils.js')
-const { fetchObject } = require('@utils/language-utils')
+const { fetchLiteral } = require('@utils/language-utils')
 
 // Preload literals
-const literals = fetchObject('commands.fun.coin_flip')
+const literals = fetchLiteral('commands.fun.coin_flip')
 
 /**
  * Command that flips a coin to see if it lands on heads or tails

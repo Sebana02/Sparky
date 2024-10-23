@@ -1,10 +1,10 @@
 const { modifyEmbed, createEmbed, ColorScheme } = require('@utils/embed/embed-utils.js')
 const { reply, deferReply } = require('@utils/interaction-utils.js')
 const { ChatInputCommandInteraction } = require('discord.js')
-const { fetchObject } = require('@utils/language-utils')
+const { fetchLiteral } = require('@utils/language-utils')
 
 // Preload literals
-const literals = fetchObject('utils.gif_utils')
+const literals = fetchLiteral('utils.gif_utils')
 
 /**
  * Utils for interacting with GIFs

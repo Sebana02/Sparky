@@ -2,10 +2,10 @@ const { createEmbed } = require('@utils/embed/embed-utils')
 const { SearchResult, Track, GuildQueue } = require('discord-player')
 const { Client, EmbedBuilder } = require('discord.js')
 const { LyricsData } = require('@discord-player/extractor')
-const { fetchObject } = require('@utils/language-utils.js')
+const { fetchLiteral } = require('@utils/language-utils.js')
 
 //Preload literals
-const literals = fetchObject('utils.embed.music_presets')
+const literals = fetchLiteral('utils.embed.music_presets')
 
 // Color scheme for the music embeds
 const ColorScheme = {

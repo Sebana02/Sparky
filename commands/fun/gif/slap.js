@@ -1,10 +1,10 @@
 const { ApplicationCommandOptionType } = require('discord.js')
 const { sendRandomGif } = require('@utils/gif-utils.js')
 const { createEmbed, ColorScheme } = require('@utils/embed/embed-utils.js')
-const { fetchObject } = require('@utils/language-utils')
+const { fetchLiteral } = require('@utils/language-utils')
 
 // Preload literals
-const literals = fetchObject('commands.fun.slap')
+const literals = fetchLiteral('commands.fun.slap')
 
 /**
  * Command that sends a random gif from the category slap, slap the user

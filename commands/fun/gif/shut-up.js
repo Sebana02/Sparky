@@ -2,10 +2,10 @@ const { ApplicationCommandOptionType } = require('discord.js')
 const { sendRandomGif } = require('@utils/gif-utils.js')
 const { createEmbed, ColorScheme } = require('@utils/embed/embed-utils.js')
 const { fetchCommandLit } = require('@utils/language-utils')
-const { fetchObject } = require('@utils/language-utils')
+const { fetchLiteral } = require('@utils/language-utils')
 
 // Preload literals
-const literals = fetchObject('commands.fun.shut_up')
+const literals = fetchLiteral('commands.fun.shut_up')
 
 /**
  * Command that tells a user to shut up via gif

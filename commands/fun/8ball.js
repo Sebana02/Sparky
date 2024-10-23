@@ -1,10 +1,10 @@
 const { ApplicationCommandOptionType } = require('discord.js')
 const { reply } = require('@utils/interaction-utils.js')
 const { createEmbed, ColorScheme } = require('@utils/embed/embed-utils.js')
-const { fetchObject } = require('@utils/language-utils')
+const { fetchLiteral } = require('@utils/language-utils')
 
 // Preload literals
-const literals = fetchObject('commands.fun.8ball')
+const literals = fetchLiteral('commands.fun.8ball')
 
 /**
  * Command that asks a question to the magic 8ball and gets a random response
