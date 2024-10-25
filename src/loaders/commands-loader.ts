@@ -1,30 +1,21 @@
-import { readdir } from "fs/promises";
-import { existsSync } from "fs";
+import { existsSync, readdirSync, statSync } from "fs";
 import { resolve } from "path";
-import { pathToFileURL } from "url";
-import { ICommand } from "../interfaces/command.interface.js";
+import { ICommand } from "../interfaces/command.interface";
 
 /**
  * Loads commands from the specified folder path.
  * @param {string} folderPath - The path of the folder containing the commands.
  */
-export default async function loadCommands(folderPath: string) {
+export default function loadCommands(folderPath: string): void {
   // Log the loading of commands
   logger.info("Loading commands...");
 
   // Initialize the collection of commands
   globalThis.commands = new Map<string, ICommand>();
 
-  //Check if the folder exists
-  if (!existsSync(folderPath))
-    return logger.error(
-      `Could not load commands: ${folderPath} does not exist`
-    );
-
-  // Load commands
-  await loadCommandsRec(folderPath).catch((error: any) =>
-    logger.error("Could not load commands:", error.message)
-  );
+  // If the folder exists, load commands
+  if (existsSync(folderPath)) loadCommandsRec(folderPath);
+  else logger.error(`Could not load commands: ${folderPath} does not exist`);
 
   // Log the number of loaded commands
   logger.info(`Loaded ${commands.size} commands`);
@@ -34,33 +25,28 @@ export default async function loadCommands(folderPath: string) {
  * Loads commands recursively from the specified folder path.
  * @param {string} folderPath - The path of the folder containing the commands.
  */
-async function loadCommandsRec(folderPath: string): Promise<void> {
-  // Read the directory
-  const dirents = await readdir(folderPath, { withFileTypes: true });
-
-  // For each file or directory in the folder
-  for (const dirent of dirents) {
-    // Get the absolute path of the file or directory
-    const res = resolve(folderPath, dirent.name);
-
+function loadCommandsRec(folderPath: string): void {
+  // Load commands recursively
+  readdirSync(folderPath).forEach((file) => {
     try {
-      // If the file is a directory, load commands recursively
-      if (dirent.isDirectory()) {
-        await loadCommandsRec(res);
-      }
-      // If the file is a JavaScript file, import the command
-      else if (dirent.isFile() && res.endsWith(".js")) {
-        // Create a new URL object from the file path
-        const commandURL = pathToFileURL(res);
+      // Resolve the file path
+      const filePath = resolve(folderPath, file);
 
-        // Import the command
-        const command: ICommand = (await import(commandURL.href)).default;
+      // Check if the file is a directory, apply recursion
+      if (statSync(filePath).isDirectory()) {
+        loadCommandsRec(filePath);
+      } else {
+        // Load the command if it is a JavaScript file
+        if (file.endsWith(".js")) {
+          // Load the command
+          const command: ICommand = require(file).default;
 
-        // Add the command to the collection
-        commands.set(command.name, command);
+          // Set the command in the collection
+          commands.set(command.name, command);
+        } else logger.warn(`Skipping non-JavaScript file: ${file}`);
       }
     } catch (error: any) {
-      logger.error(`Could not load command ${res}:`, error.message);
+      logger.error(`Could not load command ${file}:`, error.message);
     }
-  }
+  });
 }

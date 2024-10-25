@@ -6,6 +6,7 @@ export interface ILanguageObject {
   [key: string]:
     | ILanguageObject
     | string
+    | number
     | any[]
     | ((...args: any[]) => string);
 }

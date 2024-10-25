@@ -1,12 +1,11 @@
-import { existsSync, readFileSync } from "fs";
+import { existsSync, readdirSync, readFileSync, statSync } from "fs";
 import { basename, resolve } from "path";
-import { readdir } from "fs/promises";
 import { ILanguageObject } from "../interfaces/language.interface";
 /**
  * Loads language from the specified folder path and process the literals.
  * @param {string} folderPath - The path of the folder containing the languages.
  */
-export default async function loadLanguages(folderPath: string) {
+export default function loadLanguages(folderPath: string): void {
   // Log the loading of languages
   logger.info("Loading languages...");
 
@@ -25,11 +24,14 @@ export default async function loadLanguages(folderPath: string) {
 
   // If selected language is default, process it directly
   if (language === defaultLanguage) {
-    mergedLangObj = await loadLanguage(language);
+    mergedLangObj = loadLanguage(folderPath, language);
   } else {
     // Load the selected language and merge it with the default language if needed
-    const languageObj: ILanguageObject = await loadLanguage(language);
-    const defaultLangObj: ILanguageObject = await loadLanguage(defaultLanguage);
+    const languageObj: ILanguageObject = loadLanguage(folderPath, language);
+    const defaultLangObj: ILanguageObject = loadLanguage(
+      folderPath,
+      defaultLanguage
+    );
 
     if (!languageObj || Object.entries(language).length === 0)
       mergedLangObj = defaultLangObj;
@@ -55,18 +57,18 @@ export default async function loadLanguages(folderPath: string) {
 /**
  * Loads the specified language
  * @param {string} language - The language to load.
- * @returns {Promise<ILanguageObject>} The object containing the loaded language files.
+ * @returns {ILanguageObject} The object containing the loaded language files.
  **/
-async function loadLanguage(language: string): Promise<ILanguageObject> {
+function loadLanguage(folderPath: string, language: string): ILanguageObject {
   let langObj: ILanguageObject = {};
 
   // Check if the language folder exists
-  const langPath = resolve(import.meta.dirname, `../../languages/${language}`);
+  const langPath = resolve(__dirname, folderPath, language);
   if (!existsSync(langPath)) {
     logger.error(`Language folder does not exist: ${langPath}`);
   } else {
     // Load language files
-    langObj = await loadLanguageFiles(langPath);
+    langObj = loadLanguageFiles(langPath);
 
     // Log the loaded language
     logger.info(`Loaded language: ${language}`);
@@ -81,35 +83,33 @@ async function loadLanguage(language: string): Promise<ILanguageObject> {
  * @param {String} folderPath - The path of the folder containing the language files.
  * @returns {Promise<ILanguageObject>}  An object containing the loaded language files, following the folder structure.
  */
-async function loadLanguageFiles(folderPath: string): Promise<ILanguageObject> {
+function loadLanguageFiles(folderPath: string): ILanguageObject {
   // Initialize the result object
   const langObj: ILanguageObject = {};
 
-  // Read the directory
-  const dirents = await readdir(folderPath, { withFileTypes: true });
-
-  //For each file or directory in the folder
-  for (const dirent of dirents) {
-    // Get the absolute path of the file or directory
-    const res = resolve(folderPath, dirent.name);
-
+  // Read the contents of the directory
+  readdirSync(folderPath).forEach((file) => {
     try {
-      // If the file is a directory, load language files recursively
-      if (dirent.isDirectory()) {
-        langObj[dirent.name] = await loadLanguageFiles(res);
-      }
-      // If the file is a JSON file, read and parse it
-      else if (dirent.isFile() && res.endsWith(".json")) {
-        // Read and parse the JSON file
-        const content = JSON.parse(readFileSync(res, "utf8"));
+      // Get the full path of the file
+      const fullPath = resolve(folderPath, file);
 
-        // Assign to the result object with the file name without extension
-        langObj[basename(res, ".json")] = content;
+      // If it's a directory, recursively load its files
+      if (statSync(fullPath).isDirectory()) {
+        langObj[file] = loadLanguageFiles(fullPath);
+      } else {
+        // Load the JSON file
+        if (file.endsWith(".json")) {
+          // Read and parse the JSON file
+          const content = JSON.parse(readFileSync(fullPath, "utf-8"));
+
+          // Assign to the result object with the file name without extension
+          langObj[basename(file, ".json")] = content;
+        } else logger.warn(`Skipping non-JSON file: ${file}`);
       }
     } catch (error: any) {
-      logger.warn(`Failed to load JSON file: ${res}`);
+      logger.warn(`Failed to load JSON file: ${file}`, error.message);
     }
-  }
+  });
 
   return langObj;
 }
@@ -124,7 +124,7 @@ async function loadLanguageFiles(folderPath: string): Promise<ILanguageObject> {
 function mergeLangObj(
   selectedLangObj: ILanguageObject,
   defaultLangObj: ILanguageObject
-) {
+): ILanguageObject {
   if (!selectedLangObj || Object.entries(selectedLangObj).length === 0)
     return defaultLangObj;
   if (!defaultLangObj || Object.entries(defaultLangObj).length === 0)

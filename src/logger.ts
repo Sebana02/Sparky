@@ -1,6 +1,6 @@
 import { resolve } from "path";
 import { appendFileSync } from "fs";
-import { ILogger } from "./interfaces/logger.interface.js";
+import { ILogger } from "./interfaces/logger.interface";
 
 /**
  * Enum for log levels
@@ -14,18 +14,14 @@ enum logLevels {
 /**
  * Path to the log file
  */
-const logFilePath = resolve(
-  import.meta.dirname,
-  "../",
-  process.env.LOG_FILE || ".log"
-);
+const logFilePath = resolve(__dirname, "../", process.env.LOG_FILE || ".log");
 
 /**
  * Logs a message to console and file
  * @param level Level of importance of the message
  * @param args Message to log
  */
-const logMessage = (level: logLevels, ...args: string[]) => {
+function logMessage(level: logLevels, ...args: string[]): void {
   // Prepare timestamp and message
   const timestamp = new Date().toLocaleString();
   const message = args.join(" ");
@@ -40,7 +36,7 @@ const logMessage = (level: logLevels, ...args: string[]) => {
   } catch (error: any) {
     console.error(`Failed to write to log file: ${error.message}`);
   }
-};
+}
 
 /**
  * Implemenation of ILogger interface to log messages on console and file

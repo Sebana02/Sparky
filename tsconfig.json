@@ -10,8 +10,8 @@
       "@interfaces/*": ["src/interfaces/*"],
       "@loaders/*": ["src/loaders/*"],
     },
-    "target": "ESNext", 
-    "module": "ESNext",
+    "target": "ES6", 
+    "module": "CommonJS",
     "strict": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true ,
@@ -20,8 +20,5 @@
   },
   "exclude": [
     "node_modules", 
-  ],
-  "include": [
-    "**/*.ts"	,
   ]
 }

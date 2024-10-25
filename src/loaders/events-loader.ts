@@ -2,16 +2,14 @@ import { Client } from "discord.js";
 import { existsSync, readdirSync, statSync } from "fs";
 import { resolve } from "path";
 import { useMainPlayer } from "discord-player";
-import { readdir } from "fs/promises";
-import { pathToFileURL } from "url";
-import eventErrorHandler from "../../utils/error-handler/event-error-handler.js";
-import { IEvent } from "../interfaces/event.interface.js";
+import eventErrorHandler from "../../utils/error-handler/event-error-handler";
+import { IEvent } from "../interfaces/event.interface";
 
 /**
  * Loads events from the specified folder path.
  * @param {string} folderPath - The path of the folder containing the events.
  */
-export default async function loadEvents(folderPath: string, client: Client) {
+export default function loadEvents(folderPath: string, client: Client): void {
   // Log the loading of events
   logger.info("Loading events...");
 
@@ -25,21 +23,16 @@ export default async function loadEvents(folderPath: string, client: Client) {
   // Initialize the counter of loaded events
   let loadedEvents = 0;
 
-  for (const { folder, emitter } of eventsFolders) {
-    // Check if the folder exists
+  eventsFolders.forEach(({ folder, emitter }) => {
+    // Resolve event folder path
     const eventFolderPath = resolve(folderPath, `./${folder}`);
 
-    if (!existsSync(eventFolderPath))
+    //If it exists, load events
+    if (existsSync(eventFolderPath))
+      loadedEvents += loadEventsRec(eventFolderPath, emitter, client);
+    else
       logger.error(`Could not load events: ${eventFolderPath} does not exist`);
-    else {
-      // Load events
-      await loadEventsRec(eventFolderPath, emitter, client)
-        .then((loaded) => (loadedEvents += loaded))
-        .catch((error: any) =>
-          logger.error("Could not load events:", error.message)
-        );
-    }
-  }
+  });
 
   // Log the number of loaded events
   logger.info(`Loaded ${loadedEvents} events`);
@@ -50,49 +43,41 @@ export default async function loadEvents(folderPath: string, client: Client) {
  * @param {string} folderPath - The path of the folder containing the events.
  * @param {any} emitter - The event emitter.
  * @param {Client} client - The Discord client.
- * @returns {Promise<number>} The number of loaded events.
+ * @returns {number} The number of loaded events.
  */
-async function loadEventsRec(
+function loadEventsRec(
   folderPath: string,
   emitter: any,
   client: Client
-): Promise<number> {
+): number {
   // Initialize the counter of loaded events
   let loadedEvents = 0;
 
-  //Read the directory
-  const dirents = await readdir(folderPath, { withFileTypes: true });
-
-  // For each file or directory in the folder
-  for (const dirent of dirents) {
-    // Get the absolute path of the file or directory
-    const res = resolve(folderPath, dirent.name);
-
+  // Load events recursively
+  readdirSync(folderPath).forEach((file) => {
     try {
-      // If the file is a directory, load events recursively
-      if (dirent.isDirectory()) {
-        loadedEvents += await loadEventsRec(res, emitter, client);
-      }
-      // If the file is a JavaScript file, import the event
-      else if (dirent.isFile() && res.endsWith(".js")) {
-        // Create a new URL object from the file path
-        const eventURL = pathToFileURL(res);
+      // Resolve the file path
+      const filePath = resolve(folderPath, file);
 
-        // Import the event
-        const event: IEvent = (await import(eventURL.href)).default;
+      // Check if the file is a directory, apply recursion
+      if (statSync(filePath).isDirectory()) {
+        loadedEvents += loadEventsRec(filePath, emitter, client);
+      } else {
+        // Load the event if it's a JavaScript file
+        if (file.endsWith(".js")) {
+          // Load the event
+          const event: IEvent = require(file).default;
 
-        // Bind the event to the emitter, using the eventErrorHandler
-        emitter.on(event.event, (...args: any[]) =>
-          eventErrorHandler(event.event, event.callback, client, ...args)
-        );
-
-        // Increment the number of loaded events
-        loadedEvents++;
+          // Set the event in the collection
+          emitter.on(event.event, (...args: [any, ...any[]]) =>
+            eventErrorHandler(event.event, event.callback, client, ...args)
+          );
+        } else logger.warn(`Skipping non-JavaScript file: ${file}`);
       }
     } catch (error: any) {
-      logger.error(`Could not load event ${dirent.name}:`, error.message);
+      logger.error(`Could not load event ${file}:`, error.message);
     }
-  }
+  });
 
   // Return the number of loaded events
   return loadedEvents;

@@ -2,13 +2,14 @@ import { Client, GatewayIntentBits, Partials } from "discord.js";
 import { Player } from "discord-player";
 import { YoutubeiExtractor } from "discord-player-youtubei";
 import { config as loadEnvironmentVariables } from "dotenv";
-import logger from "./src/logger.js";
-import loader from "./src/loader.js";
-
+import logger from "./src/logger";
+import loader from "./src/loader";
+import { ILanguageObject } from "./src/interfaces/language.interface";
+import { fetch } from "./utils/language-utils";
 /**
  * Run the bot
  */
-async function run() {
+async function run(): Promise<void> {
   // Load environment variables
   loadEnvironmentVariables();
 
@@ -19,7 +20,7 @@ async function run() {
   createPlayer(client);
 
   // Load commands, languages, and events
-  await load(client);
+  load(client);
 
   // Logs the bot into Discord
   await login(client);
@@ -54,7 +55,7 @@ function createClient(): Client {
  * Create and setup a new player for music
  * @param client The Discord client
  */
-function createPlayer(client: Client) {
+function createPlayer(client: Client): void {
   const player = new Player(client); // player setup
   player.extractors.loadDefault((ext) => ext !== "YouTubeExtractor"); // load default extractors, except youtube
   player.extractors.register(YoutubeiExtractor, {}); // load youtube support
@@ -64,10 +65,10 @@ function createPlayer(client: Client) {
  * Loads the logger, commands, languages, and events
  * @param client The Discord client
  */
-async function load(client: Client): Promise<void> {
+function load(client: Client): void {
   globalThis.logger = logger; // load logger
 
-  await loader(client); // load commands, languages, and events
+  loader(client); // load commands, languages, and events
 }
 
 /**
@@ -75,6 +76,11 @@ async function load(client: Client): Promise<void> {
  * @param client The Discord client
  */
 async function login(client: Client): Promise<void> {
+  let a = literals.commands as ILanguageObject;
+  let b = a.fun as ILanguageObject;
+  let c = b["8ball"] as ILanguageObject;
+  console.log(c);
+
   // // Check if TOKEN environment variable is set
   // if (!process.env.TOKEN || process.env.TOKEN.trim() === "") {
   //   logger.error("TOKEN environment variable not found");

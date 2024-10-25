@@ -1,6 +1,6 @@
-import { ILogger } from "./src/interfaces/logger.interface.js";
-import { ICommand } from "./src/interfaces/commands.interface.js";
-import { ILanguageObject } from "./src/interfaces/language.interface.js";
+import { ILogger } from "./src/interfaces/logger.interface";
+import { ICommand } from "./src/interfaces/commands.interface";
+import { ILanguageObject } from "./src/interfaces/language.interface";
 
 declare global {
   var logger: ILogger; // Declare logger as global variable
