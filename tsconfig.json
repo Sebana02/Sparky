@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "@src/*": ["src/*"],
+      "@commands/*": ["commands/*"],
+      "@utils/*": ["utils/*"],
+      "@events/*": ["events/*"],
+      "@locales/*": ["locales/*"],
+      "@interfaces/*": ["src/interfaces/*"],
+      "@loaders/*": ["src/loaders/*"],
+    },
+    "target": "ESNext", 
+    "module": "ESNext",
+    "strict": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true ,
+    "moduleResolution": "Node",
+    "esModuleInterop": true,
+  },
+  "exclude": [
+    "node_modules", 
+  ],
+  "include": [
+    "**/*.ts"	,
+  ]
+}

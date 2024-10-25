@@ -346,6 +346,9 @@ You can always modify the bot to support your language.
 - [ ] Logger
 - [ ] Language architecture, template for language
 - [ ] How loading works
+- [ ] Change everything about ts
+- [ ] Interfaces
+- [ ] template .env
 
 ## Known Issues
 
