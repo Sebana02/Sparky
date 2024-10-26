@@ -5,8 +5,8 @@ import loadEvents from "./loaders/events-loader";
 import loadCommands from "./loaders/commands-loader";
 
 /**
- * Loads languages, events and commands
- * @param client The discord client
+ * Loads languages, events, and commands
+ * @param client The Discord client
  */
 export default function loader(client: Client): void {
   // Log start time
@@ -16,8 +16,8 @@ export default function loader(client: Client): void {
   loadLanguages(resolve(__dirname, "../locales"));
 
   // Load events
-  loadEvents(resolve(__dirname, "../events"), client);
+  loadEvents(resolve(__dirname, "./events"), client);
 
   // Load commands
-  loadCommands(resolve(__dirname, "../commands"));
+  loadCommands(resolve(__dirname, "./commands"));
 }

@@ -1,11 +1,11 @@
 import { Client } from "discord.js";
 
 /**
- * Handles errors in event callbacks
- * @param eventName The event name
- * @param eventCallback The event callback function
- * @param client The Dicord client
- * @param args Additional arguments for the event callback
+ * Handles errors in event callbacks.
+ * @param eventName - The name of the event.
+ * @param eventCallback - The event callback function.
+ * @param client - The Discord client.
+ * @param args - Additional arguments for the event callback.
  */
 export default async function eventErrorHandler(
   eventName: string,
@@ -16,6 +16,6 @@ export default async function eventErrorHandler(
   try {
     await eventCallback(client, ...args);
   } catch (error: any) {
-    logger.error(`An error ocurred at event "${eventName}":\n`, error.stack);
+    logger.error(`An error occurred in event "${eventName}":\n`, error.stack);
   }
 }

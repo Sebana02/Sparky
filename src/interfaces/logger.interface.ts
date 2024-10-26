@@ -1,13 +1,13 @@
 /**
- * Interface for logger
+ * Interface for a logger.
  */
 export interface ILogger {
-  /**Log an info message */
+  /** Log an informational message. */
   info: (...args: string[]) => void;
 
-  /**Log a warning message */
+  /** Log a warning message. */
   warn: (...args: string[]) => void;
 
-  /**Log an error message */
+  /** Log an error message. */
   error: (...args: string[]) => void;
 }

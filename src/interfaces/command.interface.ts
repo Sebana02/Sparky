@@ -5,6 +5,9 @@ import {
   PermissionFlagsBits,
 } from "discord.js";
 
+/**
+ * Interface for a command option choice.
+ */
 export interface ICommandOptionChoice {
   /** The name of the choice. */
   readonly name: string;
@@ -17,13 +20,13 @@ export interface ICommandOptionChoice {
  * Interface for a command option.
  */
 export interface ICommandOption {
-  /** The name of the option, important that it is in lowercase entirely and without spaces */
+  /** The name of the option (must be in lowercase and without spaces). */
   readonly name: string;
 
   /** A brief description of what the option does. */
   readonly description: string;
 
-  /** The type of the option */
+  /** The type of the option. */
   readonly type: ApplicationCommandOptionType;
 
   /** Whether the option is required. */
@@ -37,17 +40,17 @@ export interface ICommandOption {
  * Interface for a command.
  */
 export interface ICommand {
-  /** Command name, important that it is in lowercase entirely and without spaces */
+  /** Command name (must be in lowercase and without spaces). */
   readonly name: string;
 
-  /** Command description */
+  /** Command description. */
   readonly description: string;
 
   /**
-   * Command run function
-   * @param client The Discord client
-   * @param inter The interaction that triggered the command
-   * @returns {Promise<void>} A promise that resolves when the command is done executing
+   * Command execution function.
+   * @param client The Discord client.
+   * @param inter The interaction that triggered the command.
+   * @returns A promise that resolves when the command is done executing.
    */
   readonly run: (
     client: Client,
@@ -57,11 +60,12 @@ export interface ICommand {
   /** Command optional options. */
   readonly options?: ICommandOption[];
 
-  /** Command permissions, needed to run the command,
-   * use PermissionFlagsBits properties to set the permissions, concatenated with | operator
+  /**
+   * Command permissions needed to run the command.
+   * Use PermissionFlagsBits properties to set the permissions, concatenated with the | operator.
    */
   readonly permissions?: (typeof PermissionFlagsBits)[keyof typeof PermissionFlagsBits];
 
-  /** Wheter the command requires the user to be in a voice channel to execute it */
+  /** Whether the command requires the user to be in a voice channel to execute it. */
   readonly voiceChannel?: boolean;
 }

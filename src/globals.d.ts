@@ -1,6 +1,6 @@
-import { ILogger } from "./src/interfaces/logger.interface";
-import { ICommand } from "./src/interfaces/commands.interface";
-import { ILanguageObject } from "./src/interfaces/language.interface";
+import { ILogger } from "./interfaces/logger.interface";
+import { ICommand } from "./interfaces/commands.interface";
+import { ILanguageObject } from "./interfaces/language.interface";
 
 declare global {
   var logger: ILogger; // Declare logger as global variable

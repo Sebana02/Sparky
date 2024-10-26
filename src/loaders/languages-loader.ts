@@ -1,8 +1,9 @@
 import { existsSync, readdirSync, readFileSync, statSync } from "fs";
 import { basename, resolve } from "path";
 import { ILanguageObject } from "../interfaces/language.interface";
+
 /**
- * Loads language from the specified folder path and process the literals.
+ * Loads languages from the specified folder path and processes the literals.
  * @param {string} folderPath - The path of the folder containing the languages.
  */
 export default function loadLanguages(folderPath: string): void {
@@ -10,104 +11,89 @@ export default function loadLanguages(folderPath: string): void {
   logger.info("Loading languages...");
 
   // Check if the folder exists
-  if (!existsSync(folderPath))
+  if (!existsSync(folderPath)) {
     return logger.error(
       `Could not load languages: ${folderPath} does not exist`
     );
-
-  // Default language, en, is used if the LANG environment variable is not set
-  const defaultLanguage = "en";
-  const language = process.env.LANGUAGE || defaultLanguage;
-
-  // Object to store the literals
-  let mergedLangObj: ILanguageObject;
-
-  // If selected language is default, process it directly
-  if (language === defaultLanguage) {
-    mergedLangObj = loadLanguage(folderPath, language);
-  } else {
-    // Load the selected language and merge it with the default language if needed
-    const languageObj: ILanguageObject = loadLanguage(folderPath, language);
-    const defaultLangObj: ILanguageObject = loadLanguage(
-      folderPath,
-      defaultLanguage
-    );
-
-    if (!languageObj || Object.entries(language).length === 0)
-      mergedLangObj = defaultLangObj;
-    else mergedLangObj = mergeLangObj(languageObj, defaultLangObj);
   }
 
-  //   // Check if the language object was loaded
-  if (!mergedLangObj || Object.entries(mergedLangObj).length === 0)
-    return logger.error(
-      `Could not load any language, no literals will be available`
+  // Default language, 'en', is used if the LANG environment variable is not set
+  const defaultLanguage = "en";
+  const selectedLanguage = process.env.LANGUAGE || defaultLanguage;
+
+  // Object to store the merged literals
+  let mergedLangObj: ILanguageObject;
+
+  // Load the selected language and merge with the default language if necessary
+  const selectedLangObj = loadLanguage(folderPath, selectedLanguage);
+  const defaultLangObj = loadLanguage(folderPath, defaultLanguage);
+
+  if (!selectedLangObj || Object.entries(selectedLangObj).length === 0) {
+    logger.warn(
+      `Selected language object is empty for language: ${selectedLanguage}. Falling back to default.`
     );
+    mergedLangObj = defaultLangObj;
+  } else {
+    mergedLangObj = deepMerge(selectedLangObj, defaultLangObj);
+  }
+
+  // Check if the merged language object was loaded successfully
+  if (!mergedLangObj || Object.entries(mergedLangObj).length === 0) {
+    return logger.error(
+      "Could not load any language; no literals will be available"
+    );
+  }
 
   // Log the processing of literals
-  logger.info(`Processing literals...`);
+  logger.info("Processing literals...");
 
-  // Process the literals and assign them to the process object
+  // Process the literals and assign them to the global literals object
   globalThis.literals = processLiterals(mergedLangObj);
 
   // Log the completion of the processing
-  logger.info(`Loaded literals`);
+  logger.info("Loaded literals");
 }
 
 /**
- * Loads the specified language
+ * Loads the specified language.
+ * @param {string} folderPath - The path of the folder containing the language files.
  * @param {string} language - The language to load.
  * @returns {ILanguageObject} The object containing the loaded language files.
- **/
+ */
 function loadLanguage(folderPath: string, language: string): ILanguageObject {
-  let langObj: ILanguageObject = {};
-
-  // Check if the language folder exists
   const langPath = resolve(__dirname, folderPath, language);
   if (!existsSync(langPath)) {
     logger.error(`Language folder does not exist: ${langPath}`);
-  } else {
-    // Load language files
-    langObj = loadLanguageFiles(langPath);
-
-    // Log the loaded language
-    logger.info(`Loaded language: ${language}`);
+    return {};
   }
 
-  // Return the language object
+  // Load language files and log the loaded language
+  const langObj = loadLanguageFilesRecursively(langPath);
+  logger.info(`Loaded language: ${language}`);
   return langObj;
 }
 
 /**
- * Loads language files (json) recursively from the specified folder path.
- * @param {String} folderPath - The path of the folder containing the language files.
- * @returns {Promise<ILanguageObject>}  An object containing the loaded language files, following the folder structure.
+ * Loads language files (JSON) recursively from the specified folder path.
+ * @param {string} folderPath - The path of the folder containing the language files.
+ * @returns {ILanguageObject} An object containing the loaded language files, following the folder structure.
  */
-function loadLanguageFiles(folderPath: string): ILanguageObject {
-  // Initialize the result object
+function loadLanguageFilesRecursively(folderPath: string): ILanguageObject {
   const langObj: ILanguageObject = {};
 
-  // Read the contents of the directory
   readdirSync(folderPath).forEach((file) => {
     try {
-      // Get the full path of the file
       const fullPath = resolve(folderPath, file);
-
-      // If it's a directory, recursively load its files
       if (statSync(fullPath).isDirectory()) {
-        langObj[file] = loadLanguageFiles(fullPath);
+        langObj[file] = loadLanguageFilesRecursively(fullPath);
+      } else if (file.endsWith(".json")) {
+        const content = JSON.parse(readFileSync(fullPath, "utf-8"));
+        langObj[basename(file, ".json")] = convertToLanguageObject(content);
       } else {
-        // Load the JSON file
-        if (file.endsWith(".json")) {
-          // Read and parse the JSON file
-          const content = JSON.parse(readFileSync(fullPath, "utf-8"));
-
-          // Assign to the result object with the file name without extension
-          langObj[basename(file, ".json")] = content;
-        } else logger.warn(`Skipping non-JSON file: ${file}`);
+        logger.warn(`Skipping non-JSON file: ${file}`);
       }
     } catch (error: any) {
-      logger.warn(`Failed to load JSON file: ${file}`, error.message);
+      logger.warn(`Failed to load JSON file: ${file}. Error: ${error.message}`);
     }
   });
 
@@ -115,60 +101,68 @@ function loadLanguageFiles(folderPath: string): ILanguageObject {
 }
 
 /**
- * Merge the fetched object from the selected language with the default language object recursively.
- * The default language values will be used if they don't exist in the selected language.
- * @param {ILanguageObject} selectedLangObj - The object from the selected language.
- * @param {ILanguageObject} defaultLangObj - The object from the default language.
- * @returns {object} - The merged object with fallbacks from the default language.
+ * Converts an object to an ILanguageObject by recursively processing its properties.
+ * @param {object} obj - The object to convert.
+ * @returns {ILanguageObject} - The converted object.
  */
-function mergeLangObj(
-  selectedLangObj: ILanguageObject,
-  defaultLangObj: ILanguageObject
+function convertToLanguageObject(obj: { [key: string]: any }): ILanguageObject {
+  const result: ILanguageObject = {};
+
+  for (const key in obj) {
+    const value = obj[key];
+
+    if (Array.isArray(value)) {
+      result[key] = value.map((item) =>
+        typeof item === "object" && item !== null
+          ? convertToLanguageObject(item)
+          : item
+      );
+    } else if (typeof value === "object") {
+      result[key] = convertToLanguageObject(value);
+    } else {
+      result[key] = value;
+    }
+  }
+
+  return result;
+}
+
+/**
+ * Deep merges two ILanguageObject instances.
+ * @param {ILanguageObject} target - The target object to merge properties into.
+ * @param {ILanguageObject} source - The source object from which properties are taken.
+ * @returns {ILanguageObject} - The merged object.
+ */
+export function deepMerge(
+  target: ILanguageObject,
+  source: ILanguageObject
 ): ILanguageObject {
-  if (!selectedLangObj || Object.entries(selectedLangObj).length === 0)
-    return defaultLangObj;
-  if (!defaultLangObj || Object.entries(defaultLangObj).length === 0)
-    return selectedLangObj;
+  const isObject = (item: any): boolean =>
+    item && typeof item === "object" && !Array.isArray(item);
 
-  // Create a new object to store the merged result
-  const mergedObj: ILanguageObject = {};
+  for (const key in source) {
+    const targetValue = target[key];
+    const sourceValue = source[key];
 
-  // Iterate over the keys in defaultLangObj to merge properties recursively
-  for (const key in defaultLangObj) {
-    if (defaultLangObj.hasOwnProperty(key)) {
-      // If both selected and default are objects, merge recursively
-      if (
-        typeof selectedLangObj[key] === "object" &&
-        typeof defaultLangObj[key] === "object"
-      ) {
-        mergedObj[key] = mergeLangObj(
-          selectedLangObj[key] as ILanguageObject,
-          defaultLangObj[key] as ILanguageObject
-        );
-      } else {
-        // Log a warning if the key only exists in the default language
-        if (!selectedLangObj.hasOwnProperty(key)) {
-          logger.warn(
-            `Literal '${key}' not found in selected language, using default language value`
-          );
-        }
-
-        // Use selectedLangObj value if it exists, otherwise use defaultLangObj value
-        mergedObj[key] = selectedLangObj.hasOwnProperty(key)
-          ? selectedLangObj[key]
-          : defaultLangObj[key];
+    if (isObject(sourceValue)) {
+      target[key] = isObject(targetValue)
+        ? deepMerge(
+            targetValue as ILanguageObject,
+            sourceValue as ILanguageObject
+          )
+        : sourceValue;
+    } else if (Array.isArray(sourceValue)) {
+      if (!(key in target)) {
+        target[key] = sourceValue;
+      }
+    } else {
+      if (!(key in target)) {
+        target[key] = sourceValue;
       }
     }
   }
 
-  // Add keys that only exist in selectedLangObj
-  for (const key in selectedLangObj) {
-    if (!mergedObj.hasOwnProperty(key)) {
-      mergedObj[key] = selectedLangObj[key];
-    }
-  }
-
-  return mergedObj;
+  return target;
 }
 
 /**
@@ -177,19 +171,28 @@ function mergeLangObj(
  * @returns {ILanguageObject} The processed object with static and dynamic literals.
  */
 function processLiterals(langObj: ILanguageObject): ILanguageObject {
-  // For every entry in language object
-  for (const [key, value] of Object.entries(langObj)) {
-    // If entry is another language object, apply recursion
-    if (typeof value === "object" && value !== null) {
-      langObj[key] = processLiterals(value as ILanguageObject);
-    }
-    // If it is a dynamically formatted string
-    else if (typeof value === "string" && /{\d+}/.test(value)) {
+  for (const key in langObj) {
+    const value = langObj[key];
+
+    if (typeof value === "string" && /{\d+}/.test(value)) {
       langObj[key] = (...args: any[]) =>
         value.replace(/{(\d+)}/g, (_, number) => args[number] || `{${number}}`);
+    } else if (Array.isArray(value)) {
+      langObj[key] = value.map((item) =>
+        typeof item === "string" && /{\d+}/.test(item)
+          ? (...args: any[]) =>
+              item.replace(
+                /{(\d+)}/g,
+                (_, number) => args[number] || `{${number}}`
+              )
+          : typeof item === "object" && item !== null
+          ? processLiterals(item as ILanguageObject)
+          : item
+      );
+    } else if (typeof value === "object" && value !== null) {
+      langObj[key] = processLiterals(value as ILanguageObject);
     }
   }
 
-  // Return language object
   return langObj;
 }

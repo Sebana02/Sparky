@@ -1,12 +1,12 @@
 /**
- * Interface for language object
+ * Interface for a language object.
  */
 export interface ILanguageObject {
-  /** Language key */
+  /** Language key. */
   [key: string]:
-    | ILanguageObject
-    | string
-    | number
-    | any[]
-    | ((...args: any[]) => string);
+    | ILanguageObject // Nested language objects
+    | string // String values
+    | number // Numeric values
+    | unknown[] // Arrays of unknown type
+    | ((...args: unknown[]) => string); // Function returning a string
 }

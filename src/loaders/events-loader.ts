@@ -2,12 +2,13 @@ import { Client } from "discord.js";
 import { existsSync, readdirSync, statSync } from "fs";
 import { resolve } from "path";
 import { useMainPlayer } from "discord-player";
-import eventErrorHandler from "../../utils/error-handler/event-error-handler";
+import eventErrorHandler from "../utils/error-handler/event-error-handler";
 import { IEvent } from "../interfaces/event.interface";
 
 /**
  * Loads events from the specified folder path.
  * @param {string} folderPath - The path of the folder containing the events.
+ * @param {Client} client - The Discord client.
  */
 export default function loadEvents(folderPath: string, client: Client): void {
   // Log the loading of events
@@ -27,11 +28,12 @@ export default function loadEvents(folderPath: string, client: Client): void {
     // Resolve event folder path
     const eventFolderPath = resolve(folderPath, `./${folder}`);
 
-    //If it exists, load events
-    if (existsSync(eventFolderPath))
+    // If it exists, load events
+    if (existsSync(eventFolderPath)) {
       loadedEvents += loadEventsRec(eventFolderPath, emitter, client);
-    else
+    } else {
       logger.error(`Could not load events: ${eventFolderPath} does not exist`);
+    }
   });
 
   // Log the number of loaded events
@@ -62,20 +64,20 @@ function loadEventsRec(
       // Check if the file is a directory, apply recursion
       if (statSync(filePath).isDirectory()) {
         loadedEvents += loadEventsRec(filePath, emitter, client);
-      } else {
-        // Load the event if it's a JavaScript file
-        if (file.endsWith(".js")) {
-          // Load the event
-          const event: IEvent = require(file).default;
+      } else if (file.endsWith(".js")) {
+        // Load the event
+        const event: IEvent = require(file).default;
 
-          // Set the event in the collection
-          emitter.on(event.event, (...args: [any, ...any[]]) =>
-            eventErrorHandler(event.event, event.callback, client, ...args)
-          );
-        } else logger.warn(`Skipping non-JavaScript file: ${file}`);
+        // Bind the event to the emitter
+        emitter.on(event.event, (...args: any[]) =>
+          eventErrorHandler(event.event, event.callback, client, ...args)
+        );
+        loadedEvents++; // Increment count of loaded events
+      } else {
+        logger.warn(`Skipping non-JavaScript file: ${file}`);
       }
     } catch (error: any) {
-      logger.error(`Could not load event ${file}:`, error.message);
+      logger.error(`Could not load event ${file}: ${error.message}`);
     }
   });
 
