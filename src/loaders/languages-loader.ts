@@ -89,8 +89,6 @@ function loadLanguageFilesRecursively(folderPath: string): ILanguageObject {
       } else if (file.endsWith(".json")) {
         const content = JSON.parse(readFileSync(fullPath, "utf-8"));
         langObj[basename(file, ".json")] = convertToLanguageObject(content);
-      } else {
-        logger.warn(`Skipping non-JSON file: ${file}`);
       }
     } catch (error: any) {
       logger.warn(`Failed to load JSON file: ${file}. Error: ${error.message}`);

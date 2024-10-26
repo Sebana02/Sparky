@@ -7,6 +7,6 @@ export interface ILanguageObject {
     | ILanguageObject // Nested language objects
     | string // String values
     | number // Numeric values
-    | unknown[] // Arrays of unknown type
-    | ((...args: unknown[]) => string); // Function returning a string
+    | any[] // Arrays of unknown type
+    | ((...args: any[]) => string); // Function returning a string
 }

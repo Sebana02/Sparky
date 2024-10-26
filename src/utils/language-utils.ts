@@ -21,15 +21,16 @@ function fetch(pathToLiteral: string, prefix: string = ""): any {
     // Get the current path
     const currentPath = path[i];
 
-    // If the current path does not exist in the literals object, return null
-    if (literalsObj[currentPath] === undefined) return null;
+    // If it's the last path, return the value, even if its null
+    if (i === path.length - 1) return literalsObj[currentPath];
 
-    // If the current path is not an object or an array, return null if it's the last path, or return the value if it's not
+    // If the current path doesn't exist, or it's not an object, or it's an array, return null
     if (
+      literalsObj[currentPath] === undefined ||
       typeof literalsObj[currentPath] !== "object" ||
       Array.isArray(literalsObj[currentPath])
     ) {
-      if (i === path.length - 1) return literalsObj[currentPath];
+      logger.error(`Could not find literal at path "${pathToLiteral}"`);
       return null;
     }
 

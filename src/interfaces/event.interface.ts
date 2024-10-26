@@ -16,5 +16,5 @@ export interface IEvent {
    * @param args The arguments passed to the event.
    * @returns A promise that resolves when the event is done executing.
    */
-  readonly callback: (client: Client, ...args: unknown[]) => Promise<void>;
+  readonly callback: (client: Client, ...args: any[]) => Promise<void>;
 }

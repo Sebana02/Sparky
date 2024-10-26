@@ -66,15 +66,13 @@ function loadEventsRec(
         loadedEvents += loadEventsRec(filePath, emitter, client);
       } else if (file.endsWith(".js")) {
         // Load the event
-        const event: IEvent = require(file).default;
+        const event: IEvent = require(filePath).default;
 
         // Bind the event to the emitter
         emitter.on(event.event, (...args: any[]) =>
           eventErrorHandler(event.event, event.callback, client, ...args)
         );
         loadedEvents++; // Increment count of loaded events
-      } else {
-        logger.warn(`Skipping non-JavaScript file: ${file}`);
       }
     } catch (error: any) {
       logger.error(`Could not load event ${file}: ${error.message}`);

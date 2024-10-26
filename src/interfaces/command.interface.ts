@@ -54,7 +54,8 @@ export interface ICommand {
    */
   readonly run: (
     client: Client,
-    inter: ChatInputCommandInteraction
+    inter: ChatInputCommandInteraction,
+    ...args: any[]
   ) => Promise<void>;
 
   /** Command optional options. */

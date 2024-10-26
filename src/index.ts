@@ -66,15 +66,16 @@ function loadResources(client: Client): void {
  * @param client The Discord client
  */
 async function login(client: Client): Promise<void> {
-  // // Check if the token is set
-  // if (!process.env.TOKEN || process.env.TOKEN.trim() === "") {
-  //   logger.error("TOKEN environment variable not found");
-  //   process.exit(1);
-  // }
-  // // Log the bot into Discord
-  // await client.login(process.env.TOKEN).catch((error: any) => {
-  //   logger.error(`Error during login: ${error.message}`);
-  // });
+  // Check if the token is set
+  if (!process.env.TOKEN || process.env.TOKEN.trim() === "") {
+    logger.error("TOKEN environment variable not found");
+    process.exit(1);
+  }
+
+  // Log the bot into Discord
+  await client.login(process.env.TOKEN).catch((error: any) => {
+    logger.error(`Error during login: ${error.message}`);
+  });
 }
 
 // Start the bot

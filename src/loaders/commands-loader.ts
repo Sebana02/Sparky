@@ -1,6 +1,7 @@
 import { existsSync, readdirSync, statSync } from "fs";
 import { resolve } from "path";
 import { ICommand } from "../interfaces/command.interface";
+import { Collection } from "discord.js";
 
 /**
  * Loads commands from the specified folder path.
@@ -11,7 +12,7 @@ export default function loadCommands(folderPath: string): void {
   logger.info("Loading commands...");
 
   // Initialize the collection of commands
-  globalThis.commands = new Map<string, ICommand>();
+  globalThis.commands = new Collection();
 
   // If the folder exists, load commands
   if (existsSync(folderPath)) {
@@ -40,12 +41,10 @@ function loadCommandsRec(folderPath: string): void {
         loadCommandsRec(filePath);
       } else if (file.endsWith(".js")) {
         // Load the command
-        const command: ICommand = require(file).default;
+        const command: ICommand = require(filePath).default;
 
         // Set the command in the collection
         globalThis.commands.set(command.name, command);
-      } else {
-        logger.warn(`Skipping non-JavaScript file: ${file}`);
       }
     } catch (error: any) {
       logger.error(`Could not load command ${file}: ${error.message}`);
