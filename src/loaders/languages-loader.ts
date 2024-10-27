@@ -18,7 +18,7 @@ export default function loadLanguages(folderPath: string): void {
   }
 
   // Default language, 'en', is used if the LANG environment variable is not set
-  const defaultLanguage = "en";
+  const defaultLanguage = "en_US";
   const selectedLanguage = process.env.LANGUAGE || defaultLanguage;
 
   // Object to store the merged literals

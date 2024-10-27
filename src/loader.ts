@@ -16,8 +16,8 @@ export default function loader(client: Client): void {
   loadLanguages(resolve(__dirname, "../locales"));
 
   // Load events
-  loadEvents(resolve(__dirname, "./events"), client);
+  loadEvents(resolve(__dirname, "events"), client);
 
   // Load commands
-  loadCommands(resolve(__dirname, "./commands"));
+  loadCommands(resolve(__dirname, "commands"));
 }

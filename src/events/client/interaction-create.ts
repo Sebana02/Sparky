@@ -2,13 +2,7 @@ import { useQueue } from "discord-player";
 import { commandErrorHandler } from "../../utils/error-handler/command-error-handler";
 import { reply } from "../../utils/interaction-utils";
 import { fetchLiteral } from "../../utils/language-utils";
-import {
-  Client,
-  GuildMember,
-  GuildMemberRoleManager,
-  Interaction,
-  PermissionsBitField,
-} from "discord.js";
+import { Client, GuildMember, GuildMemberRoleManager, Interaction, PermissionsBitField } from "discord.js";
 import { ICommand } from "../../interfaces/command.interface";
 import { IEvent } from "../../interfaces/event.interface";
 
@@ -39,20 +33,10 @@ const event: IEvent = {
       const command: ICommand = globalThis.commands.get(inter.commandName);
 
       //If command has permissions restrictions and user does not have them -> error
-      if (
-        command.permissions &&
-        !(inter.member?.permissions as PermissionsBitField).has(
-          command.permissions
-        )
-      )
+      if (command.permissions && !(inter.member?.permissions as PermissionsBitField).has(command.permissions))
         return await reply(
           inter,
-          {
-            content: fetchLiteral(
-              "events.client.interaction_create.no_permissions"
-            ),
-            ephemeral: true,
-          },
+          { content: fetchLiteral("events.client.interaction_create.no_permissions"), ephemeral: true },
           { deleteTime: 2 },
           false
         );
@@ -63,21 +47,12 @@ const event: IEvent = {
         if (
           process.env.DJ_ROLE &&
           process.env.DJ_ROLE.trim() !== "" &&
-          !(inter.member?.roles as GuildMemberRoleManager).cache.some(
-            (role) => role.id === process.env.DJ_ROLE
-          )
+          !(inter.member?.roles as GuildMemberRoleManager).cache.some((role) => role.id === process.env.DJ_ROLE)
         )
           return await reply(
             inter,
-            {
-              content: fetchLiteral(
-                "events.client.interaction_create.no_dj_role"
-              ),
-              ephemeral: true,
-            },
-            {
-              deleteTime: 2,
-            },
+            { content: fetchLiteral("events.client.interaction_create.no_dj_role"), ephemeral: true },
+            { deleteTime: 2 },
             false
           );
 
@@ -87,9 +62,7 @@ const event: IEvent = {
           return await reply(
             inter,
             {
-              content: fetchLiteral(
-                "events.client.interaction_create.no_commands_trivia"
-              ),
+              content: fetchLiteral("events.client.interaction_create.no_commands_trivia"),
               ephemeral: true,
             },
             {
@@ -103,9 +76,7 @@ const event: IEvent = {
           return await reply(
             inter,
             {
-              content: fetchLiteral(
-                "events.client.interaction_create.no_voice_channel"
-              ),
+              content: fetchLiteral("events.client.interaction_create.no_voice_channel"),
               ephemeral: true,
             },
             {
@@ -117,15 +88,12 @@ const event: IEvent = {
         //User is not on the same voice channel as bot -> error
         if (
           inter.guild?.members.me?.voice.channel &&
-          (inter.member as GuildMember).voice.channel?.id !==
-            inter.guild.members.me.voice.channel.id
+          (inter.member as GuildMember).voice.channel?.id !== inter.guild.members.me.voice.channel.id
         )
           return await reply(
             inter,
             {
-              content: fetchLiteral(
-                "events.client.interaction_create.not_same_voice_channel"
-              ),
+              content: fetchLiteral("events.client.interaction_create.not_same_voice_channel"),
               ephemeral: true,
             },
             {
