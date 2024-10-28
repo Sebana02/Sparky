@@ -41,7 +41,7 @@ export async function commandErrorHandler(
       color: ColorScheme.error,
       author: {
         name: fetchString('utils.error_handler.command.response'),
-        iconURL: client?.user?.displayAvatarURL(),
+        iconURL: client.user?.displayAvatarURL(),
       },
     });
 

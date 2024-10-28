@@ -68,7 +68,8 @@ async function login(client: Client): Promise<void> {
 
   // Log the bot into Discord
   await client.login(process.env.TOKEN).catch((error: any) => {
-    logger.error(`Error during login: ${error.message}`);
+    logger.error(`Could not log in bot: ${error.message}`);
+    process.exit(1);
   });
 }
 

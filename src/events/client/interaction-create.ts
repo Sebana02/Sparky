@@ -1,10 +1,18 @@
-import { useQueue } from 'discord-player';
+import { GuildQueue, useQueue } from 'discord-player';
 import { commandErrorHandler } from '../../utils/error-handler.js';
 import { reply } from '../../utils/interaction-utils.js';
 import { fetchString, fetchObject } from '../../utils/language-utils.js';
-import { Client, GuildMember, GuildMemberRoleManager, Interaction, PermissionsBitField } from 'discord.js';
+import {
+  Client,
+  GuildMember,
+  GuildMemberRoleManager,
+  Interaction,
+  PermissionsBitField,
+  VoiceBasedChannel,
+} from 'discord.js';
 import { ICommand } from '../../interfaces/command.interface.js';
 import { IEvent } from '../../interfaces/event.interface.js';
+import { IMetadata } from '../../interfaces/metadata.interface.js';
 
 const eventLit = fetchObject('events.client.interaction_create');
 
@@ -21,7 +29,10 @@ const event: IEvent = {
    * @returns Promise<void> - A Promise that resolves when the function is done executing
    */
   callback: async (client: Client, inter: Interaction): Promise<void> => {
-    //If interaction is a command
+    // Return if interaction was not received on a guild or if any of the required properties are missing
+    if (!inter.guild || !inter.member || !inter.guildId || !inter.user) return;
+
+    // If interaction is a command
     if (inter.isChatInputCommand()) {
       //Log interaction
       let cmdInfo = `/${inter.commandName} `;
@@ -33,10 +44,17 @@ const event: IEvent = {
         `Command: ${cmdInfo} | User: ${inter.user.username} (id : ${inter.user}) | Guild: ${inter.guild?.name} (id : ${inter.guildId})`
       );
 
+      //Get command
       const command: ICommand = globalThis.commands.get(inter.commandName);
 
-      //If command has permissions restrictions and user does not have them -> error
-      if (command.permissions && !(inter.member?.permissions as PermissionsBitField).has(command.permissions))
+      // Check if command exists
+      if (!command) throw new Error(`Command ${inter.commandName} not found`);
+
+      // Check command permissions
+      if (
+        command.permissions &&
+        (inter.member.permissions as PermissionsBitField).missing(command.permissions)
+      )
         return await reply(
           inter,
           {
@@ -47,16 +65,14 @@ const event: IEvent = {
           false
         );
 
-      //If command requires user to be in voice channel
+      // Check if command requires user to be in a voice channel
       if (command.voiceChannel) {
-        //If DJ role is enabled for the command and user does not have DJ role -> error
-        if (
-          process.env.DJ_ROLE &&
-          process.env.DJ_ROLE.trim() !== '' &&
-          !(inter.member?.roles as GuildMemberRoleManager).cache.some(
-            (role) => role.id === process.env.DJ_ROLE
-          )
-        )
+        // Get DJ role from environment variable and fetch member roles
+        const djRole: string | undefined = process.env.DJ_ROLE?.trim();
+        const memberRoles: GuildMemberRoleManager = inter.member.roles as GuildMemberRoleManager;
+
+        // Check if user has DJ role if DJ role is set
+        if (djRole && !memberRoles.cache.some((role) => role.name === djRole))
           return await reply(
             inter,
             {
@@ -67,9 +83,12 @@ const event: IEvent = {
             false
           );
 
-        //If trivia is enabled -> error
-        const queue = useQueue(inter.guildId as string);
-        if (queue && (queue.metadata as { trivia: boolean }).trivia)
+        // Get queue and whether trivia is enabled
+        const queue: GuildQueue<IMetadata> | null = useQueue(inter.guildId);
+        const trivia: boolean | undefined = queue ? queue.metadata.trivia : false;
+
+        // Check if queue and trivia are enabled, if so, no voice commands allowed
+        if (queue && trivia)
           return await reply(
             inter,
             {
@@ -82,8 +101,12 @@ const event: IEvent = {
             false
           );
 
-        //User is not on a voice channel -> error
-        if (!(inter.member as GuildMember).voice.channel)
+        // Get user and voice channel of the interacting user
+        const user: GuildMember = inter.member as GuildMember;
+        const voiceChannel: VoiceBasedChannel | null = user.voice.channel;
+
+        // Check if user is in a voice channel, if not, return error
+        if (!voiceChannel)
           return await reply(
             inter,
             {
@@ -96,11 +119,13 @@ const event: IEvent = {
             false
           );
 
-        //User is not on the same voice channel as bot -> error
-        if (
-          inter.guild?.members.me?.voice.channel &&
-          (inter.member as GuildMember).voice.channel?.id !== inter.guild.members.me.voice.channel.id
-        )
+        // Get bot's voice channel
+        const botVoiceChannel: VoiceBasedChannel | null = inter.guild.members.me
+          ? inter.guild.members.me.voice.channel
+          : null;
+
+        // Check if bot is in a voice channel and if user is in the same voice channel as the bot
+        if (botVoiceChannel && voiceChannel.id !== botVoiceChannel.id)
           return await reply(
             inter,
             {
@@ -113,9 +138,11 @@ const event: IEvent = {
             false
           );
       }
+
       //Execute command
       await commandErrorHandler(command, client, inter);
     }
   },
 };
+
 export default event;
