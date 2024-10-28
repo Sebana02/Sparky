@@ -1,20 +1,21 @@
-import { resolve } from "path";
-import { appendFileSync } from "fs";
-import { ILogger } from "./interfaces/logger.interface";
+import { dirname, resolve } from 'path';
+import { appendFileSync } from 'fs';
+import { ILogger } from './interfaces/logger.interface.js';
+import { fileURLToPath } from 'url';
 
 /**
  * Enum for log levels
  */
 enum LogLevels {
-  INFO = "info",
-  WARN = "warn",
-  ERROR = "error",
+  INFO = 'info',
+  WARN = 'warn',
+  ERROR = 'error',
 }
 
 /**
  * Path to the log file
  */
-const logFilePath = resolve(__dirname, "../", process.env.LOG_FILE || ".log");
+const logFilePath = resolve(dirname(fileURLToPath(import.meta.url)), '../', process.env.LOG_FILE || '.log');
 
 /**
  * Logs a message to console and file
@@ -23,7 +24,7 @@ const logFilePath = resolve(__dirname, "../", process.env.LOG_FILE || ".log");
  */
 function logMessage(level: LogLevels, ...args: string[]): void {
   const timestamp = new Date().toLocaleString();
-  const message = args.join(" ");
+  const message = args.join(' ');
   const formattedMessage = `[${timestamp}] [${level}] ${message}\n`;
 
   // Log to console
@@ -31,7 +32,7 @@ function logMessage(level: LogLevels, ...args: string[]): void {
 
   // Append the log to the file
   try {
-    appendFileSync(logFilePath, formattedMessage, "utf8");
+    appendFileSync(logFilePath, formattedMessage, 'utf8');
   } catch (error: any) {
     console.error(`Failed to write to log file: ${error.message}`);
   }

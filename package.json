@@ -2,13 +2,14 @@
   "name": "sparky",
   "version": "1.0.0",
   "description": "This Discord bot is designed to be an easy and customizable solution for your servers. Ideal for groups of friends, the bot offers a variety of fun and useful commands that enhance chat experience and community interaction.",
-  "main": "index.js",
-  "type": "commonjs",
+  "main": "dist/bot.js",
+  "type": "module",
   "scripts": {
-    "dev": "npm run build && npx nodemon dist/index.js",
-    "start": "npm run build && node dist/index.js",
-    "build": "npx tsc",
-    "clean": "npx tsc --build --clean"
+    "dev": "tsx watch src/bot.ts",
+    "start": "npm run build && node .",
+    "build": "tsc",
+    "clean": "tsc --build --clean",
+    "format": "prettier --write ."
   },
   "keywords": [],
   "author": "Sebana02",
@@ -28,6 +29,8 @@
   "homepage": "https://github.com/Sebana02/sparky#readme",
   "devDependencies": {
     "@types/node": "^22.8.0",
+    "prettier": "^3.3.3",
+    "tsx": "^4.19.2",
     "typescript": "^5.6.3"
   }
 }

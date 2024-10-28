@@ -1,11 +1,11 @@
-import { Client } from "discord.js";
-import { IEvent } from "../../interfaces/event.interface";
+import { Client, Guild } from 'discord.js';
+import { IEvent } from '../../interfaces/event.interface.js';
 
 /**
  * Event handler for the ready event
  */
 const event: IEvent = {
-  event: "ready",
+  event: 'ready',
 
   /**
    * Callback function for handling the ready event
@@ -14,18 +14,16 @@ const event: IEvent = {
    */
   callback: async (client: Client): Promise<void> => {
     //Set activity, if PLAYING_ACTIVITY environment variable is not set, set no activity
-    client.user?.setActivity(process.env.PLAYING_ACTIVITY || "");
+    client.user?.setActivity(process.env.PLAYING_ACTIVITY || '');
 
     //Register slash commands. if GUILD_ID environment variable is not set, register commands globally
-    if (!process.env.GUILD_ID || process.env.GUILD_ID.trim() === "")
+    if (!process.env.GUILD_ID || process.env.GUILD_ID.trim() === '')
       await client.application?.commands.set(globalThis.commands);
     else {
-      const guild = client.guilds?.cache.get(process.env.GUILD_ID);
+      const guild: Guild | undefined = client.guilds?.cache.get(process.env.GUILD_ID);
 
       if (!guild)
-        logger.error(
-          "Guild with the specified GUILD_ID not found, slash commands will not be registered"
-        );
+        logger.error('Guild with the specified GUILD_ID not found, slash commands will not be registered');
       else await guild.commands.set(globalThis.commands);
     }
 

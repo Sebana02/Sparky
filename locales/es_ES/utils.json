@@ -1,9 +1,9 @@
 {
   "error_handler": {
-    "command_error_handler": {
+    "command": {
       "response": "Ha ocurrido un error al ejecutar el comando"
     },
-    "event_error_handler": {}
+    "event": {}
   },
   "embed": {
     "music_presets": {

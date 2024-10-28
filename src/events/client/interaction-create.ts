@@ -1,33 +1,36 @@
-import { useQueue } from "discord-player";
-import { commandErrorHandler } from "../../utils/error-handler/command-error-handler";
-import { reply } from "../../utils/interaction-utils";
-import { fetchLiteral } from "../../utils/language-utils";
-import { Client, GuildMember, GuildMemberRoleManager, Interaction, PermissionsBitField } from "discord.js";
-import { ICommand } from "../../interfaces/command.interface";
-import { IEvent } from "../../interfaces/event.interface";
+import { useQueue } from 'discord-player';
+import { commandErrorHandler } from '../../utils/error-handler.js';
+import { reply } from '../../utils/interaction-utils.js';
+import { fetchString, fetchObject } from '../../utils/language-utils.js';
+import { Client, GuildMember, GuildMemberRoleManager, Interaction, PermissionsBitField } from 'discord.js';
+import { ICommand } from '../../interfaces/command.interface.js';
+import { IEvent } from '../../interfaces/event.interface.js';
+
+const eventLit = fetchObject('events.client.interaction_create');
 
 /**
  * Event that is called when the bot receives an interaction
  */
 const event: IEvent = {
-  event: "interactionCreate",
+  event: 'interactionCreate',
 
   /**
    * Callback function to be executed when the interactionCreate event is triggered
    * @param client - The discord client
    * @param inter - The interaction object
-   * @returns Promise<void>
+   * @returns Promise<void> - A Promise that resolves when the function is done executing
    */
   callback: async (client: Client, inter: Interaction): Promise<void> => {
     //If interaction is a command
     if (inter.isChatInputCommand()) {
       //Log interaction
-      let commandInfo = `/${inter.commandName} `;
+      let cmdInfo = `/${inter.commandName} `;
       inter.options.data.forEach((option) => {
-        commandInfo += `${option.name}: ${option.value} `;
+        cmdInfo += `${option.name}: ${option.value} `;
       });
+
       logger.info(
-        `Command: ${commandInfo} | User: ${inter.user.username} (id : ${inter.user}) | Guild: ${inter.guild?.name} (id : ${inter.guildId})`
+        `Command: ${cmdInfo} | User: ${inter.user.username} (id : ${inter.user}) | Guild: ${inter.guild?.name} (id : ${inter.guildId})`
       );
 
       const command: ICommand = globalThis.commands.get(inter.commandName);
@@ -36,7 +39,10 @@ const event: IEvent = {
       if (command.permissions && !(inter.member?.permissions as PermissionsBitField).has(command.permissions))
         return await reply(
           inter,
-          { content: fetchLiteral("events.client.interaction_create.no_permissions"), ephemeral: true },
+          {
+            content: fetchString('no_permissions', eventLit),
+            ephemeral: true,
+          },
           { deleteTime: 2 },
           false
         );
@@ -46,12 +52,17 @@ const event: IEvent = {
         //If DJ role is enabled for the command and user does not have DJ role -> error
         if (
           process.env.DJ_ROLE &&
-          process.env.DJ_ROLE.trim() !== "" &&
-          !(inter.member?.roles as GuildMemberRoleManager).cache.some((role) => role.id === process.env.DJ_ROLE)
+          process.env.DJ_ROLE.trim() !== '' &&
+          !(inter.member?.roles as GuildMemberRoleManager).cache.some(
+            (role) => role.id === process.env.DJ_ROLE
+          )
         )
           return await reply(
             inter,
-            { content: fetchLiteral("events.client.interaction_create.no_dj_role"), ephemeral: true },
+            {
+              content: fetchString('no_dj_role', eventLit),
+              ephemeral: true,
+            },
             { deleteTime: 2 },
             false
           );
@@ -62,7 +73,7 @@ const event: IEvent = {
           return await reply(
             inter,
             {
-              content: fetchLiteral("events.client.interaction_create.no_commands_trivia"),
+              content: fetchString('no_commands_trivia', eventLit),
               ephemeral: true,
             },
             {
@@ -76,7 +87,7 @@ const event: IEvent = {
           return await reply(
             inter,
             {
-              content: fetchLiteral("events.client.interaction_create.no_voice_channel"),
+              content: fetchString('no_voice_channel', eventLit),
               ephemeral: true,
             },
             {
@@ -93,7 +104,7 @@ const event: IEvent = {
           return await reply(
             inter,
             {
-              content: fetchLiteral("events.client.interaction_create.not_same_voice_channel"),
+              content: fetchString('not_same_voice_channel', eventLit),
               ephemeral: true,
             },
             {

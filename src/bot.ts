@@ -1,19 +1,19 @@
-import { Client, GatewayIntentBits, Partials } from "discord.js";
-import { Player } from "discord-player";
-import { YoutubeiExtractor } from "discord-player-youtubei";
-import { config as loadEnvironmentVariables } from "dotenv";
-import logger from "./logger";
-import loader from "./loader";
+import { Client, GatewayIntentBits, Partials } from 'discord.js';
+import { Player } from 'discord-player';
+import { YoutubeiExtractor } from 'discord-player-youtubei';
+import { config } from 'dotenv';
+import logger from './logger.js';
+import loader from './loader.js';
 
 /**
  * Main function to run the bot
  */
 async function run(): Promise<void> {
-  loadEnvironmentVariables(); // Load environment variables
-  const client = createClient(); // Create a new Discord client
+  config(); // Load environment variables
+  const client: Client = createClient(); // Create a new Discord client
 
   createPlayer(client); // Create player
-  loadResources(client); // Load commands, languages, and events
+  await loadResources(client); // Load commands, languages, and events
   await login(client); // Logs the bot into Discord
 }
 
@@ -32,13 +32,7 @@ function createClient(): Client {
       GatewayIntentBits.GuildMessageReactions,
       GatewayIntentBits.DirectMessages,
     ],
-    partials: [
-      Partials.Message,
-      Partials.Channel,
-      Partials.Reaction,
-      Partials.User,
-      Partials.GuildMember,
-    ],
+    partials: [Partials.Message, Partials.Channel, Partials.Reaction, Partials.User, Partials.GuildMember],
   });
 }
 
@@ -48,7 +42,7 @@ function createClient(): Client {
  */
 function createPlayer(client: Client): void {
   const player = new Player(client); // Player setup
-  player.extractors.loadDefault((ext) => ext !== "YouTubeExtractor"); // Load default extractors, except YouTube
+  player.extractors.loadDefault((ext) => ext !== 'YouTubeExtractor'); // Load default extractors, except YouTube
   player.extractors.register(YoutubeiExtractor, {}); // Load YouTube support
 }
 
@@ -56,9 +50,9 @@ function createPlayer(client: Client): void {
  * Load the logger, commands, languages, and events
  * @param client The Discord client
  */
-function loadResources(client: Client): void {
+async function loadResources(client: Client): Promise<void> {
   globalThis.logger = logger; // Load logger
-  loader(client); // Load commands, languages, and events
+  await loader(client); // Load commands, languages, and events
 }
 
 /**
@@ -67,8 +61,8 @@ function loadResources(client: Client): void {
  */
 async function login(client: Client): Promise<void> {
   // Check if the token is set
-  if (!process.env.TOKEN || process.env.TOKEN.trim() === "") {
-    logger.error("TOKEN environment variable not found");
+  if (!process.env.TOKEN || process.env.TOKEN.trim() === '') {
+    logger.error('TOKEN environment variable not found');
     process.exit(1);
   }
 

@@ -1,4 +1,4 @@
-import { ActionRowBuilder, EmbedBuilder } from "discord.js";
+import { ActionRowBuilder, EmbedBuilder } from 'discord.js';
 
 /**
  * Interface for the interaction object

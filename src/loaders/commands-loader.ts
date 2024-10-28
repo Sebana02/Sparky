@@ -1,53 +1,99 @@
-import { existsSync, readdirSync, statSync } from "fs";
-import { resolve } from "path";
-import { ICommand } from "../interfaces/command.interface";
-import { Collection } from "discord.js";
+import { existsSync, readdirSync, statSync } from 'fs';
+import { resolve } from 'path';
+import { ICommand } from '../interfaces/command.interface.js';
+import { Collection } from 'discord.js';
+import { pathToFileURL } from 'url';
 
 /**
  * Loads commands from the specified folder path.
  * @param {string} folderPath - The path of the folder containing the commands.
  */
-export default function loadCommands(folderPath: string): void {
+export default async function loadCommands(folderPath: string): Promise<void> {
   // Log the loading of commands
-  logger.info("Loading commands...");
+  logger.info('Loading commands...');
 
   // Initialize the collection of commands
   globalThis.commands = new Collection();
 
-  // If the folder exists, load commands
-  if (existsSync(folderPath)) {
-    loadCommandsRec(folderPath);
-  } else {
-    logger.error(`Could not load commands: ${folderPath} does not exist`);
-  }
+  // If the folder path does not exist, log an error and return
+  if (!existsSync(folderPath)) return logger.error(`Could not load commands: ${folderPath} does not exist`);
 
-  // Log the number of loaded commands
-  logger.info(`Loaded ${globalThis.commands.size} commands`);
+  // Load commands recursively from the folder path
+  const commandPromises = retrieveCommandPromises(folderPath);
+
+  // Wait for all command promises to resolve
+  await Promise.allSettled(commandPromises)
+    .then((results) => {
+      // Log the number of loaded commands
+      const loadedCommands = results.filter((result) => result.status === 'fulfilled').length;
+      logger.info(`Loaded ${loadedCommands} commands`);
+    })
+    .catch((error) => logger.error(`Could not load commands: ${error.stack}`));
 }
 
 /**
- * Loads commands recursively from the specified folder path.
+ * Retrieves an array of promises to load commands from the specified folder path.
  * @param {string} folderPath - The path of the folder containing the commands.
+ * @returns {Promise<void>[]} - An array of promises to load the commands.
  */
-function loadCommandsRec(folderPath: string): void {
-  // Load commands recursively
-  readdirSync(folderPath).forEach((file) => {
-    try {
-      // Resolve the file path
-      const filePath = resolve(folderPath, file);
+function retrieveCommandPromises(folderPath: string): Promise<void>[] {
+  // Initialize an array of promises, one for each file
+  let commandPromises: Promise<void>[] = [];
 
-      // Check if the file is a directory, apply recursion
-      if (statSync(filePath).isDirectory()) {
-        loadCommandsRec(filePath);
-      } else if (file.endsWith(".js")) {
-        // Load the command
-        const command: ICommand = require(filePath).default;
+  //Iterate over the files in the folder
+  for (const file of readdirSync(folderPath)) {
+    // Resolve the file path
+    const filePath = resolve(folderPath, file);
 
-        // Set the command in the collection
-        globalThis.commands.set(command.name, command);
-      }
-    } catch (error: any) {
-      logger.error(`Could not load command ${file}: ${error.message}`);
-    }
-  });
+    // If the file is a directory, load commands recursively, otherwise load the command
+    statSync(filePath).isDirectory()
+      ? commandPromises.push(...retrieveCommandPromises(filePath))
+      : commandPromises.push(createCommandPromise(filePath));
+  }
+
+  // Return the array of promises
+  return commandPromises;
+}
+
+/**
+ * Creates a promise to load a command from the specified file path.
+ * @param {string} filePath - The path of the file containing the command.
+ */
+async function createCommandPromise(filePath: string): Promise<void> {
+  try {
+    // Resolve the command file URL
+    const commandFileURL = pathToFileURL(filePath);
+
+    // Load the command module
+    const commandModule = await import(commandFileURL.href);
+
+    // Parse the command module as an ICommand.
+    // If the module exports a default value, use it; otherwise, use the first value in the module.
+    const command: ICommand = commandModule.default || Object.values(commandModule)[0];
+
+    // If the command is not valid, throw an error
+    if (!isValidCommand(command)) throw new Error(`Invalid command: ${JSON.stringify(command)}`);
+
+    // Add the command to the collection
+    globalThis.commands.set(command.name, command);
+  } catch (error: any) {
+    logger.error(`Could not load command ${filePath}: ${error.stack}`);
+    throw error;
+  }
+}
+
+/**
+ * Checks if an object is a valid command.
+ * @param {ICommand} command - The object to check.
+ * @returns {boolean} - Whether the object is a valid command.
+ */
+function isValidCommand(command: ICommand): command is ICommand {
+  return (
+    command.name !== undefined &&
+    typeof command.name === 'string' &&
+    command.description !== undefined &&
+    typeof command.description === 'string' &&
+    command.run !== undefined &&
+    typeof command.run === 'function'
+  );
 }

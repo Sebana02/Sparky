@@ -1,84 +1,119 @@
-import { Client } from "discord.js";
-import { existsSync, readdirSync, statSync } from "fs";
-import { resolve } from "path";
-import { useMainPlayer } from "discord-player";
-import eventErrorHandler from "../utils/error-handler/event-error-handler";
-import { IEvent } from "../interfaces/event.interface";
+import { Client } from 'discord.js';
+import { existsSync, readdirSync, statSync } from 'fs';
+import { resolve } from 'path';
+import { useMainPlayer } from 'discord-player';
+import { eventErrorHandler } from '../utils/error-handler.js';
+import { IEvent } from '../interfaces/event.interface.js';
+import { pathToFileURL } from 'url';
 
 /**
  * Loads events from the specified folder path.
  * @param {string} folderPath - The path of the folder containing the events.
  * @param {Client} client - The Discord client.
  */
-export default function loadEvents(folderPath: string, client: Client): void {
+export default async function loadEvents(folderPath: string, client: Client): Promise<void> {
   // Log the loading of events
-  logger.info("Loading events...");
+  logger.info('Loading events...');
 
   // Events folders
   const eventsFolders = [
-    { folder: "process", emitter: process },
-    { folder: "client", emitter: client },
-    { folder: "music", emitter: useMainPlayer().events },
+    { folder: 'process', emitter: process },
+    { folder: 'client', emitter: client },
+    { folder: 'music', emitter: useMainPlayer().events },
   ];
 
-  // Initialize the counter of loaded events
-  let loadedEvents = 0;
+  // Array of promises to load events
+  let eventPromises: Promise<void>[] = [];
 
+  // Push promises to load events from each folder
   eventsFolders.forEach(({ folder, emitter }) => {
     // Resolve event folder path
     const eventFolderPath = resolve(folderPath, `./${folder}`);
 
-    // If it exists, load events
-    if (existsSync(eventFolderPath)) {
-      loadedEvents += loadEventsRec(eventFolderPath, emitter, client);
-    } else {
-      logger.error(`Could not load events: ${eventFolderPath} does not exist`);
-    }
+    // If the folder path does not exist, log an error and return
+    if (!existsSync(eventFolderPath))
+      return logger.error(`Could not load events: ${eventFolderPath} does not exist`);
+
+    // Load events recursively from the folder path
+    eventPromises.push(...retrieveEventPromises(eventFolderPath, emitter, client));
   });
 
-  // Log the number of loaded events
-  logger.info(`Loaded ${loadedEvents} events`);
+  // Wait for all event promises to resolve
+  await Promise.allSettled(eventPromises)
+    .then((results) => {
+      const loadedEvents = results.filter((result) => result.status === 'fulfilled').length;
+      logger.info(`Loaded ${loadedEvents} events`);
+    })
+    .catch((error) => logger.error(`Could not load events: ${error.stack}`));
 }
 
 /**
- * Loads events recursively from the specified folder path and binds them to the emitter.
+ * Retrieves an array of promises to load events from the specified folder path.
  * @param {string} folderPath - The path of the folder containing the events.
  * @param {any} emitter - The event emitter.
  * @param {Client} client - The Discord client.
- * @returns {number} The number of loaded events.
+ * @returns {Promise<void>[]} - An array of promises to load the events.
  */
-function loadEventsRec(
-  folderPath: string,
-  emitter: any,
-  client: Client
-): number {
-  // Initialize the counter of loaded events
-  let loadedEvents = 0;
+function retrieveEventPromises(folderPath: string, emitter: any, client: Client): Promise<void>[] {
+  // Initialize an array of promises, one for each file
+  let eventPromises: Promise<void>[] = [];
 
-  // Load events recursively
-  readdirSync(folderPath).forEach((file) => {
-    try {
-      // Resolve the file path
-      const filePath = resolve(folderPath, file);
+  //Iterate over the files in the folder
+  for (const file of readdirSync(folderPath)) {
+    // Resolve the file path
+    const filePath = resolve(folderPath, file);
 
-      // Check if the file is a directory, apply recursion
-      if (statSync(filePath).isDirectory()) {
-        loadedEvents += loadEventsRec(filePath, emitter, client);
-      } else if (file.endsWith(".js")) {
-        // Load the event
-        const event: IEvent = require(filePath).default;
+    // If the file is a directory, load commands recursively, otherwise load the command
+    statSync(filePath).isDirectory()
+      ? eventPromises.push(...retrieveEventPromises(filePath, emitter, client))
+      : eventPromises.push(createEventPromise(filePath, emitter, client));
+  }
 
-        // Bind the event to the emitter
-        emitter.on(event.event, (...args: any[]) =>
-          eventErrorHandler(event.event, event.callback, client, ...args)
-        );
-        loadedEvents++; // Increment count of loaded events
-      }
-    } catch (error: any) {
-      logger.error(`Could not load event ${file}: ${error.message}`);
-    }
-  });
+  // Return the array of promises
+  return eventPromises;
+}
 
-  // Return the number of loaded events
-  return loadedEvents;
+/**
+ * Creates a promise to load an event from the specified file path.
+ * @param {string} filePath - The path of the file containing the event.
+ * @param {any} emitter - The event emitter.
+ * @param {Client} client - The Discord client.
+ */
+async function createEventPromise(filePath: string, emitter: any, client: Client): Promise<void> {
+  try {
+    // Resolve the command file URL
+    const eventFileURL = pathToFileURL(filePath);
+
+    // Load the command module
+    const eventModule = await import(eventFileURL.href);
+
+    // Parse the command module as an IEvent.
+    // If the module exports a default value, use it; otherwise, use the first value in the module.
+    const event: IEvent = eventModule.default || Object.values(eventModule)[0];
+
+    // If the event is not valid, throw an error
+    if (!isValidEvent(event)) throw new Error(`Invalid event: ${JSON.stringify(event)}`);
+
+    // Register the event to the emitter
+    emitter.on(event.event, (...args: any[]) =>
+      eventErrorHandler(event.event, event.callback, client, ...args)
+    );
+  } catch (error: any) {
+    logger.error(`Could not load event ${filePath}: ${error.stack}`);
+    throw error;
+  }
+}
+
+/**
+ * Checks if an object is a valid event.
+ * @param {IEvent} event - The object to check.
+ * @returns {boolean} - Whether the object is a valid command.
+ */
+function isValidEvent(event: IEvent): event is IEvent {
+  return (
+    event.event !== undefined &&
+    typeof event.event === 'string' &&
+    event.callback !== undefined &&
+    typeof event.callback === 'function'
+  );
 }

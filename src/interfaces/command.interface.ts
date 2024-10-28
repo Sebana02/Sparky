@@ -3,7 +3,7 @@ import {
   ChatInputCommandInteraction,
   ApplicationCommandOptionType,
   PermissionFlagsBits,
-} from "discord.js";
+} from 'discord.js';
 
 /**
  * Interface for a command option choice.
@@ -52,11 +52,7 @@ export interface ICommand {
    * @param inter The interaction that triggered the command.
    * @returns A promise that resolves when the command is done executing.
    */
-  readonly run: (
-    client: Client,
-    inter: ChatInputCommandInteraction,
-    ...args: any[]
-  ) => Promise<void>;
+  readonly run: (client: Client, inter: ChatInputCommandInteraction, ...args: any[]) => Promise<void>;
 
   /** Command optional options. */
   readonly options?: ICommandOption[];

@@ -1,24 +1,18 @@
 {
   "compilerOptions": {
     "baseUrl": "./src",
-    "outDir": "./dist",
-    "paths": {
-      "@commands/*": ["commands/*"],
-      "@utils/*": ["utils/*"],
-      "@events/*": ["events/*"],
-      "@locales/*": ["locales/*"],
-      "@interfaces/*": ["interfaces/*"],
-      "@loaders/*": ["loaders/*"],
-    },
-    "target": "ES6", 
-    "module": "CommonJS",
-    "strict": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true ,
+    "outDir": "dist",
+    "target": "ESNext",
+    "module": "ESNext",
     "moduleResolution": "Node",
-    "esModuleInterop": true,
+    "strict": true,
+    "noImplicitAny": true,
+    "declaration": false,
+    "skipLibCheck": true,
+    "strictNullChecks": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true
   },
-  "exclude": [
-    "node_modules", 
-  ]
+  "include": ["src"],
+  "exclude": ["node_modules"]
 }

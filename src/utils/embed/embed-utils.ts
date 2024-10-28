@@ -1,5 +1,5 @@
-import { EmbedBuilder } from "discord.js";
-import { IEmbed } from "../../interfaces/embed.interface";
+import { EmbedBuilder } from 'discord.js';
+import { IEmbed } from '../../interfaces/embed.interface.js';
 
 /**
  * Color scheme for Discord embeds
@@ -11,6 +11,7 @@ export enum ColorScheme {
   information = 0x2a4f6e,
   game = 0x496c89,
   fun = 0x718da5,
+  default = 0x424549,
 }
 
 /**
@@ -21,10 +22,8 @@ export enum ColorScheme {
  * @throws {Error} - If the created embed is empty.
  * @note Make sure to provide at least one of the following properties: title, description, fields, image, thumbnail, author, or footer, otherwise an error will be thrown.
  */
-export function createEmbed(
-  embedContent: IEmbed,
-  propagate: boolean = true
-): EmbedBuilder {
+export function createEmbed(embedContent: IEmbed, propagate: boolean = true): EmbedBuilder {
+  // Create a new Discord embed
   const embed = new EmbedBuilder();
 
   try {
@@ -32,13 +31,14 @@ export function createEmbed(
     setEmbedProperties(embed, embedContent);
 
     // Check if the embed is empty
-    if (!isValidEmbed(embed)) throw new Error("embed is not valid");
+    if (!isValidEmbed(embed)) throw new Error('embed is not valid');
   } catch (error: any) {
     error.message = `creating embed: ${error.message}`;
     if (propagate) throw error;
     else logger.error(error.stack);
   }
 
+  // Return the created embed
   return embed;
 }
 
@@ -57,19 +57,20 @@ export function modifyEmbed(
 ): EmbedBuilder {
   try {
     // Check if the given embed is valid
-    if (!embed || embed.data) throw new Error("given embed is not valid");
+    if (!isValidEmbed(embed)) throw new Error('given embed is not valid');
 
     // Set the properties of the embed
     setEmbedProperties(embed, embedContent);
 
     // Check if the embed is empty
-    if (!isValidEmbed(embed)) throw new Error("embed is not valid");
+    if (!isValidEmbed(embed)) throw new Error('embed is not valid');
   } catch (error: any) {
     error.message = `modifying embed: ${error.message}`;
     if (propagate) throw error;
     else logger.error(error.stack);
   }
 
+  // Return the modified embed
   return embed;
 }
 
@@ -80,27 +81,23 @@ export function modifyEmbed(
  * @returns {EmbedBuilder} - The cloned Discord embed.
  * @throws {Error} - If the cloned embed is empty.
  */
-export function cloneEmbed(
-  embed: EmbedBuilder,
-  propagate: boolean = true
-): EmbedBuilder {
+export function cloneEmbed(embed: EmbedBuilder, propagate: boolean = true): EmbedBuilder {
+  // Create a new Discord embed
   let clonedEmbed = new EmbedBuilder();
 
   try {
     // Check if the given embed is valid
-    if (!embed || !embed.data) throw new Error("given embed is not valid");
+    if (!isValidEmbed(embed)) throw new Error('given embed is not valid');
 
     // Clone the embed
     clonedEmbed = new EmbedBuilder(embed.data);
-
-    // Check if the embed is empty
-    if (!isValidEmbed(clonedEmbed)) throw new Error("embed is empty");
   } catch (error: any) {
     error.message = `cloning embed: ${error.message}`;
     if (propagate) throw error;
     else logger.error(error.stack);
   }
 
+  // Return the cloned embed
   return clonedEmbed;
 }
 
@@ -110,16 +107,18 @@ export function cloneEmbed(
  * @returns {boolean} - Whether the embed is valid.
  */
 function isValidEmbed(embed: EmbedBuilder): boolean {
-  if (!embed || !embed.data) return false;
+  // Destructure the embed data
+  const { title, description, fields, image, thumbnail, author, footer } = embed.data;
 
-  return (
-    embed.data.title !== undefined ||
-    embed.data.description !== undefined ||
-    embed.data.fields !== undefined ||
-    embed.data.image !== undefined ||
-    embed.data.thumbnail !== undefined ||
-    (embed.data.author !== undefined && embed.data.author.name !== undefined) ||
-    (embed.data.footer !== undefined && embed.data.footer.text !== undefined)
+  // Check if the embed is valid
+  return !!(
+    title ||
+    description ||
+    (fields && fields.length > 0) ||
+    image ||
+    thumbnail ||
+    author?.name ||
+    footer?.text
   );
 }
 
@@ -129,32 +128,19 @@ function isValidEmbed(embed: EmbedBuilder): boolean {
  * @param properties - The properties to add to the embed
  */
 function setEmbedProperties(embed: EmbedBuilder, properties: IEmbed): void {
-  const {
-    title,
-    description,
-    color,
-    thumbnail,
-    image,
-    url,
-    footer,
-    author,
-    setTimestamp,
-    fields,
-  } = properties;
+  // Destructure the properties
+  const { title, description, color, thumbnail, image, url, footer, author, setTimestamp, fields } =
+    properties;
 
+  // Set the properties of the embed
   if (title) embed.setTitle(title);
   if (description) embed.setDescription(description);
-  if (color) embed.setColor(color);
+  embed.setColor(color || ColorScheme.default);
   if (thumbnail) embed.setThumbnail(thumbnail);
   if (image) embed.setImage(image);
   if (url) embed.setURL(url);
   if (footer?.text) embed.setFooter(footer);
   if (author?.name) embed.setAuthor(author);
   if (setTimestamp) embed.setTimestamp();
-
-  if (fields) {
-    fields.forEach((field) => {
-      if (field.name && field.value) embed.addFields(field);
-    });
-  }
+  if (fields) fields.forEach((field) => field.name && field.value && embed.addFields(field));
 }
