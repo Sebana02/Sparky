@@ -1,7 +1,7 @@
 import { dirname, resolve } from 'path';
 import { appendFileSync } from 'fs';
-import { ILogger } from './interfaces/logger.interface.js';
 import { fileURLToPath } from 'url';
+import { ILogger } from './interfaces/logger.interface.js';
 
 /**
  * Enum for log levels
@@ -13,16 +13,11 @@ enum LogLevels {
 }
 
 /**
- * Path to the log file
- */
-const logFilePath = resolve(dirname(fileURLToPath(import.meta.url)), '../', process.env.LOG_FILE || '.log');
-
-/**
  * Logs a message to console and file
  * @param level Level of importance of the message
  * @param args Message to log
  */
-function logMessage(level: LogLevels, ...args: string[]): void {
+function logMessage(logFilePath: string, level: LogLevels, ...args: string[]): void {
   const timestamp = new Date().toLocaleString();
   const message = args.join(' ');
   const formattedMessage = `[${timestamp}] [${level}] ${message}\n`;
@@ -39,12 +34,19 @@ function logMessage(level: LogLevels, ...args: string[]): void {
 }
 
 /**
- * Implementation of ILogger interface to log messages on console and file
+ * Creates a logger object and sets it as a global variable
  */
-const logger: ILogger = {
-  info: (...args: string[]) => logMessage(LogLevels.INFO, ...args),
-  warn: (...args: string[]) => logMessage(LogLevels.WARN, ...args),
-  error: (...args: string[]) => logMessage(LogLevels.ERROR, ...args),
-};
+export default function loadLogger(): void {
+  //Path to the log file
+  const logFilePath = resolve(dirname(fileURLToPath(import.meta.url)), '../', process.env.LOG_FILE || '.log');
 
-export default logger;
+  // Create a logger object, logs to console and file
+  const logger: ILogger = {
+    info: (...args: string[]) => logMessage(logFilePath, LogLevels.INFO, ...args),
+    warn: (...args: string[]) => logMessage(logFilePath, LogLevels.WARN, ...args),
+    error: (...args: string[]) => logMessage(logFilePath, LogLevels.ERROR, ...args),
+  };
+
+  // Set the logger as a global variable
+  globalThis.logger = logger;
+}

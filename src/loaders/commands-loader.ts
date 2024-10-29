@@ -67,12 +67,20 @@ async function createCommandPromise(filePath: string): Promise<void> {
     // Load the command module
     const commandModule = await import(commandFileURL.href);
 
-    // Parse the command module as an ICommand.
-    // If the module exports a default value, use it; otherwise, use the first value in the module.
-    const command: ICommand = commandModule.default || Object.values(commandModule)[0];
+    // Get the values of the required module
+    const moduleValues = Object.values(commandModule);
+
+    // Try to parse the command module as an ICommand.
+    const command: ICommand | undefined = moduleValues.find(isCommand);
 
     // If the command is not valid, throw an error
-    if (!isValidCommand(command)) throw new Error(`Invalid command: ${JSON.stringify(command)}`);
+    if (!command) throw new Error(`Invalid command: ${JSON.stringify(commandModule)}`);
+
+    // Execute any functions in the module that do not require arguments
+    // This is useful for executing initialization code in the command module
+    moduleValues.forEach(async (value) => {
+      if (typeof value === 'function' && value.length === 0) await value();
+    });
 
     // Add the command to the collection
     globalThis.commands.set(command.name, command);
@@ -84,10 +92,10 @@ async function createCommandPromise(filePath: string): Promise<void> {
 
 /**
  * Checks if an object is a valid command.
- * @param {ICommand} command - The object to check.
+ * @param {any} command - The object to check.
  * @returns {boolean} - Whether the object is a valid command.
  */
-function isValidCommand(command: ICommand): command is ICommand {
+function isCommand(command: any): command is ICommand {
   return (
     command.name !== undefined &&
     typeof command.name === 'string' &&

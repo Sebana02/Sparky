@@ -2,9 +2,9 @@ import { Client } from 'discord.js';
 import { existsSync, readdirSync, statSync } from 'fs';
 import { resolve } from 'path';
 import { useMainPlayer } from 'discord-player';
-import { eventErrorHandler } from '../utils/error-handler.js';
 import { IEvent } from '../interfaces/event.interface.js';
 import { pathToFileURL } from 'url';
+import { eventErrorHandler } from '../utils/error-handler.js';
 
 /**
  * Loads events from the specified folder path.
@@ -87,12 +87,20 @@ async function createEventPromise(filePath: string, emitter: any, client: Client
     // Load the command module
     const eventModule = await import(eventFileURL.href);
 
-    // Parse the command module as an IEvent.
-    // If the module exports a default value, use it; otherwise, use the first value in the module.
-    const event: IEvent = eventModule.default || Object.values(eventModule)[0];
+    // Get the values of the required module
+    const moduleValues = Object.values(eventModule);
+
+    // Try to parse the command module as an IEvent.
+    const event: IEvent | undefined = moduleValues.find(isEvent);
 
     // If the event is not valid, throw an error
-    if (!isValidEvent(event)) throw new Error(`Invalid event: ${JSON.stringify(event)}`);
+    if (!event) throw new Error(`Invalid event: ${JSON.stringify(event)}`);
+
+    // Execute any functions in the module that do not require arguments
+    // This is useful for executing initialization code in the command module
+    moduleValues.forEach(async (value) => {
+      if (typeof value === 'function' && value.length === 0) await value();
+    });
 
     // Register the event to the emitter
     emitter.on(event.event, (...args: any[]) =>
@@ -106,10 +114,10 @@ async function createEventPromise(filePath: string, emitter: any, client: Client
 
 /**
  * Checks if an object is a valid event.
- * @param {IEvent} event - The object to check.
+ * @param {any} event - The object to check.
  * @returns {boolean} - Whether the object is a valid command.
  */
-function isValidEvent(event: IEvent): event is IEvent {
+function isEvent(event: any): event is IEvent {
   return (
     event.event !== undefined &&
     typeof event.event === 'string' &&

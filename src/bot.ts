@@ -1,20 +1,30 @@
 import { Client, GatewayIntentBits, Partials } from 'discord.js';
 import { Player } from 'discord-player';
 import { YoutubeiExtractor } from 'discord-player-youtubei';
-import { config } from 'dotenv';
-import logger from './logger.js';
-import loader from './loader.js';
-
+import { config as loadEnv } from 'dotenv';
+import loadLogger from './logger.js';
+import loadResources from './loader.js';
 /**
  * Main function to run the bot
  */
 async function run(): Promise<void> {
-  config(); // Load environment variables
-  const client: Client = createClient(); // Create a new Discord client
+  // Load environment variables
+  loadEnv();
 
-  createPlayer(client); // Create player
-  await loadResources(client); // Load commands, languages, and events
-  await login(client); // Logs the bot into Discord
+  // Load logger
+  loadLogger();
+
+  // Create a new Discord client
+  const client: Client = createClient();
+
+  // Create and set up a new player for music
+  createPlayer(client);
+
+  // Load commands, languages, and events
+  await loadResources(client);
+
+  // Log the bot into Discord
+  await login(client);
 }
 
 /**
@@ -44,15 +54,6 @@ function createPlayer(client: Client): void {
   const player = new Player(client); // Player setup
   player.extractors.loadDefault((ext) => ext !== 'YouTubeExtractor'); // Load default extractors, except YouTube
   player.extractors.register(YoutubeiExtractor, {}); // Load YouTube support
-}
-
-/**
- * Load the logger, commands, languages, and events
- * @param client The Discord client
- */
-async function loadResources(client: Client): Promise<void> {
-  globalThis.logger = logger; // Load logger
-  await loader(client); // Load commands, languages, and events
 }
 
 /**

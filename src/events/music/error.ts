@@ -1,8 +1,8 @@
-import { musicError } from '../../utils/embed/music-presets';
+import { musicError } from '../../utils/embed/music-presets.js';
 import { Client } from 'discord.js';
 import { IEvent } from '../../interfaces/event.interface.js';
 import { GuildQueue } from 'discord-player';
-import { IMetadata } from 'interfaces/metadata.interface';
+import { IMetadata } from '../../interfaces/metadata.interface.js';
 
 /**
  * Event emitted when an error occurs

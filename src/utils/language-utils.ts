@@ -6,7 +6,7 @@ import { ILanguageObject } from '../interfaces/language.interface.js';
  * @param sourceObj - The object to fetch the literal from. Defaults to the literals object.
  * @returns The value of the literal, or 'not_found' if not found.
  */
-export function fetchString(pathToLiteral: string, sourceObj: ILanguageObject = literals): string {
+export function fetchString(pathToLiteral: string, sourceObj: ILanguageObject = globalThis.literals): string {
   const literal = fetch(pathToLiteral, sourceObj);
 
   return literal != null && typeof literal === 'string' ? literal : 'not_found';
@@ -18,7 +18,10 @@ export function fetchString(pathToLiteral: string, sourceObj: ILanguageObject = 
  * @param sourceObj - The object to fetch the literal from. Defaults to the literals object.
  * @returns The value of the literal, or an empty object if not found.
  */
-export function fetchObject(pathToLiteral: string, sourceObj: ILanguageObject = literals): ILanguageObject {
+export function fetchObject(
+  pathToLiteral: string,
+  sourceObj: ILanguageObject = globalThis.literals
+): ILanguageObject {
   const literal = fetch(pathToLiteral, sourceObj);
 
   return literal != null && isObject(literal) ? (literal as ILanguageObject) : { not_found: 'not_found' };
@@ -30,7 +33,7 @@ export function fetchObject(pathToLiteral: string, sourceObj: ILanguageObject = 
  * @param sourceObj - The object to fetch the literal from. Defaults to the literals object.
  * @returns The value of the literal, or -1 if not found.
  */
-export function fetchNumber(pathToLiteral: string, sourceObj: ILanguageObject = literals): number {
+export function fetchNumber(pathToLiteral: string, sourceObj: ILanguageObject = globalThis.literals): number {
   const literal = fetch(pathToLiteral, sourceObj);
 
   return literal != null && typeof literal === 'number' ? literal : -1;
@@ -42,7 +45,7 @@ export function fetchNumber(pathToLiteral: string, sourceObj: ILanguageObject = 
  * @param sourceObj - The object to fetch the literal from. Defaults to the literals object.
  * @returns The value of the literal, or an empty array if not found.
  */
-export function fetchArray(pathToLiteral: string, sourceObj: ILanguageObject = literals): any[] {
+export function fetchArray(pathToLiteral: string, sourceObj: ILanguageObject = globalThis.literals): any[] {
   const literal = fetch(pathToLiteral, sourceObj);
 
   return literal != null && isArray(literal) ? literal : ['not_found'];
@@ -54,10 +57,15 @@ export function fetchArray(pathToLiteral: string, sourceObj: ILanguageObject = l
  * @param sourceObj - The object to fetch the literal from. Defaults to the literals object.
  * @returns The value of the literal, or a dummy function if not found.
  */
-export function fetchFunction(pathToLiteral: string, sourceObj: ILanguageObject = literals): Function {
+export function fetchFunction(
+  pathToLiteral: string,
+  sourceObj: ILanguageObject = globalThis.literals
+): (...args: any[]) => string {
   const literal = fetch(pathToLiteral, sourceObj);
 
-  return literal != null && typeof literal === 'function' ? literal : (...args: any[]) => 'not_found';
+  return literal != null && typeof literal === 'function'
+    ? (literal as (...args: any[]) => string)
+    : (...args: any[]) => 'not_found';
 }
 
 /**
@@ -65,9 +73,9 @@ export function fetchFunction(pathToLiteral: string, sourceObj: ILanguageObject 
  * @param pathToLiteral - The path to the literal concatenated with '.' (e.g., 'cat.description').
  * @returns The value of the literal, or null if not found.
  */
-function fetch(
+export function fetch(
   pathToLiteral: string,
-  sourceObj: ILanguageObject = literals
+  sourceObj: ILanguageObject = globalThis.literals
 ): ILanguageObject | string | number | any[] | Function | null {
   // Split the path by periods
   const path = pathToLiteral.split('.');

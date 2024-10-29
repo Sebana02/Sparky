@@ -1,15 +1,15 @@
 import { Client } from 'discord.js';
 import { dirname, resolve } from 'path';
+import { fileURLToPath } from 'url';
 import loadLanguages from './loaders/languages-loader.js';
 import loadEvents from './loaders/events-loader.js';
 import loadCommands from './loaders/commands-loader.js';
-import { fileURLToPath } from 'url';
 
 /**
  * Loads languages, events, and commands
  * @param client The Discord client
  */
-export default async function loader(client: Client): Promise<void> {
+export default async function loadResources(client: Client): Promise<void> {
   // Log start time
   logger.info('----Starting bot----');
 

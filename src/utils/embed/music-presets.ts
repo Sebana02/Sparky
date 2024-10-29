@@ -2,7 +2,7 @@ import { createEmbed } from './embed-utils.js';
 import { SearchResult, Track, GuildQueue } from 'discord-player';
 import { Client, EmbedBuilder } from 'discord.js';
 import { LyricsData } from '@discord-player/extractor';
-import { fetchObject, fetchFunction, fetchArray, fetchString } from '../language-utils.js';
+import { fetchObject, fetchFunction, fetchString } from '../language-utils.js';
 import { ILanguageObject } from '../../interfaces/language.interface.js';
 
 //Preload literals
