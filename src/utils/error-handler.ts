@@ -40,20 +40,12 @@ export async function commandErrorHandler(
     const errorEmbed = createEmbed({
       color: ColorScheme.error,
       author: {
-        name: fetchString('utils.error_handler.command.response'),
+        name: fetchString('command_error_handler'),
         iconURL: client.user?.displayAvatarURL(),
       },
     });
 
     // Reply to the interaction with the error embed
-    await reply(
-      inter,
-      {
-        embeds: [errorEmbed],
-        ephemeral: true,
-      },
-      { deleteTime: 2 },
-      false
-    );
+    await reply(inter, { embeds: [errorEmbed], ephemeral: true }, { deleteTime: 2 }, false);
   }
 }

@@ -1,9 +1,4 @@
-import {
-  Client,
-  ChatInputCommandInteraction,
-  ApplicationCommandOptionType,
-  PermissionFlagsBits,
-} from 'discord.js';
+import { Client, ChatInputCommandInteraction, ApplicationCommandOptionType, PermissionFlagsBits } from 'discord.js';
 
 /**
  * Interface for a command option choice.

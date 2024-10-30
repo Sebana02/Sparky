@@ -8,7 +8,7 @@ import { IMetadata } from '../../interfaces/metadata.interface.js';
  * Event emitted when the player starts playing a song
  * Sends a playing embed to the channel where the music is playing
  */
-const event: IEvent = {
+export const event: IEvent = {
   event: 'playerStart',
 
   /**
@@ -25,5 +25,3 @@ const event: IEvent = {
     if (queue.metadata.channel.isSendable()) await queue.metadata.channel.send({ embeds: [playing(track)] });
   },
 };
-
-export default event;

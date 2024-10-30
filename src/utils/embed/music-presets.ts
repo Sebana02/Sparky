@@ -2,11 +2,7 @@ import { createEmbed } from './embed-utils.js';
 import { SearchResult, Track, GuildQueue } from 'discord-player';
 import { Client, EmbedBuilder } from 'discord.js';
 import { LyricsData } from '@discord-player/extractor';
-import { fetchObject, fetchFunction, fetchString } from '../language-utils.js';
-import { ILanguageObject } from '../../interfaces/language.interface.js';
-
-//Preload literals
-const musicEmbeds: ILanguageObject = fetchObject('utils.embed.music_presets');
+import { fetchFunction, fetchString } from '../language-utils.js';
 
 // Color scheme for the music embeds
 const enum ColorScheme {
@@ -25,7 +21,7 @@ export function musicError(client: Client): EmbedBuilder {
   return createEmbed({
     color: ColorScheme.error,
     author: {
-      name: fetchString('error', musicEmbeds),
+      name: fetchString('music_presets.error'),
       iconURL: client.user?.displayAvatarURL(),
     },
   });
@@ -40,7 +36,7 @@ export function noResults(client: Client): EmbedBuilder {
   return createEmbed({
     color: ColorScheme.error,
     author: {
-      name: fetchString('no_results', musicEmbeds),
+      name: fetchString('music_presets.no_results'),
       iconURL: client.user?.displayAvatarURL(),
     },
   });
@@ -55,7 +51,7 @@ export function noPlaylist(client: Client): EmbedBuilder {
   return createEmbed({
     color: ColorScheme.error,
     author: {
-      name: fetchString('no_playlist', musicEmbeds),
+      name: fetchString('music_presets.no_playlist'),
       iconURL: client.user?.displayAvatarURL(),
     },
   });
@@ -70,7 +66,7 @@ export function noQueue(client: Client): EmbedBuilder {
   return createEmbed({
     color: ColorScheme.error,
     author: {
-      name: fetchString('no_queue', musicEmbeds),
+      name: fetchString('music_presets.no_queue'),
       iconURL: client.user?.displayAvatarURL(),
     },
   });
@@ -85,7 +81,7 @@ export function noHistory(client: Client): EmbedBuilder {
   return createEmbed({
     color: ColorScheme.error,
     author: {
-      name: fetchString('no_history', musicEmbeds),
+      name: fetchString('music_presets.no_history'),
       iconURL: client.user?.displayAvatarURL(),
     },
   });
@@ -100,7 +96,7 @@ export function noLyrics(track: Track): EmbedBuilder {
   return createEmbed({
     color: ColorScheme.error,
     author: {
-      name: fetchString('no_lyrics', musicEmbeds),
+      name: fetchString('music_presets.no_lyrics'),
       iconURL: track.thumbnail,
     },
   });
@@ -119,7 +115,7 @@ export function addToQueue(track: Track): EmbedBuilder {
       iconURL: track.thumbnail,
     },
     footer: {
-      text: fetchString('add_to_queue', musicEmbeds),
+      text: fetchString('music_presets.add_to_queue'),
     },
   });
 }
@@ -133,11 +129,11 @@ export function addToQueueMany(results: SearchResult): EmbedBuilder {
   return createEmbed({
     color: ColorScheme.added,
     author: {
-      name: fetchFunction('add_to_queue_many.title', musicEmbeds)(results.tracks.length),
+      name: fetchFunction('music_presets.add_to_queue_many.title')(results.tracks.length),
       iconURL: results.tracks[0].thumbnail,
     },
     footer: {
-      text: fetchString('add_to_queue_many.description', musicEmbeds),
+      text: fetchString('music_presets.add_to_queue_many.description'),
     },
   });
 }
@@ -155,7 +151,7 @@ export function previousTrack(track: Track): EmbedBuilder {
       iconURL: track.thumbnail,
     },
     footer: {
-      text: fetchString('previous_track', musicEmbeds),
+      text: fetchString('music_presets.previous_track'),
     },
   });
 }
@@ -169,7 +165,7 @@ export function stop(client: Client): EmbedBuilder {
   return createEmbed({
     color: ColorScheme.general,
     author: {
-      name: fetchString('stop', musicEmbeds),
+      name: fetchString('music_presets.stop'),
       iconURL: client.user?.displayAvatarURL(),
     },
   });
@@ -188,7 +184,7 @@ export function pause(track: Track): EmbedBuilder {
       iconURL: track.thumbnail,
     },
     footer: {
-      text: fetchString('pause', musicEmbeds),
+      text: fetchString('music_presets.pause'),
     },
   });
 }
@@ -206,7 +202,7 @@ export function resume(track: Track): EmbedBuilder {
       iconURL: track.thumbnail,
     },
     footer: {
-      text: fetchString('resume', musicEmbeds),
+      text: fetchString('music_presets.resume'),
     },
   });
 }
@@ -220,7 +216,7 @@ export function clear(client: Client): EmbedBuilder {
   return createEmbed({
     color: ColorScheme.general,
     author: {
-      name: fetchString('clear', musicEmbeds),
+      name: fetchString('music_presets.clear'),
       iconURL: client.user?.displayAvatarURL(),
     },
   });
@@ -234,16 +230,16 @@ export function clear(client: Client): EmbedBuilder {
  */
 export function loop(repeatMode: number, track: Track): EmbedBuilder {
   const names = [
-    fetchString('loop.modes.off', musicEmbeds),
-    fetchString('loop.modes.track', musicEmbeds),
-    fetchString('loop.modes.queue', musicEmbeds),
-    fetchString('loop.modes.autoplay', musicEmbeds),
+    fetchString('music_presets.loop.modes.off'),
+    fetchString('music_presets.loop.modes.track'),
+    fetchString('music_presets.loop.modes.queue'),
+    fetchString('music_presets.loop.modes.autoplay'),
   ];
 
   return createEmbed({
     color: ColorScheme.general,
     author: {
-      name: fetchFunction('loop', musicEmbeds)(names[repeatMode]),
+      name: fetchFunction('music_presets.loop.response')(names[repeatMode]),
       iconURL: track.thumbnail,
     },
   });
@@ -258,11 +254,11 @@ export function currentQueue(queue: GuildQueue): EmbedBuilder {
   const methods = ['', '| 🔂', '| 🔁', '| 🔀'];
   const nextSongs =
     queue.getSize() > 5
-      ? fetchFunction('current_queue.next_songs.add', musicEmbeds)(queue.getSize() - 5)
-      : fetchFunction('current_queue.next_songs.no_add', musicEmbeds)(queue.getSize());
+      ? fetchFunction('music_presets.current_queue.next_songs.add')(queue.getSize() - 5)
+      : fetchFunction('music_presets.current_queue.next_songs.no_add')(queue.getSize());
+
   const tracks = queue.tracks.map(
-    (track, i) =>
-      `**${i + 1}** - ${track.title} | ${track.author} (requested by : ${track.requestedBy?.username})`
+    (track, i) => `**${i + 1}** - ${track.title} | ${track.author} (requested by : ${track.requestedBy?.username})`
   );
 
   return createEmbed({
@@ -273,7 +269,7 @@ export function currentQueue(queue: GuildQueue): EmbedBuilder {
       name: `${queue.currentTrack?.title} | ${queue.currentTrack?.author} ${methods[queue.repeatMode]}`,
     },
     footer: {
-      text: fetchString('current_queue.response', musicEmbeds),
+      text: fetchString('music_presets.current_queue.response'),
     },
   });
 }
@@ -288,7 +284,7 @@ export function volume(vol: number, track: Track): EmbedBuilder {
   return createEmbed({
     color: ColorScheme.general,
     author: {
-      name: fetchFunction('volume', musicEmbeds)(vol),
+      name: fetchFunction('volume')(vol),
       iconURL: track.thumbnail,
     },
   });
@@ -328,7 +324,7 @@ export function skip(track: Track): EmbedBuilder {
       iconURL: track.thumbnail,
     },
     footer: {
-      text: fetchString('skip', musicEmbeds),
+      text: fetchString('music_presets.skip'),
     },
   });
 }
@@ -342,17 +338,17 @@ export function skip(track: Track): EmbedBuilder {
 export function nowPlaying(queue: GuildQueue, player: any): EmbedBuilder {
   const track = queue.currentTrack;
   const loopModes = [
-    fetchString('loop.modes.off', musicEmbeds),
-    fetchString('loop.modes.track', musicEmbeds),
-    fetchString('loop.modes.queue', musicEmbeds),
-    fetchString('loop.modes.autoplay', musicEmbeds),
+    fetchString('music_presets.loop.modes.off'),
+    fetchString('music_presets.loop.modes.track'),
+    fetchString('music_presets.loop.modes.queue'),
+    fetchString('music_presets.loop.modes.autoplay'),
   ];
 
   return createEmbed({
     color: ColorScheme.playing,
     thumbnail: track?.thumbnail,
     title: `${track?.title} | ${track?.author}`,
-    description: fetchFunction('now_playing', musicEmbeds)(
+    description: fetchFunction('music_presets.now_playing')(
       player.volume,
       track?.duration,
       player.createProgressBar(),
@@ -371,11 +367,11 @@ export function shuffle(queue: GuildQueue): EmbedBuilder {
   return createEmbed({
     color: ColorScheme.general,
     author: {
-      name: fetchFunction('shuffle.title', musicEmbeds)(queue.tracks.size),
+      name: fetchFunction('music_presets.shuffle.title')(queue.tracks.size),
       iconURL: queue.currentTrack?.thumbnail,
     },
     footer: {
-      text: fetchString('shuffle.description', musicEmbeds),
+      text: fetchString('music_presets.shuffle.description'),
     },
   });
 }
@@ -420,7 +416,7 @@ export function save(track: Track): EmbedBuilder {
       iconURL: track.thumbnail,
     },
     footer: {
-      text: fetchString('save', musicEmbeds),
+      text: fetchString('music_presets.save'),
     },
   });
 }
@@ -437,7 +433,7 @@ export function playing(track: Track): EmbedBuilder {
       name: `${track.title} | ${track.author}`,
       iconURL: track.thumbnail,
     },
-    footer: { text: fetchString('playing', musicEmbeds) },
+    footer: { text: fetchString('music_presets.playing') },
   });
 }
 
@@ -450,7 +446,7 @@ export function emptyChannel(client: Client): EmbedBuilder {
   return createEmbed({
     color: ColorScheme.general,
     author: {
-      name: fetchString('empty_channel', musicEmbeds),
+      name: fetchString('music_presets.empty_channel'),
       iconURL: client.user?.displayAvatarURL(),
     },
   });
@@ -465,7 +461,7 @@ export function emptyQueue(client: Client): EmbedBuilder {
   return createEmbed({
     color: ColorScheme.general,
     author: {
-      name: fetchString('empty_queue', musicEmbeds),
+      name: fetchString('music_presets.empty_queue'),
       iconURL: client.user?.displayAvatarURL(),
     },
   });

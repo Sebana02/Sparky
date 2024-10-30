@@ -1,78 +1,71 @@
-import { ILanguageObject } from '../interfaces/language.interface.js';
-
 /**
- * Fetch a string literal from the given path in sourceObj.
+ * Fetch a literal from the given path .
  * @param pathToLiteral - The path to the literal concatenated with '.' (e.g., 'cat.description').
- * @param sourceObj - The object to fetch the literal from. Defaults to the literals object.
- * @returns The value of the literal, or 'not_found' if not found.
+ * @returns The value of the literal if found
+ * @throws An error if the literal is not found or is not a string
  */
-export function fetchString(pathToLiteral: string, sourceObj: ILanguageObject = globalThis.literals): string {
+export function fetchString(pathToLiteral: string): string {
+  //Get the literal from the literals object using the pathToLiteral as the key
   const literal = literals[pathToLiteral];
 
-  return literal != null && typeof literal === 'string' ? literal : 'not_found';
+  //If the literal is not found or is not a string, throw an error
+  if (!literal || typeof literal !== 'string')
+    throw new Error(`Literal not found or is not of type string: ${pathToLiteral}`);
+
+  //Return the literal
+  return literal;
 }
 
 /**
- * Fetch a number literal from the given path in sourceObj.
+ * Fetch a literal from the given path.
  * @param pathToLiteral - The path to the literal concatenated with '.' (e.g., 'cat.description').
- * @param sourceObj - The object to fetch the literal from. Defaults to the literals object.
- * @returns The value of the literal, or -1 if not found.
+ * @returns The value of the literal if found.
+ * @throws An error if the literal is not found or is not a number
  */
-export function fetchNumber(pathToLiteral: string, sourceObj: ILanguageObject = globalThis.literals): number {
+export function fetchNumber(pathToLiteral: string): number {
+  // Get the literal from the literals object using the pathToLiteral as the key
   const literal = literals[pathToLiteral];
 
-  return literal != null && typeof literal === 'number' ? literal : -1;
+  // If the literal is not found or is not a number, throw an error
+  if (!literal || typeof literal !== 'number')
+    throw new Error(`Literal not found or is not of type number: ${pathToLiteral}`);
+
+  // Return the literal
+  return literal;
 }
 
 /**
- * Fetch an array literal from the given path in sourceObj.
+ * Fetch a literal from the given path.
  * @param pathToLiteral - The path to the literal concatenated with '.' (e.g., 'cat.description').
- * @param sourceObj - The object to fetch the literal from. Defaults to the literals object.
- * @returns The value of the literal, or an empty array if not found.
+ * @returns The value of the literal if found.
+ * @throws An error if the literal is not found or is not a boolean
  */
-export function fetchArray(pathToLiteral: string, sourceObj: ILanguageObject = globalThis.literals): any[] {
+export function fetchArray(pathToLiteral: string): any[] {
+  // Get the literal from the literals object using the pathToLiteral as the key
   const literal = literals[pathToLiteral];
 
-  return literal != null && isArray(literal) ? literal : ['not_found'];
+  // If the literal is not found or is not an array, throw an error
+  if (!literal || !Array.isArray(literal))
+    throw new Error(`Literal not found or is not of type array: ${pathToLiteral}`);
+
+  // Return the literal
+  return literal;
 }
 
-export function fetchObject(
-  pathToLiteral: string,
-  sourceObj: ILanguageObject = globalThis.literals
-): ILanguageObject {
-  throw new Error('Not implemented');
-}
 /**
- * Fetch a function literal from the given path in sourceObj.
+ * Fetch a literal from the given path.
  * @param pathToLiteral - The path to the literal concatenated with '.' (e.g., 'cat.description').
- * @param sourceObj - The object to fetch the literal from. Defaults to the literals object.
- * @returns The value of the literal, or a dummy function if not found.
+ * @returns The value of the literal if found.
+ * @throws An error if the literal is not found or is not a function
  */
-export function fetchFunction(
-  pathToLiteral: string,
-  sourceObj: ILanguageObject = globalThis.literals
-): (...args: any[]) => string {
-  const literal = fetch(pathToLiteral, sourceObj);
+export function fetchFunction(pathToLiteral: string): (...args: any[]) => string {
+  // Get the literal from the literals object using the pathToLiteral as the key
+  const literal = literals[pathToLiteral];
 
-  return literal != null && typeof literal === 'function'
-    ? (literal as (...args: any[]) => string)
-    : (...args: any[]) => 'not_found';
-}
+  // If the literal is not found or is not a function, throw an error
+  if (!literal || typeof literal !== 'function')
+    throw new Error(`Literal not found or is not of type function: ${pathToLiteral}`);
 
-/**
- * Check if the given object is an object.
- * @param obj - The object to check.
- * @returns True if the object is an object, false otherwise.
- */
-function isObject(obj: any): obj is object {
-  return obj !== null && typeof obj === 'object' && !isArray(obj) && typeof obj !== 'function';
-}
-
-/**
- * Check if the given object is an array.
- * @param obj - The object to check.
- * @returns True if the object is an array, false otherwise.
- */
-function isArray(obj: any): obj is any[] {
-  return obj != null && Array.isArray(obj);
+  // Return the literal
+  return literal;
 }

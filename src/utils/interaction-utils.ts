@@ -9,11 +9,7 @@ import {
   Message,
 } from 'discord.js';
 
-import {
-  IInteractionDefer,
-  IInteractionDelete,
-  IInteractionReply,
-} from '../interfaces/interaction.interface.js';
+import { IInteractionDefer, IInteractionDelete, IInteractionReply } from '../interfaces/interaction.interface.js';
 
 /**
  * Reply to an interaction

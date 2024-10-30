@@ -8,7 +8,7 @@ import { IMetadata } from '../../interfaces/metadata.interface';
  * Event emitted when the voice channel is empty
  * Sends an empty channel embed to the channel where the music is playing
  */
-const event: IEvent = {
+export const event: IEvent = {
   event: 'emptyChannel',
 
   /**
@@ -18,9 +18,6 @@ const event: IEvent = {
    */
   callback: async (client: Client, queue: GuildQueue<IMetadata>): Promise<void> => {
     // Send the empty channel embed to the channel
-    if (queue.metadata.channel.isSendable())
-      await queue.metadata.channel.send({ embeds: [emptyChannel(client)] });
+    if (queue.metadata.channel.isSendable()) await queue.metadata.channel.send({ embeds: [emptyChannel(client)] });
   },
 };
-
-export default event;

@@ -6,7 +6,7 @@ import { fetchFunction } from '../../utils/language-utils.js';
  * Event that is called when a member joins a guild
  * Logs the event and sends a welcome message to the member
  */
-const event: IEvent = {
+export const event: IEvent = {
   event: 'guildMemberAdd',
 
   /**
@@ -19,10 +19,6 @@ const event: IEvent = {
     logger.info(`New member: ${member.user.tag} (id : ${member.user}) joined the server`);
 
     //Send a welcome message to the member
-    await member.send(
-      fetchFunction('events.client.guild_member_add.response')(member.guild.name, member.user.username)
-    );
+    await member.send(fetchFunction('guild_member_add')(member.guild.name, member.user.username));
   },
 };
-
-export default event;

@@ -35,7 +35,6 @@ export default async function loadLanguages(folderPath: string): Promise<void> {
   // Assign literals to the global literals object
   globalThis.literals = selectedLangObj;
 
-  console.log(literals);
   // Log the completion of the processing
   logger.info('Loaded literals');
 }
@@ -137,11 +136,7 @@ async function createLanguageFilePromise(filePath: string): Promise<ILanguageObj
  * @param {object} sourceObj - The source object to flatten.
  * @param {string} prefix - The prefix for each key.
  */
-function processLiterals(
-  targetObj: ILanguageObject,
-  sourceObj: { [key: string]: any },
-  prefix: string
-): void {
+function processLiterals(targetObj: ILanguageObject, sourceObj: { [key: string]: any }, prefix: string): void {
   // Iterate over each key in the source object
   for (const key in sourceObj) {
     // Get the full key and value of the current key
@@ -169,8 +164,7 @@ function processLiterals(
 function processItem(value: any): any {
   // If the value is a string and contains placeholders, convert it to a function
   if (typeof value === 'string' && /{\d+}/.test(value)) {
-    return (...args: any[]) =>
-      value.replace(/{(\d+)}/g, (_: any, number: number) => args[number] || `{${number}}`);
+    return (...args: any[]) => value.replace(/{(\d+)}/g, (_: any, number: number) => args[number] || `{${number}}`);
   }
 
   // Return the value as is

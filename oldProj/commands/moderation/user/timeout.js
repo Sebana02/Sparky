@@ -57,9 +57,7 @@ module.exports = {
     //Send a DM to the member explaining the reason of the timeout
     //Note: This will not work if the member has DMs disabled
     let dmMessagge = await member
-      .send(
-        `Has sido aislado del servidor **${inter.guild.name}** por **${reason}** durante **${time}** minutos`
-      )
+      .send(`Has sido aislado del servidor **${inter.guild.name}** por **${reason}** durante **${time}** minutos`)
       .catch(() => null);
 
     //Timeout the member

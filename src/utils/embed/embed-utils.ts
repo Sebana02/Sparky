@@ -50,11 +50,7 @@ export function createEmbed(embedContent: IEmbed, propagate: boolean = true): Em
  * @returns {EmbedBuilder} - The modified Discord embed.
  * @throws {Error} - If the modified embed is empty.
  */
-export function modifyEmbed(
-  embed: EmbedBuilder,
-  embedContent: IEmbed,
-  propagate: boolean = true
-): EmbedBuilder {
+export function modifyEmbed(embed: EmbedBuilder, embedContent: IEmbed, propagate: boolean = true): EmbedBuilder {
   try {
     // Check if the given embed is valid
     if (!isValidEmbed(embed)) throw new Error('given embed is not valid');
@@ -129,8 +125,7 @@ function isValidEmbed(embed: EmbedBuilder): boolean {
  */
 function setEmbedProperties(embed: EmbedBuilder, properties: IEmbed): void {
   // Destructure the properties
-  const { title, description, color, thumbnail, image, url, footer, author, setTimestamp, fields } =
-    properties;
+  const { title, description, color, thumbnail, image, url, footer, author, setTimestamp, fields } = properties;
 
   // Set the properties of the embed
   if (title) embed.setTitle(title);

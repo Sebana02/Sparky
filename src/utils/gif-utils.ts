@@ -9,12 +9,7 @@ import { fetchFunction } from './language-utils.js';
  * @returns The search URL
  */
 function search(keywords: string): string {
-  return [
-    'https://tenor.googleapis.com/v2/search?',
-    `q=${encodeURIComponent(keywords)}`,
-    `&key=${process.env.TENOR_API_KEY}`,
-    `&limit=${50}`,
-  ].join('');
+  return `https://tenor.googleapis.com/v2/search?q=${encodeURIComponent(keywords)}&key=${process.env.TENOR_API_KEY}&limit=${50}`;
 }
 
 /**
@@ -77,7 +72,7 @@ export async function sendRandomGif(
     if (!gifURL) {
       const errorEmbed = createEmbed({
         color: ColorScheme.error,
-        title: fetchFunction('utils.gif_utils.no_results')(category),
+        title: fetchFunction('gif_utils.no_results')(category),
       });
       return await reply(inter, { embeds: [errorEmbed] }, { deleteTime: 3 });
     }

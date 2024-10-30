@@ -5,8 +5,7 @@ const { fetchCommandLit } = require('@utils/language-utils.js');
 // Preload literals
 const literals = {
   description: fetchCommandLit('info.uptime.description'),
-  response: (days, hours, minutes, seconds) =>
-    fetchCommandLit('info.uptime.response', days, hours, minutes, seconds),
+  response: (days, hours, minutes, seconds) => fetchCommandLit('info.uptime.response', days, hours, minutes, seconds),
 };
 
 /**

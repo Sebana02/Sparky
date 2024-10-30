@@ -1,7 +1,5 @@
 {
-  "guild_member_add": {
-    "response": "¡Bienvenid@ al servidor '{0}', {1}!"
-  },
+  "guild_member_add": "¡Bienvenid@ al servidor '{0}', {1}!",
   "interaction_create": {
     "no_permissions": "No tienes permisos para ejecutar este comando",
     "no_dj_role": "No tienes el rol de DJ para ejecutar este comando",

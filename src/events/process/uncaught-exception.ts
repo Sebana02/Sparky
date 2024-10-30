@@ -5,7 +5,7 @@ import { IEvent } from '../../interfaces/event.interface.js';
  * Event when an uncaught exception occurs
  * Logs the error message to the console before crashing the bot
  */
-const event: IEvent = {
+export const event: IEvent = {
   event: 'uncaughtException',
 
   /**
@@ -23,5 +23,3 @@ const event: IEvent = {
     }, 1000);
   },
 };
-
-export default event;

@@ -31,8 +31,7 @@ export default async function loadEvents(folderPath: string, client: Client): Pr
     const eventFolderPath = resolve(folderPath, `./${folder}`);
 
     // If the folder path does not exist, log an error and return
-    if (!existsSync(eventFolderPath))
-      return logger.error(`Could not load events: ${eventFolderPath} does not exist`);
+    if (!existsSync(eventFolderPath)) return logger.error(`Could not load events: ${eventFolderPath} does not exist`);
 
     // Load events recursively from the folder path
     eventPromises.push(...retrieveEventPromises(eventFolderPath, emitter, client));
@@ -103,9 +102,7 @@ async function createEventPromise(filePath: string, emitter: any, client: Client
     });
 
     // Register the event to the emitter
-    emitter.on(event.event, (...args: any[]) =>
-      eventErrorHandler(event.event, event.callback, client, ...args)
-    );
+    emitter.on(event.event, (...args: any[]) => eventErrorHandler(event.event, event.callback, client, ...args));
   } catch (error: any) {
     logger.error(`Could not load event ${filePath}: ${error.stack}`);
     throw error;

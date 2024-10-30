@@ -5,7 +5,7 @@ import { IEvent } from '../../interfaces/event.interface.js';
  * Event when user presses CTRL+C (SIGINT)
  * Disconnects the bot and exits the process
  */
-const event: IEvent = {
+export const event: IEvent = {
   event: 'SIGINT',
   /**
    * Callback function for the SIGINT event
@@ -20,5 +20,3 @@ const event: IEvent = {
     process.exit(0);
   },
 };
-
-export default event;

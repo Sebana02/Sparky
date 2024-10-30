@@ -1,7 +1,7 @@
 import { GuildQueue, useQueue } from 'discord-player';
 import { commandErrorHandler } from '../../utils/error-handler.js';
 import { reply } from '../../utils/interaction-utils.js';
-import { fetchString, fetchObject } from '../../utils/language-utils.js';
+import { fetchString } from '../../utils/language-utils.js';
 import {
   Client,
   GuildMember,
@@ -14,12 +14,10 @@ import { ICommand } from '../../interfaces/command.interface.js';
 import { IEvent } from '../../interfaces/event.interface.js';
 import { IMetadata } from '../../interfaces/metadata.interface.js';
 
-const eventLit = fetchObject('events.client.interaction_create');
-
 /**
  * Event that is called when the bot receives an interaction
  */
-const event: IEvent = {
+export const event: IEvent = {
   event: 'interactionCreate',
 
   /**
@@ -47,20 +45,13 @@ const event: IEvent = {
       //Get command
       const command: ICommand = globalThis.commands.get(inter.commandName);
 
-      // Check if command exists
       if (!command) throw new Error(`Command ${inter.commandName} not found`);
 
       // Check command permissions
-      if (
-        command.permissions &&
-        (inter.member.permissions as PermissionsBitField).missing(command.permissions)
-      )
+      if (command.permissions && (inter.member.permissions as PermissionsBitField).missing(command.permissions))
         return await reply(
           inter,
-          {
-            content: fetchString('no_permissions', eventLit),
-            ephemeral: true,
-          },
+          { content: fetchString('interaction_create.no_permissions'), ephemeral: true },
           { deleteTime: 2 },
           false
         );
@@ -75,10 +66,7 @@ const event: IEvent = {
         if (djRole && !memberRoles.cache.some((role) => role.name === djRole))
           return await reply(
             inter,
-            {
-              content: fetchString('no_dj_role', eventLit),
-              ephemeral: true,
-            },
+            { content: fetchString('interaction_create.no_dj_role'), ephemeral: true },
             { deleteTime: 2 },
             false
           );
@@ -91,13 +79,8 @@ const event: IEvent = {
         if (queue && trivia)
           return await reply(
             inter,
-            {
-              content: fetchString('no_commands_trivia', eventLit),
-              ephemeral: true,
-            },
-            {
-              deleteTime: 2,
-            },
+            { content: fetchString('interaction_create.no_commands_trivia'), ephemeral: true },
+            { deleteTime: 2 },
             false
           );
 
@@ -109,13 +92,8 @@ const event: IEvent = {
         if (!voiceChannel)
           return await reply(
             inter,
-            {
-              content: fetchString('no_voice_channel', eventLit),
-              ephemeral: true,
-            },
-            {
-              deleteTime: 2,
-            },
+            { content: fetchString('interaction_create.no_voice_channel'), ephemeral: true },
+            { deleteTime: 2 },
             false
           );
 
@@ -128,13 +106,8 @@ const event: IEvent = {
         if (botVoiceChannel && voiceChannel.id !== botVoiceChannel.id)
           return await reply(
             inter,
-            {
-              content: fetchString('not_same_voice_channel', eventLit),
-              ephemeral: true,
-            },
-            {
-              deleteTime: 2,
-            },
+            { content: fetchString('interaction_create.not_same_voice_channel'), ephemeral: true },
+            { deleteTime: 2 },
             false
           );
       }
@@ -144,5 +117,3 @@ const event: IEvent = {
     }
   },
 };
-
-export default event;

@@ -8,7 +8,7 @@ import { IMetadata } from '../../interfaces/metadata.interface.js';
  * Event emitted when an error occurs
  * Sends an error embed to the channel where the music is playing
  */
-const event: IEvent = {
+export const event: IEvent = {
   event: 'error',
 
   /**
@@ -22,9 +22,6 @@ const event: IEvent = {
     if (queue.metadata.trivia) return;
 
     // Send the empty queue embed to the channel
-    if (queue.metadata.channel.isSendable())
-      await queue.metadata.channel.send({ embeds: [musicError(client)] });
+    if (queue.metadata.channel.isSendable()) await queue.metadata.channel.send({ embeds: [musicError(client)] });
   },
 };
-
-export default event;

@@ -531,9 +531,7 @@ async function showResult(inter, game, selector) {
   if (game.status === hangman.gameStatus.win) {
     msg = selector ? literals.resultWinCustom(selector.username) : literals.resultWinRandom;
   } else if (game.status === hangman.gameStatus.lose) {
-    msg = selector
-      ? literals.resultLoseCustom(selector.username, game.word)
-      : literals.resultLoseRandom(game.word);
+    msg = selector ? literals.resultLoseCustom(selector.username, game.word) : literals.resultLoseRandom(game.word);
   } else msg = literals.resultTimeout;
 
   //Create embed

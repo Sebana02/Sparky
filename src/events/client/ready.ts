@@ -4,7 +4,7 @@ import { IEvent } from '../../interfaces/event.interface.js';
 /**
  * Event handler for the ready event
  */
-const event: IEvent = {
+export const event: IEvent = {
   event: 'ready',
 
   /**
@@ -43,10 +43,6 @@ const event: IEvent = {
 
     //Log ready
     logger.info(`Logged in as ${client.user.username}`);
-    logger.info(
-      `Ready in a total of ${client.guilds.cache.size} servers for ${client.users.cache.size} users`
-    );
+    logger.info(`Ready in a total of ${client.guilds.cache.size} servers for ${client.users.cache.size} users`);
   },
 };
-
-export default event;

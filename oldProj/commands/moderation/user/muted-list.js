@@ -38,9 +38,7 @@ module.exports = {
 
     //Create the embed
     const embed = createEmbed({
-      description: mutedMembers
-        .map((member) => `**TAG**: ${member.user.tag} - **ID**: ${member.user.id}`)
-        .join('\n'),
+      description: mutedMembers.map((member) => `**TAG**: ${member.user.tag} - **ID**: ${member.user.id}`).join('\n'),
       color: 0xff0000,
       footer: { text: `Miembros silenciados: ${mutedMembers.size}` },
     });

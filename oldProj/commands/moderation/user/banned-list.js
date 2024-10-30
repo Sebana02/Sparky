@@ -26,9 +26,7 @@ module.exports = {
 
     //Create the embed
     const embed = createEmbed({
-      description: bannedMembers
-        .map((member) => `**TAG**: ${member.user.tag} - **ID**: ${member.user.id}`)
-        .join('\n'),
+      description: bannedMembers.map((member) => `**TAG**: ${member.user.tag} - **ID**: ${member.user.id}`).join('\n'),
       color: 0xff0000,
       footer: { text: `Miembros baneados: ${bannedMembers.size}` },
     });

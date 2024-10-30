@@ -5,7 +5,7 @@ import { IEvent } from '../../interfaces/event.interface.js';
  * Event when the bot is exiting
  * Logs the disconnection time and exit code to the console
  */
-const event: IEvent = {
+export const event: IEvent = {
   event: 'exit',
   /**
    * Callback function for the exit event
@@ -16,5 +16,3 @@ const event: IEvent = {
     logger.info(`Disconnecting bot with code ${code}`);
   },
 };
-
-export default event;
