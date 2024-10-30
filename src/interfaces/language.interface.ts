@@ -4,7 +4,6 @@
 export interface ILanguageObject {
   /** Language key. */
   [key: string]:
-    | ILanguageObject // Nested language objects
     | string // String values
     | number // Numeric values
     | any[] // Arrays of unknown type
