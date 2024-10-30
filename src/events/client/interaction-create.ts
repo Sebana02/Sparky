@@ -48,7 +48,7 @@ export const event: IEvent = {
       if (!command) throw new Error(`Command ${inter.commandName} not found`);
 
       // Check command permissions
-      if (command.permissions && (inter.member.permissions as PermissionsBitField).missing(command.permissions))
+      if (command.permissions && !(inter.member.permissions as PermissionsBitField).has(command.permissions))
         return await reply(
           inter,
           { content: fetchString('interaction_create.no_permissions'), ephemeral: true },

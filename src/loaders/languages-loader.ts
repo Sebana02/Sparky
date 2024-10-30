@@ -164,7 +164,10 @@ function processLiterals(targetObj: ILanguageObject, sourceObj: { [key: string]:
 function processItem(value: any): any {
   // If the value is a string and contains placeholders, convert it to a function
   if (typeof value === 'string' && /{\d+}/.test(value)) {
-    return (...args: any[]) => value.replace(/{(\d+)}/g, (_: any, number: number) => args[number] || `{${number}}`);
+    return (...args: any[]) =>
+      value.replace(/{(\d+)}/g, (_: any, number: number) =>
+        args[number] !== undefined ? args[number] : `{${number}}`
+      );
   }
 
   // Return the value as is
