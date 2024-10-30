@@ -1,12 +1,14 @@
-import { existsSync, readdirSync, readFileSync, statSync } from 'fs';
+import { existsSync, readdirSync, statSync } from 'fs';
 import { basename, resolve } from 'path';
 import { ILanguageObject } from '../interfaces/language.interface.js';
+import { pathToFileURL } from 'url';
+import { readFile } from 'fs/promises';
 
 /**
  * Loads languages from the specified folder path and processes the literals.
  * @param {string} folderPath - The path of the folder containing the languages.
  */
-export default function loadLanguages(folderPath: string): void {
+export default async function loadLanguages(folderPath: string): Promise<void> {
   // Log the loading of languages
   logger.info('Loading languages...');
 
@@ -18,8 +20,8 @@ export default function loadLanguages(folderPath: string): void {
   const selectedLanguage = process.env.LANGUAGE || defaultLanguage;
 
   // Load the selected language and merge with the default language if necessary
-  const selectedLangObj = loadLanguage(folderPath, selectedLanguage);
-  const defaultLangObj = loadLanguage(folderPath, defaultLanguage);
+  const selectedLangObj = await loadLanguage(folderPath, selectedLanguage);
+  const defaultLangObj = await loadLanguage(folderPath, defaultLanguage);
 
   // Merge the selected language with the default language
   Object.entries(defaultLangObj).forEach(([key, value]) => {
@@ -33,8 +35,7 @@ export default function loadLanguages(folderPath: string): void {
   // Assign literals to the global literals object
   globalThis.literals = selectedLangObj;
 
-  console.log(globalThis.literals);
-
+  console.log(literals);
   // Log the completion of the processing
   logger.info('Loaded literals');
 }
@@ -45,7 +46,7 @@ export default function loadLanguages(folderPath: string): void {
  * @param {string} language - The language to load.
  * @returns {ILanguageObject} The object containing the loaded language files.
  */
-function loadLanguage(folderPath: string, language: string): ILanguageObject {
+async function loadLanguage(folderPath: string, language: string): Promise<ILanguageObject> {
   // Resolve the full path of the language
   const langPath = resolve(folderPath, language);
 
@@ -55,45 +56,81 @@ function loadLanguage(folderPath: string, language: string): ILanguageObject {
     return {};
   }
 
-  // Load language files and log the loaded language
-  const langObj = loadLanguageFiles(langPath);
-  logger.info(`Loaded language: ${language}`);
+  // Retrieve an array of promises to load language files
+  const languageFilesPromises = retreiveLanguageFilePromises(langPath);
+
+  // Create an empty language object
+  let langObj: ILanguageObject = {};
+
+  // Promise to load the language files
+  await Promise.allSettled(languageFilesPromises)
+    .then((results) => {
+      // Get fulfilled promises
+      const loadedFiles = results.filter((result) => result.status === 'fulfilled');
+
+      // Merge the language objects
+      loadedFiles.forEach((result) => Object.assign(langObj, result.value));
+
+      // Log the completion of the loading
+      logger.info(`Loaded language: ${language}`);
+    })
+    .catch((error) => logger.error(`Could not load language: ${error.stack}`));
 
   // Return the language object
   return langObj;
 }
 
 /**
- * Loads language files (JSON) recursively from the specified folder path.
+ * Retrieves an array of promises to load language files from the specified folder path.
  * @param {string} folderPath - The path of the folder containing the language files.
- * @returns {ILanguageObject} An object containing the loaded language files, following the folder structure.
+ * @returns {Promise<ILanguageObject>[]} - An array of promises to load the language files.
  */
-function loadLanguageFiles(folderPath: string): ILanguageObject {
-  // Create an empty language object
-  const langObj: ILanguageObject = {};
+function retreiveLanguageFilePromises(folderPath: string): Promise<ILanguageObject>[] {
+  // Initialize an array of promises, one for each file
+  let langPromises: Promise<ILanguageObject>[] = [];
 
-  // Iterate over each file in the folder
+  //Iterate over the files in the folder
   for (const file of readdirSync(folderPath)) {
-    try {
-      // Resolve the full path of the file
-      const fullPath = resolve(folderPath, file);
+    // Resolve the file path
+    const filePath = resolve(folderPath, file);
 
-      // If the file is a directory, load the language files recursively, else process the JSON file as a new key
-      if (statSync(fullPath).isDirectory()) {
-        Object.assign(langObj, loadLanguageFiles(fullPath));
-      } else if (file.endsWith('.json')) {
-        const fileData = JSON.parse(readFileSync(fullPath, 'utf-8'));
-        processLiterals(langObj, fileData, '');
-      }
-    } catch (error: any) {
-      logger.warn(`Failed to load JSON file: ${file}: ${error.stack}`);
-    }
+    // If the file is a directory, load commands recursively, otherwise load the command
+    statSync(filePath).isDirectory()
+      ? langPromises.push(...retreiveLanguageFilePromises(filePath))
+      : langPromises.push(createLanguageFilePromise(filePath));
   }
 
-  // Return the language object
-  return langObj;
+  // Return the array of promises
+  return langPromises;
 }
 
+/**
+ * Creates a promise to load a language file and process the literals.
+ * @param {string} filePath - The path of the language file.
+ * @returns {Promise<ILanguageObject>} A promise to load the language file.
+ */
+async function createLanguageFilePromise(filePath: string): Promise<ILanguageObject> {
+  try {
+    // If the file is not a JSON file, return an empty object
+    if (!filePath.endsWith('.json')) return {};
+
+    // Read the file and parse the JSON data
+    const file = await readFile(filePath, 'utf8');
+    const fileData = JSON.parse(file);
+
+    // Create an empty language object
+    const langObj: ILanguageObject = {};
+
+    // Process the literals in the file
+    processLiterals(langObj, fileData, '');
+
+    // Return the language object
+    return langObj;
+  } catch (error: any) {
+    logger.error(`Failed to load JSON file: ${filePath}: ${error.stack}`);
+    throw error;
+  }
+}
 /**
  * Converts an object to a flat ILanguageObject with keys in the format `key1.key2.key3` and transforms strings with placeholders into functions.
  * @param {ILanguageObject} targetObj - The target object to store the flattened structure.

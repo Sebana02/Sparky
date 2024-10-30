@@ -1,0 +1,52 @@
+{
+  "disconnect": {
+    "description": "Desconecta al bot",
+    "response": "Desconectando, {0}..."
+  },
+  "ping": {
+    "description": "Muestra la latencia del bot",
+    "response": "Pong! **{0}ms**"
+  },
+  "poll": {
+    "description": "Crea una encuesta",
+    "options": {
+      "question": {
+        "name": "tema",
+        "description": "Tema de la encuesta"
+      },
+      "options": {
+        "name": "opciones",
+        "description": "Opciones de la encuesta (separadas por comas)"
+      },
+      "time": {
+        "name": "tiempo",
+        "description": "Tiempo que durará la encuesta en segundos"
+      }
+    },
+    "checkings": {
+      "insufficient_options": "Debes proporcionar al menos 2 opciones",
+      "too_many_options": "No puedes proporcionar más de 10 opciones"
+    },
+    "responses": {
+      "ended": "Votos totales: {0}",
+      "in_progress": "Teneis {0} segundos para votar",
+      "voted": "Has votado por: **{0}**"
+    }
+  },
+  "remind": {
+    "description": "Crea un recordatorio",
+    "options": {
+      "time": {
+        "name": "tiempo",
+        "description": "Cuando quieres que se te recuerde (ej. 1h 30m 1d 10s)"
+      },
+      "reminder": {
+        "name": "recordatorio",
+        "description": "Lo que quieres que se te recuerde"
+      }
+    },
+    "invalid_time": "Formato de tiempo inválido, intenta de nuevo",
+    "reminder_set": "Recordatorio establecido para {0}",
+    "response": "Recordatorio de {0}"
+  }
+}

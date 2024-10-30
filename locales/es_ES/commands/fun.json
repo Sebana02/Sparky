@@ -1,0 +1,101 @@
+{
+  "cat": {
+    "description": "Manda un gato aleatorio",
+    "response": "{0} manda un gato 🐱 ..."
+  },
+  "dog": {
+    "description": "Manda un perro aleatorio",
+    "response": "{0} manda un perro 🐶 ..."
+  },
+  "gif": {
+    "description": "Muestra un gif aleatorio de la categoría indicada",
+    "option": {
+      "name": "categoría",
+      "description": "Categoría que quieras buscar"
+    },
+    "response": "{0} manda un gif de \"{1}\" ..."
+  },
+  "hug": {
+    "description": "Abraza a un usuario",
+    "option": {
+      "name": "usuario",
+      "description": "El usuario que quieres abrazar"
+    },
+    "response": {
+      "description": "{0}, ¡un abrazo para ti! 🤗",
+      "footer": "{0} te manda un abrazo ..."
+    }
+  },
+  "meme": {
+    "description": "Manda un meme aleatorio",
+    "response": "{0} manda un meme ..."
+  },
+  "poke": {
+    "description": "Da un toque a un usuario, molesta a alguien",
+    "option": {
+      "name": "usuario",
+      "description": "El usuario al que quieras molestar"
+    },
+    "response": {
+      "description": "{0}, ¡poketeo para ti! 👉",
+      "footer": "{0} te poketea ..."
+    }
+  },
+  "shut_up": {
+    "description": "Manda a callar a un usuario",
+    "option": {
+      "name": "usuario",
+      "description": "El usuario al que quieras mandar a callar"
+    },
+    "response": {
+      "description": "🤫 Silencio, {0}",
+      "footer": "{0} te manda callar ..."
+    }
+  },
+  "slap": {
+    "description": "Da una bofetada a un usuario",
+    "option": {
+      "name": "usuario",
+      "description": "El usuario al que quieras abofetear"
+    },
+    "response": {
+      "description": "{0}, ¡en toda la boca! 👋",
+      "footer": "{0} te pega una bofetada ..."
+    }
+  },
+  "8ball": {
+    "description": "Haz una pregunta a la bola mágica",
+    "option": {
+      "name": "pregunta",
+      "description": "Tu pregunta para la bola mágica"
+    },
+    "response": {
+      "footer": "{0} ha preguntado: {1}",
+      "answers": [
+        "Sí",
+        "No",
+        "Tal vez",
+        "Es probable",
+        "No lo sé",
+        "Por supuesto",
+        "Definitivamente no",
+        "Sin duda alguna",
+        "Es poco probable",
+        "Pregunta de nuevo más tarde",
+        "No puedo responder a eso",
+        "¡Claro que sí!",
+        "No cuentes con ello",
+        "Es probablemente la mejor opción",
+        "Depende de las circunstancias"
+      ]
+    }
+  },
+  "coin_flip": {
+    "description": "Gira la moneda para ver si cae cara o cruz",
+    "response": {
+      "footer": "{0} ha tirado una moneda y ha salido...",
+      "heads": "😄 Cara 😄",
+      "tails": "❌ Cruz ❌"
+    }
+  }
+}

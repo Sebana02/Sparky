@@ -1,0 +1,60 @@
+{
+  "hide_channel": {
+    "description": "Oculta un canal",
+    "option": {
+      "name": "canal",
+      "description": "Canal que quieres ocultar"
+    },
+    "already_hidden": "El canal ya está oculto",
+    "response": "Canal {0} ocultado correctamente"
+  },
+  "mute_channel": {
+    "description": "Bloquea un canal para que nadie pueda hablar",
+    "option": {
+      "name": "canal",
+      "description": "Canal que quieres bloquear"
+    },
+    "already_blocked": "El canal ya está bloqueado",
+    "channel_not_supported": "No se puede bloquear este canal",
+    "response": "Canal {0} bloqueado correctamente"
+  },
+  "purge": {
+    "description": "Elimina mensajes de un canal",
+    "option": {
+      "name": "cantidad",
+      "description": "Cantidad de mensajes que quieres eliminar"
+    },
+    "response": "Borrando {0} mensajes..."
+  },
+  "show_channel": {
+    "description": "Muestra un canal oculto",
+    "option": {
+      "name": "canal",
+      "description": "Canal que quieres mostrar"
+    },
+    "already_shown": "El canal ya está visible",
+    "response": "Canal {0} mostrado correctamente"
+  },
+  "unmute_channel": {
+    "description": "Desbloquea un canal",
+    "option": {
+      "name": "canal",
+      "description": "Canal que quieres desbloquear"
+    },
+    "already_unblocked": "El canal ya está desbloqueado",
+    "channel_not_supported": "No se puede desbloquear este canal",
+    "response": "Canal {0} desbloqueado correctamente"
+  },
+  "create_role": {},
+  "ban": {},
+  "banned_list": {},
+  "kick": {},
+  "mute": {},
+  "muted_list": {},
+  "reset_nickname": {},
+  "set_nickname": {},
+  "timeout": {},
+  "unban": {},
+  "unmute": {},
+  "warn": {}
+}

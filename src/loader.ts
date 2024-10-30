@@ -17,7 +17,7 @@ export default async function loadResources(client: Client): Promise<void> {
   const __dirname = dirname(fileURLToPath(import.meta.url));
 
   // Load languages
-  loadLanguages(resolve(__dirname, '../locales'));
+  await loadLanguages(resolve(__dirname, '../locales'));
 
   // Load events
   await loadEvents(resolve(__dirname, 'events'), client);
