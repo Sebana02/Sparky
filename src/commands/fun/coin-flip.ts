@@ -5,11 +5,21 @@ import { ChatInputCommandInteraction, Client } from 'discord.js';
 import { reply } from '../../utils/interaction-utils.js';
 
 /**
+ * Literal object for the command
+ */
+const commandLit = {
+  description: fetchString('coin_flip.description'),
+  response: fetchFunction('coin_flip.response.footer'),
+  heads: fetchString('coin_flip.response.heads'),
+  tails: fetchString('coin_flip.response.tails'),
+};
+
+/**
  * Command that flips a coin to see if it lands on heads or tails
  */
 export const command: ICommand = {
   name: 'coinflip',
-  description: fetchString('coin_flip.description'),
+  description: commandLit.description,
 
   /**
    * Run the command
@@ -20,10 +30,10 @@ export const command: ICommand = {
     // Create embed with random response
     const embed = createEmbed({
       footer: {
-        text: fetchFunction('coin_flip.response.footer')(inter.user.username),
+        text: commandLit.response(inter.user.username),
         iconURL: inter.user.displayAvatarURL(),
       },
-      title: `${Math.random() < 0.5 ? fetchString('coin_flip.response.heads') : fetchString('coin_flip.response.tails')}`,
+      title: `${Math.random() < 0.5 ? commandLit.heads : commandLit.tails}`,
       color: ColorScheme.fun,
     });
 

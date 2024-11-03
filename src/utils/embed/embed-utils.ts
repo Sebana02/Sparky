@@ -17,40 +17,37 @@ export enum ColorScheme {
 /**
  * Create a new Discord embed using the provided embedContent
  * @param {IEmbed} embedContent - The content for the embed.
- * @param {boolean} [propagate=true] - Whether to propagate any errors that occur during the creation of the embed.
  * @returns {EmbedBuilder} - The created Discord embed.
  * @throws {Error} - If the created embed is empty.
  * @note Make sure to provide at least one of the following properties: title, description, fields, image, thumbnail, author, or footer, otherwise an error will be thrown.
  */
-export function createEmbed(embedContent: IEmbed, propagate: boolean = true): EmbedBuilder {
-  // Create a new Discord embed
-  const embed = new EmbedBuilder();
-
+export function createEmbed(embedContent: IEmbed): EmbedBuilder {
   try {
+    // Create a new Discord embed
+    const embed = new EmbedBuilder();
+
     // Set the properties of the embed
     setEmbedProperties(embed, embedContent);
 
     // Check if the embed is empty
     if (!isValidEmbed(embed)) throw new Error('embed is not valid');
+
+    // Return the created embed
+    return embed;
   } catch (error: any) {
     error.message = `creating embed: ${error.message}`;
-    if (propagate) throw error;
-    else logger.error(error.stack);
+    throw error;
   }
-
-  // Return the created embed
-  return embed;
 }
 
 /**
  * Modify an existing Discord embed using the provided embedContent
  * @param {EmbedBuilder} embed - The existing Discord embed to be modified.
  * @param {IEmbed} embedContent - The content for the embed.
- * @param {boolean} [propagate=true] - Whether to propagate any errors that occur during the modification of the embed.
  * @returns {EmbedBuilder} - The modified Discord embed.
  * @throws {Error} - If the modified embed is empty.
  */
-export function modifyEmbed(embed: EmbedBuilder, embedContent: IEmbed, propagate: boolean = true): EmbedBuilder {
+export function modifyEmbed(embed: EmbedBuilder, embedContent: IEmbed): EmbedBuilder {
   try {
     // Check if the given embed is valid
     if (!isValidEmbed(embed)) throw new Error('given embed is not valid');
@@ -60,41 +57,37 @@ export function modifyEmbed(embed: EmbedBuilder, embedContent: IEmbed, propagate
 
     // Check if the embed is empty
     if (!isValidEmbed(embed)) throw new Error('embed is not valid');
+
+    // Return the modified embed
+    return embed;
   } catch (error: any) {
     error.message = `modifying embed: ${error.message}`;
-    if (propagate) throw error;
-    else logger.error(error.stack);
+    throw error;
   }
-
-  // Return the modified embed
-  return embed;
 }
 
 /**
  * Clone an existing Discord embed
  * @param {EmbedBuilder} embed - The existing Discord embed to be cloned.
- * @param {boolean} [propagate=true] - Whether to propagate any errors that occur during the cloning of the embed.
  * @returns {EmbedBuilder} - The cloned Discord embed.
  * @throws {Error} - If the cloned embed is empty.
  */
-export function cloneEmbed(embed: EmbedBuilder, propagate: boolean = true): EmbedBuilder {
-  // Create a new Discord embed
-  let clonedEmbed = new EmbedBuilder();
-
+export function cloneEmbed(embed: EmbedBuilder): EmbedBuilder {
   try {
+    // Create a new Discord embed
+    let clonedEmbed = new EmbedBuilder();
     // Check if the given embed is valid
     if (!isValidEmbed(embed)) throw new Error('given embed is not valid');
 
     // Clone the embed
     clonedEmbed = new EmbedBuilder(embed.data);
+
+    // Return the cloned embed
+    return clonedEmbed;
   } catch (error: any) {
     error.message = `cloning embed: ${error.message}`;
-    if (propagate) throw error;
-    else logger.error(error.stack);
+    throw error;
   }
-
-  // Return the cloned embed
-  return clonedEmbed;
 }
 
 /**
@@ -130,12 +123,12 @@ function setEmbedProperties(embed: EmbedBuilder, properties: IEmbed): void {
   // Set the properties of the embed
   if (title) embed.setTitle(title);
   if (description) embed.setDescription(description);
-  embed.setColor(color || ColorScheme.default);
+  if (color) embed.setColor(color);
   if (thumbnail) embed.setThumbnail(thumbnail);
   if (image) embed.setImage(image);
   if (url) embed.setURL(url);
   if (footer?.text) embed.setFooter(footer);
   if (author?.name) embed.setAuthor(author);
   if (setTimestamp) embed.setTimestamp();
-  if (fields) fields.forEach((field) => field.name && field.value && embed.addFields(field));
+  if (fields) embed.setFields(fields);
 }

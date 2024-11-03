@@ -5,15 +5,26 @@ import { createEmbed, ColorScheme } from '../../../utils/embed/embed-utils.js';
 import { ApplicationCommandOptionType, ChatInputCommandInteraction, Client } from 'discord.js';
 
 /**
+ * Literal object for the command
+ */
+const commandLit = {
+  description: fetchString('poke.description'),
+  userName: fetchString('poke.option.name'),
+  userDescription: fetchString('poke.option.description'),
+  responseTitle: fetchFunction('poke.response.description'),
+  responseDescription: fetchFunction('poke.response.footer'),
+};
+
+/**
  * Command that sends a random gif from the category poke, poke the user
  */
 export const command: ICommand = {
   name: 'poke',
-  description: fetchString('poke.description'),
+  description: commandLit.description,
   options: [
     {
-      name: fetchString('poke.option.name'),
-      description: fetchString('poke.option.description'),
+      name: commandLit.userName,
+      description: commandLit.userDescription,
       type: ApplicationCommandOptionType.User,
       required: true,
     },
@@ -26,15 +37,14 @@ export const command: ICommand = {
    */
   run: async (client: Client, inter: ChatInputCommandInteraction): Promise<void> => {
     // Get the target user
-    const targetUser = inter.options.getUser(fetchString('poke.option.name'));
-    if (!targetUser) throw new Error(`Option "${fetchString('poke.option.name')}" was not found`);
+    const targetUser = inter.options.getUser(commandLit.userName, true);
 
     // Create embed
     const embed = createEmbed({
       color: ColorScheme.fun,
-      description: fetchFunction('poke.response.description')(targetUser),
+      description: commandLit.responseTitle(targetUser),
       footer: {
-        text: fetchFunction('poke.response.footer')(inter.user.username),
+        text: commandLit.responseDescription(inter.user.username),
         iconURL: inter.user.displayAvatarURL(),
       },
     });

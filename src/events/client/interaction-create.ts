@@ -15,6 +15,17 @@ import { IEvent } from '../../interfaces/event.interface.js';
 import { IMetadata } from '../../interfaces/metadata.interface.js';
 
 /**
+ * Literal object for the event
+ */
+const eventLit = {
+  noPermissions: fetchString('interaction_create.no_permissions'),
+  noDJRole: fetchString('interaction_create.no_dj_role'),
+  noCommandsTrivia: fetchString('interaction_create.no_commands_trivia'),
+  noVoiceChannel: fetchString('interaction_create.no_voice_channel'),
+  noSameVoiceChannel: fetchString('interaction_create.no_same_voice_channel'),
+};
+
+/**
  * Event that is called when the bot receives an interaction
  */
 export const event: IEvent = {
@@ -30,7 +41,7 @@ export const event: IEvent = {
     // Return if interaction was not received on a guild or if any of the required properties are missing
     if (!inter.guild || !inter.member || !inter.guildId || !inter.user) return;
 
-    // If interaction is a command
+    // If interaction is a chat input command
     if (inter.isChatInputCommand()) {
       //Log interaction
       let cmdInfo = `/${inter.commandName} `;
@@ -49,12 +60,7 @@ export const event: IEvent = {
 
       // Check command permissions
       if (command.permissions && !(inter.member.permissions as PermissionsBitField).has(command.permissions))
-        return await reply(
-          inter,
-          { content: fetchString('interaction_create.no_permissions'), ephemeral: true },
-          { deleteTime: 2 },
-          false
-        );
+        return await reply(inter, { content: eventLit.noPermissions, ephemeral: true }, { deleteTime: 2 });
 
       // Check if command requires user to be in a voice channel
       if (command.voiceChannel) {
@@ -64,12 +70,7 @@ export const event: IEvent = {
 
         // Check if user has DJ role if DJ role is set
         if (djRole && !memberRoles.cache.some((role) => role.name === djRole))
-          return await reply(
-            inter,
-            { content: fetchString('interaction_create.no_dj_role'), ephemeral: true },
-            { deleteTime: 2 },
-            false
-          );
+          return await reply(inter, { content: eventLit.noDJRole, ephemeral: true }, { deleteTime: 2 });
 
         // Get queue and whether trivia is enabled
         const queue: GuildQueue<IMetadata> | null = useQueue(inter.guildId);
@@ -77,12 +78,7 @@ export const event: IEvent = {
 
         // Check if queue and trivia are enabled, if so, no voice commands allowed
         if (queue && trivia)
-          return await reply(
-            inter,
-            { content: fetchString('interaction_create.no_commands_trivia'), ephemeral: true },
-            { deleteTime: 2 },
-            false
-          );
+          return await reply(inter, { content: eventLit.noCommandsTrivia, ephemeral: true }, { deleteTime: 2 });
 
         // Get user and voice channel of the interacting user
         const user: GuildMember = inter.member as GuildMember;
@@ -90,12 +86,7 @@ export const event: IEvent = {
 
         // Check if user is in a voice channel, if not, return error
         if (!voiceChannel)
-          return await reply(
-            inter,
-            { content: fetchString('interaction_create.no_voice_channel'), ephemeral: true },
-            { deleteTime: 2 },
-            false
-          );
+          return await reply(inter, { content: eventLit.noVoiceChannel, ephemeral: true }, { deleteTime: 2 });
 
         // Get bot's voice channel
         const botVoiceChannel: VoiceBasedChannel | null = inter.guild.members.me
@@ -104,12 +95,7 @@ export const event: IEvent = {
 
         // Check if bot is in a voice channel and if user is in the same voice channel as the bot
         if (botVoiceChannel && voiceChannel.id !== botVoiceChannel.id)
-          return await reply(
-            inter,
-            { content: fetchString('interaction_create.not_same_voice_channel'), ephemeral: true },
-            { deleteTime: 2 },
-            false
-          );
+          return await reply(inter, { content: eventLit.noSameVoiceChannel, ephemeral: true }, { deleteTime: 2 });
       }
 
       //Execute command

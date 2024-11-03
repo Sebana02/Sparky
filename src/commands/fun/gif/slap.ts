@@ -5,15 +5,26 @@ import { createEmbed, ColorScheme } from '../../../utils/embed/embed-utils.js';
 import { ApplicationCommandOptionType, ChatInputCommandInteraction, Client } from 'discord.js';
 
 /**
+ * Literal object for the command
+ */
+const commandLit = {
+  description: fetchString('slap.description'),
+  userName: fetchString('slap.option.name'),
+  userDescription: fetchString('slap.option.description'),
+  responseTitle: fetchFunction('slap.response.description'),
+  responseDescription: fetchFunction('slap.response.footer'),
+};
+
+/**
  * Command that sends a random gif from the category slap, slap the user
  */
 export const command: ICommand = {
   name: 'slap',
-  description: fetchString('slap.description'),
+  description: commandLit.description,
   options: [
     {
-      name: fetchString('slap.option.name'),
-      description: fetchString('slap.option.description'),
+      name: commandLit.userName,
+      description: commandLit.userDescription,
       type: ApplicationCommandOptionType.User,
       required: true,
     },
@@ -26,15 +37,14 @@ export const command: ICommand = {
    */
   run: async (client: Client, inter: ChatInputCommandInteraction): Promise<void> => {
     // Get the target user
-    const targetUser = inter.options.getUser(fetchString('slap.option.name'));
-    if (!targetUser) throw new Error(`Option "${fetchString('slap.option.name')}" was not found`);
+    const targetUser = inter.options.getUser(commandLit.userName, true);
 
     // Create embed
     const embed = createEmbed({
       color: ColorScheme.fun,
-      description: fetchFunction('slap.response.description')(targetUser),
+      description: commandLit.responseTitle(targetUser),
       footer: {
-        text: fetchFunction('slap.response.footer')(inter.user.username),
+        text: commandLit.responseDescription(inter.user.username),
         iconURL: inter.user.displayAvatarURL(),
       },
     });

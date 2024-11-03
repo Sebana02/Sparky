@@ -1,5 +1,4 @@
 import {
-  ButtonInteraction,
   ChatInputCommandInteraction,
   InteractionDeferReplyOptions,
   InteractionDeferUpdateOptions,
@@ -7,24 +6,31 @@ import {
   InteractionReplyOptions,
   InteractionUpdateOptions,
   Message,
+  MessageComponentInteraction,
+  MessageContextMenuCommandInteraction,
+  ModalSubmitInteraction,
+  UserContextMenuCommandInteraction,
 } from 'discord.js';
 
 import { IInteractionDefer, IInteractionDelete, IInteractionReply } from '../interfaces/interaction.interface.js';
 
 /**
  * Reply to an interaction
- * @param {ChatInputCommandInteraction} interaction - The interaction object
- * @param {IInteractionReply} replyOptions - The options for replying to the interaction
- * @param {IInteractionDelete} [deleteOptions={deleteTime=-1}] - The time in seconds after which the reply should be deleted, if negative the reply will not be deleted
- * @param {boolean} [propagate=true] - Whether to propagate any errors that occur during the reply
- * @returns {Promise<void>} - A promise that resolves after the reply is sent / deleted
- * @throws {Error} - If the interaction is not provided or if neither content nor embeds are provided
+ * @param interaction - The interaction object
+ * @param replyOptions - The options for replying to the interaction
+ * @param deleteOptions - The options for deleting the reply
+ * @returns A promise that resolves after the reply is sent / deleted
+ * @throws An error if the interaction is not provided or if neither content nor embeds are provided
  */
 export async function reply(
-  interaction: ChatInputCommandInteraction,
+  interaction:
+    | ChatInputCommandInteraction
+    | MessageContextMenuCommandInteraction
+    | UserContextMenuCommandInteraction
+    | MessageComponentInteraction
+    | ModalSubmitInteraction,
   replyOptions: IInteractionReply,
-  deleteOptions: IInteractionDelete = { deleteTime: -1 },
-  propagate: boolean = true
+  deleteOptions: IInteractionDelete = { deleteTime: -1 }
 ): Promise<void> {
   try {
     //Check if the interaction and options are provided
@@ -38,128 +44,132 @@ export async function reply(
 
     //Delete the reply after deleteTime seconds
     if (deleteOptions.deleteTime > 0) {
-      await new Promise<void>((resolve, reject) => {
+      await new Promise<void>((resolve) => {
         setTimeout(async () => {
-          await interaction.deleteReply().catch((error) => reject(error));
+          await interaction.deleteReply();
           resolve();
         }, deleteOptions.deleteTime * 1000);
-      }).catch((error: any) => {
-        error.message = `deleting reply: ${error.message}`;
-        throw error;
       });
     }
   } catch (error: any) {
     error.message = `replying interaction: ${error.message}`;
-    if (propagate) throw error;
-    else logger.error(error.stack);
+    throw error;
   }
 }
 
 /**
  * Defer a reply to an interaction
- * @param {ChatInputCommandInteraction} interaction - The interaction object
- * @param {IInteractionDefer} [deferOptions={ephemeral=false}] - The options for deferring the reply
- * @param {boolean} [propagate=true] - Whether to propagate any errors that occur during the deferral
- * @returns {Promise<void>} - A promise that resolves after the reply is deferred
- * @throws {Error} - If the interaction is not provided
+ * @param interaction - The interaction object
+ * @param deferOptions - The options for deferring the reply
+ * @returns A promise that resolves after the reply is deferred
+ * @throws An error if the interaction is not provided
  */
 export async function deferReply(
-  interaction: ChatInputCommandInteraction,
-  deferOptions: IInteractionDefer = { ephemeral: false },
-  propagate: boolean = true
+  interaction:
+    | ChatInputCommandInteraction
+    | MessageContextMenuCommandInteraction
+    | UserContextMenuCommandInteraction
+    | MessageComponentInteraction
+    | ModalSubmitInteraction,
+  deferOptions: IInteractionDefer = { ephemeral: false }
 ): Promise<void> {
   try {
     //Check if the interaction and options are provided
     if (!interaction) throw new Error('interaction not provided');
 
     //Deferr the interaction if it's not already deferred or replied
-    if (!interaction.deferred && !interaction.replied)
+    if (!interaction.deferred && !interaction.replied) {
       await interaction.deferReply(deferOptions as InteractionDeferReplyOptions);
+    }
   } catch (error: any) {
     error.message = `deferring reply: ${error.message}`;
-    if (propagate) throw error;
-    else logger.error(error.stack);
+    throw error;
   }
 }
 
 /**
  * Fetch the reply to an interaction
- * @param {ChatInputCommandInteraction} interaction - The interaction object
- * @param {boolean} [propagate=true] - Whether to propagate any errors that occur during the fetch
- * @throws {Error} - If the interaction is not provided
- * @returns {Promise<Message | null>} - A promise that resolves with the reply message or null if the interaction has not been replied to
- * @throws {Error} - If the interaction is not provided or if the interaction has not been replied to
+ * @param interaction - The interaction object
+ * @returns A promise that resolves with the reply to the interaction
+ * @throws An error if the interaction is not provided
  */
 export async function fetchReply(
-  interaction: ChatInputCommandInteraction,
-  propagate: boolean = true
-): Promise<Message | undefined> {
+  interaction:
+    | ChatInputCommandInteraction
+    | MessageContextMenuCommandInteraction
+    | UserContextMenuCommandInteraction
+    | MessageComponentInteraction
+    | ModalSubmitInteraction
+): Promise<Message> {
   try {
     //Check if the interaction and options are provided
     if (!interaction) throw new Error('interaction not provided');
 
-    //Fetch the reply if the interaction is already replied to
-    if (interaction.replied) return await interaction.fetchReply();
+    //Check if the interaction has been replied to
+    if (!interaction.replied) throw new Error('interaction has not been replied to');
 
-    throw new Error('interaction has not been replied to');
+    //Return the reply to the interaction
+    return await interaction.fetchReply();
   } catch (error: any) {
     error.message = `fetching reply: ${error.message}`;
-    if (propagate) throw error;
-    else logger.error(error.stack);
+    throw error;
   }
-
-  return undefined;
 }
 
 /**
- * Delete the reply to an interaction
- * @param {ChatInputCommandInteraction} interaction - The interaction object
- * @param {IInteractionDelete} [deleteOptions={deleteTime=-1}] - The options for deleting the reply
- * @param {boolean} [propagate=true] - Whether to propagate any errors that occur during the deletion
- * @throws {Error} - If the interaction is not provided
- * @returns {Promise<void>} - A promise that resolves after the reply is deleted
+ * Delete the reply to an interaction.
+ * @param interaction - The interaction object
+ * @param deleteOptions - The options for deleting the reply
+ * @returns A promise that resolves after the reply is deleted
+ * @throws An error if the interaction is not provided
  */
 export async function deleteReply(
-  interaction: ChatInputCommandInteraction,
-  deleteOptions: IInteractionDelete = { deleteTime: -1 },
-  propagate: boolean = true
+  interaction:
+    | ChatInputCommandInteraction
+    | MessageContextMenuCommandInteraction
+    | UserContextMenuCommandInteraction
+    | MessageComponentInteraction
+    | ModalSubmitInteraction,
+  deleteOptions: IInteractionDelete = { deleteTime: -1 }
 ): Promise<void> {
   try {
     //Check if the interaction and options are provided
     if (!interaction) throw new Error('interaction not provided');
 
-    //Delete the reply after deleteTime seconds
+    //Delete the reply after deleteTime seconds or immediately if deleteTime is not provided
     if (deleteOptions.deleteTime > 0) {
-      await new Promise<void>((resolve, reject) => {
+      await new Promise<void>((resolve) => {
         setTimeout(async () => {
-          await interaction.deleteReply().catch((error) => reject(error));
+          await interaction.deleteReply();
           resolve();
         }, deleteOptions.deleteTime * 1000);
-      }).catch((error) => {
-        throw error;
       });
-    } else await interaction.deleteReply();
+    } else {
+      await interaction.deleteReply();
+    }
   } catch (error: any) {
     error.message = `deleting reply: ${error.message}`;
-    if (propagate) throw error;
-    else logger.error(error.stack);
+    throw error;
   }
 }
 
 /**
- * Follow up an interaction with a new message
- * @param {ChatInputCommandInteraction} interaction - The interaction object
- * @param {IInteractionReply} replyOptions - The options for following up the interaction
- * @param {IInteractionDelete} [deleteOptions={deleteTime=-1}] - The options for deleting the reply
- * @param {boolean} [propagate=true] - Whether to propagate any errors that occur during the follow-up
- * @returns {Promise<void>} - A promise that resolves after the follow-up is sent / deleted
- * @throws {Error} - If the interaction is not provided or if neither content nor embeds are provided
+ * Follow up an interaction
+ * @param  interaction - The interaction object
+ * @param  replyOptions - The options for following up the interaction
+ * @param  deleteOptions - The options for deleting the reply
+ * @returns A promise that resolves after the follow up is sent / deleted
+ * @throws An error if the interaction is not provided or if neither content nor embeds are provided
  */
 export async function followUp(
-  interaction: ChatInputCommandInteraction,
+  interaction:
+    | ChatInputCommandInteraction
+    | MessageContextMenuCommandInteraction
+    | UserContextMenuCommandInteraction
+    | MessageComponentInteraction
+    | ModalSubmitInteraction,
   replyOptions: IInteractionReply,
-  deleteOptions: IInteractionDelete = { deleteTime: -1 },
-  propagate: boolean = true
+  deleteOptions: IInteractionDelete = { deleteTime: -1 }
 ): Promise<void> {
   try {
     //Check if the interaction and options are provided
@@ -172,36 +182,27 @@ export async function followUp(
 
     //Delete the reply after deleteTime seconds
     if (deleteOptions.deleteTime > 0) {
-      await new Promise<void>((resolve, reject) => {
+      await new Promise<void>((resolve) => {
         setTimeout(async () => {
-          await interaction.deleteReply().catch((error) => reject(error));
+          await interaction.deleteReply();
           resolve();
         }, deleteOptions.deleteTime * 1000);
-      }).catch((error) => {
-        error.message = `deleting reply: ${error.message}`;
-        throw error;
       });
     }
   } catch (error: any) {
     error.message = `following up interaction: ${error.message}`;
-    if (propagate) throw error;
-    else logger.error(error.stack);
+    throw error;
   }
 }
 
 /**
  * Update an interaction
- * @param {ButtonInteraction} interaction - The interaction object
- * @param {IInteractionReply} replyOptions - The options for updating the interaction
- * @param {boolean} [propagate=true] - Whether to propagate any errors that occur during the update
- * @throws {Error} - If the interaction is not provided or if neither content nor embeds are provided
- * @returns {Promise<void>} - A promise that resolves after the update is sent
+ * @param interaction - The interaction object
+ * @param replyOptions - The options for updating the interaction
+ * @returns A promise that resolves after the update is sent
+ * @throws An error if the interaction is not provided or if neither content nor embeds are provided
  */
-export async function update(
-  interaction: ButtonInteraction,
-  replyOptions: IInteractionReply,
-  propagate: boolean = true
-): Promise<void> {
+export async function update(interaction: MessageComponentInteraction, replyOptions: IInteractionReply): Promise<void> {
   try {
     // Check if the interaction is provided
     if (!interaction) throw new Error('interaction not provided');
@@ -213,23 +214,20 @@ export async function update(
     await interaction.update(replyOptions as InteractionUpdateOptions);
   } catch (error: any) {
     error.message = `updating interaction: ${error.message}`;
-    if (propagate) throw error;
-    else logger.error(error.stack);
+    throw error;
   }
 }
 
 /**
  * Defer an update to an interaction
- * @param {ButtonInteraction} interaction - The interaction object
- * @param {IInteractionDefer} [deferOptions={ephemeral=false}] - The options for deferring the update
- * @param {boolean} [propagate=true] - Whether to propagate any errors that occur during the deferral
- * @throws {Error} - If the interaction is not provided
- * @returns {Promise<void>} - A promise that resolves after the update is deferred
+ * @param interaction - The interaction object
+ * @param IInteractionDefer [deferOptions={ephemeral=false}] - The options for deferring the update
+ * @returns  A promise that resolves after the update is deferred
+ * @throws - An error if the interaction is not provided
  */
 export async function deferUpdate(
-  interaction: ButtonInteraction,
-  deferOptions: IInteractionDefer = { ephemeral: false },
-  propagate: boolean = true
+  interaction: MessageComponentInteraction,
+  deferOptions: IInteractionDefer = { ephemeral: false }
 ): Promise<void> {
   try {
     // Check if the interaction is provided
@@ -241,7 +239,6 @@ export async function deferUpdate(
     }
   } catch (error: any) {
     error.message = `deferring interaction update: ${error.message}`;
-    if (propagate) throw error;
-    else logger.error(error.stack);
+    throw error;
   }
 }

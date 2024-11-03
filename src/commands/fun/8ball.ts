@@ -5,15 +5,26 @@ import { ApplicationCommandOptionType, ChatInputCommandInteraction, Client } fro
 import { reply } from '../../utils/interaction-utils.js';
 
 /**
+ * Literal object for the command
+ */
+const commandLit = {
+  description: fetchString('8ball.description'),
+  questionName: fetchString('8ball.option.name'),
+  questionDescription: fetchString('8ball.option.description'),
+  answers: fetchArray('8ball.response.answers'),
+  response: fetchFunction('8ball.response.footer'),
+};
+
+/**
  * Command that asks a question to the magic 8ball and gets a random response
  */
 export const command: ICommand = {
   name: '8ball',
-  description: fetchString('8ball.description'),
+  description: commandLit.description,
   options: [
     {
-      name: fetchString('8ball.option.name'),
-      description: fetchString('8ball.option.description'),
+      name: commandLit.questionName,
+      description: commandLit.questionDescription,
       type: ApplicationCommandOptionType.String,
       required: true,
     },
@@ -25,19 +36,15 @@ export const command: ICommand = {
    * @param inter The interaction
    */
   run: async (client: Client, inter: ChatInputCommandInteraction): Promise<void> => {
-    // Get the question
-    const question = inter.options.getString(fetchString('8ball.option.name'));
-    if (!question) throw new Error(`Option "${fetchString('8ball.option.name')}" was not found`);
-
-    // Get possible answers
-    const answers = fetchArray('8ball.response.answers');
+    // Get the target user
+    const question = inter.options.getUser(commandLit.questionName, true);
 
     // Create embed with random response
     const embed = createEmbed({
-      title: `🎱 ${answers[Math.floor(Math.random() * answers.length)]}`,
+      title: `🎱 ${commandLit.answers[Math.floor(Math.random() * commandLit.answers.length)]}`,
       color: ColorScheme.fun,
       footer: {
-        text: fetchFunction('8ball.response.footer')(inter.user.username, question),
+        text: commandLit.response(inter.user.username, question),
         iconURL: inter.user.displayAvatarURL(),
       },
     });

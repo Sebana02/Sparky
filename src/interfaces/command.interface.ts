@@ -29,6 +29,12 @@ export interface ICommandOption {
 
   /** Optional choices for the option. */
   readonly choices?: ICommandOptionChoice[];
+
+  /** Optional minimum value for the option. */
+  readonly minValue?: number;
+
+  /** Optional maximum value for the option. */
+  readonly maxValue?: number;
 }
 
 /**

@@ -5,15 +5,26 @@ import { createEmbed, ColorScheme } from '../../../utils/embed/embed-utils.js';
 import { ApplicationCommandOptionType, ChatInputCommandInteraction, Client } from 'discord.js';
 
 /**
+ * Literal object for the command
+ */
+const commandLit = {
+  desciption: fetchString('hug.description'),
+  userName: fetchString('hug.option.name'),
+  userDescription: fetchString('hug.option.description'),
+  responseTitle: fetchFunction('hug.response.description'),
+  responseDescription: fetchFunction('hug.response.footer'),
+};
+
+/**
  * Command that sends a random gif from the category hug, hug the user
  */
 export const command: ICommand = {
   name: 'hug',
-  description: fetchString('hug.description'),
+  description: commandLit.desciption,
   options: [
     {
-      name: fetchString('hug.option.name'),
-      description: fetchString('hug.option.description'),
+      name: commandLit.userName,
+      description: commandLit.userDescription,
       type: ApplicationCommandOptionType.User,
       required: true,
     },
@@ -26,15 +37,14 @@ export const command: ICommand = {
    */
   run: async (client: Client, inter: ChatInputCommandInteraction): Promise<void> => {
     // Get the target user
-    const targetUser = inter.options.getUser(fetchString('hug.option.name'));
-    if (!targetUser) throw new Error(`Option "${fetchString('hug.option.name')}" was not found`);
+    const targetUser = inter.options.getUser(commandLit.userName, true);
 
     // Create embed
     const embed = createEmbed({
       color: ColorScheme.fun,
-      description: fetchFunction('hug.response.description')(targetUser),
+      description: commandLit.responseTitle(targetUser),
       footer: {
-        text: fetchFunction('hug.response.footer')(inter.user.username),
+        text: commandLit.responseDescription(inter.user.username),
         iconURL: inter.user.displayAvatarURL(),
       },
     });

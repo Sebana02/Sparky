@@ -29,8 +29,7 @@
     },
     "responses": {
       "ended": "Votos totales: {0}",
-      "in_progress": "Teneis {0} segundos para votar",
-      "voted": "Has votado por: **{0}**"
+      "in_progress": "Teneis {0} segundos para votar"
     }
   },
   "remind": {

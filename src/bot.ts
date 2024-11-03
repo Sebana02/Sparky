@@ -4,6 +4,7 @@ import { YoutubeiExtractor } from 'discord-player-youtubei';
 import { config as loadEnv } from 'dotenv';
 import loadLogger from './logger.js';
 import loadResources from './loader.js';
+
 /**
  * Main function to run the bot
  */

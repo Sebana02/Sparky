@@ -4,11 +4,19 @@ import { ICommand } from '../../interfaces/command.interface.js';
 import { Client, ChatInputCommandInteraction, PermissionFlagsBits } from 'discord.js';
 
 /**
+ * Literal object for the command
+ */
+const commandLit = {
+  description: fetchString('disconnect.description'),
+  response: fetchFunction('disconnect.response'),
+};
+
+/**
  * Command that disconnects the bot
  */
 export const command: ICommand = {
   name: 'disconnect',
-  description: fetchString('disconnect.description'),
+  description: commandLit.description,
   permissions: PermissionFlagsBits.Administrator,
 
   /**
@@ -18,11 +26,7 @@ export const command: ICommand = {
    */
   run: async (client: Client, inter: ChatInputCommandInteraction): Promise<void> => {
     //Reply to the interaction
-    await reply(
-      inter,
-      { content: fetchFunction('disconnect.response')(inter.user.username), ephemeral: true },
-      { deleteTime: 2 }
-    );
+    await reply(inter, { content: commandLit.response(inter.user.username), ephemeral: true }, { deleteTime: 2 });
 
     //Disconnect bot
     await client.destroy();

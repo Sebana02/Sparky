@@ -5,11 +5,19 @@ import { createEmbed, ColorScheme } from '../../../utils/embed/embed-utils.js';
 import { ChatInputCommandInteraction, Client } from 'discord.js';
 
 /**
+ * Literal object for the command
+ */
+const commandLit = {
+  description: fetchString('meme.description'),
+  response: fetchFunction('meme.response'),
+};
+
+/**
  * Command that sends random meme
  */
 export const command: ICommand = {
   name: 'meme',
-  description: fetchString('meme.description'),
+  description: commandLit.description,
 
   /**
    * Run the command
@@ -21,7 +29,7 @@ export const command: ICommand = {
     const embed = createEmbed({
       color: ColorScheme.fun,
       footer: {
-        text: fetchFunction('meme.response')(inter.user.username),
+        text: commandLit.response(inter.user.username),
         iconURL: inter.user.displayAvatarURL(),
       },
     });

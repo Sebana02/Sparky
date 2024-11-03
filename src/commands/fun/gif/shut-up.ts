@@ -5,15 +5,26 @@ import { createEmbed, ColorScheme } from '../../../utils/embed/embed-utils.js';
 import { ApplicationCommandOptionType, ChatInputCommandInteraction, Client } from 'discord.js';
 
 /**
+ * Literal object for the command
+ */
+const commandLit = {
+  description: fetchString('shut_up.description'),
+  userName: fetchString('shut_up.option.name'),
+  userDescription: fetchString('shut_up.option.description'),
+  responseTitle: fetchFunction('shut_up.response.description'),
+  responseDescription: fetchFunction('shut_up.response.footer'),
+};
+
+/**
  * Command that tells a user to shut up via gif
  */
 export const command: ICommand = {
   name: 'shutup',
-  description: fetchString('shut_up.description'),
+  description: commandLit.description,
   options: [
     {
-      name: fetchString('shut_up.option.name'),
-      description: fetchString('shut_up.option.description'),
+      name: commandLit.userName,
+      description: commandLit.userDescription,
       type: ApplicationCommandOptionType.User,
       required: true,
     },
@@ -26,8 +37,7 @@ export const command: ICommand = {
    */
   run: async (client: Client, inter: ChatInputCommandInteraction): Promise<void> => {
     // Get the target user
-    const targetUser = inter.options.getUser(fetchString('shut_up.option.name'));
-    if (!targetUser) throw new Error(`Option "${fetchString('shut_up.option.name')}" was not found`);
+    const targetUser = inter.options.getUser(commandLit.userName, true);
 
     // Create embed
     const embed = createEmbed({

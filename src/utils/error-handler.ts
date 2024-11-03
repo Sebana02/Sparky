@@ -46,6 +46,6 @@ export async function commandErrorHandler(
     });
 
     // Reply to the interaction with the error embed
-    await reply(inter, { embeds: [errorEmbed], ephemeral: true }, { deleteTime: 2 }, false);
+    await reply(inter, { embeds: [errorEmbed], ephemeral: true }, { deleteTime: 2 });
   }
 }

@@ -5,11 +5,19 @@ import { createEmbed, ColorScheme } from '../../../utils/embed/embed-utils.js';
 import { ChatInputCommandInteraction, Client } from 'discord.js';
 
 /**
+ * Literal object for the command
+ */
+const commandLit = {
+  description: fetchString('dog.description'),
+  response: fetchFunction('dog.response'),
+};
+
+/**
  * Command that sends random gif(s) from the category dog
  */
 export const command: ICommand = {
   name: 'dog',
-  description: fetchString('dog.description'),
+  description: commandLit.description,
 
   /**
    * Run the command
@@ -21,7 +29,7 @@ export const command: ICommand = {
     const embed = createEmbed({
       color: ColorScheme.fun,
       footer: {
-        text: fetchFunction('dog.response')(inter.user.username),
+        text: commandLit.response(inter.user.username),
         iconURL: inter.user.displayAvatarURL(),
       },
     });

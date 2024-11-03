@@ -5,11 +5,19 @@ import { reply } from '../../utils/interaction-utils.js';
 import { fetchString, fetchFunction } from '../../utils/language-utils.js';
 
 /**
+ * Literal object for the command
+ */
+const commandLit = {
+  description: fetchString('uptime.description'),
+  response: fetchFunction('uptime.response'),
+};
+
+/**
  * Command that shows the bot's uptime
  */
 export const command: ICommand = {
   name: 'uptime',
-  description: fetchString('uptime.description'),
+  description: commandLit.description,
 
   /**
    * Run the command
@@ -30,7 +38,7 @@ export const command: ICommand = {
     const embed = createEmbed({
       color: ColorScheme.information,
       footer: {
-        text: fetchFunction('uptime.response')(days, hours, minutes, seconds),
+        text: commandLit.response(days, hours, minutes, seconds),
         iconURL: inter.user.displayAvatarURL(),
       },
     });
