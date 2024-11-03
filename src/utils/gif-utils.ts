@@ -9,7 +9,12 @@ import { fetchFunction } from './language-utils.js';
  * @returns The search URL
  */
 function search(keywords: string): string {
-  return `https://tenor.googleapis.com/v2/search?q=${encodeURIComponent(keywords)}&key=${process.env.TENOR_API_KEY}&limit=${50}`;
+  return [
+    `https://tenor.googleapis.com/v2/search?`,
+    `q=${encodeURIComponent(keywords)}`,
+    `&key=${process.env.TENOR_API_KEY}`,
+    `&limit=${50}`,
+  ].join('');
 }
 
 /**

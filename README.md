@@ -159,7 +159,7 @@ These commands are designed to add fun and entertainment to the chat experience.
 
 | Command | Description | Example | Category | File |
 | --- | --- | --- | --- | --- |
-| `/shutup <user>` | Sends a GIF telling the mentioned `user` to shut up. | `/shutup @Dave` | GIFs | [`shut-up.js`](commands/fun/gif/shut-up.js) |
+| `/shutup <user>` | Sends a GIF telling the mentioned `user` to shut up. | `/shutup @Dave` | GIFs | [`shut-up.ts`](src/commands/fun/gif/shut-up.ts) |
 | `/cat` | Sends a random cat GIF | `/cat` | GIFs | [`cat.js`](commands/fun/gif/cat.js) |
 | `/dog` | Sends a random dog GIF | `/dog` | GIFs | [`dog.js`](commands/fun/gif/dog.js) |
 | `/gif <category>` | Sends a random GIF based on the specified `category`. | `/gif weird` | GIFs | [`gif.js`](commands/fun/gif/gif.js) |

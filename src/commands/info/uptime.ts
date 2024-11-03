@@ -21,8 +21,8 @@ export const command: ICommand = {
 
   /**
    * Run the command
-   * @param {Client} client The client instance
-   * @param {ChatInputCommandInteraction} inter The interaction
+   * @param client The client instance
+   * @param inter The interaction
    */
   run: async (client: Client, inter: ChatInputCommandInteraction): Promise<void> => {
     //Get the uptime in seconds

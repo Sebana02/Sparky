@@ -284,7 +284,7 @@ export function volume(vol: number, track: Track): EmbedBuilder {
   return createEmbed({
     color: ColorScheme.general,
     author: {
-      name: fetchFunction('volume')(vol),
+      name: fetchFunction('music_presets.volume')(vol),
       iconURL: track.thumbnail,
     },
   });
