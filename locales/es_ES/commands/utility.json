@@ -21,15 +21,15 @@
       "time": {
         "name": "tiempo",
         "description": "Tiempo que durará la encuesta en segundos"
+      },
+      "multi_answer": {
+        "name": "multi-respuesta",
+        "description": "Permitir múltiples respuestas"
       }
     },
     "checkings": {
       "insufficient_options": "Debes proporcionar al menos 2 opciones",
       "too_many_options": "No puedes proporcionar más de 10 opciones"
-    },
-    "responses": {
-      "ended": "Votos totales: {0}",
-      "in_progress": "Teneis {0} segundos para votar"
     }
   },
   "remind": {

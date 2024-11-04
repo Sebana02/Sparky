@@ -63,17 +63,14 @@ export const command: ICommand = {
       .filter((item): item is { num: number; unit: string } => item !== undefined); // Filter out any undefined values
 
     //Check if time is valid
-    if (!date) return await reply(inter, { content: commandLit.invalidTime, ephemeral: true }, { deleteTime: 5 });
+    if (!date) return await reply(inter, { content: commandLit.invalidTime, ephemeral: true }, 5);
 
     //Send confirmation message
     //We do not wait for this to finish, as the reminder would be delayed
     reply(
       inter,
-      {
-        content: commandLit.reminderSet(date.map(({ num, unit }) => `${num}${unit}`).join(' ')),
-        ephemeral: true,
-      },
-      { deleteTime: 5 }
+      { content: commandLit.reminderSet(date.map(({ num, unit }) => `${num}${unit}`).join(' ')), ephemeral: true },
+      5
     );
 
     //Calculate future date

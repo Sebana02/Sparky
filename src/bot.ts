@@ -2,8 +2,6 @@ import { Client, GatewayIntentBits, Partials } from 'discord.js';
 import { Player } from 'discord-player';
 import { YoutubeiExtractor } from 'discord-player-youtubei';
 import { config as loadEnv } from 'dotenv';
-import loadLogger from './logger.js';
-import loadResources from './loader.js';
 
 /**
  * Main function to run the bot
@@ -13,6 +11,7 @@ async function run(): Promise<void> {
   loadEnv();
 
   // Load logger
+  const loadLogger = (await import('./logger.js')).default;
   loadLogger();
 
   // Create a new Discord client
@@ -22,6 +21,7 @@ async function run(): Promise<void> {
   createPlayer(client);
 
   // Load commands, languages, and events
+  const loadResources = (await import('./loader.js')).default;
   await loadResources(client);
 
   // Log the bot into Discord

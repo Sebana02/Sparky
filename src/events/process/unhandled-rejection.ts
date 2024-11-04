@@ -10,10 +10,10 @@ export const event: IEvent = {
 
   /**
    * Callback function for the unhandledRejection event
-   * @param {Client} client - The Discord client object
-   * @param {PromiseRejectionEvent} promiseRejectionEvent - The promise rejection event
+   * @param client - The Discord client object
+   * @param promiseRejectionEvent - The promise rejection event
    */
   callback: async (client: Client, promiseRejectionEvent: PromiseRejectionEvent): Promise<void> => {
-    logger.error('An unhandled promise rejection ocurred:', promiseRejectionEvent.reason);
+    logger.error('An unhandled promise rejection ocurred:', JSON.stringify(promiseRejectionEvent));
   },
 };

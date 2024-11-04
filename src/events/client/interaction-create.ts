@@ -35,35 +35,29 @@ export const event: IEvent = {
    * Callback function to be executed when the interactionCreate event is triggered
    * @param client - The discord client
    * @param inter - The interaction object
-   * @returns Promise<void> - A Promise that resolves when the function is done executing
+   * @returns A Promise that resolves when the function is done executing
    */
   callback: async (client: Client, inter: Interaction): Promise<void> => {
-    // Return if interaction was not received on a guild or if any of the required properties are missing
-    if (!inter.guild || !inter.member || !inter.guildId || !inter.user) return;
+    // If interaction was on a guild, guild and member properties should be present
+    if (!inter.guild || !inter.member) return;
 
-    // If interaction is a chat input command
+    // If interaction is a chat input command, on a guild
     if (inter.isChatInputCommand()) {
       //Log interaction
-      let cmdInfo = `/${inter.commandName} `;
-      inter.options.data.forEach((option) => {
-        cmdInfo += `${option.name}: ${option.value} `;
-      });
-
+      let cmdInfo = `/${inter.commandName} ` + inter.options.data.map((opt) => `${opt.name}: ${opt.value}`).join(' ');
       logger.info(
-        `Command: ${cmdInfo} | User: ${inter.user.username} (id : ${inter.user}) | Guild: ${inter.guild?.name} (id : ${inter.guildId})`
+        `Command: ${cmdInfo} | User: ${inter.user.username} (id : ${inter.user}) | Guild: ${inter.guild.name} (id : ${inter.guildId})`
       );
 
       //Get command
       const command: ICommand = globalThis.commands.get(inter.commandName);
 
-      if (!command) {
-        globalThis.commands.delete(inter.commandName);
-        throw new Error(`Command ${inter.commandName} not found`);
-      }
+      //Check if command exists
+      if (!command) throw new Error(`Command ${inter.commandName} not found`);
 
       // Check command permissions
       if (command.permissions && !(inter.member.permissions as PermissionsBitField).has(command.permissions))
-        return await reply(inter, { content: eventLit.noPermissions, ephemeral: true }, { deleteTime: 2 });
+        return await reply(inter, { content: eventLit.noPermissions, ephemeral: true }, 2);
 
       // Check if command requires user to be in a voice channel
       if (command.voiceChannel) {
@@ -73,23 +67,21 @@ export const event: IEvent = {
 
         // Check if user has DJ role if DJ role is set
         if (djRole && !memberRoles.cache.some((role) => role.name === djRole))
-          return await reply(inter, { content: eventLit.noDJRole, ephemeral: true }, { deleteTime: 2 });
+          return await reply(inter, { content: eventLit.noDJRole, ephemeral: true }, 2);
 
         // Get queue and whether trivia is enabled
-        const queue: GuildQueue<IMetadata> | null = useQueue(inter.guildId);
+        const queue: GuildQueue<IMetadata> | null = useQueue(inter.guild);
         const trivia: boolean | undefined = queue ? queue.metadata.trivia : false;
 
         // Check if queue and trivia are enabled, if so, no voice commands allowed
-        if (queue && trivia)
-          return await reply(inter, { content: eventLit.noCommandsTrivia, ephemeral: true }, { deleteTime: 2 });
+        if (queue && trivia) return await reply(inter, { content: eventLit.noCommandsTrivia, ephemeral: true }, 2);
 
         // Get user and voice channel of the interacting user
         const user: GuildMember = inter.member as GuildMember;
         const voiceChannel: VoiceBasedChannel | null = user.voice.channel;
 
         // Check if user is in a voice channel, if not, return error
-        if (!voiceChannel)
-          return await reply(inter, { content: eventLit.noVoiceChannel, ephemeral: true }, { deleteTime: 2 });
+        if (!voiceChannel) return await reply(inter, { content: eventLit.noVoiceChannel, ephemeral: true }, 2);
 
         // Get bot's voice channel
         const botVoiceChannel: VoiceBasedChannel | null = inter.guild.members.me
@@ -98,7 +90,7 @@ export const event: IEvent = {
 
         // Check if bot is in a voice channel and if user is in the same voice channel as the bot
         if (botVoiceChannel && voiceChannel.id !== botVoiceChannel.id)
-          return await reply(inter, { content: eventLit.noSameVoiceChannel, ephemeral: true }, { deleteTime: 2 });
+          return await reply(inter, { content: eventLit.noSameVoiceChannel, ephemeral: true }, 2);
       }
 
       //Execute command
