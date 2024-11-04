@@ -56,7 +56,10 @@ export const event: IEvent = {
       //Get command
       const command: ICommand = globalThis.commands.get(inter.commandName);
 
-      if (!command) throw new Error(`Command ${inter.commandName} not found`);
+      if (!command) {
+        globalThis.commands.delete(inter.commandName);
+        throw new Error(`Command ${inter.commandName} not found`);
+      }
 
       // Check command permissions
       if (command.permissions && !(inter.member.permissions as PermissionsBitField).has(command.permissions))

@@ -6,7 +6,7 @@
  */
 export function fetchString(pathToLiteral: string): string {
   //Get the literal from the literals object using the pathToLiteral as the key
-  const literal = literals[pathToLiteral];
+  const literal = globalThis.literals[pathToLiteral];
 
   //If the literal is not found or is not a string, throw an error
   if (!literal || typeof literal !== 'string')
@@ -24,7 +24,7 @@ export function fetchString(pathToLiteral: string): string {
  */
 export function fetchNumber(pathToLiteral: string): number {
   // Get the literal from the literals object using the pathToLiteral as the key
-  const literal = literals[pathToLiteral];
+  const literal = globalThis.literals[pathToLiteral];
 
   // If the literal is not found or is not a number, throw an error
   if (!literal || typeof literal !== 'number')
@@ -42,7 +42,7 @@ export function fetchNumber(pathToLiteral: string): number {
  */
 export function fetchArray(pathToLiteral: string): any[] {
   // Get the literal from the literals object using the pathToLiteral as the key
-  const literal = literals[pathToLiteral];
+  const literal = globalThis.literals[pathToLiteral];
 
   // If the literal is not found or is not an array, throw an error
   if (!literal || !Array.isArray(literal))
@@ -60,7 +60,7 @@ export function fetchArray(pathToLiteral: string): any[] {
  */
 export function fetchFunction(pathToLiteral: string): (...args: any[]) => string {
   // Get the literal from the literals object using the pathToLiteral as the key
-  const literal = literals[pathToLiteral];
+  const literal = globalThis.literals[pathToLiteral];
 
   // If the literal is not found or is not a function, throw an error
   if (!literal || typeof literal !== 'function')

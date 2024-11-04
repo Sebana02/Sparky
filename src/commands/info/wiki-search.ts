@@ -2,6 +2,7 @@ import { createEmbed, ColorScheme } from '../../utils/embed/embed-utils.js';
 import { reply, deferReply } from '../../utils/interaction-utils.js';
 import { ApplicationCommandOptionType, ChatInputCommandInteraction, Client } from 'discord.js';
 import { fetchString, fetchFunction } from '../../utils/language-utils.js';
+import { ICommand } from '../../interfaces/command.interface.js';
 
 /**
  * Literal object for the command
@@ -27,7 +28,7 @@ const lang = process.env.LANGUAGE?.split('_')[0] || 'en';
 /**
  * Command for searching Wikipedia
  */
-module.exports = {
+export const command: ICommand = {
   name: 'wikisearch',
   description: commandLit.description,
   options: [

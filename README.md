@@ -314,6 +314,7 @@ You can always modify the bot to support your language.
 
 ### `General`
 
+- [ ] Create a config.ts file to load env variables
 - [ ] Improve visuals and embeds
 
 ### `IAs`
