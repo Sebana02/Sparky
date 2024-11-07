@@ -1,8 +1,8 @@
-import { emptyQueue } from '../../utils/embed/music-presets.js';
 import { Client } from 'discord.js';
 import { IEvent } from '../../interfaces/event.interface.js';
 import { GuildQueue } from 'discord-player';
 import { IMetadata } from '../../interfaces/metadata.interface.js';
+import { embedFromTemplate } from '../../utils/embed/embed-utils.js';
 
 /**
  * Event emitted when the queue is empty
@@ -20,6 +20,7 @@ export const event: IEvent = {
     if (queue.metadata.trivia) return;
 
     // Send the empty queue embed to the channel
-    if (queue.metadata.channel.isSendable()) await queue.metadata.channel.send({ embeds: [emptyQueue(client)] });
+    if (queue.metadata.channel.isSendable())
+      await queue.metadata.channel.send({ embeds: [embedFromTemplate('emptyQueue', client)] });
   },
 };

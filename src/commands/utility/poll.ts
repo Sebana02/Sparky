@@ -1,14 +1,11 @@
-import {
-  ApplicationCommandOptionType,
-  Client,
-  ChatInputCommandInteraction,
-  PollAnswerData,
-  PollLayoutType,
-} from 'discord.js';
+import { Client, ChatInputCommandInteraction, PollAnswerData, PollLayoutType, SlashCommandBuilder } from 'discord.js';
 import { fetchReply, reply } from '../../utils/interaction-utils.js';
-import { fetchString, fetchFunction } from '../../utils/language-utils.js';
+import { fetchString } from '../../utils/language-utils.js';
 import { ICommand } from '../../interfaces/command.interface.js';
 
+/**
+ * Literal object for the command
+ */
 const commandLit = {
   description: fetchString('poll.description'),
   questionName: fetchString('poll.options.question.name'),
@@ -27,42 +24,25 @@ const commandLit = {
  * Command that creates a poll
  */
 export const command: ICommand = {
-  name: 'poll',
-  description: commandLit.description,
-  options: [
-    {
-      name: commandLit.questionName,
-      description: commandLit.questionDescription,
-      type: ApplicationCommandOptionType.String,
-      required: true,
-    },
-    {
-      name: commandLit.optionsName,
-      description: commandLit.optionsDescription,
-      type: ApplicationCommandOptionType.String,
-      required: true,
-    },
-    {
-      name: commandLit.timeName,
-      description: commandLit.timeDescription,
-      type: ApplicationCommandOptionType.Number,
-      required: true,
-    },
-    {
-      name: commandLit.multiAnswerName,
-      description: commandLit.multiAnswerDescription,
-      type: ApplicationCommandOptionType.Boolean,
-      required: true,
-    },
-  ],
+  data: new SlashCommandBuilder()
+    .setName('poll')
+    .setDescription(commandLit.description)
+    .addStringOption((option) =>
+      option.setName(commandLit.questionName).setDescription(commandLit.questionDescription).setRequired(true)
+    )
+    .addStringOption((option) =>
+      option.setName(commandLit.optionsName).setDescription(commandLit.optionsDescription).setRequired(true)
+    )
+    .addNumberOption((option) =>
+      option.setName(commandLit.timeName).setDescription(commandLit.timeDescription).setRequired(true)
+    )
+    .addBooleanOption((option) =>
+      option.setName(commandLit.multiAnswerName).setDescription(commandLit.multiAnswerDescription).setRequired(true)
+    ) as SlashCommandBuilder,
 
-  /**
-   * Runs the command
-   * @param client - The discord client
-   * @param inter - The interaction object
-   * @returns A Promise that resolves when the function is done executing
-   */
-  run: async (client: Client, inter: ChatInputCommandInteraction): Promise<void> => {
+  blockedInDMs: true,
+
+  execute: async (client: Client, inter: ChatInputCommandInteraction): Promise<void> => {
     //Get options, poll title and time
     const options = inter.options.getString(commandLit.optionsName, true)?.trim();
     const pollTheme = inter.options.getString(commandLit.questionName, true)?.trim();

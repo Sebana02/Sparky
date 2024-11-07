@@ -1,6 +1,6 @@
 import { createEmbed, ColorScheme } from '../../utils/embed/embed-utils.js';
 import { reply, deferReply } from '../../utils/interaction-utils.js';
-import { ApplicationCommandOptionType, ChatInputCommandInteraction, Client } from 'discord.js';
+import { ChatInputCommandInteraction, Client, SlashCommandBuilder } from 'discord.js';
 import { fetchString, fetchFunction } from '../../utils/language-utils.js';
 import { ICommand } from '../../interfaces/command.interface.js';
 
@@ -29,27 +29,19 @@ const lang = process.env.LANGUAGE?.split('_')[0] || 'en';
  * Command for searching Wikipedia
  */
 export const command: ICommand = {
-  name: 'wikisearch',
-  description: commandLit.description,
-  options: [
-    {
-      name: commandLit.termName,
-      description: commandLit.termDescription,
-      type: ApplicationCommandOptionType.String,
-      required: true,
-    },
-  ],
-  /**
-   * Run the command
-   * @param client The client instance
-   * @param inter The interaction
-   */
-  run: async (client: Client, inter: ChatInputCommandInteraction): Promise<void> => {
+  data: new SlashCommandBuilder()
+    .setName('wikisearch')
+    .setDescription(commandLit.description)
+    .addStringOption((option) =>
+      option.setName(commandLit.termName).setDescription(commandLit.termDescription).setRequired(true)
+    ) as SlashCommandBuilder,
+
+  execute: async (client: Client, inter: ChatInputCommandInteraction): Promise<void> => {
     //Get search term
     const searchTerm = inter.options.getString(commandLit.termName, true);
 
     //Defer reply
-    await deferReply(inter);
+    await deferReply(inter, { ephemeral: false });
 
     //Search Wikipedia
     const response = await fetch(search(searchTerm));
@@ -61,8 +53,7 @@ export const command: ICommand = {
     const data = await response.json();
 
     //Check if there are any results
-    if (data.query.search.length === 0)
-      return await reply(inter, { content: commandLit.noResults(searchTerm) }, { deleteTime: 3 });
+    if (data.query.search.length === 0) return await reply(inter, { content: commandLit.noResults(searchTerm) }, 3);
 
     // Extracting the first search result
     const result = data.query.search[0];
@@ -76,9 +67,9 @@ export const command: ICommand = {
       url: pageUrl,
       footer: {
         text: commandLit.response(searchTerm),
-        iconURL: inter.user.displayAvatarURL(),
+        icon_url: inter.user.displayAvatarURL(),
       },
-      setTimestamp: true,
+      timestamp: Date.now().toLocaleString(),
     });
 
     //Reply with the search result

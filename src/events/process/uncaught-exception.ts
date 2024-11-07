@@ -15,7 +15,7 @@ export const event: IEvent = {
    * @returns Promise<void>
    */
   callback: async (client: Client, error: Error): Promise<void> => {
-    logger.error('An uncaught exception ocurred:\n', error.stack as string);
+    logger.error(`An uncaught exception ocurred: ${error.stack}`);
 
     //Exit the process after 1 second
     setTimeout(() => {

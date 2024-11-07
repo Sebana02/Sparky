@@ -5,6 +5,13 @@ import { ICommand } from './../interfaces/command.interface.js';
 import { fetchString } from './language-utils.js';
 
 /**
+ * Literal object for utility functions
+ */
+const utilLit = {
+  commandError: fetchString('command_error_handler'),
+};
+
+/**
  * Handles errors in event callbacks.
  * @param eventName - The name of the event.
  * @param eventCallback - The event callback function.
@@ -32,20 +39,20 @@ export async function commandErrorHandler(
 ): Promise<void> {
   // Tries to execute the command function
   try {
-    await command.run(client, inter, ...args);
+    await command.execute(client, inter, ...args);
   } catch (error: any) {
-    logger.error(`An error occurred in command "${command.name}":\n`, error.stack);
+    logger.error(`An error occurred in command "${inter.commandName}":\n`, error.stack);
 
     // Create an error embed
     const errorEmbed = createEmbed({
       color: ColorScheme.error,
       author: {
-        name: fetchString('command_error_handler'),
-        iconURL: client.user?.displayAvatarURL(),
+        name: utilLit.commandError,
+        icon_url: client.user?.displayAvatarURL(),
       },
     });
 
     // Reply to the interaction with the error embed
-    await reply(inter, { embeds: [errorEmbed], ephemeral: true }, { deleteTime: 2 });
+    await reply(inter, { embeds: [errorEmbed], ephemeral: true }, 2);
   }
 }

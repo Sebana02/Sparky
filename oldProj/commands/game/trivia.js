@@ -1,15 +1,15 @@
-const { deferReply, reply, fetchReply } = require('@utils/interaction-utils');
-const { QueryType, useQueue, useMainPlayer, usePlayer, SearchResult } = require('discord-player');
+const { deferReply, reply, fetchReply } = require('@utils/interaction-utils')
+const { QueryType, useQueue, useMainPlayer, usePlayer, SearchResult } = require('discord-player')
 const {
   ApplicationCommandOptionType,
   ActionRowBuilder,
   ButtonBuilder,
   InteractionType,
   EmbedBuilder,
-} = require('discord.js');
-const { noResults, noPlaylist } = require('@utils/embed/music-presets');
-const { createEmbed, ColorScheme } = require('@utils/embed/embed-utils');
-const { fetchCommandLit } = require('@utils/language-utils.js');
+} = require('discord.js')
+const { noResults, noPlaylist } = require('@utils/embed/music-presets')
+const { createEmbed, ColorScheme } = require('@utils/embed/embed-utils')
+const { fetchCommandLit } = require('@utils/language-utils.js')
 
 // Prelaod literals
 const literals = {
@@ -25,7 +25,7 @@ const literals = {
   inProgress: fetchCommandLit('game.trivia.responses.in_progress'),
   ended: fetchCommandLit('game.trivia.responses.ended'),
   score: (score) => fetchCommandLit('game.trivia.responses.score', score),
-};
+}
 
 /**
  * Command that allows user to play trivia with songs
@@ -44,14 +44,14 @@ module.exports = {
   ],
   run: async (client, inter) => {
     //Defer reply
-    await deferReply(inter);
+    await deferReply(inter)
 
     //Delete queue if exists
-    let queue = useQueue(inter.guildId);
-    if (queue) queue.delete();
+    let queue = useQueue(inter.guildId)
+    if (queue) queue.delete()
 
     //Search for playlist
-    const results = await searchResults(inter);
+    const results = await searchResults(inter)
 
     //Check if there are results
     if (!results.hasTracks())
@@ -59,7 +59,7 @@ module.exports = {
         embeds: [noResults(client)],
         ephemeral: true,
         deleteTime: 2,
-      });
+      })
 
     //Check if there are enough songs
     if (!results.hasPlaylist() || results.tracks.length < 4)
@@ -67,12 +67,12 @@ module.exports = {
         embeds: [noPlaylist(client)],
         ephemeral: true,
         deleteTime: 2,
-      });
+      })
 
     //Start trivia
-    triviaRound(inter, [], results, [...results.tracks]); //players: {user: user, score: score}
+    triviaRound(inter, [], results, [...results.tracks]) //players: {user: user, score: score}
   },
-};
+}
 
 /**
  * Search for the playlist
@@ -81,14 +81,14 @@ module.exports = {
  */
 async function searchResults(inter) {
   //Get player and playlist
-  const player = useMainPlayer();
-  const playlist = inter.options.getString(literals.optionName);
+  const player = useMainPlayer()
+  const playlist = inter.options.getString(literals.optionName)
 
   //Search for playlist and return it
   return await player.search(playlist, {
     requestedBy: inter.member,
     searchEngine: QueryType.AUTO,
-  });
+  })
 }
 
 /**
@@ -99,22 +99,22 @@ async function searchResults(inter) {
  */
 function selectSong(results, toBePlayed) {
   //Select random song from toBePlayed
-  let correctSong = toBePlayed[Math.floor(Math.random() * toBePlayed.length)];
+  let correctSong = toBePlayed[Math.floor(Math.random() * toBePlayed.length)]
 
   //Remove song from toBePlayed
-  toBePlayed = toBePlayed.filter((s) => s !== correctSong);
+  toBePlayed = toBePlayed.filter((s) => s !== correctSong)
 
   //Select 3 random songs from results.tracks that are not the same as song
-  let incorrectSongs = results.tracks.filter((s) => s !== correctSong);
-  incorrectSongs = incorrectSongs.sort(() => Math.random() - Math.random()).slice(0, 4 - 1);
+  let incorrectSongs = results.tracks.filter((s) => s !== correctSong)
+  incorrectSongs = incorrectSongs.sort(() => Math.random() - Math.random()).slice(0, 4 - 1)
 
   //Create array with the 4 songs and then suffle it
-  let songs = [correctSong];
-  incorrectSongs.forEach((s) => songs.push(s));
-  songs = songs.sort(() => Math.random() - Math.random());
+  let songs = [correctSong]
+  incorrectSongs.forEach((s) => songs.push(s))
+  songs = songs.sort(() => Math.random() - Math.random())
 
   //Return correct song and songs that will appear in the round
-  return { correctSong, songs };
+  return { correctSong, songs }
 }
 
 /**
@@ -124,7 +124,7 @@ function selectSong(results, toBePlayed) {
  */
 function createButtons(songs) {
   //Create buttons row
-  let buttonsRow = new ActionRowBuilder();
+  let buttonsRow = new ActionRowBuilder()
 
   //Add songs buttons to the row
   songs.forEach((b) => {
@@ -133,8 +133,8 @@ function createButtons(songs) {
         .setLabel((b.title + ' | ' + b.author).substring(0, 80))
         .setStyle('Primary')
         .setCustomId(JSON.stringify({ id: b.id }))
-    );
-  });
+    )
+  })
 
   //Add stop button to the row
   buttonsRow.addComponents(
@@ -142,9 +142,9 @@ function createButtons(songs) {
       .setLabel('Stop')
       .setStyle('Danger')
       .setCustomId(JSON.stringify({ id: 'Stop' }))
-  );
+  )
 
-  return buttonsRow;
+  return buttonsRow
 }
 
 /**
@@ -155,14 +155,14 @@ function createButtons(songs) {
  */
 function createLeaderboard(players, end) {
   //Sort players by score
-  const playersSorted = players.sort((a, b) => b.score - a.score);
+  const playersSorted = players.sort((a, b) => b.score - a.score)
 
   //Create embed
   return createEmbed({
     footer: { text: !end ? literals.inProgress : literals.ended },
     description: literals.score(playersSorted.map((p) => `***${p.user.username} : ${p.score}***`).join('\n')),
     color: ColorScheme.game,
-  });
+  })
 }
 
 /**
@@ -172,8 +172,8 @@ function createLeaderboard(players, end) {
  */
 async function playSong(inter, song) {
   //Get player and queue
-  const player = usePlayer(inter.guildId);
-  const queue = useQueue(inter.guildId);
+  const player = usePlayer(inter.guildId)
+  const queue = useQueue(inter.guildId)
 
   //Play song
   await useMainPlayer().play(inter.member.voice.channel, song.url, {
@@ -189,10 +189,10 @@ async function playSong(inter, song) {
       bufferingTimeout: 0,
       selfDeaf: true,
     },
-  });
+  })
 
   //Skip song if it is already playing
-  if (queue && queue.isPlaying()) player.skip();
+  if (queue && queue.isPlaying()) player.skip()
 }
 
 /**
@@ -205,20 +205,20 @@ async function playSong(inter, song) {
  */
 async function awaitInteraction(inter, players, correctSong, results, toBePlayed) {
   //Filter for the buttons
-  let filter = (i) => !i.user.bot && i.type === InteractionType.MessageComponent;
+  let filter = (i) => !i.user.bot && i.type === InteractionType.MessageComponent
 
   //Fetch the reply
-  let message = await fetchReply(inter);
+  let message = await fetchReply(inter)
 
   //Await button interaction
-  let buttonInteraction;
+  let buttonInteraction
   await message
     .awaitMessageComponent({
       filter,
       time: trackDurationToMilliseconds(correctSong.duration) + 10000,
       max: 1,
     })
-    .then((i) => (buttonInteraction = i));
+    .then((i) => (buttonInteraction = i))
 
   //Check if the button is the stop button
   if (JSON.parse(buttonInteraction.customId).id === 'Stop') {
@@ -226,43 +226,43 @@ async function awaitInteraction(inter, players, correctSong, results, toBePlayed
     const result = createEmbed({
       author: {
         name: literals.selectedStop,
-        iconURL: buttonInteraction.user.displayAvatarURL(),
+        icon_url: buttonInteraction.user.displayAvatarURL(),
       },
       color: ColorScheme.game,
-    });
+    })
     await reply(buttonInteraction, {
       embeds: [result],
       deleteTime: 1.5,
       propagate: false,
-    });
+    })
 
     //End trivia
-    await endTrivia(inter, players);
+    await endTrivia(inter, players)
   } else {
     if (JSON.parse(buttonInteraction.customId).id === correctSong.id) {
       //Correct answer
 
       //Add point to the player
-      let player = players.find((p) => p.user === buttonInteraction.user);
-      if (player) player.score++;
-      else players.push({ user: buttonInteraction.user, score: 1 });
+      let player = players.find((p) => p.user === buttonInteraction.user)
+      if (player) player.score++
+      else players.push({ user: buttonInteraction.user, score: 1 })
 
       //Send message
       const result = createEmbed({
         author: {
           name: literals.selectedCorrect(buttonInteraction.user.tag),
-          iconURL: buttonInteraction.user.displayAvatarURL(),
+          icon_url: buttonInteraction.user.displayAvatarURL(),
         },
         footer: {
           text: literals.selectedSong(correctSong.title + ' - ' + correctSong.author).substring(0, 80),
         },
         color: ColorScheme.game,
-      });
+      })
       await reply(buttonInteraction, {
         embeds: [result],
         deleteTime: 1.5,
         propagate: false,
-      });
+      })
     } else {
       //Incorrect answer
 
@@ -270,22 +270,22 @@ async function awaitInteraction(inter, players, correctSong, results, toBePlayed
       const result = createEmbed({
         author: {
           name: literals.selectedIncorrect(buttonInteraction.user.tag),
-          iconURL: buttonInteraction.user.displayAvatarURL(),
+          icon_url: buttonInteraction.user.displayAvatarURL(),
         },
         footer: {
           text: literals.selectedSong(correctSong.title + ' - ' + correctSong.author).substring(0, 80),
         },
         color: ColorScheme.game,
-      });
+      })
       await reply(buttonInteraction, {
         embeds: [result],
         deleteTime: 1.5,
         propagate: false,
-      });
+      })
     }
 
     //Start new round
-    await triviaRound(inter, players, results, toBePlayed);
+    await triviaRound(inter, players, results, toBePlayed)
   }
 }
 
@@ -299,11 +299,11 @@ async function endTrivia(inter, players) {
   await reply(inter, {
     embeds: [createLeaderboard(players, true)],
     ephemeral: false,
-  });
+  })
 
   //Delete queue
-  const queue = useQueue(inter.guildId);
-  if (queue) queue.delete();
+  const queue = useQueue(inter.guildId)
+  if (queue) queue.delete()
 }
 
 /**
@@ -312,8 +312,8 @@ async function endTrivia(inter, players) {
  * @returns {number} Duration in milliseconds
  */
 function trackDurationToMilliseconds(duration) {
-  const [minutes, seconds] = duration.split(':').map(Number);
-  return (minutes * 60 + seconds) * 1000;
+  const [minutes, seconds] = duration.split(':').map(Number)
+  return (minutes * 60 + seconds) * 1000
 }
 
 /**
@@ -325,21 +325,21 @@ function trackDurationToMilliseconds(duration) {
  */
 async function triviaRound(inter, players, results, toBePlayed) {
   //Check if there are songs left
-  if (toBePlayed.length === 0) return await endTrivia(inter, players);
+  if (toBePlayed.length === 0) return await endTrivia(inter, players)
 
   //Select song to be played
-  const { correctSong, songs } = selectSong(results, toBePlayed);
+  const { correctSong, songs } = selectSong(results, toBePlayed)
 
   //Play song
-  await playSong(inter, correctSong);
+  await playSong(inter, correctSong)
 
   //Create buttons row and leaderboard
-  const buttonsRow = createButtons(songs);
-  const leaderboard = createLeaderboard(players, false);
+  const buttonsRow = createButtons(songs)
+  const leaderboard = createLeaderboard(players, false)
 
   //Send message
-  await reply(inter, { embeds: [leaderboard], components: [buttonsRow] });
+  await reply(inter, { embeds: [leaderboard], components: [buttonsRow] })
 
   //Await interaction of the player with the buttons
-  await awaitInteraction(inter, players, correctSong, results, toBePlayed);
+  await awaitInteraction(inter, players, correctSong, results, toBePlayed)
 }

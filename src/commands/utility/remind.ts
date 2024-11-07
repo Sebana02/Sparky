@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionType, ChatInputCommandInteraction, Client } from 'discord.js';
+import { ChatInputCommandInteraction, Client, SlashCommandBuilder } from 'discord.js';
 import { followUp, reply } from '../../utils/interaction-utils.js';
 import { createEmbed, ColorScheme } from '../../utils/embed/embed-utils.js';
 import { fetchString, fetchFunction } from '../../utils/language-utils.js';
@@ -22,29 +22,17 @@ const commandLit = {
  * Command that sets up a reminder
  */
 export const command: ICommand = {
-  name: 'remind',
-  description: commandLit.description,
-  options: [
-    {
-      name: commandLit.timeName,
-      description: commandLit.timeDescription,
-      type: ApplicationCommandOptionType.String,
-      required: true,
-    },
-    {
-      name: commandLit.reminderName,
-      description: commandLit.reminderDescription,
-      type: ApplicationCommandOptionType.String,
-      required: true,
-    },
-  ],
+  data: new SlashCommandBuilder()
+    .setName('remind')
+    .setDescription(commandLit.description)
+    .addStringOption((option) =>
+      option.setName(commandLit.timeName).setDescription(commandLit.timeDescription).setRequired(true)
+    )
+    .addStringOption((option) =>
+      option.setName(commandLit.reminderName).setDescription(commandLit.reminderDescription).setRequired(true)
+    ) as SlashCommandBuilder,
 
-  /**
-   * Run function for this command
-   * @param client - The client instance
-   * @param inter - The interaction that triggered this command
-   */
-  async run(client: Client, inter: ChatInputCommandInteraction): Promise<void> {
+  async execute(client: Client, inter: ChatInputCommandInteraction): Promise<void> {
     //Get time and reminder
     const time = inter.options.getString(commandLit.timeName, true);
     const reminder = inter.options.getString(commandLit.reminderName, true);
@@ -97,10 +85,10 @@ export const command: ICommand = {
       //Create embed
       const embed = createEmbed({
         description: reminder,
-        setTimestamp: true,
+        timestamp: Date.now().toLocaleString(),
         footer: {
           text: commandLit.response(inter.user.tag),
-          iconURL: inter.user.displayAvatarURL(),
+          icon_url: inter.user.displayAvatarURL(),
         },
         color: ColorScheme.utility,
       });

@@ -14,6 +14,6 @@ export const event: IEvent = {
    * @param promiseRejectionEvent - The promise rejection event
    */
   callback: async (client: Client, promiseRejectionEvent: PromiseRejectionEvent): Promise<void> => {
-    logger.error('An unhandled promise rejection ocurred:', JSON.stringify(promiseRejectionEvent));
+    logger.error('An unhandled promise rejection ocurred:', promiseRejectionEvent.reason);
   },
 };

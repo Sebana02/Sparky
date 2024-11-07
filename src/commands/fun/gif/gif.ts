@@ -2,7 +2,7 @@ import { ICommand } from '../../../interfaces/command.interface.js';
 import { fetchFunction, fetchString } from '../../../utils/language-utils.js';
 import { sendRandomGif } from '../../../utils/gif-utils.js';
 import { createEmbed, ColorScheme } from '../../../utils/embed/embed-utils.js';
-import { ApplicationCommandOptionType, ChatInputCommandInteraction, Client } from 'discord.js';
+import { ChatInputCommandInteraction, Client, SlashCommandBuilder } from 'discord.js';
 
 /**
  * Literal object for the command
@@ -18,23 +18,14 @@ const commandLit = {
  * Command that sends random gif(s) from the specified category
  */
 export const command: ICommand = {
-  name: 'gif',
-  description: commandLit.description,
-  options: [
-    {
-      name: commandLit.gifName,
-      description: commandLit.gifDescription,
-      type: ApplicationCommandOptionType.String,
-      required: true,
-    },
-  ],
+  data: new SlashCommandBuilder()
+    .setName('gif')
+    .setDescription(commandLit.description)
+    .addStringOption((option) =>
+      option.setName(commandLit.gifName).setDescription(commandLit.gifDescription).setRequired(true)
+    ) as SlashCommandBuilder,
 
-  /**
-   * Run the command
-   * @param client The client instance
-   * @param inter The interaction
-   */
-  run: async (client: Client, inter: ChatInputCommandInteraction): Promise<void> => {
+  execute: async (client: Client, inter: ChatInputCommandInteraction): Promise<void> => {
     //Get the category
     const category = inter.options.getString(commandLit.gifName, true);
 
@@ -43,7 +34,7 @@ export const command: ICommand = {
       color: ColorScheme.fun,
       footer: {
         text: commandLit.response(inter.user.username, category),
-        iconURL: inter.user.displayAvatarURL(),
+        icon_url: inter.user.displayAvatarURL(),
       },
     });
 

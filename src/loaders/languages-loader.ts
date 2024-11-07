@@ -1,7 +1,6 @@
 import { existsSync, readdirSync, statSync } from 'fs';
-import { basename, resolve } from 'path';
+import { resolve } from 'path';
 import { ILanguageObject } from '../interfaces/language.interface.js';
-import { pathToFileURL } from 'url';
 import { readFile } from 'fs/promises';
 
 /**

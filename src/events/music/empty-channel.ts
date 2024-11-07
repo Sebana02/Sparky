@@ -1,8 +1,8 @@
-import { emptyChannel } from '../../utils/embed/music-presets.js';
 import { Client } from 'discord.js';
 import { IEvent } from '../../interfaces/event.interface.js';
 import { GuildQueue } from 'discord-player';
 import { IMetadata } from '../../interfaces/metadata.interface';
+import { embedFromTemplate } from '../../utils/embed/embed-utils.js';
 
 /**
  * Event emitted when the voice channel is empty
@@ -18,6 +18,7 @@ export const event: IEvent = {
    */
   callback: async (client: Client, queue: GuildQueue<IMetadata>): Promise<void> => {
     // Send the empty channel embed to the channel
-    if (queue.metadata.channel.isSendable()) await queue.metadata.channel.send({ embeds: [emptyChannel(client)] });
+    if (queue.metadata.channel.isSendable())
+      await queue.metadata.channel.send({ embeds: [embedFromTemplate('emptyChannel', client)] });
   },
 };

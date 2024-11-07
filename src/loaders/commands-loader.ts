@@ -1,7 +1,7 @@
 import { existsSync, readdirSync, statSync } from 'fs';
 import { resolve } from 'path';
 import { ICommand } from '../interfaces/command.interface.js';
-import { Collection } from 'discord.js';
+import { Collection, SlashCommandBuilder } from 'discord.js';
 import { pathToFileURL } from 'url';
 
 /**
@@ -83,7 +83,7 @@ async function createCommandPromise(filePath: string): Promise<void> {
     });
 
     // Add the command to the collection
-    globalThis.commands.set(command.name, command);
+    globalThis.commands.set(command.data.name, command);
   } catch (error: any) {
     logger.error(`Could not load command ${filePath}: ${error.stack}`);
     throw error;
@@ -97,11 +97,13 @@ async function createCommandPromise(filePath: string): Promise<void> {
  */
 function isCommand(command: any): command is ICommand {
   return (
-    command.name !== undefined &&
-    typeof command.name === 'string' &&
-    command.description !== undefined &&
-    typeof command.description === 'string' &&
-    command.run !== undefined &&
-    typeof command.run === 'function'
+    command.data !== undefined &&
+    command.data instanceof SlashCommandBuilder &&
+    command.data.name !== undefined &&
+    typeof command.data.name === 'string' &&
+    command.data.description !== undefined &&
+    typeof command.data.description === 'string' &&
+    command.execute !== undefined &&
+    typeof command.execute === 'function'
   );
 }

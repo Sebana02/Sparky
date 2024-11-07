@@ -1,8 +1,8 @@
-import { playing } from '../../utils/embed/music-presets.js';
 import { Client } from 'discord.js';
 import { IEvent } from '../../interfaces/event.interface.js';
 import { GuildQueue, QueueRepeatMode, Track } from 'discord-player';
 import { IMetadata } from '../../interfaces/metadata.interface.js';
+import { embedFromTemplate } from '../../utils/embed/embed-utils.js';
 
 /**
  * Event emitted when the player starts playing a song
@@ -22,6 +22,7 @@ export const event: IEvent = {
     if (queue.repeatMode !== QueueRepeatMode.OFF || queue.metadata.trivia) return;
 
     // Send the playing embed to the channel
-    if (queue.metadata.channel.isSendable()) await queue.metadata.channel.send({ embeds: [playing(track)] });
+    if (queue.metadata.channel.isSendable())
+      await queue.metadata.channel.send({ embeds: [embedFromTemplate('playing', track)] });
   },
 };

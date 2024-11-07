@@ -1,4 +1,4 @@
-import { Client, ChatInputCommandInteraction } from 'discord.js';
+import { Client, ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js';
 import { ICommand } from '../../interfaces/command.interface.js';
 import { createEmbed, ColorScheme } from '../../utils/embed/embed-utils.js';
 import { reply } from '../../utils/interaction-utils.js';
@@ -16,15 +16,9 @@ const commandLit = {
  * Command that shows the bot's uptime
  */
 export const command: ICommand = {
-  name: 'uptime',
-  description: commandLit.description,
+  data: new SlashCommandBuilder().setName('uptime').setDescription(commandLit.description),
 
-  /**
-   * Run the command
-   * @param client The client instance
-   * @param inter The interaction
-   */
-  run: async (client: Client, inter: ChatInputCommandInteraction): Promise<void> => {
+  execute: async (client: Client, inter: ChatInputCommandInteraction): Promise<void> => {
     //Get the uptime in seconds
     const uptime = process.uptime();
 
@@ -39,7 +33,7 @@ export const command: ICommand = {
       color: ColorScheme.information,
       footer: {
         text: commandLit.response(days, hours, minutes, seconds),
-        iconURL: inter.user.displayAvatarURL(),
+        icon_url: inter.user.displayAvatarURL(),
       },
     });
 

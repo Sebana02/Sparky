@@ -6,12 +6,13 @@ import {
   ButtonStyle,
   EmbedBuilder,
   MessageComponentInteraction,
+  EmbedField,
+  SlashCommandBuilder,
 } from 'discord.js';
 import { ICommand } from '../../interfaces/command.interface.js';
 import { createEmbed, ColorScheme } from '../../utils/embed/embed-utils.js';
 import { reply, deferReply, fetchReply, deleteReply, update } from '../../utils/interaction-utils.js';
 import { fetchFunction, fetchString } from '../../utils/language-utils.js';
-import { IEmbedField } from 'interfaces/embed.interface.js';
 
 /**
  * Literal object for the command
@@ -22,22 +23,16 @@ const commandLit = {
 };
 
 export const command: ICommand = {
-  name: 'help',
-  description: commandLit.description,
+  data: new SlashCommandBuilder().setName('help').setDescription(commandLit.description),
 
-  /**
-   * Run the command
-   * @param client The client instance
-   * @param inter The interaction
-   */
-  run: async (client: Client, inter: ChatInputCommandInteraction): Promise<void> => {
+  execute: async (client: Client, inter: ChatInputCommandInteraction): Promise<void> => {
     // Defer the reply to indicate processing
     await deferReply(inter, { ephemeral: true });
 
     // Generate command fields
-    const fields = globalThis.commands.map((command: ICommand) => ({
-      name: `> **${command.name}**`,
-      value: `\`${command.description}\``,
+    const fields = Array.from(globalThis.commands.values()).map((command: ICommand) => ({
+      name: `> **${command.data.name}**`,
+      value: `\`${command.data.description}\``,
       inline: true,
     }));
 
@@ -68,7 +63,7 @@ export const command: ICommand = {
  * @param totalPages - The total number of pages.
  * @returns Embed with the command fields.
  */
-function generateEmbed(fields: IEmbedField[][], currentPage: number, totalPages: number): EmbedBuilder {
+function generateEmbed(fields: EmbedField[][], currentPage: number, totalPages: number): EmbedBuilder {
   return createEmbed({
     color: ColorScheme.information,
     fields: fields[currentPage],
@@ -84,8 +79,8 @@ function generateEmbed(fields: IEmbedField[][], currentPage: number, totalPages:
  * @param totalPages - The total number of pages.
  * @returns Action row with navigation buttons.
  */
-function createActionRow(currentPage: number, totalPages: number): ActionRowBuilder {
-  return new ActionRowBuilder().addComponents(
+function createActionRow(currentPage: number, totalPages: number): ActionRowBuilder<ButtonBuilder> {
+  return new ActionRowBuilder<ButtonBuilder>().addComponents(
     new ButtonBuilder()
       .setCustomId('prev')
       .setLabel('Previous')
@@ -105,7 +100,7 @@ function createActionRow(currentPage: number, totalPages: number): ActionRowBuil
  * @param chunkSize - The size of each chunk.
  * @returns Array of chunked fields.
  */
-function chunkFields(fields: IEmbedField[], chunkSize: number): IEmbedField[][] {
+function chunkFields(fields: EmbedField[], chunkSize: number): EmbedField[][] {
   const chunks = [];
   for (let i = 0; i < fields.length; i += chunkSize) chunks.push(fields.slice(i, i + chunkSize));
 
@@ -121,14 +116,13 @@ function chunkFields(fields: IEmbedField[], chunkSize: number): IEmbedField[][] 
  */
 async function updatePage(
   inter: MessageComponentInteraction,
-  fields: IEmbedField[][],
+  fields: EmbedField[][],
   currentPage: number,
   totalPages: number
 ): Promise<void> {
   await update(inter, {
     embeds: [generateEmbed(fields, currentPage, totalPages)],
     components: [createActionRow(currentPage, totalPages)],
-    ephemeral: true,
   });
 }
 
@@ -142,7 +136,7 @@ async function updatePage(
 async function handleInteraction(
   inter: ChatInputCommandInteraction,
   currentPage: number,
-  chunkedFields: IEmbedField[][],
+  chunkedFields: EmbedField[][],
   totalPages: number
 ): Promise<void> {
   const replyMessage = await fetchReply(inter);

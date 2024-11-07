@@ -1,7 +1,7 @@
-const { ApplicationCommandOptionType, ActionRowBuilder, ButtonBuilder } = require('discord.js');
-const { deferReply, reply, fetchReply } = require('@utils/interaction-utils.js');
-const { createEmbed, ColorScheme } = require('@utils/embed/embed-utils.js');
-const { fetchCommandLit } = require('@utils/language-utils.js');
+const { ApplicationCommandOptionType, ActionRowBuilder, ButtonBuilder } = require('discord.js')
+const { deferReply, reply, fetchReply } = require('@utils/interaction-utils.js')
+const { createEmbed, ColorScheme } = require('@utils/embed/embed-utils.js')
+const { fetchCommandLit } = require('@utils/language-utils.js')
 
 // Preload literals
 const literals = {
@@ -42,7 +42,7 @@ const literals = {
   resultLoseCustom: (loser, word) => fetchCommandLit('game.hangman.results.custom.lose', loser, word),
   resultLoseRandom: (word) => fetchCommandLit('game.hangman.results.random.lose', word),
   resultTimeout: fetchCommandLit('game.hangman.results.timeout'),
-};
+}
 
 /**
  * Command for playing hangman
@@ -67,20 +67,20 @@ module.exports = {
   ],
   run: async (client, inter) => {
     //Defer the reply
-    await deferReply(inter);
+    await deferReply(inter)
 
     //Create the game
-    const gameInfo = await startGame(inter);
+    const gameInfo = await startGame(inter)
 
-    if (!gameInfo) return;
+    if (!gameInfo) return
 
     //Run the game
-    await runGame(inter, gameInfo.game, gameInfo.players);
+    await runGame(inter, gameInfo.game, gameInfo.players)
 
     //Show the result
-    await showResult(inter, gameInfo.game, gameInfo.selector);
+    await showResult(inter, gameInfo.game, gameInfo.selector)
   },
-};
+}
 
 /**
  * Replaces a character in a string at a given index
@@ -89,8 +89,8 @@ module.exports = {
  * @returns
  */
 String.prototype.replaceAt = function (index, replacement) {
-  return this.slice(0, index) + replacement + this.slice(index + replacement.length);
-};
+  return this.slice(0, index) + replacement + this.slice(index + replacement.length)
+}
 
 /**
  * Class for the hangman game
@@ -106,12 +106,12 @@ class hangman {
   };
 
   constructor(word) {
-    this.word = word; //word to guess
-    this.lives = 6; //lives
-    this.progress = '-'.repeat(word.length); //progress
-    this.remaining = word.length; //remaining letters to guess
-    this.misses = []; //misses
-    this.status = hangman.gameStatus.inProgress; //game status
+    this.word = word //word to guess
+    this.lives = 6 //lives
+    this.progress = '-'.repeat(word.length) //progress
+    this.remaining = word.length //remaining letters to guess
+    this.misses = [] //misses
+    this.status = hangman.gameStatus.inProgress //game status
   }
 
   /**
@@ -121,26 +121,26 @@ class hangman {
   guess(c) {
     if (this.progress.includes(c)) {
       //letter already guessed
-      --this.lives;
+      --this.lives
     } else if (this.word.includes(c)) {
       //letter is in the word, update progress
       for (let i = 0; i < this.word.length; ++i) {
         if (this.word[i] === c) {
-          this.progress = this.progress.replaceAt(i, this.word[i]);
-          --this.remaining;
+          this.progress = this.progress.replaceAt(i, this.word[i])
+          --this.remaining
         }
       }
     } else {
       //letter is not in the word, add to misses
       if (!this.misses.includes(c)) {
-        this.misses.push(c);
+        this.misses.push(c)
       }
-      --this.lives;
+      --this.lives
     }
 
     //update game status
-    if (this.lives == 0) this.status = hangman.gameStatus.lose;
-    else if (this.remaining == 0) this.status = hangman.gameStatus.win;
+    if (this.lives == 0) this.status = hangman.gameStatus.lose
+    else if (this.remaining == 0) this.status = hangman.gameStatus.win
   }
 
   /**
@@ -150,12 +150,12 @@ class hangman {
   guessAll(word) {
     if (this.word === word) {
       //word is guessed
-      this.progress = this.word;
-      this.remaining = 0;
-      this.status = hangman.gameStatus.win;
+      this.progress = this.word
+      this.remaining = 0
+      this.status = hangman.gameStatus.win
     } else {
       //word is not guessed
-      if (--this.lives == 0) this.status = hangman.gameStatus.lose;
+      if (--this.lives == 0) this.status = hangman.gameStatus.lose
     }
   }
 }
@@ -169,7 +169,7 @@ const figure = [
   ` +---+\n |   |      \n O   |\n/|\\  |      \n     |      \n     |\n==========  `,
   ` +---+\n |   |      \n O   |\n/|\\  |      \n/    |      \n     |\n==========  `,
   ` +---+\n |   |      \n O   |\n/|\\  |      \n/ \\  |      \n     |\n==========  `,
-];
+]
 
 /**
  * Function to start the game
@@ -178,8 +178,8 @@ const figure = [
  */
 async function startGame(inter) {
   //gather players and game type
-  const players = await gatherPlayers(inter);
-  const gameType = inter.options.getString(literals.optionName);
+  const players = await gatherPlayers(inter)
+  const gameType = inter.options.getString(literals.optionName)
 
   //check if enough players have joined
   if (players.length == 0)
@@ -188,7 +188,7 @@ async function startGame(inter) {
       embeds: [],
       components: [],
       deleteTime: 2,
-    });
+    })
 
   if (gameType === 'custom' && players.length < 2)
     return await reply(inter, {
@@ -196,15 +196,15 @@ async function startGame(inter) {
       embeds: [],
       components: [],
       deleteTime: 2,
-    });
+    })
 
   //choose word according to game type
-  let word, selector;
+  let word, selector
   switch (gameType) {
     //random word
     case 'random':
-      word = literals.wordlist[Math.floor(Math.random() * literals.wordlist.length)];
-      break;
+      word = literals.wordlist[Math.floor(Math.random() * literals.wordlist.length)]
+      break
 
     //ask a player to choose a word
     case 'custom':
@@ -212,23 +212,23 @@ async function startGame(inter) {
         content: literals.customSelectPlayer(players.length),
         embeds: [],
         components: [],
-      });
+      })
 
       //get word from players
-      let userSelection = await getWordFromPlayers(players, inter);
+      let userSelection = await getWordFromPlayers(players, inter)
 
       //check if a word was chosen
-      if (!userSelection || !userSelection.word || !userSelection.selector) return;
+      if (!userSelection || !userSelection.word || !userSelection.selector) return
 
       //set word and selector
-      word = userSelection.word;
-      selector = userSelection.selector;
+      word = userSelection.word
+      selector = userSelection.selector
 
-      break;
+      break
   }
 
   //create the game
-  const game = new hangman(word);
+  const game = new hangman(word)
 
   //If created successfully, run the game, else show error message
   if (!(game && players))
@@ -236,14 +236,14 @@ async function startGame(inter) {
       content: literals.startError,
       embeds: [],
       deleteTime: 2,
-    });
+    })
 
   //return the game object
   return {
     game,
     players,
     selector,
-  };
+  }
 }
 
 /**
@@ -253,51 +253,51 @@ async function startGame(inter) {
  */
 async function gatherPlayers(inter) {
   //Time to wait for players to join
-  const time = 10;
+  const time = 10
 
   //Initial message and buttons to join the game
   const embed = createEmbed({
     color: ColorScheme.game,
     footer: {
       text: literals.gatherPlayersEmbed(time),
-      iconURL: inter.user.displayAvatarURL(),
+      icon_url: inter.user.displayAvatarURL(),
     },
-  });
+  })
 
   const join = new ButtonBuilder()
     .setLabel(literals.butttonJoin)
     .setCustomId(JSON.stringify({ type: 'join' }))
-    .setStyle('Primary');
+    .setStyle('Primary')
 
   const exit = new ButtonBuilder()
     .setLabel(literals.buttonExit)
     .setCustomId(JSON.stringify({ type: 'exit' }))
-    .setStyle('Secondary');
+    .setStyle('Secondary')
 
-  const row = new ActionRowBuilder().addComponents(join, exit);
+  const row = new ActionRowBuilder().addComponents(join, exit)
 
   //Send initial message
-  await reply(inter, { embeds: [embed], components: [row] });
-  let msg = await fetchReply(inter);
+  await reply(inter, { embeds: [embed], components: [row] })
+  let msg = await fetchReply(inter)
 
   //Create a collector to gather players
-  const filter = (i) => JSON.parse(i.customId).type === 'join' || JSON.parse(i.customId).type === 'exit';
+  const filter = (i) => JSON.parse(i.customId).type === 'join' || JSON.parse(i.customId).type === 'exit'
   const collector = await msg.createMessageComponentCollector({
     filter,
     time: time * 1000,
-  });
+  })
 
   //Return a promise that resolves with the list of players when the collector ends
   return await new Promise((resolve, reject) => {
     //List of players
-    let players = [];
+    let players = []
 
     collector.on('collect', (i) => {
       try {
         //Player wants to join
         if (JSON.parse(i.customId).type === 'join') {
           //Add player to the list if they haven't joined yet
-          if (!players.find((p) => p.id === i.user.id)) players.push(i.user);
+          if (!players.find((p) => p.id === i.user.id)) players.push(i.user)
 
           //Reply to the player
           reply(i, {
@@ -305,13 +305,13 @@ async function gatherPlayers(inter) {
             ephemeral: true,
             deleteTime: 2,
             propagate: false,
-          });
+          })
         }
 
         //Player doesn't want to join
         else if (JSON.parse(i.customId).type === 'exit') {
           //Remove player from the list
-          players = players.filter((p) => p.id != i.user.id);
+          players = players.filter((p) => p.id != i.user.id)
 
           //Reply to the player
           reply(i, {
@@ -319,21 +319,21 @@ async function gatherPlayers(inter) {
             ephemeral: true,
             deleteTime: 2,
             propagate: false,
-          });
+          })
         }
       } catch (error) {
-        collector.stop();
-        reject(error);
+        collector.stop()
+        reject(error)
       }
-    });
+    })
 
     //Resolve the promise when the collector ends
     collector.on('end', () => {
-      resolve(players);
-    });
+      resolve(players)
+    })
   }).catch((error) => {
-    throw error;
-  });
+    throw error
+  })
 }
 
 /**
@@ -344,46 +344,46 @@ async function gatherPlayers(inter) {
  */
 async function getWordFromPlayers(players, inter) {
   //If no word is chosen and there is more than one player, choose a player to select a word
-  let word, chosenOne;
+  let word, chosenOne
   while (!word && players.length > 1) {
     //Choose a player
-    let index = Math.floor((Math.random() * 1000) % players.length);
-    chosenOne = players[index];
-    players = players.splice(index, 1);
+    let index = Math.floor((Math.random() * 1000) % players.length)
+    chosenOne = players[index]
+    players = players.splice(index, 1)
 
     // Time to wait for the player to choose a word
-    const time = 30;
+    const time = 30
 
     //Send a DM to the player
-    const dm = await chosenOne.createDM();
-    await dm.send(literals.gatherWordChosenOne(time));
+    const dm = await chosenOne.createDM()
+    await dm.send(literals.gatherWordChosenOne(time))
 
     //Get the word from the player, if the player doesn't respond in time or makes more than 3 tries, choose another player
-    let finish = false;
-    let tries = 0;
-    let msgCollection;
+    let finish = false
+    let tries = 0
+    let msgCollection
     while (!finish && tries < 3) {
       //Try to get the word from the player
       try {
-        msgCollection = await getNextMessage(dm, time * 1000);
+        msgCollection = await getNextMessage(dm, time * 1000)
       } catch (collected) {
-        await dm.send(literals.noWordGivenDM);
+        await dm.send(literals.noWordGivenDM)
         await reply(inter, {
           content: literals.noWordGivenChannel(chosenOne),
-        });
-        finish = true;
-        continue;
+        })
+        finish = true
+        continue
       }
 
       //Check if the message is a valid word, if not, try again up to 3 times
-      const msg = msgCollection.first().content;
+      const msg = msgCollection.first().content
       if (msg.match(`^[A-Za-zÀ-ú]{3,}$`)) {
-        word = msg.toLowerCase();
-        finish = true;
-        await dm.send(literals.wordGivenValid);
+        word = msg.toLowerCase()
+        finish = true
+        await dm.send(literals.wordGivenValid)
       } else {
-        await dm.send(literals.wordGivenInvalid);
-        if (++tries == 3) await dm.send(literals.wordGivenTooManyTries);
+        await dm.send(literals.wordGivenInvalid)
+        if (++tries == 3) await dm.send(literals.wordGivenTooManyTries)
       }
     }
   }
@@ -395,13 +395,13 @@ async function getWordFromPlayers(players, inter) {
       embeds: [],
       components: [],
       deleteTime: 2,
-    });
+    })
 
   //Return the word and the player that chose it
   return {
     word: word,
     selector: chosenOne,
-  };
+  }
 }
 
 /**
@@ -412,13 +412,13 @@ async function getWordFromPlayers(players, inter) {
  *
  */
 async function getNextMessage(channel, maxTime) {
-  const filter = (msg) => !msg.author.bot;
+  const filter = (msg) => !msg.author.bot
   return await channel.awaitMessages({
     filter,
     max: 1,
     time: maxTime,
     errors: ['time'],
-  });
+  })
 }
 
 /**
@@ -430,14 +430,14 @@ async function getNextMessage(channel, maxTime) {
  */
 async function runGame(inter, game, players) {
   //Show the progress
-  await showProgress(inter, game, players);
+  await showProgress(inter, game, players)
 
   //Create a collector for the messages
-  const filterM = (m) => !m.author.bot && players.find((p) => p.id === m.author.id);
+  const filterM = (m) => !m.author.bot && players.find((p) => p.id === m.author.id)
   const collector = await inter.channel.createMessageCollector({
     filter: filterM,
     time: 10 * 1000 * 60,
-  }); // max of 10 minutes per game
+  }) // max of 10 minutes per game
 
   //Return a promise that resolves when the game ends
   return new Promise((resolve, reject) => {
@@ -446,45 +446,45 @@ async function runGame(inter, game, players) {
       try {
         //Get letter, erase message and check if it's a valid letter
         if (m.content.match(`^[A-Za-zÀ-ú]{1,}$`)) {
-          const c = m.content.toLowerCase();
-          await m.delete();
+          const c = m.content.toLowerCase()
+          await m.delete()
 
           //If the letter is more than one character, guess the whole word and remove the player from the list
           if (c.length > 1) {
-            game.guessAll(c);
+            game.guessAll(c)
             players = players.splice(
               players.find((p) => m.author.id == p.id),
               1
-            );
+            )
           } else {
             //Guess the letter e.o.c.
-            game.guess(c);
+            game.guess(c)
           }
 
           //Show the progress
-          await showProgress(inter, game, players);
+          await showProgress(inter, game, players)
 
           //Check if the game has ended, if so, stop the collectors
           if (game.status !== hangman.gameStatus.inProgress) {
-            collector.stop();
+            collector.stop()
           } else if (players.length < 1) {
-            collector.stop();
-            game.status = hangman.gameStatus.lose;
+            collector.stop()
+            game.status = hangman.gameStatus.lose
           }
         }
       } catch (error) {
-        collector.stop();
-        reject(error);
+        collector.stop()
+        reject(error)
       }
-    });
+    })
 
     //End the game when the collectors end, resolve the promise and show the result
     collector.on('end', () => {
-      resolve();
-    });
+      resolve()
+    })
   }).catch((error) => {
-    throw error;
-  });
+    throw error
+  })
 }
 
 /**
@@ -514,9 +514,9 @@ async function showProgress(inter, game, players) {
     footer: {
       text: literals.progressPlayers(players.map((p) => p.username).join(', ')),
     },
-  });
+  })
 
-  await reply(inter, { embeds: [embed] });
+  await reply(inter, { embeds: [embed] })
 }
 
 /**
@@ -527,12 +527,12 @@ async function showProgress(inter, game, players) {
  */
 async function showResult(inter, game, selector) {
   //Set the message according to the game status
-  let msg = '';
+  let msg = ''
   if (game.status === hangman.gameStatus.win) {
-    msg = selector ? literals.resultWinCustom(selector.username) : literals.resultWinRandom;
+    msg = selector ? literals.resultWinCustom(selector.username) : literals.resultWinRandom
   } else if (game.status === hangman.gameStatus.lose) {
-    msg = selector ? literals.resultLoseCustom(selector.username, game.word) : literals.resultLoseRandom(game.word);
-  } else msg = literals.resultTimeout;
+    msg = selector ? literals.resultLoseCustom(selector.username, game.word) : literals.resultLoseRandom(game.word)
+  } else msg = literals.resultTimeout
 
   //Create embed
   const embed = createEmbed({
@@ -551,8 +551,8 @@ async function showResult(inter, game, selector) {
       },
     ],
     footer: { text: msg },
-  });
+  })
 
   //Show the result
-  await reply(inter, { embeds: [embed], components: [] });
+  await reply(inter, { embeds: [embed], components: [] })
 }

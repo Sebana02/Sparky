@@ -1,13 +1,7 @@
-import {
-  ChatInputCommandInteraction,
-  Client,
-  ApplicationCommandOptionType,
-  VoiceBasedChannel,
-  GuildMember,
-} from 'discord.js';
+import { ChatInputCommandInteraction, Client, VoiceBasedChannel, GuildMember, SlashCommandBuilder } from 'discord.js';
 import { Player, QueryType, useMainPlayer } from 'discord-player';
 import { reply, deferReply } from '../../../utils/interaction-utils.js';
-import { noResults, addToQueue, addToQueueMany } from '../../../utils/embed/music-presets.js';
+import { noResults, addToQueue, addToQueueMany } from '../../../utils/embed/embed-presets.js';
 import { fetchString } from '../../../utils/language-utils.js';
 import { IMetadata } from '../../../interfaces/metadata.interface.js';
 import { ICommand } from '../../../interfaces/command.interface.js';
@@ -25,30 +19,24 @@ const commandLit = {
  * Command for playing a song
  */
 export const command: ICommand = {
-  name: 'play',
-  description: commandLit.description,
-  voiceChannel: true,
-  options: [
-    {
-      name: commandLit.songName,
-      description: commandLit.songDescription,
-      type: ApplicationCommandOptionType.String,
-      required: true,
-    },
-  ],
+  data: new SlashCommandBuilder()
+    .setName('play')
+    .setDescription(commandLit.description)
+    .addStringOption((option) =>
+      option.setName(commandLit.songName).setDescription(commandLit.songDescription).setRequired(true)
+    ) as SlashCommandBuilder,
 
-  /**
-   * Function for the command
-   * @param client -  The client
-   * @param inter - The interaction
-   */
-  run: async (client: Client, inter: ChatInputCommandInteraction) => {
+  voiceChannel: true,
+
+  blockedInDMs: true,
+
+  execute: async (client: Client, inter: ChatInputCommandInteraction) => {
     //Get the player and the song
     const player: Player = useMainPlayer();
     const song = inter.options.getString(commandLit.songName, true);
 
     //Defer the reply
-    await deferReply(inter);
+    await deferReply(inter, { ephemeral: false });
 
     //Search for the song
     const results = await player.search(song, {
@@ -57,8 +45,7 @@ export const command: ICommand = {
     });
 
     //If there are no results
-    if (!results.hasTracks())
-      return await reply(inter, { embeds: [noResults(client)], ephemeral: true }, { deleteTime: 2 });
+    if (!results.hasTracks()) return await reply(inter, { embeds: [noResults(client)], ephemeral: true }, 2);
 
     // Get voice channel
     const voiceChannel: VoiceBasedChannel = (inter.member as GuildMember).voice.channel as VoiceBasedChannel;

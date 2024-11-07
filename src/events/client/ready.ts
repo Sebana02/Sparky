@@ -23,18 +23,19 @@ export const event: IEvent = {
     client.user.setActivity(process.env.PLAYING_ACTIVITY || '');
 
     //Get guild ID from environment variable and get guild object
-    const guildId: string | undefined = process.env.GUILD_ID?.trim();
-    const guild: Guild | undefined = guildId ? client.guilds.cache.get(guildId) : undefined;
+    const guildId = process.env.GUILD_ID?.trim();
+    const guild = guildId ? client.guilds.cache.get(guildId) : undefined;
 
     //Register slash commands
     //If guild ID is not set, register globally
     //If guild ID is set and guild is found, register in that guild
     //If guild ID is set and guild is not found, log error and exit bot
+    const commandsArray = Array.from(globalThis.commands.values()).map((command) => command.data.toJSON());
     if (!guildId) {
-      await client.application.commands.set(globalThis.commands);
+      await client.application.commands.set(commandsArray);
       logger.info('Slash commands registered globally');
     } else if (guild) {
-      await guild.commands.set(globalThis.commands);
+      await guild.commands.set(commandsArray);
       logger.info(`Slash commands registered in guild ${guild.name}`);
     } else {
       logger.error(`Guild with ID ${guildId} not found, slash commands not registered, bot will exit`);

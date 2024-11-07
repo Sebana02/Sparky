@@ -2,7 +2,7 @@ import { ICommand } from '../../../interfaces/command.interface.js';
 import { fetchFunction, fetchString } from '../../../utils/language-utils.js';
 import { sendRandomGif } from '../../../utils/gif-utils.js';
 import { createEmbed, ColorScheme } from '../../../utils/embed/embed-utils.js';
-import { ApplicationCommandOptionType, ChatInputCommandInteraction, Client } from 'discord.js';
+import { ChatInputCommandInteraction, Client, SlashCommandBuilder } from 'discord.js';
 
 /**
  * Literal object for the command
@@ -19,23 +19,16 @@ const commandLit = {
  * Command that sends a random gif from the category hug, hug the user
  */
 export const command: ICommand = {
-  name: 'hug',
-  description: commandLit.desciption,
-  options: [
-    {
-      name: commandLit.userName,
-      description: commandLit.userDescription,
-      type: ApplicationCommandOptionType.User,
-      required: true,
-    },
-  ],
+  data: new SlashCommandBuilder()
+    .setName('hug')
+    .setDescription(commandLit.desciption)
+    .addUserOption((option) =>
+      option.setName(commandLit.userName).setDescription(commandLit.userDescription).setRequired(true)
+    ) as SlashCommandBuilder,
 
-  /**
-   * Run the command
-   * @param client The client instance
-   * @param inter The interaction
-   */
-  run: async (client: Client, inter: ChatInputCommandInteraction): Promise<void> => {
+  blockedInDMs: true,
+
+  execute: async (client: Client, inter: ChatInputCommandInteraction): Promise<void> => {
     // Get the target user
     const targetUser = inter.options.getUser(commandLit.userName, true);
 
@@ -45,7 +38,7 @@ export const command: ICommand = {
       description: commandLit.responseTitle(targetUser),
       footer: {
         text: commandLit.responseDescription(inter.user.username),
-        iconURL: inter.user.displayAvatarURL(),
+        icon_url: inter.user.displayAvatarURL(),
       },
     });
 

@@ -1,5 +1,5 @@
-import { EmbedBuilder } from 'discord.js';
-import { IEmbed } from '../../interfaces/embed.interface.js';
+import { APIEmbed, EmbedBuilder } from 'discord.js';
+import * as presets from './embed-presets.js';
 
 /**
  * Color scheme for Discord embeds
@@ -11,26 +11,26 @@ export enum ColorScheme {
   information = 0x2a4f6e,
   game = 0x496c89,
   fun = 0x718da5,
+  music = 0x9cb3c9,
   default = 0x424549,
 }
 
 /**
  * Create a new Discord embed using the provided embedContent
- * @param {IEmbed} embedContent - The content for the embed.
- * @returns {EmbedBuilder} - The created Discord embed.
- * @throws {Error} - If the created embed is empty.
- * @note Make sure to provide at least one of the following properties: title, description, fields, image, thumbnail, author, or footer, otherwise an error will be thrown.
+ * @param embedContent - The content for the embed.
+ * @returns The created Discord embed.
+ * @throws An error if the created embed is empty.
  */
-export function createEmbed(embedContent: IEmbed): EmbedBuilder {
+export function createEmbed(embedContent: APIEmbed): EmbedBuilder {
   try {
-    // Create a new Discord embed
-    const embed = new EmbedBuilder();
+    // Set the default color if not provided
+    embedContent.color = embedContent.color || ColorScheme.default;
 
-    // Set the properties of the embed
-    setEmbedProperties(embed, embedContent);
+    // Create a new Discord embed
+    const embed = new EmbedBuilder(embedContent);
 
     // Check if the embed is empty
-    if (!isValidEmbed(embed)) throw new Error('embed is not valid');
+    checkEmbed(embed);
 
     // Return the created embed
     return embed;
@@ -42,21 +42,30 @@ export function createEmbed(embedContent: IEmbed): EmbedBuilder {
 
 /**
  * Modify an existing Discord embed using the provided embedContent
- * @param {EmbedBuilder} embed - The existing Discord embed to be modified.
- * @param {IEmbed} embedContent - The content for the embed.
- * @returns {EmbedBuilder} - The modified Discord embed.
- * @throws {Error} - If the modified embed is empty.
+ * @param embed - The existing Discord embed to be modified.
+ * @param embedContent - The content for the embed.
+ * @returns The modified Discord embed.
+ * @throws An error if the modified embed is empty.
  */
-export function modifyEmbed(embed: EmbedBuilder, embedContent: IEmbed): EmbedBuilder {
+export function modifyEmbed(embed: EmbedBuilder, embedContent: APIEmbed): EmbedBuilder {
   try {
-    // Check if the given embed is valid
-    if (!isValidEmbed(embed)) throw new Error('given embed is not valid');
+    //Deconstruct the embedContent
+    const { title, description, fields, image, thumbnail, author, footer, color, url, timestamp } = embedContent;
 
     // Set the properties of the embed
-    setEmbedProperties(embed, embedContent);
+    if (title) embed.setTitle(title);
+    if (description) embed.setDescription(description);
+    if (fields) embed.setFields(fields);
+    if (image) embed.setImage(image.url);
+    if (thumbnail) embed.setThumbnail(thumbnail.url);
+    if (author) embed.setAuthor(author);
+    if (footer) embed.setFooter(footer);
+    if (color) embed.setColor(color);
+    if (url) embed.setURL(url);
+    if (timestamp) embed.setTimestamp(new Date(timestamp));
 
     // Check if the embed is empty
-    if (!isValidEmbed(embed)) throw new Error('embed is not valid');
+    checkEmbed(embed);
 
     // Return the modified embed
     return embed;
@@ -68,22 +77,17 @@ export function modifyEmbed(embed: EmbedBuilder, embedContent: IEmbed): EmbedBui
 
 /**
  * Clone an existing Discord embed
- * @param {EmbedBuilder} embed - The existing Discord embed to be cloned.
- * @returns {EmbedBuilder} - The cloned Discord embed.
- * @throws {Error} - If the cloned embed is empty.
+ * @param embed - The existing Discord embed to be cloned.
+ * @returns The cloned Discord embed.
+ * @throws An error if the cloned embed is empty.
  */
 export function cloneEmbed(embed: EmbedBuilder): EmbedBuilder {
   try {
-    // Create a new Discord embed
-    let clonedEmbed = new EmbedBuilder();
     // Check if the given embed is valid
-    if (!isValidEmbed(embed)) throw new Error('given embed is not valid');
-
-    // Clone the embed
-    clonedEmbed = new EmbedBuilder(embed.data);
+    checkEmbed(embed);
 
     // Return the cloned embed
-    return clonedEmbed;
+    return new EmbedBuilder(embed.toJSON());
   } catch (error: any) {
     error.message = `cloning embed: ${error.message}`;
     throw error;
@@ -91,44 +95,36 @@ export function cloneEmbed(embed: EmbedBuilder): EmbedBuilder {
 }
 
 /**
- * Check if a Discord embed is valid
- * @param {EmbedBuilder} embed - The Discord embed to check.
- * @returns {boolean} - Whether the embed is valid.
+ * Check if the given embed is valid
+ * @param embed - The Discord embed to be checked.
+ * @throws An error if the embed is not valid.
  */
-function isValidEmbed(embed: EmbedBuilder): boolean {
+function checkEmbed(embed: EmbedBuilder): void {
   // Destructure the embed data
   const { title, description, fields, image, thumbnail, author, footer } = embed.data;
 
   // Check if the embed is valid
-  return !!(
-    title ||
-    description ||
-    (fields && fields.length > 0) ||
-    image ||
-    thumbnail ||
-    author?.name ||
-    footer?.text
-  );
+  if (!(title || description || (fields && fields.length > 0) || image || thumbnail || author || footer))
+    throw new Error('given embed is not valid');
 }
 
 /**
- * Add properties to an existing Discord embed
- * @param embed - The existing Discord embed to add properties to
- * @param properties - The properties to add to the embed
+ * Create a new Discord embed using one of the provided templates
+ * @param templateName - The name of the template to use.
+ * @param args - The arguments for the template.
+ * @returns The created Discord embed.
  */
-function setEmbedProperties(embed: EmbedBuilder, properties: IEmbed): void {
-  // Destructure the properties
-  const { title, description, color, thumbnail, image, url, footer, author, setTimestamp, fields } = properties;
+export function embedFromTemplate<T extends keyof typeof presets>(
+  templateName: T,
+  ...args: Parameters<(typeof presets)[T]>
+): EmbedBuilder {
+  // Get the method for the template and create the embed
+  const method = presets[templateName] as (this: any, ...args: Parameters<(typeof presets)[T]>) => APIEmbed;
+  const embed = createEmbed(method.apply(null, args)); // For some reason, TS doesn't like the spread operator here
 
-  // Set the properties of the embed
-  if (title) embed.setTitle(title);
-  if (description) embed.setDescription(description);
-  if (color) embed.setColor(color);
-  if (thumbnail) embed.setThumbnail(thumbnail);
-  if (image) embed.setImage(image);
-  if (url) embed.setURL(url);
-  if (footer?.text) embed.setFooter(footer);
-  if (author?.name) embed.setAuthor(author);
-  if (setTimestamp) embed.setTimestamp();
-  if (fields) embed.setFields(fields);
+  // Check if the embed is empty
+  checkEmbed(embed);
+
+  // Return the created embed
+  return embed;
 }
