@@ -1,7 +1,7 @@
 import { Client } from 'discord.js';
-import { IEvent } from '../../interfaces/event.interface.js';
+import { Emitter, IEvent } from '../../interfaces/event.interface.js';
 import { GuildQueue, QueueRepeatMode, Track } from 'discord-player';
-import { IMetadata } from '../../interfaces/metadata.interface.js';
+import { IQueuePlayerMetadata, ITrackMetadata } from '../../interfaces/metadata.interface.js';
 import { embedFromTemplate } from '../../utils/embed/embed-utils.js';
 
 /**
@@ -11,13 +11,13 @@ import { embedFromTemplate } from '../../utils/embed/embed-utils.js';
 export const event: IEvent = {
   event: 'playerStart',
 
-  /**
-   * Callback function for the player start event
-   * @param client - The Discord client object
-   * @param queue - The guild queue object
-   * @param track - The track that is being played
-   */
-  callback: async (client: Client, queue: GuildQueue<IMetadata>, track: Track): Promise<void> => {
+  emitter: Emitter.Player,
+
+  callback: async (
+    client: Client,
+    queue: GuildQueue<IQueuePlayerMetadata>,
+    track: Track<ITrackMetadata>
+  ): Promise<void> => {
     // Check if the queue is in repeat mode or if trivia is enabled
     if (queue.repeatMode !== QueueRepeatMode.OFF || queue.metadata.trivia) return;
 

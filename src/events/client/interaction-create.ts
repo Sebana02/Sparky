@@ -4,8 +4,8 @@ import { reply } from '../../utils/interaction-utils.js';
 import { fetchString } from '../../utils/language-utils.js';
 import { ChatInputCommandInteraction, Client, Guild, GuildMember, Interaction } from 'discord.js';
 import { ICommand } from '../../interfaces/command.interface.js';
-import { IEvent } from '../../interfaces/event.interface.js';
-import { IMetadata } from '../../interfaces/metadata.interface.js';
+import { Emitter, IEvent } from '../../interfaces/event.interface.js';
+import { IQueuePlayerMetadata } from '../../interfaces/metadata.interface.js';
 
 /**
  * Literal object for the event
@@ -23,12 +23,8 @@ const eventLit = {
 export const event: IEvent = {
   event: 'interactionCreate',
 
-  /**
-   * Callback function to be executed when the interactionCreate event is triggered
-   * @param client - The discord client
-   * @param inter - The interaction object
-   * @returns A Promise that resolves when the function is done executing
-   */
+  emitter: Emitter.Client,
+
   callback: async (client: Client, inter: Interaction): Promise<void> => {
     // If interaction is a chat input command
     if (inter.isChatInputCommand()) {
@@ -86,16 +82,16 @@ async function hasVoiceChannelRequirements(
     await reply(inter, { content: eventLit.noDJRole, ephemeral: true }, 2);
     return false;
   }
-  if (useQueue<IMetadata>(guild)?.metadata.trivia) {
-    await reply(inter, { content: eventLit.noCommandsTrivia, ephemeral: true }, 2);
-    return false;
-  }
   if (!voiceChannel) {
     await reply(inter, { content: eventLit.noVoiceChannel, ephemeral: true }, 2);
     return false;
   }
   if (botVoiceChannel && voiceChannel.id !== botVoiceChannel.id) {
     await reply(inter, { content: eventLit.noSameVoiceChannel, ephemeral: true }, 2);
+    return false;
+  }
+  if (useQueue<IQueuePlayerMetadata>(guild)?.metadata.trivia) {
+    await reply(inter, { content: eventLit.noCommandsTrivia, ephemeral: true }, 2);
     return false;
   }
   return true;

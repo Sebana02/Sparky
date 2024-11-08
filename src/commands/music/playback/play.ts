@@ -1,9 +1,17 @@
-import { ChatInputCommandInteraction, Client, VoiceBasedChannel, GuildMember, SlashCommandBuilder } from 'discord.js';
-import { Player, QueryType, useMainPlayer } from 'discord-player';
+import {
+  ChatInputCommandInteraction,
+  Client,
+  VoiceBasedChannel,
+  GuildMember,
+  SlashCommandBuilder,
+  VoiceChannel,
+  TextChannel,
+} from 'discord.js';
+import { QueryType, useMainPlayer, SearchOptions, Track } from 'discord-player';
 import { reply, deferReply } from '../../../utils/interaction-utils.js';
 import { noResults, addToQueue, addToQueueMany } from '../../../utils/embed/embed-presets.js';
 import { fetchString } from '../../../utils/language-utils.js';
-import { IMetadata } from '../../../interfaces/metadata.interface.js';
+import { IQueuePlayerMetadata, ITrackMetadata } from '../../../interfaces/metadata.interface.js';
 import { ICommand } from '../../../interfaces/command.interface.js';
 
 /**
@@ -32,7 +40,7 @@ export const command: ICommand = {
 
   execute: async (client: Client, inter: ChatInputCommandInteraction) => {
     //Get the player and the song
-    const player: Player = useMainPlayer();
+    const player = useMainPlayer();
     const song = inter.options.getString(commandLit.songName, true);
 
     //Defer the reply
@@ -47,17 +55,23 @@ export const command: ICommand = {
     //If there are no results
     if (!results.hasTracks()) return await reply(inter, { embeds: [noResults(client)], ephemeral: true }, 2);
 
-    // Get voice channel
-    const voiceChannel: VoiceBasedChannel = (inter.member as GuildMember).voice.channel as VoiceBasedChannel;
+    //Set the metadata for the tracks, this can be changed in the future
+    results.tracks.forEach((track) => {
+      track.setMetadata({} as ITrackMetadata);
+    });
+
+    // Get voice channel and text channel
+    const voiceChannel = (inter.member as GuildMember).voice.channel as VoiceChannel;
+    const textChanel = inter.channel as TextChannel;
 
     //Play the song
-    await player.play(voiceChannel, results, {
+    await player.play<IQueuePlayerMetadata>(voiceChannel, results, {
       nodeOptions: {
         metadata: {
           voiceChannel: voiceChannel,
-          channel: inter.channel,
+          channel: textChanel,
           trivia: false,
-        } as IMetadata,
+        },
         leaveOnEmptyCooldown: 0,
         leaveOnEmpty: true,
         leaveOnEndCooldown: 0,
@@ -69,7 +83,7 @@ export const command: ICommand = {
 
     //Send the added to queue embed
     await reply(inter, {
-      embeds: [results.playlist ? addToQueueMany(results) : addToQueue(results.tracks[0])],
+      embeds: [results.playlist ? addToQueueMany(results) : addToQueue(results.tracks[0] as Track<ITrackMetadata>)],
     });
   },
 };

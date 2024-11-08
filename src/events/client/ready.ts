@@ -1,5 +1,5 @@
 import { Client, Guild } from 'discord.js';
-import { IEvent } from '../../interfaces/event.interface.js';
+import { Emitter, IEvent } from '../../interfaces/event.interface.js';
 
 /**
  * Event handler for the ready event
@@ -7,11 +7,8 @@ import { IEvent } from '../../interfaces/event.interface.js';
 export const event: IEvent = {
   event: 'ready',
 
-  /**
-   * Callback function for handling the ready event
-   * @param {Client} client - The Discord client object
-   * @returns {Promise<void>}
-   */
+  emitter: Emitter.Client,
+
   callback: async (client: Client): Promise<void> => {
     // Perform checks to ensure the client is logged in correctly, if not, exit the bot
     if (!client.user || !client.application || !client.guilds || !client.users) {

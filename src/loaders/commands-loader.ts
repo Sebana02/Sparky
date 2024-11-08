@@ -6,7 +6,7 @@ import { pathToFileURL } from 'url';
 
 /**
  * Loads commands from the specified folder path.
- * @param {string} folderPath - The path of the folder containing the commands.
+ * @param folderPath - The path of the folder containing the commands.
  */
 export default async function loadCommands(folderPath: string): Promise<void> {
   // Log the loading of commands
@@ -33,8 +33,8 @@ export default async function loadCommands(folderPath: string): Promise<void> {
 
 /**
  * Retrieves an array of promises to load commands from the specified folder path.
- * @param {string} folderPath - The path of the folder containing the commands.
- * @returns {Promise<void>[]} - An array of promises to load the commands.
+ * @param  folderPath - The path of the folder containing the commands.
+ * @returns  An array of promises to load the commands.
  */
 function retrieveCommandPromises(folderPath: string): Promise<void>[] {
   // Initialize an array of promises, one for each file
@@ -57,7 +57,7 @@ function retrieveCommandPromises(folderPath: string): Promise<void>[] {
 
 /**
  * Creates a promise to load a command from the specified file path.
- * @param {string} filePath - The path of the file containing the command.
+ * @param filePath - The path of the file containing the command.
  */
 async function createCommandPromise(filePath: string): Promise<void> {
   try {
@@ -92,8 +92,8 @@ async function createCommandPromise(filePath: string): Promise<void> {
 
 /**
  * Checks if an object is a valid command.
- * @param {any} command - The object to check.
- * @returns {boolean} - Whether the object is a valid command.
+ * @param command - The object to check.
+ * @returns Whether the object is a valid command.
  */
 function isCommand(command: any): command is ICommand {
   return (

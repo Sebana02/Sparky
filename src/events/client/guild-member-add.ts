@@ -1,5 +1,5 @@
 import { Client, GuildMember } from 'discord.js';
-import { IEvent } from '../../interfaces/event.interface.js';
+import { Emitter, IEvent } from '../../interfaces/event.interface.js';
 import { fetchFunction } from '../../utils/language-utils.js';
 
 /**
@@ -16,11 +16,8 @@ const eventLit = {
 export const event: IEvent = {
   event: 'guildMemberAdd',
 
-  /**
-   * Callback function for the event
-   * @param client - The discord client
-   * @param member - The member that joined the guild
-   */
+  emitter: Emitter.Client,
+
   callback: async (client: Client, member: GuildMember): Promise<void> => {
     //Log the event
     logger.info(`New member: ${member.user.tag} (id : ${member.user}) joined the server`);

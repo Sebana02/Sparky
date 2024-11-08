@@ -1,5 +1,5 @@
 import { Client } from 'discord.js';
-import { IEvent } from '../../interfaces/event.interface.js';
+import { Emitter, IEvent } from '../../interfaces/event.interface.js';
 
 /**
  * Event when the bot is exiting
@@ -7,11 +7,9 @@ import { IEvent } from '../../interfaces/event.interface.js';
  */
 export const event: IEvent = {
   event: 'exit',
-  /**
-   * Callback function for the exit event
-   * @param client - The Discord client object
-   * @param code - The exit code
-   */
+
+  emitter: Emitter.Process,
+
   callback: async (client: Client, code: number): Promise<void> => {
     logger.info(`Disconnecting bot with code ${code}`);
   },

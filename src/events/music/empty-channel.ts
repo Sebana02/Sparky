@@ -1,7 +1,7 @@
 import { Client } from 'discord.js';
-import { IEvent } from '../../interfaces/event.interface.js';
+import { Emitter, IEvent } from '../../interfaces/event.interface.js';
 import { GuildQueue } from 'discord-player';
-import { IMetadata } from '../../interfaces/metadata.interface';
+import { IQueuePlayerMetadata } from '../../interfaces/metadata.interface';
 import { embedFromTemplate } from '../../utils/embed/embed-utils.js';
 
 /**
@@ -11,12 +11,9 @@ import { embedFromTemplate } from '../../utils/embed/embed-utils.js';
 export const event: IEvent = {
   event: 'emptyChannel',
 
-  /**
-   * Callback function for the empty channel event
-   * @param client - The Discord client object
-   * @param queue - The guild queue object
-   */
-  callback: async (client: Client, queue: GuildQueue<IMetadata>): Promise<void> => {
+  emitter: Emitter.Player,
+
+  callback: async (client: Client, queue: GuildQueue<IQueuePlayerMetadata>): Promise<void> => {
     // Send the empty channel embed to the channel
     await queue.metadata.channel.send({ embeds: [embedFromTemplate('emptyChannel', client)] });
   },

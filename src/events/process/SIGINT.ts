@@ -1,5 +1,5 @@
 import { Client } from 'discord.js';
-import { IEvent } from '../../interfaces/event.interface.js';
+import { Emitter, IEvent } from '../../interfaces/event.interface.js';
 
 /**
  * Event when user presses CTRL+C (SIGINT)
@@ -7,11 +7,9 @@ import { IEvent } from '../../interfaces/event.interface.js';
  */
 export const event: IEvent = {
   event: 'SIGINT',
-  /**
-   * Callback function for the SIGINT event
-   * @param {Client} client - The Discord client object
-   * @returns {Promise<void>}
-   * */
+
+  emitter: Emitter.Process,
+
   callback: async (client: Client): Promise<void> => {
     logger.info('Bot received SIGINT signal, disconnecting...');
 

@@ -1,5 +1,5 @@
 import { Client } from 'discord.js';
-import { IEvent } from '../../interfaces/event.interface.js';
+import { Emitter, IEvent } from '../../interfaces/event.interface.js';
 
 /**
  * Event when an uncaught exception occurs
@@ -8,12 +8,8 @@ import { IEvent } from '../../interfaces/event.interface.js';
 export const event: IEvent = {
   event: 'uncaughtException',
 
-  /**
-   * Callback function to be executed when the uncaughtException event is triggered
-   * @param client - The discord client
-   * @param error - The error object
-   * @returns Promise<void>
-   */
+  emitter: Emitter.Process,
+
   callback: async (client: Client, error: Error): Promise<void> => {
     logger.error(`An uncaught exception ocurred: ${error.stack}`);
 

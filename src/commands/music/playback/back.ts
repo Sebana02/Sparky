@@ -1,10 +1,10 @@
 import { ChatInputCommandInteraction, Client, SlashCommandBuilder } from 'discord.js';
-import { useQueue, GuildQueue, Track, useHistory, GuildQueueHistory } from 'discord-player';
+import { useQueue, Track } from 'discord-player';
 import { deferReply, reply } from '../../../utils/interaction-utils.js';
 import { noQueue, noHistory, previousTrack } from '../../../utils/embed/embed-presets.js';
 import { fetchString } from '../../../utils/language-utils.js';
 import { ICommand } from '../../../interfaces/command.interface.js';
-import { IMetadata } from '../../../interfaces/metadata.interface.js';
+import { IQueuePlayerMetadata, ITrackMetadata } from '../../../interfaces/metadata.interface.js';
 
 /**
  * Literal object for the command
@@ -24,14 +24,14 @@ export const command: ICommand = {
   blockedInDMs: true,
 
   execute: async (client: Client, inter: ChatInputCommandInteraction) => {
-    //Get the queue and history
-    const history: GuildQueueHistory<IMetadata> = useHistory<IMetadata>(
-      inter.guildId as string
-    ) as GuildQueueHistory<IMetadata>;
-    const queue: GuildQueue<IMetadata> = useQueue<IMetadata>(inter.guildId as string) as GuildQueue<IMetadata>;
+    //Get the queue
+    const queue = useQueue<IQueuePlayerMetadata>(inter.guild?.id as string);
 
     //Check if there is a queue and if it is playing
     if (!queue || !queue.isPlaying()) return await reply(inter, { embeds: [noQueue(client)], ephemeral: true }, 2);
+
+    //Get the history
+    const history = queue.history;
 
     //Check if there is a history
     if (history.isEmpty()) return await reply(inter, { embeds: [noHistory(client)], ephemeral: true }, 2);
@@ -43,6 +43,6 @@ export const command: ICommand = {
     await history.previous(true);
 
     //Send the previous track embed
-    await reply(inter, { embeds: [previousTrack(queue.currentTrack as Track)] });
+    await reply(inter, { embeds: [previousTrack(queue.currentTrack as Track<ITrackMetadata>)] });
   },
 };

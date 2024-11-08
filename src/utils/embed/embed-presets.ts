@@ -1,8 +1,9 @@
-import { SearchResult, Track, GuildQueue } from 'discord-player';
+import { SearchResult, Track, GuildQueue, GuildQueuePlayerNode } from 'discord-player';
 import { Client, APIEmbed } from 'discord.js';
 import { LyricsData } from '@discord-player/extractor';
 import { fetchFunction, fetchString } from '../language-utils.js';
 import { ColorScheme } from './embed-utils.js';
+import { ITrackMetadata, IQueuePlayerMetadata } from '../../interfaces/metadata.interface.js';
 
 /**
  * Literal object for music embeds
@@ -136,7 +137,7 @@ export function noLyrics(track: Track): APIEmbed {
  * @param track - The track object
  * @returns The added to queue embed
  */
-export function addToQueue(track: Track): APIEmbed {
+export function addToQueue(track: Track<ITrackMetadata>): APIEmbed {
   return {
     color: ColorScheme.music,
     author: {
@@ -172,7 +173,7 @@ export function addToQueueMany(results: SearchResult): APIEmbed {
  * @param track - The track object
  * @returns The previous track embed
  */
-export function previousTrack(track: Track): APIEmbed {
+export function previousTrack(track: Track<ITrackMetadata>): APIEmbed {
   return {
     color: ColorScheme.music,
     author: {
@@ -205,7 +206,7 @@ export function stop(client: Client): APIEmbed {
  * @param track - The track object
  * @returns The paused embed
  */
-export function pause(track: Track): APIEmbed {
+export function pause(track: Track<ITrackMetadata>): APIEmbed {
   return {
     color: ColorScheme.music,
     author: {
@@ -223,7 +224,7 @@ export function pause(track: Track): APIEmbed {
  * @param track - The track object
  * @returns The resumed embed
  */
-export function resume(track: Track): APIEmbed {
+export function resume(track: Track<ITrackMetadata>): APIEmbed {
   return {
     color: ColorScheme.music,
     author: {
@@ -257,7 +258,7 @@ export function clear(client: Client): APIEmbed {
  * @param track - The track object
  * @returns The loop embed
  */
-export function loop(repeatMode: number, track: Track): APIEmbed {
+export function loop(repeatMode: number, track: Track<ITrackMetadata>): APIEmbed {
   const names = [musicLit.loopModeOff, musicLit.loopModeTrack, musicLit.loopModeQueue, musicLit.loopModeAutoplay];
 
   return {
@@ -274,7 +275,7 @@ export function loop(repeatMode: number, track: Track): APIEmbed {
  * @param queue - The queue object
  * @returns The queue embed
  */
-export function currentQueue(queue: GuildQueue): APIEmbed {
+export function currentQueue(queue: GuildQueue<IQueuePlayerMetadata>): APIEmbed {
   const methods = ['', '| 🔂', '| 🔁', '| 🔀'];
   const nextSongs =
     queue.getSize() > 5
@@ -304,7 +305,7 @@ export function currentQueue(queue: GuildQueue): APIEmbed {
  * @param track - The track object
  * @returns The volume embed
  */
-export function volume(vol: number, track: Track): APIEmbed {
+export function volume(vol: number, track: Track<ITrackMetadata>): APIEmbed {
   return {
     color: ColorScheme.music,
     author: {
@@ -340,7 +341,7 @@ export function lyrics(lyricsData: LyricsData): APIEmbed {
  * @param track - The track object
  * @returns The skipped embed
  */
-export function skip(track: Track): APIEmbed {
+export function skip(track: Track<ITrackMetadata>): APIEmbed {
   return {
     color: ColorScheme.music,
     author: {
@@ -348,7 +349,7 @@ export function skip(track: Track): APIEmbed {
       icon_url: track.thumbnail,
     },
     footer: {
-      text: fetchString('music_presets.skip'),
+      text: musicLit.skip,
     },
   };
 }
@@ -359,14 +360,12 @@ export function skip(track: Track): APIEmbed {
  * @param player - The player object
  * @returns The now playing embed
  */
-export function nowPlaying(queue: GuildQueue, player: any): APIEmbed {
+export function nowPlaying(
+  queue: GuildQueue<IQueuePlayerMetadata>,
+  player: GuildQueuePlayerNode<IQueuePlayerMetadata>
+): APIEmbed {
   const track = queue.currentTrack;
-  const loopModes = [
-    fetchString('music_presets.loop.modes.off'),
-    fetchString('music_presets.loop.modes.track'),
-    fetchString('music_presets.loop.modes.queue'),
-    fetchString('music_presets.loop.modes.autoplay'),
-  ];
+  const loopModes = [musicLit.loopModeOff, musicLit.loopModeTrack, musicLit.loopModeQueue, musicLit.loopModeAutoplay];
 
   return {
     color: ColorScheme.music,
@@ -387,15 +386,15 @@ export function nowPlaying(queue: GuildQueue, player: any): APIEmbed {
  * @param queue - The queue object
  * @returns The shuffle embed
  */
-export function shuffle(queue: GuildQueue): APIEmbed {
+export function shuffle(queue: GuildQueue<IQueuePlayerMetadata>): APIEmbed {
   return {
     color: ColorScheme.music,
     author: {
-      name: fetchFunction('music_presets.shuffle.title')(queue.tracks.size),
+      name: musicLit.shuffleTitle(queue.tracks.size),
       icon_url: queue.currentTrack?.thumbnail,
     },
     footer: {
-      text: fetchString('music_presets.shuffle.description'),
+      text: musicLit.shuffleDescription,
     },
   };
 }
@@ -405,7 +404,7 @@ export function shuffle(queue: GuildQueue): APIEmbed {
  * @param track - The track object
  * @returns The save embed
  */
-export function savePrivate(track: Track): APIEmbed {
+export function savePrivate(track: Track<ITrackMetadata>): APIEmbed {
   return {
     color: ColorScheme.music,
     title: `:arrow_forward: ${track.title}`,
@@ -432,7 +431,7 @@ export function savePrivate(track: Track): APIEmbed {
  * @param track - The track object
  * @returns The save embed
  */
-export function save(track: Track): APIEmbed {
+export function save(track: Track<ITrackMetadata>): APIEmbed {
   return {
     color: ColorScheme.music,
     author: {
@@ -450,7 +449,7 @@ export function save(track: Track): APIEmbed {
  * @param track - The track object
  * @returns The playing embed
  */
-export function playing(track: Track): APIEmbed {
+export function playing(track: Track<ITrackMetadata>): APIEmbed {
   return {
     color: ColorScheme.music,
     author: {

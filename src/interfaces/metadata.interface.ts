@@ -1,6 +1,9 @@
 import { TextChannel, VoiceChannel } from 'discord.js';
 
-export interface IMetadata {
+/**
+ * Interface for the queue metadata
+ */
+export interface IQueuePlayerMetadata {
   /** The channel where the command was executed */
   channel: TextChannel;
 
@@ -10,3 +13,8 @@ export interface IMetadata {
   /** Wheter trivia is being played or not */
   trivia?: boolean;
 }
+
+/**
+ * Interface for the track metadata
+ */
+export interface ITrackMetadata {}

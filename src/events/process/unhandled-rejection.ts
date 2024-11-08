@@ -1,5 +1,5 @@
 import { Client } from 'discord.js';
-import { IEvent } from '../../interfaces/event.interface.js';
+import { Emitter, IEvent } from '../../interfaces/event.interface.js';
 
 /**
  * Event when an unhandled rejection occurs
@@ -8,12 +8,9 @@ import { IEvent } from '../../interfaces/event.interface.js';
 export const event: IEvent = {
   event: 'unhandledRejection',
 
-  /**
-   * Callback function for the unhandledRejection event
-   * @param client - The Discord client object
-   * @param promiseRejectionEvent - The promise rejection event
-   */
+  emitter: Emitter.Process,
+
   callback: async (client: Client, promiseRejectionEvent: PromiseRejectionEvent): Promise<void> => {
-    logger.error('An unhandled promise rejection ocurred:', promiseRejectionEvent.reason);
+    logger.error(`An unhandled promise rejection ocurred: ${promiseRejectionEvent.reason}`);
   },
 };

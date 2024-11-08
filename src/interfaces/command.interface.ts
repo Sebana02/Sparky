@@ -1,13 +1,7 @@
-import {
-  Client,
-  ChatInputCommandInteraction,
-  SlashCommandBuilder,
-  RESTPutAPIApplicationCommandsJSONBody,
-} from 'discord.js';
+import { Client, ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js';
 
 /**
  * Interface for a Discord Slash Command.
- * This interface extends the structure of a command as defined by Discord's API.
  */
 export interface ICommand {
   /**
@@ -18,13 +12,13 @@ export interface ICommand {
   /**
    * Whether the command requires the user to be in a voice channel.
    */
-  voiceChannel?: boolean;
+  readonly voiceChannel?: boolean;
 
   /**
    * Whether the command will be blocked in DMs.
    * By default, commands are allowed in DMs.
    */
-  blockedInDMs?: boolean;
+  readonly blockedInDMs?: boolean;
 
   /**
    * Command execution function.

@@ -5,7 +5,7 @@ import { readFile } from 'fs/promises';
 
 /**
  * Loads languages from the specified folder path and processes the literals.
- * @param {string} folderPath - The path of the folder containing the languages.
+ * @param folderPath - The path of the folder containing the languages.
  */
 export default async function loadLanguages(folderPath: string): Promise<void> {
   // Log the loading of languages
@@ -40,9 +40,9 @@ export default async function loadLanguages(folderPath: string): Promise<void> {
 
 /**
  * Loads the specified language.
- * @param {string} folderPath - The path of the folder containing the language files.
- * @param {string} language - The language to load.
- * @returns {ILanguageObject} The object containing the loaded language files.
+ * @param folderPath - The path of the folder containing the language files.
+ * @param language - The language to load.
+ * @returns The object containing the loaded language files.
  */
 async function loadLanguage(folderPath: string, language: string): Promise<ILanguageObject> {
   // Resolve the full path of the language
@@ -80,8 +80,8 @@ async function loadLanguage(folderPath: string, language: string): Promise<ILang
 
 /**
  * Retrieves an array of promises to load language files from the specified folder path.
- * @param {string} folderPath - The path of the folder containing the language files.
- * @returns {Promise<ILanguageObject>[]} - An array of promises to load the language files.
+ * @param folderPath - The path of the folder containing the language files.
+ * @returns An array of promises to load the language files.
  */
 function retreiveLanguageFilePromises(folderPath: string): Promise<ILanguageObject>[] {
   // Initialize an array of promises, one for each file
@@ -104,8 +104,8 @@ function retreiveLanguageFilePromises(folderPath: string): Promise<ILanguageObje
 
 /**
  * Creates a promise to load a language file and process the literals.
- * @param {string} filePath - The path of the language file.
- * @returns {Promise<ILanguageObject>} A promise to load the language file.
+ * @param filePath - The path of the language file.
+ * @returns A promise to load the language file.
  */
 async function createLanguageFilePromise(filePath: string): Promise<ILanguageObject> {
   try {
@@ -131,9 +131,9 @@ async function createLanguageFilePromise(filePath: string): Promise<ILanguageObj
 }
 /**
  * Converts an object to a flat ILanguageObject with keys in the format `key1.key2.key3` and transforms strings with placeholders into functions.
- * @param {ILanguageObject} targetObj - The target object to store the flattened structure.
- * @param {object} sourceObj - The source object to flatten.
- * @param {string} prefix - The prefix for each key.
+ * @param targetObj - The target object to store the flattened structure.
+ * @param ourceObj - The source object to flatten.
+ * @param prefix - The prefix for each key.
  */
 function processLiterals(targetObj: ILanguageObject, sourceObj: { [key: string]: any }, prefix: string): void {
   // Iterate over each key in the source object
@@ -157,8 +157,8 @@ function processLiterals(targetObj: ILanguageObject, sourceObj: { [key: string]:
 
 /**
  * Processes an item, converting it to a function if it is a string and contains placeholders.
- * @param {any} value - The item to process.
- * @returns {any} The processed item.
+ * @param value - The item to process.
+ * @returns The processed item.
  */
 function processItem(value: any): any {
   // If the value is a string and contains placeholders, convert it to a function

@@ -1,41 +1,25 @@
 import { Client } from 'discord.js';
 import { existsSync, readdirSync, statSync } from 'fs';
 import { resolve } from 'path';
-import { useMainPlayer } from 'discord-player';
-import { IEvent } from '../interfaces/event.interface.js';
+import { GuildQueueEvent, useMainPlayer } from 'discord-player';
+import { IEvent, Emitter } from '../interfaces/event.interface.js';
 import { pathToFileURL } from 'url';
 import { eventErrorHandler } from '../utils/error-handler.js';
 
 /**
  * Loads events from the specified folder path.
- * @param {string} folderPath - The path of the folder containing the events.
- * @param {Client} client - The Discord client.
+ * @param folderPath - The path of the folder containing the events.
+ * @param client - The Discord client.
  */
 export default async function loadEvents(folderPath: string, client: Client): Promise<void> {
   // Log the loading of events
   logger.info('Loading events...');
 
-  // Events folders
-  const eventsFolders = [
-    { folder: 'process', emitter: process },
-    { folder: 'client', emitter: client },
-    { folder: 'music', emitter: useMainPlayer().events },
-  ];
+  // If the folder path does not exist, log an error and return
+  if (!existsSync(folderPath)) return logger.error(`Could not load events: ${folderPath} does not exist`);
 
   // Array of promises to load events
-  let eventPromises: Promise<void>[] = [];
-
-  // Push promises to load events from each folder
-  eventsFolders.forEach(({ folder, emitter }) => {
-    // Resolve event folder path
-    const eventFolderPath = resolve(folderPath, `./${folder}`);
-
-    // If the folder path does not exist, log an error and return
-    if (!existsSync(eventFolderPath)) return logger.error(`Could not load events: ${eventFolderPath} does not exist`);
-
-    // Load events recursively from the folder path
-    eventPromises.push(...retrieveEventPromises(eventFolderPath, emitter, client));
-  });
+  let eventPromises = retrieveEventPromises(folderPath, client);
 
   // Wait for all event promises to resolve
   await Promise.allSettled(eventPromises)
@@ -48,12 +32,11 @@ export default async function loadEvents(folderPath: string, client: Client): Pr
 
 /**
  * Retrieves an array of promises to load events from the specified folder path.
- * @param {string} folderPath - The path of the folder containing the events.
- * @param {any} emitter - The event emitter.
- * @param {Client} client - The Discord client.
- * @returns {Promise<void>[]} - An array of promises to load the events.
+ * @param folderPath - The path of the folder containing the events.
+ * @param client - The Discord client.
+ * @returns  An array of promises to load the events.
  */
-function retrieveEventPromises(folderPath: string, emitter: any, client: Client): Promise<void>[] {
+function retrieveEventPromises(folderPath: string, client: Client): Promise<void>[] {
   // Initialize an array of promises, one for each file
   let eventPromises: Promise<void>[] = [];
 
@@ -64,8 +47,8 @@ function retrieveEventPromises(folderPath: string, emitter: any, client: Client)
 
     // If the file is a directory, load commands recursively, otherwise load the command
     statSync(filePath).isDirectory()
-      ? eventPromises.push(...retrieveEventPromises(filePath, emitter, client))
-      : eventPromises.push(createEventPromise(filePath, emitter, client));
+      ? eventPromises.push(...retrieveEventPromises(filePath, client))
+      : eventPromises.push(createEventPromise(filePath, client));
   }
 
   // Return the array of promises
@@ -74,11 +57,10 @@ function retrieveEventPromises(folderPath: string, emitter: any, client: Client)
 
 /**
  * Creates a promise to load an event from the specified file path.
- * @param {string} filePath - The path of the file containing the event.
- * @param {any} emitter - The event emitter.
- * @param {Client} client - The Discord client.
+ * @param filePath - The path of the file containing the event.
+ * @param client - The Discord client.
  */
-async function createEventPromise(filePath: string, emitter: any, client: Client): Promise<void> {
+async function createEventPromise(filePath: string, client: Client): Promise<void> {
   try {
     // Resolve the command file URL
     const eventFileURL = pathToFileURL(filePath);
@@ -101,8 +83,23 @@ async function createEventPromise(filePath: string, emitter: any, client: Client
       if (typeof value === 'function' && value.length === 0) await value();
     });
 
+    // Create an event callback that handles errors
+    const eventCallback = (...args: any[]) => eventErrorHandler(event.event, event.callback, client, ...args);
+
     // Register the event to the emitter
-    emitter.on(event.event, (...args: any[]) => eventErrorHandler(event.event, event.callback, client, ...args));
+    switch (event.emitter) {
+      case Emitter.Client:
+        client.on(event.event, eventCallback);
+        break;
+      case Emitter.Process:
+        process.on(event.event, eventCallback);
+        break;
+      case Emitter.Player:
+        useMainPlayer().events.on(event.event as GuildQueueEvent, eventCallback);
+        break;
+      default:
+        throw new Error(`Invalid emitter: ${event.emitter}`);
+    }
   } catch (error: any) {
     logger.error(`Could not load event ${filePath}: ${error.stack}`);
     throw error;
@@ -111,13 +108,15 @@ async function createEventPromise(filePath: string, emitter: any, client: Client
 
 /**
  * Checks if an object is a valid event.
- * @param {any} event - The object to check.
- * @returns {boolean} - Whether the object is a valid command.
+ * @param event - The object to check.
+ * @returns Whether the object is a valid command.
  */
 function isEvent(event: any): event is IEvent {
   return (
     event.event !== undefined &&
     typeof event.event === 'string' &&
+    event.emitter !== undefined &&
+    Object.values(Emitter).includes(event.emitter) &&
     event.callback !== undefined &&
     typeof event.callback === 'function'
   );
