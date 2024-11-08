@@ -1,21 +1,32 @@
 {
   "hide_channel": {
     "description": "Oculta un canal",
-    "option": {
-      "name": "canal",
-      "description": "Canal que quieres ocultar"
+    "options": {
+      "channel": {
+        "name": "canal",
+        "description": "Canal que quieres ocultar"
+      },
+      "role": {
+        "name": "rol",
+        "description": "Rol a quien quieres ocultar el canal"
+      }
     },
     "already_hidden": "El canal ya está oculto",
     "response": "Canal {0} ocultado correctamente"
   },
   "mute_channel": {
     "description": "Bloquea un canal para que nadie pueda hablar",
-    "option": {
-      "name": "canal",
-      "description": "Canal que quieres bloquear"
+    "options": {
+      "channel": {
+        "name": "canal",
+        "description": "Canal que quieres bloquear"
+      },
+      "role": {
+        "name": "rol",
+        "description": "Rol a quien quieres bloquear el canal"
+      }
     },
-    "already_blocked": "El canal ya está bloqueado",
-    "channel_not_supported": "No se puede bloquear este canal",
+    "already_muted": "El canal ya está bloqueado",
     "response": "Canal {0} bloqueado correctamente"
   },
   "purge": {
@@ -28,25 +39,51 @@
   },
   "show_channel": {
     "description": "Muestra un canal oculto",
-    "option": {
-      "name": "canal",
-      "description": "Canal que quieres mostrar"
+    "options": {
+      "channel": {
+        "name": "canal",
+        "description": "Canal que quieres mostrar"
+      },
+      "role": {
+        "name": "rol",
+        "description": "Rol a quien quieres mostrar el canal"
+      }
     },
     "already_shown": "El canal ya está visible",
     "response": "Canal {0} mostrado correctamente"
   },
   "unmute_channel": {
     "description": "Desbloquea un canal",
-    "option": {
-      "name": "canal",
-      "description": "Canal que quieres desbloquear"
+    "options": {
+      "channel": {
+        "name": "canal",
+        "description": "Canal que quieres desbloquear"
+      },
+      "role": {
+        "name": "rol",
+        "description": "Rol a quien quieres desbloquear el canal"
+      }
     },
-    "already_unblocked": "El canal ya está desbloqueado",
-    "channel_not_supported": "No se puede desbloquear este canal",
+    "already_unmuted": "El canal ya está desbloqueado",
     "response": "Canal {0} desbloqueado correctamente"
   },
-  "create_role": {},
-  "ban": {},
+  "ban": {
+    "description": "Expulsa a un usuario del servidor",
+    "options": {
+      "member": {
+        "name": "miembro",
+        "description": "Miembro que quieres banear"
+      },
+      "reason": {
+        "name": "razón",
+        "description": "Razón por la que quieres banear al miembro"
+      }
+    },
+    "self_ban": "No puedes banearte a ti mismo",
+    "not_bannable": "No puedo banear a este miembro",
+    "response": "Miembro {0} baneado correctamente",
+    "dm_respoonse": "Has sido baneado del servidor {0} por la siguiente razón: {1}"
+  },
   "banned_list": {},
   "kick": {},
   "mute": {},
@@ -54,7 +91,21 @@
   "reset_nickname": {},
   "set_nickname": {},
   "timeout": {},
-  "unban": {},
+  "unban": {
+    "description": "Desbanea a un usuario del servidor",
+    "options": {
+      "member": {
+        "name": "usuario",
+        "description": "Usuario que quieres desbanear"
+      },
+      "reason": {
+        "name": "razón",
+        "description": "Razón por la que quieres desbanear al usuario"
+      }
+    },
+    "not_banned": "El usuario no está baneado en este servidor",
+    "response": "Usuario {0} desbaneado correctamente"
+  },
   "unmute": {},
   "warn": {}
 }

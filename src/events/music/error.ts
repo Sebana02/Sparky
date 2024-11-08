@@ -22,7 +22,6 @@ export const event: IEvent = {
     if (queue.metadata.trivia) return;
 
     // Send the empty queue embed to the channel
-    if (queue.metadata.channel.isSendable())
-      await queue.metadata.channel.send({ embeds: [embedFromTemplate('musicError', client)] });
+    await queue.metadata.channel.send({ embeds: [embedFromTemplate('musicError', client)] });
   },
 };

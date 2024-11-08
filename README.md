@@ -316,6 +316,8 @@ You can always modify the bot to support your language.
 
 - [ ] Create a config.ts file to load env variables
 - [ ] use subcommands when possible
+- [ ] Translate moderation commands
+- [ ] Change use of presets in music commands and events
 - [ ] Improve visuals and embeds
 
 ### `IAs`

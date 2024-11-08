@@ -22,7 +22,6 @@ export const event: IEvent = {
     if (queue.repeatMode !== QueueRepeatMode.OFF || queue.metadata.trivia) return;
 
     // Send the playing embed to the channel
-    if (queue.metadata.channel.isSendable())
-      await queue.metadata.channel.send({ embeds: [embedFromTemplate('playing', track)] });
+    await queue.metadata.channel.send({ embeds: [embedFromTemplate('playing', track)] });
   },
 };

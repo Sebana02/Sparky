@@ -18,7 +18,6 @@ export const event: IEvent = {
    */
   callback: async (client: Client, queue: GuildQueue<IMetadata>): Promise<void> => {
     // Send the empty channel embed to the channel
-    if (queue.metadata.channel.isSendable())
-      await queue.metadata.channel.send({ embeds: [embedFromTemplate('emptyChannel', client)] });
+    await queue.metadata.channel.send({ embeds: [embedFromTemplate('emptyChannel', client)] });
   },
 };
