@@ -268,14 +268,13 @@
       "description": "Menciona a tu oponente"
     },
     "checkings": {
-      "againstBot": "No puedes jugar contra un bot",
-      "againstSelf": "No puedes jugar contra ti mismo"
+      "against_bot": "No puedes jugar contra un bot",
+      "against_self": "No puedes jugar contra ti mismo"
     },
     "selection": "Has seleccionado: {0}",
     "results": {
       "win": "¡{0} ha ganado!",
-      "tie": "¡Empate!",
-      "timeout": "¡Tiempo agotado! Empate"
+      "tie": "¡Empate!"
     }
   },
   "tictactoe": {

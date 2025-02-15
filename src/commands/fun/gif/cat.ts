@@ -2,7 +2,7 @@ import { ICommand } from '../../../interfaces/command.interface.js';
 import { fetchFunction, fetchString } from '../../../utils/language-utils.js';
 import { sendRandomGif } from '../../../utils/gif-utils.js';
 import { createEmbed, ColorScheme } from '../../../utils/embed/embed-utils.js';
-import { ChatInputCommandInteraction, Client, PermissionFlagsBits, SlashCommandBuilder } from 'discord.js';
+import { ChatInputCommandInteraction, Client, SlashCommandBuilder } from 'discord.js';
 
 /**
  * Literal object for the command

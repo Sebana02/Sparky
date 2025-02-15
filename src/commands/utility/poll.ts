@@ -44,8 +44,8 @@ export const command: ICommand = {
 
   execute: async (client: Client, inter: ChatInputCommandInteraction): Promise<void> => {
     //Get options, poll title and time
-    const options = inter.options.getString(commandLit.optionsName, true)?.trim();
-    const pollTheme = inter.options.getString(commandLit.questionName, true)?.trim();
+    const options = inter.options.getString(commandLit.optionsName, true).trim();
+    const pollTheme = inter.options.getString(commandLit.questionName, true).trim();
     const time = inter.options.getNumber(commandLit.timeName, true);
     const multiAnswer = inter.options.getBoolean(commandLit.multiAnswerName, true);
 

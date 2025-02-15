@@ -9,8 +9,8 @@ import { createEmbed, ColorScheme } from '../../../utils/embed/embed-utils.js';
  */
 const commandLit = {
   description: fetchString('ban.description'),
-  userName: fetchString('ban.options.user.name'),
-  userDescription: fetchString('ban.options.user.description'),
+  userName: fetchString('ban.options.member.name'),
+  userDescription: fetchString('ban.options.member.description'),
   reasonName: fetchString('ban.options.reason.name'),
   reasonDescription: fetchString('ban.options.reason.description'),
   selfBan: fetchString('ban.self_ban'),

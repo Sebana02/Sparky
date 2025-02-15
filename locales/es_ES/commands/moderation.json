@@ -82,7 +82,7 @@
     "self_ban": "No puedes banearte a ti mismo",
     "not_bannable": "No puedo banear a este miembro",
     "response": "Miembro {0} baneado correctamente",
-    "dm_respoonse": "Has sido baneado del servidor {0} por la siguiente razón: {1}"
+    "dm_response": "Has sido baneado del servidor {0} por la siguiente razón: {1}"
   },
   "banned_list": {},
   "kick": {},

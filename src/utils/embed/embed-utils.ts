@@ -1,4 +1,4 @@
-import { APIEmbed, EmbedBuilder } from 'discord.js';
+import { APIEmbed, EmbedBuilder, EmbedData } from 'discord.js';
 import * as presets from './embed-presets.js';
 
 /**
@@ -14,14 +14,13 @@ export enum ColorScheme {
   music = 0x9cb3c9,
   default = 0x424549,
 }
-
 /**
  * Create a new Discord embed using the provided embedContent
  * @param embedContent - The content for the embed.
  * @returns The created Discord embed.
  * @throws An error if the created embed is empty.
  */
-export function createEmbed(embedContent: APIEmbed): EmbedBuilder {
+export function createEmbed(embedContent: EmbedData | APIEmbed): EmbedBuilder {
   try {
     // Set the default color if not provided
     embedContent.color = embedContent.color || ColorScheme.default;
@@ -47,22 +46,10 @@ export function createEmbed(embedContent: APIEmbed): EmbedBuilder {
  * @returns The modified Discord embed.
  * @throws An error if the modified embed is empty.
  */
-export function modifyEmbed(embed: EmbedBuilder, embedContent: APIEmbed): EmbedBuilder {
+export function modifyEmbed(embed: EmbedBuilder, embedContent: EmbedData | APIEmbed): EmbedBuilder {
   try {
-    //Deconstruct the embedContent
-    const { title, description, fields, image, thumbnail, author, footer, color, url, timestamp } = embedContent;
-
     // Set the properties of the embed
-    if (title) embed.setTitle(title);
-    if (description) embed.setDescription(description);
-    if (fields) embed.setFields(fields);
-    if (image) embed.setImage(image.url);
-    if (thumbnail) embed.setThumbnail(thumbnail.url);
-    if (author) embed.setAuthor(author);
-    if (footer) embed.setFooter(footer);
-    if (color) embed.setColor(color);
-    if (url) embed.setURL(url);
-    if (timestamp) embed.setTimestamp(new Date(timestamp));
+    Object.assign(embed.data, embedContent);
 
     // Check if the embed is empty
     checkEmbed(embed);
@@ -85,7 +72,6 @@ export function cloneEmbed(embed: EmbedBuilder): EmbedBuilder {
   try {
     // Check if the given embed is valid
     checkEmbed(embed);
-
     // Return the cloned embed
     return new EmbedBuilder(embed.toJSON());
   } catch (error: any) {
