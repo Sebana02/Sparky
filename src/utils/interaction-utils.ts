@@ -2,6 +2,7 @@ import {
   ChatInputCommandInteraction,
   InteractionDeferReplyOptions,
   InteractionDeferUpdateOptions,
+  InteractionEditReplyOptions,
   InteractionReplyOptions,
   InteractionUpdateOptions,
   Message,
@@ -26,13 +27,14 @@ export async function reply(
     | UserContextMenuCommandInteraction
     | MessageComponentInteraction
     | ModalSubmitInteraction,
-  replyOptions: InteractionReplyOptions,
+  replyOptions: InteractionReplyOptions | InteractionEditReplyOptions,
   deleteTime: number = -1
 ): Promise<void> {
   try {
     //Reply to the interaction
-    if (interaction.deferred || interaction.replied) await interaction.editReply(replyOptions);
-    else await interaction.reply(replyOptions);
+    if (interaction.deferred || interaction.replied)
+      await interaction.editReply(replyOptions as InteractionEditReplyOptions);
+    else await interaction.reply(replyOptions as InteractionReplyOptions);
 
     //Delete the reply after deleteTime seconds
     if (deleteTime > 0) await deleteReply(interaction, deleteTime);
