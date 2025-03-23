@@ -1,9 +1,14 @@
+# PROJECT IS BEING UPDATED TO TYPESCRIPT, README IS OUTDATED
+
+Some parts of the project are yet to be translated into TypeScript, and the README is one of them. The project is being updated to TypeScript to improve code quality and maintainability. The README will be updated soon to reflect the changes and provide accurate information about the project.
+
 # Sparky
 
 > This Discord bot is designed to be an easy and customizable solution for your servers. Ideal for groups of friends, the bot offers a variety of fun and useful commands that enhance chat experience and community interaction.
 
 ## Table of Contents
 
+- [PROJECT IS BEING UPDATED TO TYPESCRIPT, README IS OUTDATED](#project-is-being-updated-to-typescript-readme-is-outdated)
 - [Sparky](#sparky)
   - [Table of Contents](#table-of-contents)
   - [Features](#features)
