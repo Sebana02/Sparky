@@ -6,6 +6,7 @@ import { Client, ChatInputCommandInteraction, SlashCommandBuilder } from 'discor
 export interface ICommand {
   /**
    * Discord Slash Command
+   * @see https://discord.js.org/#/docs/builders/main/class/SlashCommandBuilder
    */
   data: SlashCommandBuilder;
 
@@ -24,6 +25,7 @@ export interface ICommand {
    * Command execution function.
    * @param client The Discord client.
    * @param inter The interaction that triggered the command.
+   * @param args Additional arguments
    * @returns A promise that resolves when the command is done executing.
    */
   readonly execute: (client: Client, inter: ChatInputCommandInteraction, ...args: any[]) => Promise<void>;

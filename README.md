@@ -51,7 +51,7 @@ Some parts of the project are yet to be translated into TypeScript, and the READ
 - **Information Commands**: Get quick insights such as bot uptime or perform Wikipedia searches right from the chat.
 - **Configurable Settings**: With the `.env` file, you can customize the bot’s behavior, including token configuration, activity status, DJ role permissions, and more.
 - **Slash Command Support**: Sparky exclusively uses modern Discord slash commands, making the bot intuitive to use and easy to interact with.
-- **Multi-language Support (Coming Soon)**: Currently supports Spanish, with plans to support additional languages in the future.
+- **Multi-language Support**: Currently supports Spanish and English, with plans to support additional languages in the future. You can easily modify the bot to support your language (see TODO).
 
 ## Requirements and Installation
 
@@ -73,16 +73,8 @@ To install and run the bot locally, follow these steps:
 
 4. Install the dependencies:
 
-   - `@discord-player/extractor`: Library for music command extraction.
-   - `discord-player`: Main library for handling music commands.
-   - `discord-player-youtubei`: Extractor specifically for YouTube music.
-   - `discord.js`: Wrapper for interacting with the Discord API.
-   - `dotenv`: Library for loading environment variables from a `.env` file.
-   - `mediaplex`: Encoder for Opus packets used in voice channels.
-   - `module-alias`: Allows setting up module path aliases, aiding in code organization and intellisense.
-
    ```bash
-   npm install @discord-player/extractor discord-player discord-player-youtubei discord.js dotenv mediaplex module-alias
+   npm install
    ```
 
 5. Create a `.env` file in the root of the project with the following information:
@@ -105,13 +97,11 @@ To install and run the bot locally, follow these steps:
    npm run dev
    ```
 
-   This will start the bot with `nodemon` package and will automatically restart the bot when changes are made. In order to stop the bot and exit the process, press `Ctrl + C` twice. To install `nodemon` package, run:
-
-   ```bash
-   npm install -g nodemon
-   ```
+   This will start the bot in development mode, allowing you to test changes without restarting the bot. Just save the changes, and the bot will automatically reload.
 
 8. The bot should now be running and connected to your Discord server!
+
+9. If you want to shut down the bot just press `Ctrl + C` in the terminal where the bot is running to send a SIGINT signal to the process.
 
 ## Configuration
 
@@ -120,39 +110,97 @@ To install and run the bot locally, follow these steps:
 The bot has the following configurations through the `.env` file:
 
 - `TOKEN`: The Discord authentication token. Required for the bot to connect to Discord.
-- `LOG_FILE`: The file where logs will be stored. If not specified, logs will be stored in .log file
+- `LOG_FILE`: The file where logs will be stored. If not specified, logs will be stored in **.log** file in the root of the project.
+- `LANGUAGE`: The language the bot will use. If not specified, the bot will use the default language (en_US). Take into account that it has to match the name of a folder in the `locales` folder. It is recommend to use `IETF BCP 47` rule for clarity.
 - `GUILD_ID`: The ID of the server where the bot will be used. If not specified, the bot will register commands globally, which can take up to an hour to be available.
 - `PLAYING_ACTIVITY`: The activity status of the bot. If left empty, the bot will not display any activity status.
 - `TENOR_API_KEY`: The API key for the Tenor GIF API. Required for GIF commands, you can get one [here](https://tenor.com/developer/keysignup).
-- `DJ_ROLE`: The role that will have DJ permissions. If specified, only users with this role will be able to control the music bot.
+- `DJ_ROLE`: The role ID that will have DJ permissions. If specified, only users with this role will be able to control the music bot.
 
-A template `.env` file is provided in the repository as [`template.env`](templates/template.env).
+Here is an example of a `.env` file with all the configurations:
+
+```bash
+TOKEN="your_discord_bot_token_here"
+LOG_FILE="bot.log"
+LANGUAGE="en_US"
+GUILD_ID="your_guild_id_here"
+PLAYING_ACTIVITY="with Sparky | /help"
+TENOR_API_KEY="your_tenor_api_key_here"
+DJ_ROLE="your_dj_role_id_here"
+```
+
+---
 
 ### `Create a new command`
 
-Any new command must be created in the `commands` folder as it is the path where the bot will look for commands. Inside the folder, any substructure can be followed, as the bot will search for commands recursively, although it is recommended to create a folder for each category of commands.
+Any new command must be created in the `commands` folder, as this is where the bot will search for commands. The folder structure can be organized as needed, but it is recommended to create a subfolder for each command category.
 
-`Commands` must be `.js` files and must export an object with the following properties:
+Each command must be a `.ts` file and must export an [`ICommand`](src/interfaces/command.interface.ts) object with the following properties:
 
-- `name`: The name of the command. This is the name that will be used to call the command.
-- `description`: A brief description of what the command does.
-- `permissions` **(optional)**: Permissions required to use the command. If not specified, the command can be used by anyone.
-- `voiceChannel` **(optional)**: A boolean indicating if the command can only be used by users connected to a voice channel.
-- `options` **(optional)**: An array of options for the command.
-- `run (client,inter) => { }`: The function that will be executed when the command is called. It receives the `client` object and the `interaction` object as parameters.
+- **`data`** _([`SlashCommandBuilder`](https://discord.js.org/#/docs/builders/main/class/SlashCommandBuilder))_:  
+  The Discord command.
 
-A template command is provided in the repository as [`command.js`](templates/command.js), which have more details about the command structure and can be used as a base for new commands.
+- **`voiceChannel`** _(optional, boolean, default: `false`)_:  
+  Indicates whether the command requires the user to be in a voice channel.
+
+- **`blockedInDMs`** _(optional, boolean, default: `false`)_:  
+  Indicates whether the command is blocked in DMs.
+
+- **`execute(`[`client`](https://discord.js.org/#/docs/discord.js/main/class/Client)`,`[`interaction`](https://discord.js.org/#/docs/discord.js/main/class/ChatInputCommandInteraction)`, ...args)`** _(async function)_:  
+  The function executed when the command is invoked
+
+Here is a basic command that replies with a greeting:
+
+```typescript
+import { ICommand } from '../../interfaces/command.interface.js';
+import { ChatInputCommandInteraction, Client, SlashCommandBuilder } from 'discord.js';
+
+export const command: ICommand = {
+  data: new SlashCommandBuilder().setName('greetings').setDescription('Greets the user'),
+
+  voiceChannel: false,
+  blockedInDMs: false,
+
+  execute: async (client: Client, inter: ChatInputCommandInteraction): Promise<void> => {
+    await inter.reply('Hello! How can I help you today?');
+  },
+};
+```
+
+---
 
 ### `Create a new event`
 
-Any event must be placed in the `events` folder, specifically in the emmiter's folder it belongs to. The bot will look for events and will automatically register them.
+Any new events must be created in the `events` folder as it is the path where the bot will look for events. Inside the folder, any substructure can be followed, as the bot will search for events recursively, although it is recommended to create a folder for each category of events.
 
-`Events` must be `.js` files and must export an object with the following parameters:
+'Events' must be `.ts` files and must export a [IEvent](src/interfaces/event.interface.ts) object with the following parameters:
 
-- `event`: The name of the event. This name must correspond to any of the list of events provided by the emitter it belongs to.
-- `callback (client, args) => { }`: The function that will be executed when the event is emitted. It receives the `client` object and any `other parameters` that the event emits. (Look at the emitter's documentation to know which parameters are emitted.)
+- **`name`** _(string)_:  
+  The name of the event to listen to. It must match the name of the event emitted by the emitter (see documentation for each emitter).
 
-A template event is provided in the repository as [`event.js`](templates/event.js), which have more details about the event structure and can be used as a base for new events.
+- **`emitter`** _(Emitter)_:  
+  The emitter of the event. It can take values from the `Emitter` enum, which is in the same file as the `IEvent` interface. The possible values are:
+
+  - `Process`: Corresponds to the [`Node process`](https://nodejs.org/api/process.html#process-events).
+  - `Client`: Corresponds to the [`Discord client`](https://discord.js.org/#/docs/main/stable/class/Client).
+  - `Music`: Corresponds to the [`Discord player library`](https://discord-player.js.org/docs/discord-player/type/GuildQueueEvents).
+
+- **`execute(`[`client`](https://discord.js.org/#/docs/discord.js/main/class/Client)`, ...args)`** _(async function)_:  
+  The function executed when the event is triggered.
+
+Here is a basic example of an event that logs when the bot is ready:
+
+```typescript
+import { IEvent } from '../../interfaces/event.interface.js';
+import { Client } from 'discord.js';
+
+export const event: IEvent = {
+  name: 'ready',
+  execute: async (client: Client): Promise<void> => {
+    console.log(`Logged in as ${client.user.tag}!`);
+  },
+};
+```
 
 ## Commands
 
@@ -164,16 +212,16 @@ These commands are designed to add fun and entertainment to the chat experience.
 
 | Command | Description | Example | Category | File |
 | --- | --- | --- | --- | --- |
+| `/cat` | Sends a random cat GIF | `/cat` | GIFs | [`cat.ts`](src/commands/fun/gif/cat.ts) |
+| `/dog` | Sends a random dog GIF | `/dog` | GIFs | [`dog.ts`](src/commands/fun/gif/dog.ts) |
+| `/gif <category>` | Sends a random GIF based on the specified `category`. | `/gif weird` | GIFs | [`gif.ts`](src/commands/fun/gif/gif.ts) |
+| `/hug <user>` | Sends a GIF giving a hug to a specified `user`. | `/hug @Dave` | GIFs | [`hug.ts`](src/commands/fun/gif/hug.ts) |
+| `/meme` | Sends a random meme GIF. | `/meme` | GIFs | [`meme.ts`](src/commands/fun/gif/meme.ts) |
+| `/poke <user>` | Sends a GIF poking a specified `user`. | `/poke @Dave` | GIFs | [`poke.ts`](src/commands/fun/gif/poke.ts) |
 | `/shutup <user>` | Sends a GIF telling the mentioned `user` to shut up. | `/shutup @Dave` | GIFs | [`shut-up.ts`](src/commands/fun/gif/shut-up.ts) |
-| `/cat` | Sends a random cat GIF | `/cat` | GIFs | [`cat.js`](commands/fun/gif/cat.js) |
-| `/dog` | Sends a random dog GIF | `/dog` | GIFs | [`dog.js`](commands/fun/gif/dog.js) |
-| `/gif <category>` | Sends a random GIF based on the specified `category`. | `/gif weird` | GIFs | [`gif.js`](commands/fun/gif/gif.js) |
-| `/hug <user>` | Sends a GIF giving a hug to a specified `user`. | `/hug @Dave` | GIFs | [`hug.js`](commands/fun/gif/hug.js) |
-| `/meme` | Sends a random meme GIF. | `/meme` | GIFs | [`meme.js`](commands/fun/gif/meme.js) |
-| `/poke <user>` | Sends a GIF poking a specified `user`. | `/poke @Dave` | GIFs | [`poke.js`](commands/fun/gif/poke.js) |
-| `/slap <user>` | Sends a GIF slapping a specified `user`. | `/slap @Dave` | GIFs | [`slap.js`](commands/fun/gif/slap.js) |
-| `/8ball <question>` | Answers a `question` with a random 8-ball response. | `/8ball Will I win the lottery?` | None | [`8ball.js`](commands/fun/8ball.js) |
-| `/coinflip` | Flips a coin and returns heads or tails. | `/coinflip` | None | [`coin-flip.js`](commands/fun/coin-flip.js) |
+| `/slap <user>` | Sends a GIF slapping a specified `user`. | `/slap @Dave` | GIFs | [`slap.ts`](src/commands/fun/gif/slap.ts) |
+| `/coinflip` | Flips a coin and returns heads or tails. | `/coinflip` | None | [`coin-flip.ts`](src/commands/fun/coin-flip.ts) |
+| `/8ball <question>` | Answers a `question` with a random 8-ball response. | `/8ball Will I win the lottery?` | None | [`8ball.ts`](src/commands/fun/8ball.ts) |
 
 ### `Game commands`
 
@@ -181,10 +229,10 @@ These commands are designed to engage users with fun and interactive games. User
 
 | Command | Description | Example | Category | File |
 | --- | --- | --- | --- | --- |
-| `/hangman <gamemode>` | Starts a game of hangman. If `random` gamemode is selected, bot will choose the word. If `custom` gamemode is selected, one of the players will choose the word. | `/hangman random` | None | [`hangman.js`](commands/game/hangman.js) |
-| `/rps <opponent>` | Plays a game of rock-paper-scissors against the specified `opponent`. | `/rps @Dave` | None | [`rps.js`](commands/game/rps.js) |
-| `/tictactoe <opponent>` | Starts a game of tic-tac-toe with a specified `opponent`. | `/tictactoe @Dave` | None | [`tictactoe.js`](commands/game/tictactoe.js) |
-| `/trivia <playlist>` | Starts a game of musical trivia with your `playlist` songs. | `/trivia your_playlist_link_here` | None | [`trivia.js`](commands/game/trivia.js) |
+| `/hangman <gamemode>` | Starts a game of hangman. If `random` gamemode is selected, bot will choose the word. If `custom` gamemode is selected, one of the players will choose the word. | `/hangman random` | None | [`hangman.ts`](src/commands/game/hangman.ts) |
+| `/rps <opponent>` | Plays a game of rock-paper-scissors against the specified `opponent`. | `/rps @Dave` | None | [`rps.ts`](src/commands/game/rps.ts) |
+| `/tictactoe <opponent>` | Starts a game of tic-tac-toe with a specified `opponent`. | `/tictactoe @Dave` | None | [`tictactoe.ts`](src/commands/game/tictactoe.ts) |
+| `/trivia <playlist>` | Starts a game of musical trivia with your `playlist` songs. | `/trivia your_playlist_link_here` | None | [`trivia.ts`](src/commands/game/trivia.ts) |
 
 ### `Information Commands`
 
@@ -192,9 +240,9 @@ These commands provide quick insights and information to users, including the bo
 
 | Command | Description | Example | Category | File |
 | --- | --- | --- | --- | --- |
-| `/help` | Displays a list of available commands. | `/help` | None | [`help.js`](commands/info/help.js) |
-| `/uptime` | Displays the bot's uptime | `/uptime` | None | [`uptime.js`](commands/info/uptime.js) |
-| `/wikisearch <query>` | Searches Wikipedia for the specified `query` | `/wikisearch Discord` | None | [`wiki-search.js`](commands/info/wiki-search.js) |
+| `/help` | Displays a list of available commands. | `/help` | None | [`help.ts`](src/commands/info/help.ts) |
+| `/uptime` | Displays the bot's uptime | `/uptime` | None | [`uptime.ts`](src/commands/info/uptime.ts) |
+| `/wikisearch <query>` | Searches Wikipedia for the specified `query` | `/wikisearch Discord` | None | [`wiki-search.ts`](src/commands/info/wiki-search.ts) |
 
 ### `Moderation Commands`
 
@@ -202,23 +250,23 @@ These commands help maintain order and control in the server by providing tools 
 
 | Command | Description | Example | Category | File |
 | --- | --- | --- | --- | --- |
-| `/hidechannel [channel]` | Hides the specified `channel` from view for users, making it inaccessible until unhidden. If no channel is specified, it hides the channel where the command is used. It can be used both on text and voice channels. | `/hidechannel general` | Channel | [`hide-channel.js`](commands/moderation/channel/hide-channel.js) |
-| `/showchannel [channel]` | Unhides the specified `channel`, making it visible again to users who have access. If no channel is specified, it unhides the channel where the command is used. It can be used both on text and voice channels. | `/showchannel general` | Channel | [`show-channel.js`](commands/moderation/channel/show-channel.js) |
-| `/mutechannel [channel]` | Mutes the specified `channel`, preventing users from sending messages in that channel. If no channel is specified, it mutes the channel where the command is used. It can be used both on text and voice channels. | `/mutechannel general` | Channel | [`mute-channel.js`](commands/moderation/channel/mute-channel.js) |
-| `/unmutechannel [channel]` | Unmutes the specified `channel`, allowing users to send messages once more. If no channel is specified, it unmutes the channel where the command is used. It can be used both on text and voice channels. | `/unmutechannel general` | Channel | [`unmute-channel.js`](commands/moderation/channel/unmute-channel.js) |
-| `/purge [amount]` | Deletes a specified `amount` of messages in the channel, helping to clean up chat clutter. | `/purge 10` | Channel | [`purge.js`](commands/moderation/channel/purge.js) |
-| `/createrole <roleName> [color]` | Creates a new role with the specified `roleName` and, optionally, a `color` in hexadecimal format (#abc123) | `/createrole Admin #FFFFFF` | Role | [`create-role.js`](commands/moderation/role/createrole.js) |
-| `/ban <user>` | Bans a specified `user` from the server, preventing them from joining or interacting with the server. | `/ban @Dave` | User | [`ban.js`](commands/moderation/user/ban.js) |
-| `/unban <user>` | Unbans a specified `user` from the server, allowing them to rejoin and interact with the community. | `/unban @Dave` | User | [`unban.js`](commands/moderation/user/unban.js) |
-| `/bannedlist` | Displays a list of banned users, providing insight into who is currently banned from the server. | `/bannedlist` | User | [`banned-list.js`](commands/moderation/user/banned-list.js) |
-| `/kick <user>` | Kicks a specified `user` from the server, temporarily removing them from the community. | `/kick @Dave` | User | [`kick.js`](commands/moderation/user/kick.js) |
-| `/mute <user>` | Mutes a specified `user` in the server, preventing them from speaking in voice channels or sending messages in text channels. | `/mute @Dave` | User | [`mute.js`](commands/moderation/user/mute.js) |
-| `/unmute <user>` | Unmutes a specified `user`, allowing them to speak in voice channels and send messages again. | `/unmute @Dave` | User | [`unmute.js`](commands/moderation/user/unmute.js) |
-| `/mutedlist` | Displays a list of muted users, showing who is currently unable to send messages or speak. | `/mutedlist` | User | [`muted-list.js`](commands/moderation/user/muted-list.js) |
-| `/setnickname <user> <nickname>` | Sets a `nickname` for a specified `user`, allowing for personalized identification within the server. | `/setnickname @Dave IamNotDave` | User | [`set-nickname.js`](commands/moderation/user/set-nickname.js) |
-| `/resetnickname <user>` | Resets the nickname for a specified `user` to their original username, removing any custom nickname they had. | `/resetnickname @Dave` | User | [`reset-nickname.js`](commands/moderation/user/reset-nickname.js) |
-| `/timeout <user> <reason> <duration>` | Times out a specified `user` for a `reason`, for `duration` minutes, preventing them from sending messages or speaking during that time. | `/timeout @Dave 10` | User | [`timeout.js`](commands/moderation/user/timeout.js) |
-| `/warn <user> <reason>` | Issues a warning to a specified `user`, providing a `reason` for the warning to maintain accountability. | `/warn @Dave Too many infractions` | User | [`warn.js`](commands/moderation/user/warn.js) |
+| `/hidechannel [channel]` | Hides the specified `channel` from view for users, making it inaccessible until unhidden. If no channel is specified, it hides the channel where the command is used. It can be used both on text and voice channels. | `/hidechannel general` | Channel | [`hide-channel.ts`](src/commands/moderation/channel/hide-channel.ts) |
+| `/showchannel [channel]` | Unhides the specified `channel`, making it visible again to users who have access. If no channel is specified, it unhides the channel where the command is used. It can be used both on text and voice channels. | `/showchannel general` | Channel | [`show-channel.ts`](src/commands/moderation/channel/show-channel.ts) |
+| `/mutechannel [channel]` | Mutes the specified `channel`, preventing users from sending messages in that channel. If no channel is specified, it mutes the channel where the command is used. It can be used both on text and voice channels. | `/mutechannel general` | Channel | [`mute-channel.ts`](src/commands/moderation/channel/mute-channel.ts) |
+| `/unmutechannel [channel]` | Unmutes the specified `channel`, allowing users to send messages once more. If no channel is specified, it unmutes the channel where the command is used. It can be used both on text and voice channels. | `/unmutechannel general` | Channel | [`unmute-channel.ts`](src/commands/moderation/channel/unmute-channel.ts) |
+| `/purge [amount]` | Deletes a specified `amount` of messages in the channel, helping to clean up chat clutter. | `/purge 10` | Channel | [`purge.ts`](src/commands/moderation/channel/purge.ts) |
+| `/createrole <roleName> [color]` | Creates a new role with the specified `roleName` and, optionally, a `color` in hexadecimal format (#abc123) | `/createrole Admin #FFFFFF` | Role | [`create-role.ts`](src/commands/moderation/role/createrole.ts) |
+| `/ban <user>` | Bans a specified `user` from the server, preventing them from joining or interacting with the server. | `/ban @Dave` | User | [`ban.ts`](src/commands/moderation/user/ban.ts) |
+| `/unban <user>` | Unbans a specified `user` from the server, allowing them to rejoin and interact with the community. | `/unban @Dave` | User | [`unban.ts`](src/commands/moderation/user/unban.ts) |
+| `/bannedlist` | Displays a list of banned users, providing insight into who is currently banned from the server. | `/bannedlist` | User | [`banned-list.ts`](src/commands/moderation/user/banned-list.ts) |
+| `/kick <user>` | Kicks a specified `user` from the server, temporarily removing them from the community. | `/kick @Dave` | User | [`kick.ts`](src/commands/moderation/user/kick.ts) |
+| `/mute <user>` | Mutes a specified `user` in the server, preventing them from speaking in voice channels or sending messages in text channels. | `/mute @Dave` | User | [`mute.ts`](src/commands/moderation/user/mute.ts) |
+| `/unmute <user>` | Unmutes a specified `user`, allowing them to speak in voice channels and send messages again. | `/unmute @Dave` | User | [`unmute.ts`](src/commands/moderation/user/unmute.ts) |
+| `/mutedlist` | Displays a list of muted users, showing who is currently unable to send messages or speak. | `/mutedlist` | User | [`muted-list.ts`](src/commands/moderation/user/muted-list.ts) |
+| `/setnickname <user> <nickname>` | Sets a `nickname` for a specified `user`, allowing for personalized identification within the server. | `/setnickname @Dave IamNotDave` | User | [`set-nickname.ts`](src/commands/moderation/user/set-nickname.ts) |
+| `/resetnickname <user>` | Resets the nickname for a specified `user` to their original username, removing any custom nickname they had. | `/resetnickname @Dave` | User | [`reset-nickname.ts`](src/commands/moderation/user/reset-nickname.ts) |
+| `/timeout <user> <reason> <duration>` | Times out a specified `user` for a `reason`, for `duration` minutes, preventing them from sending messages or speaking during that time. | `/timeout @Dave 10` | User | [`timeout.ts`](src/commands/moderation/user/timeout.ts) |
+| `/warn <user> <reason>` | Issues a warning to a specified `user`, providing a `reason` for the warning to maintain accountability. | `/warn @Dave Too many infractions` | User | [`warn.ts`](src/commands/moderation/user/warn.ts) |
 
 ### `Music Commands`
 
@@ -226,21 +274,21 @@ These commands are designed to control the music player and queue. Users can pla
 
 | Command | Description | Example | Category | File |
 | --- | --- | --- | --- | --- |
-| `/back` | Plays the previous song in the queue. | `/back` | Playback | [`back.js`](commands/music/playback/back.js) |
-| `/clear` | Clears the music queue. | `/clear` | Queue | [`clear.js`](commands/music/queue/clear.js) |
-| `/loop <mode>` | Loops the current song or queue. `Mode` can be `song`, `queue`,`autoplay` or `off`. | `/loop song` | Playback | [`loop.js`](commands/music/playback/loop.js) |
-| `/lyrics` | Fetches and displays the lyrics of the currently playing song. | `/lyrics` | Insight | [`lyrics.js`](commands/music/insight/lyrics.js) |
-| `/nowplaying` | Displays information about the currently playing song and the queue. | `/nowplaying` | Insight | [`now-playing.js`](commands/music/insight/now-playing.js) |
-| `/pause` | Pauses the currently playing song. | `/pause` | Playback | [`pause.js`](commands/music/playback/pause.js) |
-| `/play <query>` | Plays a song or playlist from YouTube or a supported URL, including Spotify, Souncloud and other sources. `Query` can be a URL, a song's name or even an author | `/play greedy` | Playback | [`play.js`](commands/music/playback/play.js) |
-| `/playnext <query>` | Adds a song to the queue to play after the current song. | `/playnext Paramore` | Playback | [`play-next.js`](commands/music/playback/play-next.js) |
-| `/queue` | Shows the current music queue. | `/queue` | Queue | [`queue.js`](commands/music/queue/queue.js) |
-| `/resume` | Resumes a paused song. | `/resume` | Playback | [`resume.js`](commands/music/playback/resume.js) |
-| `/save` | Saves the currently playing song to your DMs | `/save` | Insight | [`save.js`](commands/music/insight/save.js) |
-| `/shuffle` | Shuffles the songs in the current queue. | `/shuffle` | Queue | [`shuffle.js`](commands/music/queue/shuffle.js) |
-| `/skip` | Skips the current song. | `/skip` | Playback | [`skip.js`](commands/music/playback/skip.js) |
-| `/stop` | Stops the music and clears the queue. | `/stop` | Playback | [`stop.js`](commands/music/playback/stop.js) |
-| `/volume <level>` | Adjusts the volume of the music player to the specified `level` (0-100). | `/volume 50` | Playback | [`volume.js`](commands/music/playback/volume.js) |
+| `/back` | Plays the previous song in the queue. | `/back` | Playback | [`back.ts`](src/commands/music/playback/back.ts) |
+| `/clear` | Clears the music queue. | `/clear` | Queue | [`clear.ts`](src/commands/music/queue/clear.ts) |
+| `/loop <mode>` | Loops the current song or queue. `Mode` can be `song`, `queue`,`autoplay` or `off`. | `/loop song` | Playback | [`loop.ts`](src/commands/music/playback/loop.ts) |
+| `/lyrics` | Fetches and displays the lyrics of the currently playing song. | `/lyrics` | Insight | [`lyrics.ts`](src/commands/music/insight/lyrics.ts) |
+| `/nowplaying` | Displays information about the currently playing song and the queue. | `/nowplaying` | Insight | [`now-playing.ts`](src/commands/music/insight/now-playing.ts) |
+| `/pause` | Pauses the currently playing song. | `/pause` | Playback | [`pause.ts`](src/commands/music/playback/pause.ts) |
+| `/play <query>` | Plays a song or playlist from YouTube or a supported URL, including Spotify, Souncloud and other sources. `Query` can be a URL, a song's name or even an author | `/play greedy` | Playback | [`play.ts`](src/commands/music/playback/play.ts) |
+| `/playnext <query>` | Adds a song to the queue to play after the current song. | `/playnext Paramore` | Playback | [`play-next.ts`](src/commands/music/playback/play-next.ts) |
+| `/queue` | Shows the current music queue. | `/queue` | Queue | [`queue.ts`](src/commands/music/queue/queue.ts) |
+| `/resume` | Resumes a paused song. | `/resume` | Playback | [`resume.ts`](src/commands/music/playback/resume.ts) |
+| `/save` | Saves the currently playing song to your DMs | `/save` | Insight | [`save.ts`](src/commands/music/insight/save.ts) |
+| `/shuffle` | Shuffles the songs in the current queue. | `/shuffle` | Queue | [`shuffle.ts`](src/commands/music/queue/shuffle.ts) |
+| `/skip` | Skips the current song. | `/skip` | Playback | [`skip.ts`](src/commands/music/playback/skip.ts) |
+| `/stop` | Stops the music and clears the queue. | `/stop` | Playback | [`stop.ts`](src/commands/music/playback/stop.ts) |
+| `/volume <level>` | Adjusts the volume of the music player to the specified `level` (0-100). | `/volume 50` | Playback | [`volume.ts`](src/commands/music/playback/volume.ts) |
 
 ### `Utility Commands`
 
@@ -248,10 +296,10 @@ These commands provide useful tools for managing polls, reminders, and checking 
 
 | Command | Description | Example | Category | File |
 | --- | --- | --- | --- | --- |
-| `/disconnect` | Disconnects the bot from the voice channel. | `/disconnect` | None | [`disconnect.js`](commands/utility/disconnect.js) |
-| `/ping` | Checks the bot's response time and latency. | `/ping` | None | [`ping.js`](commands/utility/ping.js) |
-| `/poll <question> <possible answers> <time>` | Creates a poll with the specified `question` for users to vote on during specified `time`. | `/poll What's your favorite food? Pizza,Salad,Sushi` | None | [`poll.js`](commands/utility/poll.js) |
-| `/remind <time> <reminder>` | Sets a `reminder` for the specified `time` duration. | `/remind 10m I am a reminder` | None | [`remind.js`](commands/utility/remind.js) |
+| `/disconnect` | Disconnects the bot from the voice channel. | `/disconnect` | None | [`disconnect.ts`](src/commands/utility/disconnect.ts) |
+| `/ping` | Checks the bot's response time and latency. | `/ping` | None | [`ping.ts`](src/commands/utility/ping.ts) |
+| `/poll <question> <possible answers> <time>` | Creates a poll with the specified `question` for users to vote on during specified `time`. | `/poll What's your favorite food? Pizza,Salad,Sushi` | None | [`poll.ts`](src/commands/utility/poll.ts) |
+| `/remind <time> <reminder>` | Sets a `reminder` for the specified `time` duration. | `/remind 10m I am a reminder` | None | [`remind.ts`](src/commands/utility/remind.ts) |
 
 ## Events
 
@@ -263,9 +311,9 @@ These events are emitted by the Discord client and are related to the bot's conn
 
 | Event | Description | File |
 | --- | --- | --- |
-| `ready` | Emitted when the bot is ready to start receiving commands. | [`ready.js`](events/client/ready.js) |
-| `interactionCreate` | Emitted when an interaction is created. | [`interaction-create.js`](events/client/interaction-create.js) |
-| `guildMemberAdd` | Emitted when a new member joins the server. | [`guild-member-add.js`](events/client/guild-member-add.js) |
+| `ready` | Emitted when the bot is ready to start receiving commands. | [`ready.ts`](src/events/client/ready.ts) |
+| `interactionCreate` | Emitted when an interaction is created. | [`interaction-create.ts`](src/events/client/interaction-create.ts) |
+| `guildMemberAdd` | Emitted when a new member joins the server. | [`guild-member-add.ts`](src/events/client/guild-member-add.ts) |
 
 ### `Music`
 
@@ -273,11 +321,11 @@ These events are emitted by the music player and are related to the music player
 
 | Event | Description | File |
 | --- | --- | --- |
-| `emptyQueue` | Emitted when the queue is empty. | [`empty-queue.js`](events/music/empty-queue.js) |
-| `emptyChannel` | Emitted when the bot leaves the voice channel. | [`empty-channel.js`](events/music/empty-channel.js) |
-| `error` | Emitted when an error occurs. | [`error.js`](events/music/error.js) |
-| `playerError` | Emitted when an error occurs in the player. | [`player-error.js`](events/music/player-error.js) |
-| `playerStart` | Emitted when the player starts playing a song. | [`player-start.js`](events/music/player-start.js) |
+| `emptyQueue` | Emitted when the queue is empty. | [`empty-queue.ts`](src/events/music/empty-queue.ts) |
+| `emptyChannel` | Emitted when the bot leaves the voice channel. | [`empty-channel.ts`](src/events/music/empty-channel.ts) |
+| `error` | Emitted when an error occurs. | [`error.ts`](src/events/music/error.ts) |
+| `playerError` | Emitted when an error occurs in the player. | [`player-error.ts`](src/events/music/player-error.ts) |
+| `playerStart` | Emitted when the player starts playing a song. | [`player-start.ts`](src/events/music/player-start.ts) |
 
 ### `Process`
 
@@ -285,10 +333,10 @@ These events are emitted by the process and are related to the node process stat
 
 | Event | Description | File |
 | --- | --- | --- |
-| `exit` | Emitted when the process is about to exit. | [`exit.js`](events/process/exit.js) |
-| `SIGINT` | Emitted when the process receives a SIGINT signal. | [`SIGINT.js`](events/process/SIGINT.js) |
-| `unhandledRejection` | Emitted when an unhandled promise rejection occurs. | [`unhandled-rejection.js`](events/process/unhandled-rejection.js) |
-| `uncaughtException` | Emitted when an uncaught exception occurs. | [`uncaught-exception.js`](events/process/uncaught-exception.js) |
+| `exit` | Emitted when the process is about to exit. | [`exit.ts`](src/events/process/exit.ts) |
+| `SIGINT` | Emitted when the process receives a SIGINT signal. | [`SIGINT.ts`](src/events/process/SIGINT.ts) |
+| `unhandledRejection` | Emitted when an unhandled promise rejection occurs. | [`unhandled-rejection.ts`](src/events/process/unhandled-rejection.ts) |
+| `uncaughtException` | Emitted when an uncaught exception occurs. | [`uncaught-exception.ts`](src/events/process/uncaught-exception.ts) |
 
 ## Utils
 
@@ -296,13 +344,13 @@ In the `utils` folder, you can find a series of utility classes that can be used
 
 | Utility | Description | File |
 | --- | --- | --- |
-| `CommandErrorHandler` | Wrapper class to handle errors in commands. | [`command-error-handler.js`](utils/error-handler/command-error-handler.js) |
-| `MusicPresets` | Functions to create embeds specifically for music commands. | [`music-presets.js`](utils/embed/music-presets.js) |
-| `EmbedUtils` | Functions to create and manage embeds for various purposes. | [`embed_utils.js`](utils/embed_utils.js) |
-| `EventErrorHandler` | Wrapper class to handle errors occurring in events. | [`event-error-handler.js`](utils/error-handler/event-error-handler.js) |
-| `GifUtils` | Utility class to retrieve and send GIFs. | [`gif-utils.js`](utils/gif-utils.js) |
-| `InteractionUtils` | Wrapper class to simplify interaction management. | [`interaction-utils.js`](utils/interaction-utils.js) |
-| `Permissions` | Utility class to check and manage user permissions. | [`permissions.js`](utils/permissions.js) |
+| `CommandErrorHandler` | Wrapper class to handle errors in commands. | [`command-error-handler.ts`](src/utils/error-handler/command-error-handler.ts) |
+| `MusicPresets` | Functions to create embeds specifically for music commands. | [`music-presets.ts`](src/utils/embed/music-presets.ts) |
+| `EmbedUtils` | Functions to create and manage embeds for various purposes. | [`embed_utils.ts`](src/utils/embed_utils.ts) |
+| `EventErrorHandler` | Wrapper class to handle errors occurring in events. | [`event-error-handler.ts`](src/utils/error-handler/event-error-handler.ts) |
+| `GifUtils` | Utility class to retrieve and send GIFs. | [`gif-utils.ts`](src/utils/gif-utils.ts) |
+| `InteractionUtils` | Wrapper class to simplify interaction management. | [`interaction-utils.ts`](src/utils/interaction-utils.ts) |
+| `Permissions` | Utility class to check and manage user permissions. | [`permissions.ts`](src/utils/permissions.ts) |
 
 ## Supported languages
 
@@ -353,11 +401,13 @@ You can always modify the bot to support your language.
 ### `Update README`
 
 - [ ] Logger
-- [ ] Language architecture, template for language
+- [ ] Language architecture, template for language, how to add
 - [ ] How loading works
 - [ ] Change everything about ts
 - [ ] Interfaces
-- [ ] template .env
+- [ ] Dependencies part
+- [ ] Merge "how to" into commands and events
+- [ ] Check every command, event, util
 
 ## Known Issues
 

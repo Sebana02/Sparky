@@ -86,8 +86,8 @@ const RPSMove = {
 
 /**
  * Generates an embed for the game
- * @param {Player[]} players The players of the game
- * @returns {EmbedBuilder} The embed for the game
+ * @param players The players of the game
+ * @returns The embed for the game
  */
 function generateEmbed(players: Player[]): EmbedBuilder {
   return createEmbed({
@@ -98,7 +98,7 @@ function generateEmbed(players: Player[]): EmbedBuilder {
 
 /**
  * Creates an action row with buttons
- * @returns {ActionRowBuilder} The action row with the buttons
+ * @returns The action row with the buttons
  */
 function createActionRow(): ActionRowBuilder<ButtonBuilder> {
   return new ActionRowBuilder<ButtonBuilder>().addComponents(
@@ -110,8 +110,8 @@ function createActionRow(): ActionRowBuilder<ButtonBuilder> {
 
 /**
  * Handles the interaction of the players
- * @param {ChatInputCommandInteraction} inter The interaction of the command
- * @param {Player[]} players The players of the game
+ * @param inter The interaction of the command
+ * @param players The players of the game
  */
 async function handleInteraction(
   inter: ChatInputCommandInteraction,
@@ -154,9 +154,9 @@ async function handleInteraction(
 
 /**
  * Shows the result of the game
- * @param {ChatInputCommandInteraction} inter The interaction of the command
- * @param {Player[]} players The players of the game
- * @param {EmbedBuilder} embed The embed of the game
+ * @param inter The interaction of the command
+ * @param players The players of the game
+ * @param embed The embed of the game
  */
 async function showResult(inter: ChatInputCommandInteraction, players: Player[], embed: EmbedBuilder): Promise<void> {
   const gameMoves = `${players[0].user.username} ${RPSMove[players[0].move]} vs ${RPSMove[players[1].move]} ${players[1].user.username}`;

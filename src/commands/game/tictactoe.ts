@@ -104,10 +104,10 @@ enum BoxSymbol {
 
 /**
  * Check if the cell is valid
- * @param {BoxSymbol[][]} board The board of the game
- * @param {number} row The row of the cell
- * @param {number} column The column of the cell
- * @returns {boolean} Whether the cell is valid
+ * @param board The board of the game
+ * @param row row of the cell
+ * @param column The column of the cell
+ * @returns Whether the cell is valid
  */
 function isValidCell(board: BoxSymbol[][], row: number, column: number): boolean {
   return board[row][column] === BoxSymbol.Blank;
@@ -115,9 +115,9 @@ function isValidCell(board: BoxSymbol[][], row: number, column: number): boolean
 
 /**
  * Check if the player has won
- * @param {BoxSymbol[][]} board The board of the game
- * @param {BoxSymbol} symbol The symbol of the player
- * @returns {boolean} Whether the player has won
+ * @param board The board of the game
+ * @param symbol The symbol of the player
+ * @returns Whether the player has won
  */
 function hasWon(board: BoxSymbol[][], symbol: BoxSymbol): boolean {
   // Check for horizontal and vertical lines
@@ -144,8 +144,8 @@ function hasWon(board: BoxSymbol[][], symbol: BoxSymbol): boolean {
 
 /**
  * Check if the game is a draw
- * @param {BoxSymbol[][]} board The board of the game
- * @returns {boolean} Whether the game is a draw
+ * @param board The board of the game
+ * @returns Whether the game is a draw
  */
 function isDraw(board: BoxSymbol[][]): boolean {
   return board.every((row) => row.every((cell) => cell !== BoxSymbol.Blank));
@@ -153,10 +153,10 @@ function isDraw(board: BoxSymbol[][]): boolean {
 
 /**
  * Generates an embed for the game
- * @param {BoxSymbol[][]} board The board of the game
- * @param {Player[]} players The players of the game
- * @param {Turn} turn The current turn
- * @returns {EmbedBuilder} The embed for the game
+ * @param board The board of the game
+ * @param players The players of the game
+ * @param turn The current turn
+ * @returns The embed for the game
  */
 function generateEmbed(board: BoxSymbol[][], players: Player[], turn: Turn): EmbedBuilder {
   // Parse the board into a string
@@ -183,8 +183,8 @@ function generateEmbed(board: BoxSymbol[][], players: Player[], turn: Turn): Emb
 
 /**
  * Creates the buttons for the game
- * @param {BoxSymbol[][]} board The board of the game
- * @returns {ActionRowBuilder<ButtonBuilder>[]} The action rows with the buttons
+ * @param board The board of the game
+ * @returns The action rows with the buttons
  */
 function createActionRows(board: BoxSymbol[][]): ActionRowBuilder<ButtonBuilder>[] {
   //Create the icons for the buttons
@@ -207,6 +207,13 @@ function createActionRows(board: BoxSymbol[][]): ActionRowBuilder<ButtonBuilder>
   ];
 }
 
+/**
+ * Handles the interaction for the game
+ * @param inter The interaction of the command
+ * @param board The board of the game
+ * @param players The players of the game
+ * @param turn The current turn
+ */
 async function handleInteraction(
   inter: ChatInputCommandInteraction,
   board: BoxSymbol[][],
