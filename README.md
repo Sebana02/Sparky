@@ -501,7 +501,7 @@ If you encounter any issues while running the bot, here are some common troubles
 
 1. **Check the logs**: Review the logs for any error messages that can provide insight into the issue.
 2. **Verify configuration**: Ensure that your configuration files are set up correctly and that all required variables are defined.
-3. **Update dependencies**: Make sure all dependencies are up to date by running `npm install`.
+3. **Update dependencies**: Make sure all dependencies are up to date by running `npm update`.
 4. **Consult documentation**: Refer to the documentation for any specific instructions related to the feature you are using.
 5. **Search for solutions**: Look for similar issues in the project's issues.
 

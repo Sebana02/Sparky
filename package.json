@@ -10,7 +10,8 @@
     "build": "tsc",
     "clean": "tsc --build --clean",
     "format": "prettier --write .",
-    "docs": "typedoc --entryPointStrategy expand src --out docs"
+    "docs": "typedoc --entryPointStrategy expand src --out docs/docs-gen --name Sparky --readme README.md && node docs/move-favicon.js",
+    "help": "echo 'Available scripts: dev, start, build, clean, format, docs'"
   },
   "keywords": [],
   "author": "Sebana02",
