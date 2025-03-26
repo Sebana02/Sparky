@@ -1,65 +1,63 @@
-# PROJECT IS BEING UPDATED TO TYPESCRIPT, README IS OUTDATED
-
-Some parts of the project are yet to be translated into TypeScript, and the README is one of them. The project is being updated to TypeScript to improve code quality and maintainability. The README will be updated soon to reflect the changes and provide accurate information about the project.
-
 # Sparky
 
 > This Discord bot is designed to be an easy and customizable solution for your servers. Ideal for groups of friends, the bot offers a variety of fun and useful commands that enhance chat experience and community interaction.
 
 ## Table of Contents
 
-- [PROJECT IS BEING UPDATED TO TYPESCRIPT, README IS OUTDATED](#project-is-being-updated-to-typescript-readme-is-outdated)
 - [Sparky](#sparky)
   - [Table of Contents](#table-of-contents)
   - [Features](#features)
-  - [Requirements and Installation](#requirements-and-installation)
-  - [Configuration](#configuration)
-    - [`.env file`](#env-file)
-    - [`Create a new command`](#create-a-new-command)
-    - [`Create a new event`](#create-a-new-event)
+  - [Bot setup](#bot-setup)
+    - [Installation](#installation)
+    - [Configuration](#configuration)
   - [Commands](#commands)
-    - [`Fun commands`](#fun-commands)
-    - [`Game commands`](#game-commands)
-    - [`Information Commands`](#information-commands)
-    - [`Moderation Commands`](#moderation-commands)
-    - [`Music Commands`](#music-commands)
-    - [`Utility Commands`](#utility-commands)
+    - [List of available commands](#list-of-available-commands)
+      - [Fun commands](#fun-commands)
+      - [Game commands](#game-commands)
+      - [Information commands](#information-commands)
+      - [Moderation commands](#moderation-commands)
+      - [Music commands](#music-commands)
+      - [Utility commands](#utility-commands)
+    - [Create a new command (for developers)](#create-a-new-command-for-developers)
   - [Events](#events)
-    - [`Client`](#client)
-    - [`Music`](#music)
-    - [`Process`](#process)
-  - [Utils](#utils)
-  - [Supported languages](#supported-languages)
-  - [TODO](#todo)
-    - [`Laguages`](#laguages)
-    - [`General`](#general)
-    - [`IAs`](#ias)
-    - [`Embeds`](#embeds)
-    - [`Moderation commands`](#moderation-commands-1)
-    - [`Security`](#security)
-    - [`Update README`](#update-readme)
+    - [List of available events](#list-of-available-events)
+      - [Client events](#client-events)
+      - [Music events](#music-events)
+      - [Process events](#process-events)
+    - [Create a new event (for developers)](#create-a-new-event-for-developers)
+  - [Utils (for developers)](#utils-for-developers)
+  - [Logger](#logger)
+    - [Usage (for developers)](#usage-for-developers)
+  - [Languages](#languages)
+    - [Supported languages](#supported-languages)
+    - [Add a new language (for developers)](#add-a-new-language-for-developers)
+  - [Fallback behavior](#fallback-behavior)
+  - [Troubleshooting](#troubleshooting)
   - [Known Issues](#known-issues)
+  - [FAQ](#faq)
+  - [Contributions](#contributions)
   - [License](#license)
 
 ## Features
 
-- **Music Control**: Sparky provides full music functionality including play, pause, skip, queue management, volume adjustment, and looping. It supports various music platforms like YouTube, Spotify, and SoundCloud.
-- **Moderation Commands**: Sparky helps keep your server under control with commands for banning, kicking, muting, and managing channels. You can also create and manage roles easily.
-- **Fun Commands**: Add fun to your server with meme GIFs, cat and dog images, virtual hugs, slaps, and other interactive commands that make the chat experience more lively.
-- **Game Commands**: Engage users with built-in games like hangman, rock-paper-scissors (rps), and tic-tac-toe. Users can challenge each other and compete in these fun, light-hearted games.
-- **Utility Commands**: Sparky includes useful tools like polls for gathering opinions, reminders for scheduling tasks, and a ping command to check latency.
-- **Information Commands**: Get quick insights such as bot uptime or perform Wikipedia searches right from the chat.
-- **Configurable Settings**: With the `.env` file, you can customize the bot’s behavior, including token configuration, activity status, DJ role permissions, and more.
-- **Slash Command Support**: Sparky exclusively uses modern Discord slash commands, making the bot intuitive to use and easy to interact with.
-- **Multi-language Support**: Currently supports Spanish and English, with plans to support additional languages in the future. You can easily modify the bot to support your language (see TODO).
+- 🎵 **Advanced Music Control** – Play, pause, skip, loop, and manage your music queue seamlessly. Supports **YouTube, Spotify, and SoundCloud**.
+- 🔨 **Powerful Moderation** – Keep your server safe with **ban, kick, mute**, and role management commands.
+- 🎉 **Fun & Interaction** – Send **memes, GIFs, cat & dog pictures**, and interact with virtual **hugs, slaps**, and more.
+- 🎮 **Mini Games** – Play **Hangman, Rock-Paper-Scissors, Tic-Tac-Toe**, and other fun challenges with friends.
+- 🛠 **Useful Tools** – Create **polls**, set **reminders**, and check **server latency** in one command.
+- 📚 **Instant Information** – Get **bot uptime, Wikipedia searches**, and quick data directly from chat.
+- ⚙️ **Fully Configurable** – Customize **bot behavior, permissions, and activity status** through the `.env` file.
+- 🚀 **Modern Slash Commands** – Uses **Discord’s latest slash command system** for a smooth user experience.
+- 🌍 **Multi-language Support** – Available in **English & Spanish**, with more languages coming soon!
 
-## Requirements and Installation
+## Bot setup
+
+### Installation
 
 To install and run the bot locally, follow these steps:
 
 1. Install Node.js and npm from [here](https://nodejs.org/en/download/).
-
-2. Clone the repository:
+2. Clone the repository to your local machine:
 
    ```bash
    git clone https://github.com/Sebana02/Sparky.git
@@ -71,7 +69,7 @@ To install and run the bot locally, follow these steps:
    cd Sparky
    ```
 
-4. Install the dependencies:
+4. Install the dependencies by running:
 
    ```bash
    npm install
@@ -83,45 +81,49 @@ To install and run the bot locally, follow these steps:
    TOKEN=your_discord_bot_token_here
    ```
 
-   You can configure other settings in the `.env` file as well, check the [Configuration](#configuration) section for more details.
+   You can configure other settings in the `.env` file. For more details, check the [Configuration](#configuration) section.
 
-6. Start the bot:
+6. To start the bot:
 
    ```bash
    npm run start
    ```
 
-7. Or else start the bot in development mode:
+7. Alternatively, you can start the bot in development mode:
 
    ```bash
    npm run dev
    ```
 
-   This will start the bot in development mode, allowing you to test changes without restarting the bot. Just save the changes, and the bot will automatically reload.
+   This will start the bot in development mode. The bot will automatically reload when you save changes to the code.
 
 8. The bot should now be running and connected to your Discord server!
 
-9. If you want to shut down the bot just press `Ctrl + C` in the terminal where the bot is running to send a SIGINT signal to the process.
+9. To shut down the bot, press `Ctrl + C` in the terminal where the bot is running.
 
-## Configuration
+---
 
-### `.env file`
+### Configuration
 
-The bot has the following configurations through the `.env` file:
+The bot has the following configurations through the `.env` file, although only the `TOKEN` is required to run the bot:
 
-- `TOKEN`: The Discord authentication token. Required for the bot to connect to Discord.
-- `LOG_FILE`: The file where logs will be stored. If not specified, logs will be stored in **.log** file in the root of the project.
-- `LANGUAGE`: The language the bot will use. If not specified, the bot will use the default language (en_US). Take into account that it has to match the name of a folder in the `locales` folder. It is recommend to use `IETF BCP 47` rule for clarity.
-- `GUILD_ID`: The ID of the server where the bot will be used. If not specified, the bot will register commands globally, which can take up to an hour to be available.
-- `PLAYING_ACTIVITY`: The activity status of the bot. If left empty, the bot will not display any activity status.
-- `TENOR_API_KEY`: The API key for the Tenor GIF API. Required for GIF commands, you can get one [here](https://tenor.com/developer/keysignup).
-- `DJ_ROLE`: The role ID that will have DJ permissions. If specified, only users with this role will be able to control the music bot.
+| Variable | Description |
+| --- | --- |
+| `TOKEN` | Discord authentication token (**Required**). |
+| `LOG_FILE` | The file where logs will be stored. If not specified, logs will be saved in a `.log` file in the project root. |
+| `LANGUAGE` | The bot's language (must match a folder name in `locales`, recommended format: `IETF BCP 47`). |
+| `GUILD_ID` | The server ID where the bot will be used. If not specified, commands will be registered globally (can take up to 1 hour to be available). |
+| `PLAYING_ACTIVITY` | The bot's activity status (e.g., "Playing /help"). If left empty, the bot will not display an activity. |
+| `TENOR_API_KEY` | API key for the Tenor GIF API (required for GIF commands). You can get one [here](https://tenor.com/developer/keysignup). |
+| `DJ_ROLE` | The role ID that will have DJ permissions. If specified, only users with this role can control the music bot. |
 
-Here is an example of a `.env` file with all the configurations:
+---
+
+Here is an example of a fully configured `.env` file:
 
 ```bash
 TOKEN="your_discord_bot_token_here"
-LOG_FILE="bot.log"
+LOG_FILE="path_to_your_log_file.log"
 LANGUAGE="en_US"
 GUILD_ID="your_guild_id_here"
 PLAYING_ACTIVITY="with Sparky | /help"
@@ -129,84 +131,15 @@ TENOR_API_KEY="your_tenor_api_key_here"
 DJ_ROLE="your_dj_role_id_here"
 ```
 
----
-
-### `Create a new command`
-
-Any new command must be created in the `commands` folder, as this is where the bot will search for commands. The folder structure can be organized as needed, but it is recommended to create a subfolder for each command category.
-
-Each command must be a `.ts` file and must export an [`ICommand`](src/interfaces/command.interface.ts) object with the following properties:
-
-- **`data`** _([`SlashCommandBuilder`](https://discord.js.org/#/docs/builders/main/class/SlashCommandBuilder))_:  
-  The Discord command.
-
-- **`voiceChannel`** _(optional, boolean, default: `false`)_:  
-  Indicates whether the command requires the user to be in a voice channel.
-
-- **`blockedInDMs`** _(optional, boolean, default: `false`)_:  
-  Indicates whether the command is blocked in DMs.
-
-- **`execute(`[`client`](https://discord.js.org/#/docs/discord.js/main/class/Client)`,`[`interaction`](https://discord.js.org/#/docs/discord.js/main/class/ChatInputCommandInteraction)`, ...args)`** _(async function)_:  
-  The function executed when the command is invoked
-
-Here is a basic command that replies with a greeting:
-
-```typescript
-import { ICommand } from '../../interfaces/command.interface.js';
-import { ChatInputCommandInteraction, Client, SlashCommandBuilder } from 'discord.js';
-
-export const command: ICommand = {
-  data: new SlashCommandBuilder().setName('greetings').setDescription('Greets the user'),
-
-  voiceChannel: false,
-  blockedInDMs: false,
-
-  execute: async (client: Client, inter: ChatInputCommandInteraction): Promise<void> => {
-    await inter.reply('Hello! How can I help you today?');
-  },
-};
-```
-
----
-
-### `Create a new event`
-
-Any new events must be created in the `events` folder as it is the path where the bot will look for events. Inside the folder, any substructure can be followed, as the bot will search for events recursively, although it is recommended to create a folder for each category of events.
-
-'Events' must be `.ts` files and must export a [IEvent](src/interfaces/event.interface.ts) object with the following parameters:
-
-- **`name`** _(string)_:  
-  The name of the event to listen to. It must match the name of the event emitted by the emitter (see documentation for each emitter).
-
-- **`emitter`** _(Emitter)_:  
-  The emitter of the event. It can take values from the `Emitter` enum, which is in the same file as the `IEvent` interface. The possible values are:
-
-  - `Process`: Corresponds to the [`Node process`](https://nodejs.org/api/process.html#process-events).
-  - `Client`: Corresponds to the [`Discord client`](https://discord.js.org/#/docs/main/stable/class/Client).
-  - `Music`: Corresponds to the [`Discord player library`](https://discord-player.js.org/docs/discord-player/type/GuildQueueEvents).
-
-- **`execute(`[`client`](https://discord.js.org/#/docs/discord.js/main/class/Client)`, ...args)`** _(async function)_:  
-  The function executed when the event is triggered.
-
-Here is a basic example of an event that logs when the bot is ready:
-
-```typescript
-import { IEvent } from '../../interfaces/event.interface.js';
-import { Client } from 'discord.js';
-
-export const event: IEvent = {
-  name: 'ready',
-  execute: async (client: Client): Promise<void> => {
-    console.log(`Logged in as ${client.user.tag}!`);
-  },
-};
-```
-
 ## Commands
 
-The bot can be invoked using Discord's slash commands. Sparky offers a variety of commands that can be used to interact with the bot and enhance the chat experience. The commands are divided into categories based on their functionality:
+The bot can be invoked using Discord's slash commands. Sparky offers a variety of commands to interact with it and enhance the chat experience.
 
-### `Fun commands`
+### List of available commands
+
+These commands are divided into categories based on their functionality, including fun, games, information, moderation, music, and utility.
+
+#### Fun commands
 
 These commands are designed to add fun and entertainment to the chat experience. They include GIFs, memes, and interactive actions like hugs, pokes, and slaps.
 
@@ -223,7 +156,9 @@ These commands are designed to add fun and entertainment to the chat experience.
 | `/coinflip` | Flips a coin and returns heads or tails. | `/coinflip` | None | [`coin-flip.ts`](src/commands/fun/coin-flip.ts) |
 | `/8ball <question>` | Answers a `question` with a random 8-ball response. | `/8ball Will I win the lottery?` | None | [`8ball.ts`](src/commands/fun/8ball.ts) |
 
-### `Game commands`
+---
+
+#### Game commands
 
 These commands are designed to engage users with fun and interactive games. Users can play hangman, rock-paper-scissors, and tic-tac-toe among other games.
 
@@ -234,7 +169,7 @@ These commands are designed to engage users with fun and interactive games. User
 | `/tictactoe <opponent>` | Starts a game of tic-tac-toe with a specified `opponent`. | `/tictactoe @Dave` | None | [`tictactoe.ts`](src/commands/game/tictactoe.ts) |
 | `/trivia <playlist>` | Starts a game of musical trivia with your `playlist` songs. | `/trivia your_playlist_link_here` | None | [`trivia.ts`](src/commands/game/trivia.ts) |
 
-### `Information Commands`
+#### Information commands
 
 These commands provide quick insights and information to users, including the bot's uptime and Wikipedia searches.
 
@@ -244,7 +179,7 @@ These commands provide quick insights and information to users, including the bo
 | `/uptime` | Displays the bot's uptime | `/uptime` | None | [`uptime.ts`](src/commands/info/uptime.ts) |
 | `/wikisearch <query>` | Searches Wikipedia for the specified `query` | `/wikisearch Discord` | None | [`wiki-search.ts`](src/commands/info/wiki-search.ts) |
 
-### `Moderation Commands`
+#### Moderation commands
 
 These commands help maintain order and control in the server by providing tools for managing users, roles, and channels.
 
@@ -268,7 +203,9 @@ These commands help maintain order and control in the server by providing tools 
 | `/timeout <user> <reason> <duration>` | Times out a specified `user` for a `reason`, for `duration` minutes, preventing them from sending messages or speaking during that time. | `/timeout @Dave 10` | User | [`timeout.ts`](src/commands/moderation/user/timeout.ts) |
 | `/warn <user> <reason>` | Issues a warning to a specified `user`, providing a `reason` for the warning to maintain accountability. | `/warn @Dave Too many infractions` | User | [`warn.ts`](src/commands/moderation/user/warn.ts) |
 
-### `Music Commands`
+---
+
+#### Music commands
 
 These commands are designed to control the music player and queue. Users can play, pause, skip, and manage the music queue with these commands.
 
@@ -290,7 +227,9 @@ These commands are designed to control the music player and queue. Users can pla
 | `/stop` | Stops the music and clears the queue. | `/stop` | Playback | [`stop.ts`](src/commands/music/playback/stop.ts) |
 | `/volume <level>` | Adjusts the volume of the music player to the specified `level` (0-100). | `/volume 50` | Playback | [`volume.ts`](src/commands/music/playback/volume.ts) |
 
-### `Utility Commands`
+---
+
+#### Utility commands
 
 These commands provide useful tools for managing polls, reminders, and checking the bot's response time.
 
@@ -301,11 +240,55 @@ These commands provide useful tools for managing polls, reminders, and checking 
 | `/poll <question> <possible answers> <time>` | Creates a poll with the specified `question` for users to vote on during specified `time`. | `/poll What's your favorite food? Pizza,Salad,Sushi` | None | [`poll.ts`](src/commands/utility/poll.ts) |
 | `/remind <time> <reminder>` | Sets a `reminder` for the specified `time` duration. | `/remind 10m I am a reminder` | None | [`remind.ts`](src/commands/utility/remind.ts) |
 
+---
+
+### Create a new command (for developers)
+
+Any new command must be created in the `commands` folder, as this is where the bot will search for commands. The folder structure can be organized as needed, but it is recommended to create a subfolder for each command category.
+
+Each command must be a `.ts` file and must export an [`ICommand`](src/interfaces/command.interface.ts) object with the following properties:
+
+- **`data`** _([`SlashCommandBuilder`](https://discord.js.org/#/docs/builders/main/class/SlashCommandBuilder))_:  
+  The Discord command.
+
+- **`voiceChannel`** _(optional, boolean, default: `false`)_:  
+  Indicates whether the command requires the user to be in a voice channel.
+
+- **`blockedInDMs`** _(optional, boolean, default: `false`)_:  
+  Indicates whether the command is blocked in DMs.
+
+- **`execute(`[`client`](https://discord.js.org/#/docs/discord.js/main/class/Client)`,`[`interaction`](https://discord.js.org/#/docs/discord.js/main/class/ChatInputCommandInteraction)`, ...args)`** _(async function)_:  
+  The function executed when the command is invoked
+
+---
+
+Here is a basic command that replies with a greeting:
+
+```typescript
+import { ICommand } from '../../interfaces/command.interface.js';
+import { ChatInputCommandInteraction, Client, SlashCommandBuilder } from 'discord.js';
+
+export const command: ICommand = {
+  data: new SlashCommandBuilder().setName('greetings').setDescription('Greets the user'),
+
+  voiceChannel: false,
+  blockedInDMs: false,
+
+  execute: async (client: Client, inter: ChatInputCommandInteraction): Promise<void> => {
+    await inter.reply('Hello! How can I help you today?');
+  },
+};
+```
+
 ## Events
 
-The bot has a series of callbacks that are executed when certain events occur. These events are located in the `events` folder and are divided into emitters. Each emitter has a series of events that can be listened to. The bot will automatically register these events when the bot starts. The events are divided into the following emitters:
+The bot uses events to listen for specific actions or triggers and execute functions when those events occur. Events are used to handle various actions, such as when the bot is ready, a user joins the server, or an error occurs. Events are divided into categories based on their emitter, including the client, music player, and process.
 
-### `Client`
+### List of available events
+
+The bot uses several events to handle various actions and triggers. These events are divided into categories based on their emitter, including the client, music player, and process.
+
+#### Client events
 
 These events are emitted by the Discord client and are related to the bot's connection and status.
 
@@ -315,7 +298,9 @@ These events are emitted by the Discord client and are related to the bot's conn
 | `interactionCreate` | Emitted when an interaction is created. | [`interaction-create.ts`](src/events/client/interaction-create.ts) |
 | `guildMemberAdd` | Emitted when a new member joins the server. | [`guild-member-add.ts`](src/events/client/guild-member-add.ts) |
 
-### `Music`
+---
+
+#### Music events
 
 These events are emitted by the music player and are related to the music player's status and actions.
 
@@ -327,7 +312,9 @@ These events are emitted by the music player and are related to the music player
 | `playerError` | Emitted when an error occurs in the player. | [`player-error.ts`](src/events/music/player-error.ts) |
 | `playerStart` | Emitted when the player starts playing a song. | [`player-start.ts`](src/events/music/player-start.ts) |
 
-### `Process`
+---
+
+#### Process events
 
 These events are emitted by the process and are related to the node process status.
 
@@ -338,78 +325,180 @@ These events are emitted by the process and are related to the node process stat
 | `unhandledRejection` | Emitted when an unhandled promise rejection occurs. | [`unhandled-rejection.ts`](src/events/process/unhandled-rejection.ts) |
 | `uncaughtException` | Emitted when an uncaught exception occurs. | [`uncaught-exception.ts`](src/events/process/uncaught-exception.ts) |
 
-## Utils
+---
+
+### Create a new event (for developers)
+
+Any new events must be created in the `events` folder as it is the path where the bot will look for events. Inside the folder, any substructure can be followed, as the bot will search for events recursively, although it is recommended to create a folder for each category of events.
+
+'Events' must be `.ts` files and must export a [IEvent](src/interfaces/event.interface.ts) object with the following parameters:
+
+- **`name`** _(string)_:  
+  The name of the event to listen to. It must match the name of the event emitted by the emitter (see documentation for each emitter).
+
+- **`emitter`** _(Emitter)_:  
+  The emitter of the event. It can take values from the `Emitter` enum, which is in the same file as the `IEvent` interface. The possible values are:
+
+  - `Process`: Corresponds to the [`Node process`](https://nodejs.org/api/process.html#process-events).
+  - `Client`: Corresponds to the [`Discord client`](https://discord.js.org/#/docs/main/stable/class/Client).
+  - `Music`: Corresponds to the [`Discord player library`](https://discord-player.js.org/docs/discord-player/type/GuildQueueEvents).
+
+- **`execute(`[`client`](https://discord.js.org/#/docs/discord.js/main/class/Client)`, ...args)`** _(async function)_:  
+  The function executed when the event is triggered.
+
+Here is a basic example of an event that logs when the bot is ready:
+
+```typescript
+import { IEvent, Emitter } from '../../interfaces/event.interface.js';
+import { Client } from 'discord.js';
+
+export const event: IEvent = {
+  name: 'ready',
+  emitter: Emitter.Client,
+
+  execute: async (client: Client): Promise<void> => {
+    console.log(`Logged in as ${client.user.tag}!`);
+  },
+};
+```
+
+## Utils (for developers)
 
 In the `utils` folder, you can find a series of utility classes that can be used throughout the bot. These functions are designed to help with common tasks and can be used in any part of the bot:
 
 | Utility | Description | File |
 | --- | --- | --- |
-| `CommandErrorHandler` | Wrapper class to handle errors in commands. | [`command-error-handler.ts`](src/utils/error-handler/command-error-handler.ts) |
-| `MusicPresets` | Functions to create embeds specifically for music commands. | [`music-presets.ts`](src/utils/embed/music-presets.ts) |
-| `EmbedUtils` | Functions to create and manage embeds for various purposes. | [`embed_utils.ts`](src/utils/embed_utils.ts) |
-| `EventErrorHandler` | Wrapper class to handle errors occurring in events. | [`event-error-handler.ts`](src/utils/error-handler/event-error-handler.ts) |
-| `GifUtils` | Utility class to retrieve and send GIFs. | [`gif-utils.ts`](src/utils/gif-utils.ts) |
+| `CommandErrorHandler` | Wrapper class to handle errors in commands. | [`error-handler.ts`](src/utils/error-handler.ts) |
+| `EventErrorHandler` | Wrapper class to handle errors occurring in events. | [`error-handler.ts`](src/utils/error-handler.ts) |
 | `InteractionUtils` | Wrapper class to simplify interaction management. | [`interaction-utils.ts`](src/utils/interaction-utils.ts) |
-| `Permissions` | Utility class to check and manage user permissions. | [`permissions.ts`](src/utils/permissions.ts) |
+| `GifUtils` | Utility class to retrieve and send GIFs. | [`gif-utils.ts`](src/utils/gif-utils.ts) |
+| `LanguageUtils` | Functions to retrieve literals from the selected language. | [`language-utils.ts`](src/utils/language-utils.ts) |
+| `EmbedPresets` | Functions to create embed presets and use them anywhere. | [`embed-presets.ts`](src/utils/embed/embed-presets.ts) |
+| `EmbedUtils` | Functions to create and manage embeds for various purposes. | [`embed-utils.ts`](src/utils/embed-utils.ts) |
 
-## Supported languages
+## Logger
+
+The bot includes a logging system that saves logs to a file. The logs are stored in a `.log` file in the project root by default, but you can change the file path in the [`.env`](#configuration) file.
+
+It includes the following log levels:
+
+- **INFO**: General information about the bot's operation.
+- **WARN**: Warning messages indicating potential issues.
+- **ERROR**: Error messages for critical failures.
+
+```bash
+[30/10/2024, 15:45:17] [info] Loading commands...
+[29/10/2024, 15:24:53] [warn] Could not find literal at path "ping.a"
+[29/10/2024, 13:56:20] [error] Could not load event "ready"
+```
+
+---
+
+### Usage (for developers)
+
+The logger object is stored in the process object as a global variable so you can use it anywhere in the bot. To log a message, use the following syntax:
+
+```typescript
+// Log an info message
+globalThis.logger.info('Loading commands...'); // or
+logger.info('Loading commands...');
+
+// Log a warning message
+globalThis.logger.warn('Could not find literal at path "ping.a"'); // or
+logger.warn('Could not find literal at path "ping.a"');
+
+// Log an error message
+globalThis.logger.error('Could not load event "ready"'); // or
+logger.error('Could not load event "ready"');
+```
+
+## Languages
+
+The bot is designed to support multiple languages, allowing users to interact with the bot in their preferred language.
+
+In order to change the bot's language, you need to modify the `LANGUAGE` variable in the [`.env`](#configuration) file, using one of the supported languages, which are stored in folders in the `locales` folder. Just copy the folder's name of the language you want to use to the `LANGUAGE` variable. The bot will automatically load the literals from the selected language. By default, the bot uses English as the language.
+
+The naming convention for language folders should be clear and consistent to ensure easy identification and loading of the correct language files. It is recommended to use the IETF BCP 47 format for language codes. A list for some codes can be found at [`locales-list.json`](locales/locales-list.json).
+
+---
+
+### Supported languages
 
 Currently, the bot only supports Spanish, but more languages will be added in the future:
 
 - [x] Spanish
 - [ ] English
+- [ ] French
+- [ ] Italian
+- [ ] German
+- [ ] Portuguese
 
-You can always modify the bot to support your language.
+Feel free to add your language by following the instructions below!
 
-## TODO
+---
 
-### `Laguages`
+### Add a new language (for developers)
 
-### `General`
+To add a new language to the bot, follow these steps:
 
-- [ ] Create a config.ts file to load env variables
-- [ ] use subcommands when possible
-- [ ] Translate moderation commands
-- [ ] Change use of presets in music commands and events
-- [ ] Improve visuals and embeds
+1. `Create a new folder`: in the `locales` directory with the name of the language you want to add, using the IETF BCP 47 format for the language code (e.g., `en_US` for English, United States).
 
-### `IAs`
+2. `Add JSON files`: inside the new folder with every key-value pair, you can follow the structure of the existing languages or follow your own structure, but you have to make sure to include every key-value pair or else some parts may not work.
 
-- [ ] rps
-- [ ] TicTacToe
+3. `Access literals`: These JSON files will be loaded into the global variable `globalThis.literals`. Each key is loaded as a result of concatenating the path of the JSON's structure with `.`. The type of the value is determined by the type of the value in the JSON file, and includes strings, numbers, arrays, and functions (for placeholders). Placeholders are represented by ordered numbers inside curly braces (e.g., `{0}`, `{1}`). If a value in the JSON file contains placeholders, it will be wrapped in a function that replaces the placeholders with the provided values when called.
 
-### `Embeds`
+For example, this JSON:
 
-### `Moderation commands`
+```json
+{
+  "poll": {
+    "time": 50,
+    "question": "What's your favorite food?",
+    "answers": ["Pizza", "Salad", "Sushi"],
+    "message": "{0} has started a poll"
+  }
+}
+```
 
-- [ ] Addrole command
-- [ ] Removerole command
-- [ ] Createrole command
-- [ ] Deleterole command
-- [ ] Show permissions command
-- [ ] Show roles of a user command
-- [ ] Create channel command
-- [ ] Delete channel command
+Will be accessed in the bot like this:
 
-- [ ] Add pagination to bannedlist and mutedlist
+```typescript
+globalThis.literals.poll.time; // 50
+globalThis.literals.poll.question; // "What's your favorite food?"
+globalThis.literals.poll.answers; // ["Pizza", "Salad", "Sushi"]
 
-### `Security`
+const message = globalThis.literals.poll.message; // function(message: string) { return `${message} has started a poll`; }
+console.log(message('Dave')); // "Dave has started a poll"
+```
 
-- [ ] Add a way to avoid users using commands in certain channels
-- [ ] More checks regarding who can receive certain commands
+Else, you can use the [`LanguageUtils`](src/utils/language-utils.ts) functions to retrieve literals from the selected language. This is preferred as it will handle the path concatenation for you and will return the correct type of the value, apart from throwing an error if the literal is not found or if the type is incorrect.
 
-### `Update README`
+```typescript
+const time = fetchNumber('poll.time'); // 50
+const question = fetchString('poll.question'); // "What's your favorite food?"
+const answers = fetchArray('poll.answers'); // ["Pizza", "Salad", "Sushi"]
 
-- [ ] Logger
-- [ ] Language architecture, template for language, how to add
-- [ ] How loading works
-- [ ] Change everything about ts
-- [ ] Interfaces
-- [ ] Dependencies part
-- [ ] Merge "how to" into commands and events
-- [ ] Check every command, event, util
+const message = fetchFunction('poll.message'); // function(message: string) { return `${message} has started a poll`; }
+console.log(message('Dave')); // "Dave has started a poll"
+```
+
+As a recommendation, it is better to fetch the literals that will be used in a command/event at the beginning of the file and store them in a variable to avoid multiple calls to the `fetch` functions.
+
+---
+
+## Fallback behavior
+
+The bot is designed to handle errors and unexpected behavior gracefully. If an error occurs, the bot will log the error and send a message to the user indicating that an error occurred. The bot will continue to run and respond to commands and events, even if an error occurs.
+
+## Troubleshooting
 
 ## Known Issues
+
+## FAQ
+
+## Contributions
+
+Feel free to contribute by submitting issues or pull requests! All contributions are welcome and appreciated.
 
 ## License
 
