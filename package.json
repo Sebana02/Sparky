@@ -10,7 +10,7 @@
     "build": "tsc",
     "clean": "tsc --build --clean",
     "format": "prettier --write .",
-    "docs": "typedoc --entryPointStrategy expand src --out docs/docs-gen --name Sparky --readme README.md && node docs/index.cjs",
+    "docs": "typedoc --entryPointStrategy expand src --out docs --name Sparky --readme README.md",
     "help": "echo 'Available scripts: dev, start, build, clean, format, docs'"
   },
   "keywords": [],
