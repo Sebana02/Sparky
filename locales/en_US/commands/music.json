@@ -1,0 +1,69 @@
+{
+  "lyrics": {
+    "description": "Displays the lyrics of the current song"
+  },
+  "now_playing": {
+    "description": "Displays the song currently playing"
+  },
+  "save": {
+    "description": "Saves the current song in a private message"
+  },
+  "back": {
+    "description": "Plays the previous song"
+  },
+  "loop": {
+    "description": "Enables or disables looping for a song or the queue",
+    "option": {
+      "name": "mode",
+      "description": "Loop mode",
+      "choices": {
+        "off": "Disabled",
+        "track": "Song",
+        "queue": "Queue",
+        "autoplay": "Autoplay"
+      }
+    }
+  },
+  "pause": {
+    "description": "Pauses the song"
+  },
+  "play": {
+    "description": "Plays a song or a playlist",
+    "option": {
+      "name": "song",
+      "description": "Song or playlist you want to play"
+    }
+  },
+  "play_next": {
+    "description": "Plays the song you want next",
+    "option": {
+      "name": "song",
+      "description": "Song you want to play next"
+    }
+  },
+  "resume": {
+    "description": "Resumes the song"
+  },
+  "skip": {
+    "description": "Skips the current song"
+  },
+  "stop": {
+    "description": "Stops music playback"
+  },
+  "volume": {
+    "description": "Changes the music volume",
+    "option": {
+      "name": "volume",
+      "description": "Music volume"
+    }
+  },
+  "clear": {
+    "description": "Clears the playback queue"
+  },
+  "queue": {
+    "description": "Displays the playback queue"
+  },
+  "shuffle": {
+    "description": "Shuffles the playback queue"
+  }
+}

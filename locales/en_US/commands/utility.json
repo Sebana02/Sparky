@@ -1,0 +1,51 @@
+{
+  "disconnect": {
+    "description": "Disconnects the bot",
+    "response": "Disconnecting, {0}..."
+  },
+  "ping": {
+    "description": "Displays the bot's latency",
+    "response": "Pong! **{0}ms**"
+  },
+  "poll": {
+    "description": "Creates a poll",
+    "options": {
+      "question": {
+        "name": "topic",
+        "description": "Poll topic"
+      },
+      "options": {
+        "name": "choices",
+        "description": "Poll options (separated by commas)"
+      },
+      "time": {
+        "name": "duration",
+        "description": "Duration of the poll in seconds"
+      },
+      "multi_answer": {
+        "name": "multi-answer",
+        "description": "Allow multiple answers"
+      }
+    },
+    "checkings": {
+      "insufficient_options": "You must provide at least 2 options",
+      "too_many_options": "You cannot provide more than 10 options"
+    }
+  },
+  "remind": {
+    "description": "Creates a reminder",
+    "options": {
+      "time": {
+        "name": "time",
+        "description": "When you want to be reminded (e.g., 1h 30m 1d 10s)"
+      },
+      "reminder": {
+        "name": "reminder",
+        "description": "What you want to be reminded of"
+      }
+    },
+    "invalid_time": "Invalid time format, try again",
+    "reminder_set": "Reminder set for {0}",
+    "response": "Reminder for {0}"
+  }
+}

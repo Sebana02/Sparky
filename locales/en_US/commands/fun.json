@@ -1,0 +1,101 @@
+{
+  "cat": {
+    "description": "Sends a random cat",
+    "response": "{0} sends a cat 🐱 ..."
+  },
+  "dog": {
+    "description": "Sends a random dog",
+    "response": "{0} sends a dog 🐶 ..."
+  },
+  "gif": {
+    "description": "Displays a random gif from the specified category",
+    "option": {
+      "name": "category",
+      "description": "The category you want to search for"
+    },
+    "response": "{0} sends a gif from \"{1}\" ..."
+  },
+  "hug": {
+    "description": "Hugs a user",
+    "option": {
+      "name": "user",
+      "description": "The user you want to hug"
+    },
+    "response": {
+      "description": "{0}, a hug for you! 🤗",
+      "footer": "{0} sends you a hug ..."
+    }
+  },
+  "meme": {
+    "description": "Sends a random meme",
+    "response": "{0} sends a meme ..."
+  },
+  "poke": {
+    "description": "Pokes a user, annoy someone",
+    "option": {
+      "name": "user",
+      "description": "The user you want to annoy"
+    },
+    "response": {
+      "description": "{0}, a poke for you! 👉",
+      "footer": "{0} pokes you ..."
+    }
+  },
+  "shut_up": {
+    "description": "Tells a user to shut up",
+    "option": {
+      "name": "user",
+      "description": "The user you want to tell to shut up"
+    },
+    "response": {
+      "description": "🤫 Silence, {0}",
+      "footer": "{0} tells you to shut up ..."
+    }
+  },
+  "slap": {
+    "description": "Slaps a user",
+    "option": {
+      "name": "user",
+      "description": "The user you want to slap"
+    },
+    "response": {
+      "description": "{0}, right in the face! 👋",
+      "footer": "{0} slaps you ..."
+    }
+  },
+  "8ball": {
+    "description": "Ask a question to the magic ball",
+    "option": {
+      "name": "question",
+      "description": "Your question for the magic ball"
+    },
+    "response": {
+      "footer": "{0} asked: {1}",
+      "answers": [
+        "Yes",
+        "No",
+        "Maybe",
+        "It's likely",
+        "I don't know",
+        "Of course",
+        "Definitely not",
+        "Without a doubt",
+        "It's unlikely",
+        "Ask again later",
+        "I can't answer that",
+        "Absolutely!",
+        "Don't count on it",
+        "It's probably the best option",
+        "It depends on the circumstances"
+      ]
+    }
+  },
+  "coin_flip": {
+    "description": "Flips a coin to see if it lands on heads or tails",
+    "response": {
+      "footer": "{0} flipped a coin and it landed on...",
+      "heads": "😄 Heads 😄",
+      "tails": "❌ Tails ❌"
+    }
+  }
+}

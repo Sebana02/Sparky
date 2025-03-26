@@ -1,0 +1,19 @@
+{
+  "help": {
+    "description": "Shows the list of available commands",
+    "response": "List of available commands: page {0}/{1}"
+  },
+  "uptime": {
+    "description": "Shows how long the bot has been online",
+    "response": "The bot has been online for {0} days, {1} hours, {2} minutes, and {3} seconds"
+  },
+  "wiki_search": {
+    "description": "Search on Wikipedia",
+    "option": {
+      "name": "term",
+      "description": "Term you want to search for"
+    },
+    "no_results": "No results found for: {0}",
+    "results": "Wikipedia result for \"{0}\""
+  }
+}

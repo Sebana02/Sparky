@@ -1,0 +1,9 @@
+{
+  "guild_member_add": "Welcome to the server '{0}', {1}!",
+  "interaction_create": {
+    "no_dj_role": "You don't have the DJ role to execute this command",
+    "no_commands_trivia": "You can't use this command while trivia is being played",
+    "no_voice_channel": "You must be in a voice channel to execute this command",
+    "no_same_voice_channel": "You must be in the same voice channel as me to execute this command"
+  }
+}

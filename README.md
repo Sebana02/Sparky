@@ -424,10 +424,8 @@ The naming convention for language folders should be clear and consistent to ens
 
 ### Supported languages
 
-Currently, the bot only supports Spanish, but more languages will be added in the future:
-
 - [x] Spanish
-- [ ] English
+- [x] English
 - [ ] French
 - [ ] Italian
 - [ ] German

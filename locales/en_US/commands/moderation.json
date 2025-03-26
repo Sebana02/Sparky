@@ -1,0 +1,111 @@
+{
+  "hide_channel": {
+    "description": "Hides a channel",
+    "options": {
+      "channel": {
+        "name": "channel",
+        "description": "Channel you want to hide"
+      },
+      "role": {
+        "name": "role",
+        "description": "Role you want to hide the channel from"
+      }
+    },
+    "already_hidden": "The channel is already hidden",
+    "response": "Channel {0} hidden successfully"
+  },
+  "mute_channel": {
+    "description": "Locks a channel so no one can speak",
+    "options": {
+      "channel": {
+        "name": "channel",
+        "description": "Channel you want to lock"
+      },
+      "role": {
+        "name": "role",
+        "description": "Role you want to lock the channel for"
+      }
+    },
+    "already_muted": "The channel is already locked",
+    "response": "Channel {0} locked successfully"
+  },
+  "purge": {
+    "description": "Deletes messages from a channel",
+    "option": {
+      "name": "amount",
+      "description": "Number of messages you want to delete"
+    },
+    "response": "Deleting {0} messages..."
+  },
+  "show_channel": {
+    "description": "Shows a hidden channel",
+    "options": {
+      "channel": {
+        "name": "channel",
+        "description": "Channel you want to show"
+      },
+      "role": {
+        "name": "role",
+        "description": "Role you want to show the channel to"
+      }
+    },
+    "already_shown": "The channel is already visible",
+    "response": "Channel {0} shown successfully"
+  },
+  "unmute_channel": {
+    "description": "Unlocks a channel",
+    "options": {
+      "channel": {
+        "name": "channel",
+        "description": "Channel you want to unlock"
+      },
+      "role": {
+        "name": "role",
+        "description": "Role you want to unlock the channel for"
+      }
+    },
+    "already_unmuted": "The channel is already unlocked",
+    "response": "Channel {0} unlocked successfully"
+  },
+  "ban": {
+    "description": "Bans a user from the server",
+    "options": {
+      "member": {
+        "name": "member",
+        "description": "Member you want to ban"
+      },
+      "reason": {
+        "name": "reason",
+        "description": "Reason you want to ban the member"
+      }
+    },
+    "self_ban": "You cannot ban yourself",
+    "not_bannable": "I cannot ban this member",
+    "response": "Member {0} banned successfully",
+    "dm_response": "You have been banned from the server {0} for the following reason: {1}"
+  },
+  "banned_list": {},
+  "kick": {},
+  "mute": {},
+  "muted_list": {},
+  "reset_nickname": {},
+  "set_nickname": {},
+  "timeout": {},
+  "unban": {
+    "description": "Unbans a user from the server",
+    "options": {
+      "member": {
+        "name": "user",
+        "description": "User you want to unban"
+      },
+      "reason": {
+        "name": "reason",
+        "description": "Reason you want to unban the user"
+      }
+    },
+    "not_banned": "The user is not banned on this server",
+    "response": "User {0} unbanned successfully"
+  },
+  "unmute": {},
+  "warn": {}
+}

@@ -1,0 +1,51 @@
+{
+  "command_error_handler": "An error occurred while executing the command",
+  "music_presets": {
+    "error": "An error occurred while playing the music",
+    "no_results": "No results for",
+    "no_playlist": "Make sure the link is a playlist and has at least 5 songs",
+    "no_queue": "No music is currently playing",
+    "no_history": "No history available",
+    "no_lyrics": "No lyrics found for this song",
+    "add_to_queue": "added to the queue",
+    "add_to_queue_many": {
+      "title": "{0} songs",
+      "description": "added to the queue"
+    },
+    "previous_track": "playing the previous song",
+    "stop": "Music has been stopped",
+    "pause": "paused",
+    "resume": "resumed",
+    "clear": "The queue has been cleared",
+    "loop": {
+      "modes": {
+        "off": "disabled",
+        "track": "song",
+        "queue": "queue",
+        "autoplay": "autoplay"
+      },
+      "response": "Loop: {0}"
+    },
+    "current_queue": {
+      "next_songs": {
+        "add": "And **{0}** more songs...",
+        "no_add": "**{0}** songs..."
+      },
+      "response": "in the queue"
+    },
+    "volume": "Volume has been changed to {0}%",
+    "skip": "skipped",
+    "now_playing": "Volume **{0}%**\nDuration **{1}**Progress {2}\nLoop **{3}**\nRequested by {4}",
+    "shuffle": {
+      "title": "{0} songs",
+      "description": "have been shuffled"
+    },
+    "save": "sent to private message",
+    "playing": "now playing",
+    "empty_channel": "No one is in the voice channel, leaving...",
+    "empty_queue": "No songs in the queue, leaving..."
+  },
+  "gif_utils": {
+    "no_results": "No results for: {0}"
+  }
+}
