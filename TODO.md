@@ -17,6 +17,8 @@
 
 ## Embeds
 
+- [ ]Change direct imports of embed presets to use embedFromTemplate function
+
 ## Moderation commands
 
 - [ ] Addrole command
