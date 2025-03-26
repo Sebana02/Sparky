@@ -31,6 +31,13 @@ export async function eventErrorHandler(
   }
 }
 
+/**
+ * Handles errors in command callbacks.
+ * @param command - The command object.
+ * @param client - The Discord client.
+ * @param inter - The interaction object.
+ * @param args - Additional arguments for the command callback.
+ */
 export async function commandErrorHandler(
   command: ICommand,
   client: Client,

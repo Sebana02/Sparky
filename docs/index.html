@@ -1,0 +1,898 @@
+<!DOCTYPE html><html class="default" lang="en"><head><meta charset="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>sparky</title><meta name="description" content="Documentation for sparky"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="assets/style.css"/><link rel="stylesheet" href="assets/highlight.css"/><script defer src="assets/main.js"></script><script async src="assets/icons.js" id="tsd-icons-script"></script><script async src="assets/search.js" id="tsd-search-script"></script><script async src="assets/navigation.js" id="tsd-nav-script"></script></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os";document.body.style.display="none";setTimeout(() => app?app.showPage():document.body.style.removeProperty("display"),500)</script><header class="tsd-page-toolbar"><div class="tsd-toolbar-contents container"><div class="table-cell" id="tsd-search" data-base="."><div class="field"><label for="tsd-search-field" class="tsd-widget tsd-toolbar-icon search no-caption"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><use href="assets/icons.svg#icon-search"></use></svg></label><input type="text" id="tsd-search-field" aria-label="Search"/></div><div class="field"><div id="tsd-toolbar-links"></div></div><ul class="results"><li class="state loading">Preparing search index...</li><li class="state failure">The search index is not available</li></ul><a href="index.html" class="title">sparky</a></div><div class="table-cell" id="tsd-widgets"><a href="#" class="tsd-widget tsd-toolbar-icon menu no-caption" data-toggle="menu" aria-label="Menu"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><use href="assets/icons.svg#icon-menu"></use></svg></a></div></div></header><div class="container container-main"><div class="col-content"><div class="tsd-page-title"><h1>sparky</h1></div><div class="tsd-panel tsd-typography"><a id="md:sparky" class="tsd-anchor"></a><h1 class="tsd-anchor-link">Sparky<a href="#md:sparky" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h1><blockquote>
+<p>This Discord bot is designed to be an easy and customizable solution for your servers. Ideal for groups of friends, the bot offers a variety of fun and useful commands that enhance chat experience and community interaction.</p>
+</blockquote>
+<a id="md:table-of-contents" class="tsd-anchor"></a><h2 class="tsd-anchor-link">Table of Contents<a href="#md:table-of-contents" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><ul>
+<li><a href="#md:sparky">Sparky</a>
+<ul>
+<li><a href="#md:table-of-contents">Table of Contents</a></li>
+<li><a href="#md:features">Features</a></li>
+<li><a href="#md:bot-setup">Bot setup</a>
+<ul>
+<li><a href="#md:installation">Installation</a></li>
+<li><a href="#md:configuration">Configuration</a></li>
+</ul>
+</li>
+<li><a href="#md:commands">Commands</a>
+<ul>
+<li><a href="#md:list-of-available-commands">List of available commands</a>
+<ul>
+<li><a href="#md:fun-commands">Fun commands</a></li>
+<li><a href="#md:game-commands">Game commands</a></li>
+<li><a href="#md:information-commands">Information commands</a></li>
+<li><a href="#md:moderation-commands">Moderation commands</a></li>
+<li><a href="#md:music-commands">Music commands</a></li>
+<li><a href="#md:utility-commands">Utility commands</a></li>
+</ul>
+</li>
+<li><a href="#md:create-a-new-command-for-developers">Create a new command (for developers)</a></li>
+</ul>
+</li>
+<li><a href="#md:events">Events</a>
+<ul>
+<li><a href="#md:list-of-available-events">List of available events</a>
+<ul>
+<li><a href="#md:client-events">Client events</a></li>
+<li><a href="#md:music-events">Music events</a></li>
+<li><a href="#md:process-events">Process events</a></li>
+</ul>
+</li>
+<li><a href="#md:create-a-new-event-for-developers">Create a new event (for developers)</a></li>
+</ul>
+</li>
+<li><a href="#md:utils-for-developers">Utils (for developers)</a></li>
+<li><a href="#md:logger">Logger</a>
+<ul>
+<li><a href="#md:usage-for-developers">Usage (for developers)</a></li>
+</ul>
+</li>
+<li><a href="#md:languages">Languages</a>
+<ul>
+<li><a href="#md:supported-languages">Supported languages</a></li>
+<li><a href="#md:add-a-new-language-for-developers">Add a new language (for developers)</a></li>
+</ul>
+</li>
+<li><a href="#md:fallback-behavior">Fallback behavior</a></li>
+<li><a href="#md:troubleshooting">Troubleshooting</a></li>
+<li><a href="#md:known-issues">Known Issues</a></li>
+<li><a href="#md:contributions">Contributions</a></li>
+<li><a href="#md:license">License</a></li>
+</ul>
+</li>
+</ul>
+<a id="md:features" class="tsd-anchor"></a><h2 class="tsd-anchor-link">Features<a href="#md:features" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><ul>
+<li>🎵 <strong>Advanced Music Control</strong> – Play, pause, skip, loop, and manage your music queue seamlessly. Supports <strong>YouTube, Spotify, and SoundCloud</strong>.</li>
+<li>🔨 <strong>Powerful Moderation</strong> – Keep your server safe with <strong>ban, kick, mute</strong>, and role management commands.</li>
+<li>🎉 <strong>Fun &amp; Interaction</strong> – Send <strong>memes, GIFs, cat &amp; dog pictures</strong>, and interact with virtual <strong>hugs, slaps</strong>, and more.</li>
+<li>🎮 <strong>Mini Games</strong> – Play <strong>Hangman, Rock-Paper-Scissors, Tic-Tac-Toe</strong>, and other fun challenges with friends.</li>
+<li>🛠 <strong>Useful Tools</strong> – Create <strong>polls</strong>, set <strong>reminders</strong>, and check <strong>server latency</strong> in one command.</li>
+<li>📚 <strong>Instant Information</strong> – Get <strong>bot uptime, Wikipedia searches</strong>, and quick data directly from chat.</li>
+<li>⚙️ <strong>Fully Configurable</strong> – Customize <strong>bot behavior, permissions, and activity status</strong> through the <code>.env</code> file.</li>
+<li>🚀 <strong>Modern Slash Commands</strong> – Uses <strong>Discord’s latest slash command system</strong> for a smooth user experience.</li>
+<li>🌍 <strong>Multi-language Support</strong> – Available in <strong>English &amp; Spanish</strong>, with more languages coming soon!</li>
+</ul>
+<a id="md:bot-setup" class="tsd-anchor"></a><h2 class="tsd-anchor-link">Bot setup<a href="#md:bot-setup" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><a id="md:installation" class="tsd-anchor"></a><h3 class="tsd-anchor-link">Installation<a href="#md:installation" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><p>To install and run the bot locally, follow these steps:</p>
+<ol>
+<li>
+<p>Install Node.js and npm from <a href="https://nodejs.org/en/download/" target="_blank" class="external">here</a>.</p>
+</li>
+<li>
+<p>Clone the repository to your local machine:</p>
+<pre><code class="bash"><span class="hl-0">git</span><span class="hl-1"> </span><span class="hl-2">clone</span><span class="hl-1"> </span><span class="hl-2">https://github.com/Sebana02/Sparky.git</span>
+</code><button type="button">Copy</button></pre>
+
+</li>
+<li>
+<p>Navigate to the project directory:</p>
+<pre><code class="bash"><span class="hl-0">cd</span><span class="hl-1"> </span><span class="hl-2">Sparky</span>
+</code><button type="button">Copy</button></pre>
+
+</li>
+<li>
+<p>Install the dependencies by running:</p>
+<pre><code class="bash"><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">install</span>
+</code><button type="button">Copy</button></pre>
+
+</li>
+<li>
+<p>Create a <code>.env</code> file in the root of the project with the following information:</p>
+<pre><code class="bash"><span class="hl-3">TOKEN</span><span class="hl-1">=</span><span class="hl-2">your_discord_bot_token_here</span>
+</code><button type="button">Copy</button></pre>
+
+<p>If you don't have a Discord bot token, you can follow <a href="https://discordjs.guide/preparations/setting-up-a-bot-application.html#creating-your-bot" target="_blank" class="external">this guide</a> to create one.</p>
+<p>You can configure other settings in the <code>.env</code> file. For more details, check the <a href="#md:configuration">Configuration</a> section.</p>
+</li>
+<li>
+<p>Invite the bot to your server by following <a href="https://discordjs.guide/preparations/adding-your-bot-to-servers.html#bot-invite-links" target="_blank" class="external">this guide</a>.</p>
+</li>
+<li>
+<p>To start the bot:</p>
+<pre><code class="bash"><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">run</span><span class="hl-1"> </span><span class="hl-2">start</span>
+</code><button type="button">Copy</button></pre>
+
+</li>
+<li>
+<p>Alternatively, you can start the bot in development mode:</p>
+<pre><code class="bash"><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">run</span><span class="hl-1"> </span><span class="hl-2">dev</span>
+</code><button type="button">Copy</button></pre>
+
+<p>This will start the bot in development mode. The bot will automatically reload when you save changes to the code.</p>
+</li>
+<li>
+<p>The bot should now be running and connected to your Discord server! You can now use the bot by typing <code>/</code> in the chat to see a list of available commands.</p>
+</li>
+<li>
+<p>To shut down the bot, press <code>Ctrl + C</code> in the terminal where the bot is running.</p>
+</li>
+</ol>
+<hr>
+<a id="md:configuration" class="tsd-anchor"></a><h3 class="tsd-anchor-link">Configuration<a href="#md:configuration" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><p>The bot has the following configurations through the <code>.env</code> file, although only the <code>TOKEN</code> is required to run the bot:</p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>TOKEN</code></td>
+<td>Discord authentication token (<strong>Required</strong>).</td>
+</tr>
+<tr>
+<td><code>LOG_FILE</code></td>
+<td>The file where logs will be stored. If not specified, logs will be saved in a <code>.log</code> file in the project root.</td>
+</tr>
+<tr>
+<td><code>LANGUAGE</code></td>
+<td>The bot's language (must match a folder name in <code>locales</code>, recommended format: <code>IETF BCP 47</code>).</td>
+</tr>
+<tr>
+<td><code>GUILD_ID</code></td>
+<td>The server ID where the bot will be used. If not specified, commands will be registered globally (can take up to 1 hour to be available).</td>
+</tr>
+<tr>
+<td><code>PLAYING_ACTIVITY</code></td>
+<td>The bot's activity status (e.g., &quot;Playing /help&quot;). If left empty, the bot will not display an activity.</td>
+</tr>
+<tr>
+<td><code>TENOR_API_KEY</code></td>
+<td>API key for the Tenor GIF API (required for GIF commands). You can get one <a href="https://tenor.com/developer/keysignup" target="_blank" class="external">here</a>.</td>
+</tr>
+<tr>
+<td><code>DJ_ROLE</code></td>
+<td>The role ID that will have DJ permissions. If specified, only users with this role can control the music bot.</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<p>Here is an example of a fully configured <code>.env</code> file:</p>
+<pre><code class="bash"><span class="hl-3">TOKEN</span><span class="hl-1">=</span><span class="hl-2">&quot;your_discord_bot_token_here&quot;</span><br/><span class="hl-3">LOG_FILE</span><span class="hl-1">=</span><span class="hl-2">&quot;path_to_your_log_file.log&quot;</span><br/><span class="hl-3">LANGUAGE</span><span class="hl-1">=</span><span class="hl-2">&quot;en_US&quot;</span><br/><span class="hl-3">GUILD_ID</span><span class="hl-1">=</span><span class="hl-2">&quot;your_guild_id_here&quot;</span><br/><span class="hl-3">PLAYING_ACTIVITY</span><span class="hl-1">=</span><span class="hl-2">&quot;with Sparky | /help&quot;</span><br/><span class="hl-3">TENOR_API_KEY</span><span class="hl-1">=</span><span class="hl-2">&quot;your_tenor_api_key_here&quot;</span><br/><span class="hl-3">DJ_ROLE</span><span class="hl-1">=</span><span class="hl-2">&quot;your_dj_role_id_here&quot;</span>
+</code><button type="button">Copy</button></pre>
+
+<a id="md:commands" class="tsd-anchor"></a><h2 class="tsd-anchor-link">Commands<a href="#md:commands" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><p>The bot can be invoked using Discord's slash commands. Sparky offers a variety of commands to interact with it and enhance the chat experience.</p>
+<a id="md:list-of-available-commands" class="tsd-anchor"></a><h3 class="tsd-anchor-link">List of available commands<a href="#md:list-of-available-commands" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><p>These commands are divided into categories based on their functionality, including fun, games, information, moderation, music, and utility.</p>
+<a id="md:fun-commands" class="tsd-anchor"></a><h4 class="tsd-anchor-link">Fun commands<a href="#md:fun-commands" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h4><p>These commands are designed to add fun and entertainment to the chat experience. They include GIFs, memes, and interactive actions like hugs, pokes, and slaps.</p>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+<th>Example</th>
+<th>Category</th>
+<th>File</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/cat</code></td>
+<td>Sends a random cat GIF</td>
+<td><code>/cat</code></td>
+<td>GIFs</td>
+<td><a href="modules/commands_fun_gif_cat.html"><code>cat.ts</code></a></td>
+</tr>
+<tr>
+<td><code>/dog</code></td>
+<td>Sends a random dog GIF</td>
+<td><code>/dog</code></td>
+<td>GIFs</td>
+<td><a href="modules/commands_fun_gif_dog.html"><code>dog.ts</code></a></td>
+</tr>
+<tr>
+<td><code>/gif &lt;category&gt;</code></td>
+<td>Sends a random GIF based on the specified <code>category</code>.</td>
+<td><code>/gif weird</code></td>
+<td>GIFs</td>
+<td><a href="modules/commands_fun_gif_gif.html"><code>gif.ts</code></a></td>
+</tr>
+<tr>
+<td><code>/hug &lt;user&gt;</code></td>
+<td>Sends a GIF giving a hug to a specified <code>user</code>.</td>
+<td><code>/hug @Dave</code></td>
+<td>GIFs</td>
+<td><a href="modules/commands_fun_gif_hug.html"><code>hug.ts</code></a></td>
+</tr>
+<tr>
+<td><code>/meme</code></td>
+<td>Sends a random meme GIF.</td>
+<td><code>/meme</code></td>
+<td>GIFs</td>
+<td><a href="modules/commands_fun_gif_meme.html"><code>meme.ts</code></a></td>
+</tr>
+<tr>
+<td><code>/poke &lt;user&gt;</code></td>
+<td>Sends a GIF poking a specified <code>user</code>.</td>
+<td><code>/poke @Dave</code></td>
+<td>GIFs</td>
+<td><a href="modules/commands_fun_gif_poke.html"><code>poke.ts</code></a></td>
+</tr>
+<tr>
+<td><code>/shutup &lt;user&gt;</code></td>
+<td>Sends a GIF telling the mentioned <code>user</code> to shut up.</td>
+<td><code>/shutup @Dave</code></td>
+<td>GIFs</td>
+<td><a href="modules/commands_fun_gif_shut_up.html"><code>shut-up.ts</code></a></td>
+</tr>
+<tr>
+<td><code>/slap &lt;user&gt;</code></td>
+<td>Sends a GIF slapping a specified <code>user</code>.</td>
+<td><code>/slap @Dave</code></td>
+<td>GIFs</td>
+<td><a href="modules/commands_fun_gif_slap.html"><code>slap.ts</code></a></td>
+</tr>
+<tr>
+<td><code>/coinflip</code></td>
+<td>Flips a coin and returns heads or tails.</td>
+<td><code>/coinflip</code></td>
+<td>None</td>
+<td><a href="modules/commands_fun_coin_flip.html"><code>coin-flip.ts</code></a></td>
+</tr>
+<tr>
+<td><code>/8ball &lt;question&gt;</code></td>
+<td>Answers a <code>question</code> with a random 8-ball response.</td>
+<td><code>/8ball Will I win the lottery?</code></td>
+<td>None</td>
+<td><a href="modules/commands_fun_8ball.html"><code>8ball.ts</code></a></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<a id="md:game-commands" class="tsd-anchor"></a><h4 class="tsd-anchor-link">Game commands<a href="#md:game-commands" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h4><p>These commands are designed to engage users with fun and interactive games. Users can play hangman, rock-paper-scissors, and tic-tac-toe among other games.</p>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+<th>Example</th>
+<th>Category</th>
+<th>File</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/hangman &lt;gamemode&gt;</code></td>
+<td>Starts a game of hangman. If <code>random</code> gamemode is selected, bot will choose the word. If <code>custom</code> gamemode is selected, one of the players will choose the word.</td>
+<td><code>/hangman random</code></td>
+<td>None</td>
+<td><a href="src/commands/game/hangman.ts"><code>hangman.ts</code></a></td>
+</tr>
+<tr>
+<td><code>/rps &lt;opponent&gt;</code></td>
+<td>Plays a game of rock-paper-scissors against the specified <code>opponent</code>.</td>
+<td><code>/rps @Dave</code></td>
+<td>None</td>
+<td><a href="modules/commands_game_rps.html"><code>rps.ts</code></a></td>
+</tr>
+<tr>
+<td><code>/tictactoe &lt;opponent&gt;</code></td>
+<td>Starts a game of tic-tac-toe with a specified <code>opponent</code>.</td>
+<td><code>/tictactoe @Dave</code></td>
+<td>None</td>
+<td><a href="modules/commands_game_tictactoe.html"><code>tictactoe.ts</code></a></td>
+</tr>
+<tr>
+<td><code>/trivia &lt;playlist&gt;</code></td>
+<td>Starts a game of musical trivia with your <code>playlist</code> songs.</td>
+<td><code>/trivia your_playlist_link_here</code></td>
+<td>None</td>
+<td><a href="src/commands/game/trivia.ts"><code>trivia.ts</code></a></td>
+</tr>
+</tbody>
+</table>
+<a id="md:information-commands" class="tsd-anchor"></a><h4 class="tsd-anchor-link">Information commands<a href="#md:information-commands" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h4><p>These commands provide quick insights and information to users, including the bot's uptime and Wikipedia searches.</p>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+<th>Example</th>
+<th>Category</th>
+<th>File</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/help</code></td>
+<td>Displays a list of available commands.</td>
+<td><code>/help</code></td>
+<td>None</td>
+<td><a href="modules/commands_info_help.html"><code>help.ts</code></a></td>
+</tr>
+<tr>
+<td><code>/uptime</code></td>
+<td>Displays the bot's uptime</td>
+<td><code>/uptime</code></td>
+<td>None</td>
+<td><a href="modules/commands_info_uptime.html"><code>uptime.ts</code></a></td>
+</tr>
+<tr>
+<td><code>/wikisearch &lt;query&gt;</code></td>
+<td>Searches Wikipedia for the specified <code>query</code></td>
+<td><code>/wikisearch Discord</code></td>
+<td>None</td>
+<td><a href="modules/commands_info_wiki_search.html"><code>wiki-search.ts</code></a></td>
+</tr>
+</tbody>
+</table>
+<a id="md:moderation-commands" class="tsd-anchor"></a><h4 class="tsd-anchor-link">Moderation commands<a href="#md:moderation-commands" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h4><p>These commands help maintain order and control in the server by providing tools for managing users, roles, and channels.</p>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+<th>Example</th>
+<th>Category</th>
+<th>File</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/hidechannel [channel]</code></td>
+<td>Hides the specified <code>channel</code> from view for users, making it inaccessible until unhidden. If no channel is specified, it hides the channel where the command is used. It can be used both on text and voice channels.</td>
+<td><code>/hidechannel general</code></td>
+<td>Channel</td>
+<td><a href="modules/commands_moderation_channel_hide_channel.html"><code>hide-channel.ts</code></a></td>
+</tr>
+<tr>
+<td><code>/showchannel [channel]</code></td>
+<td>Unhides the specified <code>channel</code>, making it visible again to users who have access. If no channel is specified, it unhides the channel where the command is used. It can be used both on text and voice channels.</td>
+<td><code>/showchannel general</code></td>
+<td>Channel</td>
+<td><a href="modules/commands_moderation_channel_show_channel.html"><code>show-channel.ts</code></a></td>
+</tr>
+<tr>
+<td><code>/mutechannel [channel]</code></td>
+<td>Mutes the specified <code>channel</code>, preventing users from sending messages in that channel. If no channel is specified, it mutes the channel where the command is used. It can be used both on text and voice channels.</td>
+<td><code>/mutechannel general</code></td>
+<td>Channel</td>
+<td><a href="modules/commands_moderation_channel_mute_channel.html"><code>mute-channel.ts</code></a></td>
+</tr>
+<tr>
+<td><code>/unmutechannel [channel]</code></td>
+<td>Unmutes the specified <code>channel</code>, allowing users to send messages once more. If no channel is specified, it unmutes the channel where the command is used. It can be used both on text and voice channels.</td>
+<td><code>/unmutechannel general</code></td>
+<td>Channel</td>
+<td><a href="modules/commands_moderation_channel_unmute_channel.html"><code>unmute-channel.ts</code></a></td>
+</tr>
+<tr>
+<td><code>/purge [amount]</code></td>
+<td>Deletes a specified <code>amount</code> of messages in the channel, helping to clean up chat clutter.</td>
+<td><code>/purge 10</code></td>
+<td>Channel</td>
+<td><a href="modules/commands_moderation_channel_purge.html"><code>purge.ts</code></a></td>
+</tr>
+<tr>
+<td><code>/createrole &lt;roleName&gt; [color]</code></td>
+<td>Creates a new role with the specified <code>roleName</code> and, optionally, a <code>color</code> in hexadecimal format (#abc123)</td>
+<td><code>/createrole Admin #FFFFFF</code></td>
+<td>Role</td>
+<td><a href="src/commands/moderation/role/createrole.ts"><code>create-role.ts</code></a></td>
+</tr>
+<tr>
+<td><code>/ban &lt;user&gt;</code></td>
+<td>Bans a specified <code>user</code> from the server, preventing them from joining or interacting with the server.</td>
+<td><code>/ban @Dave</code></td>
+<td>User</td>
+<td><a href="modules/commands_moderation_user_ban.html"><code>ban.ts</code></a></td>
+</tr>
+<tr>
+<td><code>/unban &lt;user&gt;</code></td>
+<td>Unbans a specified <code>user</code> from the server, allowing them to rejoin and interact with the community.</td>
+<td><code>/unban @Dave</code></td>
+<td>User</td>
+<td><a href="modules/commands_moderation_user_unban.html"><code>unban.ts</code></a></td>
+</tr>
+<tr>
+<td><code>/bannedlist</code></td>
+<td>Displays a list of banned users, providing insight into who is currently banned from the server.</td>
+<td><code>/bannedlist</code></td>
+<td>User</td>
+<td><a href="src/commands/moderation/user/banned-list.ts"><code>banned-list.ts</code></a></td>
+</tr>
+<tr>
+<td><code>/kick &lt;user&gt;</code></td>
+<td>Kicks a specified <code>user</code> from the server, temporarily removing them from the community.</td>
+<td><code>/kick @Dave</code></td>
+<td>User</td>
+<td><a href="src/commands/moderation/user/kick.ts"><code>kick.ts</code></a></td>
+</tr>
+<tr>
+<td><code>/mute &lt;user&gt;</code></td>
+<td>Mutes a specified <code>user</code> in the server, preventing them from speaking in voice channels or sending messages in text channels.</td>
+<td><code>/mute @Dave</code></td>
+<td>User</td>
+<td><a href="src/commands/moderation/user/mute.ts"><code>mute.ts</code></a></td>
+</tr>
+<tr>
+<td><code>/unmute &lt;user&gt;</code></td>
+<td>Unmutes a specified <code>user</code>, allowing them to speak in voice channels and send messages again.</td>
+<td><code>/unmute @Dave</code></td>
+<td>User</td>
+<td><a href="src/commands/moderation/user/unmute.ts"><code>unmute.ts</code></a></td>
+</tr>
+<tr>
+<td><code>/mutedlist</code></td>
+<td>Displays a list of muted users, showing who is currently unable to send messages or speak.</td>
+<td><code>/mutedlist</code></td>
+<td>User</td>
+<td><a href="src/commands/moderation/user/muted-list.ts"><code>muted-list.ts</code></a></td>
+</tr>
+<tr>
+<td><code>/setnickname &lt;user&gt; &lt;nickname&gt;</code></td>
+<td>Sets a <code>nickname</code> for a specified <code>user</code>, allowing for personalized identification within the server.</td>
+<td><code>/setnickname @Dave IamNotDave</code></td>
+<td>User</td>
+<td><a href="src/commands/moderation/user/set-nickname.ts"><code>set-nickname.ts</code></a></td>
+</tr>
+<tr>
+<td><code>/resetnickname &lt;user&gt;</code></td>
+<td>Resets the nickname for a specified <code>user</code> to their original username, removing any custom nickname they had.</td>
+<td><code>/resetnickname @Dave</code></td>
+<td>User</td>
+<td><a href="src/commands/moderation/user/reset-nickname.ts"><code>reset-nickname.ts</code></a></td>
+</tr>
+<tr>
+<td><code>/timeout &lt;user&gt; &lt;reason&gt; &lt;duration&gt;</code></td>
+<td>Times out a specified <code>user</code> for a <code>reason</code>, for <code>duration</code> minutes, preventing them from sending messages or speaking during that time.</td>
+<td><code>/timeout @Dave 10</code></td>
+<td>User</td>
+<td><a href="src/commands/moderation/user/timeout.ts"><code>timeout.ts</code></a></td>
+</tr>
+<tr>
+<td><code>/warn &lt;user&gt; &lt;reason&gt;</code></td>
+<td>Issues a warning to a specified <code>user</code>, providing a <code>reason</code> for the warning to maintain accountability.</td>
+<td><code>/warn @Dave Too many infractions</code></td>
+<td>User</td>
+<td><a href="src/commands/moderation/user/warn.ts"><code>warn.ts</code></a></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<a id="md:music-commands" class="tsd-anchor"></a><h4 class="tsd-anchor-link">Music commands<a href="#md:music-commands" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h4><p>These commands are designed to control the music player and queue. Users can play, pause, skip, and manage the music queue with these commands.</p>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+<th>Example</th>
+<th>Category</th>
+<th>File</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/back</code></td>
+<td>Plays the previous song in the queue.</td>
+<td><code>/back</code></td>
+<td>Playback</td>
+<td><a href="modules/commands_music_playback_back.html"><code>back.ts</code></a></td>
+</tr>
+<tr>
+<td><code>/clear</code></td>
+<td>Clears the music queue.</td>
+<td><code>/clear</code></td>
+<td>Queue</td>
+<td><a href="modules/commands_music_queue_clear.html"><code>clear.ts</code></a></td>
+</tr>
+<tr>
+<td><code>/loop &lt;mode&gt;</code></td>
+<td>Loops the current song or queue. <code>Mode</code> can be <code>song</code>, <code>queue</code>,<code>autoplay</code> or <code>off</code>.</td>
+<td><code>/loop song</code></td>
+<td>Playback</td>
+<td><a href="modules/commands_music_playback_loop.html"><code>loop.ts</code></a></td>
+</tr>
+<tr>
+<td><code>/lyrics</code></td>
+<td>Fetches and displays the lyrics of the currently playing song.</td>
+<td><code>/lyrics</code></td>
+<td>Insight</td>
+<td><a href="modules/commands_music_insight_lyrics.html"><code>lyrics.ts</code></a></td>
+</tr>
+<tr>
+<td><code>/nowplaying</code></td>
+<td>Displays information about the currently playing song and the queue.</td>
+<td><code>/nowplaying</code></td>
+<td>Insight</td>
+<td><a href="modules/commands_music_insight_now_playing.html"><code>now-playing.ts</code></a></td>
+</tr>
+<tr>
+<td><code>/pause</code></td>
+<td>Pauses the currently playing song.</td>
+<td><code>/pause</code></td>
+<td>Playback</td>
+<td><a href="modules/commands_music_playback_pause.html"><code>pause.ts</code></a></td>
+</tr>
+<tr>
+<td><code>/play &lt;query&gt;</code></td>
+<td>Plays a song or playlist from YouTube or a supported URL, including Spotify, Souncloud and other sources. <code>Query</code> can be a URL, a song's name or even an author</td>
+<td><code>/play greedy</code></td>
+<td>Playback</td>
+<td><a href="modules/commands_music_playback_play.html"><code>play.ts</code></a></td>
+</tr>
+<tr>
+<td><code>/playnext &lt;query&gt;</code></td>
+<td>Adds a song to the queue to play after the current song.</td>
+<td><code>/playnext Paramore</code></td>
+<td>Playback</td>
+<td><a href="modules/commands_music_playback_play_next.html"><code>play-next.ts</code></a></td>
+</tr>
+<tr>
+<td><code>/queue</code></td>
+<td>Shows the current music queue.</td>
+<td><code>/queue</code></td>
+<td>Queue</td>
+<td><a href="modules/commands_music_queue_queue.html"><code>queue.ts</code></a></td>
+</tr>
+<tr>
+<td><code>/resume</code></td>
+<td>Resumes a paused song.</td>
+<td><code>/resume</code></td>
+<td>Playback</td>
+<td><a href="modules/commands_music_playback_resume.html"><code>resume.ts</code></a></td>
+</tr>
+<tr>
+<td><code>/save</code></td>
+<td>Saves the currently playing song to your DMs</td>
+<td><code>/save</code></td>
+<td>Insight</td>
+<td><a href="modules/commands_music_insight_save.html"><code>save.ts</code></a></td>
+</tr>
+<tr>
+<td><code>/shuffle</code></td>
+<td>Shuffles the songs in the current queue.</td>
+<td><code>/shuffle</code></td>
+<td>Queue</td>
+<td><a href="modules/commands_music_queue_shuffle.html"><code>shuffle.ts</code></a></td>
+</tr>
+<tr>
+<td><code>/skip</code></td>
+<td>Skips the current song.</td>
+<td><code>/skip</code></td>
+<td>Playback</td>
+<td><a href="modules/commands_music_playback_skip.html"><code>skip.ts</code></a></td>
+</tr>
+<tr>
+<td><code>/stop</code></td>
+<td>Stops the music and clears the queue.</td>
+<td><code>/stop</code></td>
+<td>Playback</td>
+<td><a href="modules/commands_music_playback_stop.html"><code>stop.ts</code></a></td>
+</tr>
+<tr>
+<td><code>/volume &lt;level&gt;</code></td>
+<td>Adjusts the volume of the music player to the specified <code>level</code> (0-100).</td>
+<td><code>/volume 50</code></td>
+<td>Playback</td>
+<td><a href="modules/commands_music_playback_volume.html"><code>volume.ts</code></a></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<a id="md:utility-commands" class="tsd-anchor"></a><h4 class="tsd-anchor-link">Utility commands<a href="#md:utility-commands" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h4><p>These commands provide useful tools for managing polls, reminders, and checking the bot's response time.</p>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+<th>Example</th>
+<th>Category</th>
+<th>File</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/disconnect</code></td>
+<td>Disconnects the bot from the voice channel.</td>
+<td><code>/disconnect</code></td>
+<td>None</td>
+<td><a href="modules/commands_utility_disconnect.html"><code>disconnect.ts</code></a></td>
+</tr>
+<tr>
+<td><code>/ping</code></td>
+<td>Checks the bot's response time and latency.</td>
+<td><code>/ping</code></td>
+<td>None</td>
+<td><a href="modules/commands_utility_ping.html"><code>ping.ts</code></a></td>
+</tr>
+<tr>
+<td><code>/poll &lt;question&gt; &lt;possible answers&gt; &lt;time&gt;</code></td>
+<td>Creates a poll with the specified <code>question</code> for users to vote on during specified <code>time</code>.</td>
+<td><code>/poll What's your favorite food? Pizza,Salad,Sushi</code></td>
+<td>None</td>
+<td><a href="modules/commands_utility_poll.html"><code>poll.ts</code></a></td>
+</tr>
+<tr>
+<td><code>/remind &lt;time&gt; &lt;reminder&gt;</code></td>
+<td>Sets a <code>reminder</code> for the specified <code>time</code> duration.</td>
+<td><code>/remind 10m I am a reminder</code></td>
+<td>None</td>
+<td><a href="modules/commands_utility_remind.html"><code>remind.ts</code></a></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<a id="md:create-a-new-command-for-developers" class="tsd-anchor"></a><h3 class="tsd-anchor-link">Create a new command (for developers)<a href="#md:create-a-new-command-for-developers" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><p>Any new command must be created in the <code>commands</code> folder, as this is where the bot will search for commands. The folder structure can be organized as needed, but it is recommended to create a subfolder for each command category.</p>
+<p>Each command must be a <code>.ts</code> file and must export an <a href="modules/interfaces_command_interface.html"><code>ICommand</code></a> object with the following properties:</p>
+<ul>
+<li>
+<p><strong><code>data</code></strong> <em>(<a href="https://discord.js.org/#/docs/builders/main/class/SlashCommandBuilder" target="_blank" class="external"><code>SlashCommandBuilder</code></a>)</em>:<br>
+The Discord command.</p>
+</li>
+<li>
+<p><strong><code>voiceChannel</code></strong> <em>(optional, boolean, default: <code>false</code>)</em>:<br>
+Indicates whether the command requires the user to be in a voice channel.</p>
+</li>
+<li>
+<p><strong><code>blockedInDMs</code></strong> <em>(optional, boolean, default: <code>false</code>)</em>:<br>
+Indicates whether the command is blocked in DMs.</p>
+</li>
+<li>
+<p><strong><code>execute(</code><a href="https://discord.js.org/#/docs/discord.js/main/class/Client" target="_blank" class="external"><code>client</code></a><code>,</code><a href="https://discord.js.org/#/docs/discord.js/main/class/ChatInputCommandInteraction" target="_blank" class="external"><code>interaction</code></a><code>, ...args)</code></strong> <em>(async function)</em>:<br>
+The function executed when the command is invoked</p>
+</li>
+</ul>
+<hr>
+<p>Here is a basic command that replies with a greeting:</p>
+<pre><code class="typescript"><span class="hl-4">import</span><span class="hl-1"> { </span><span class="hl-3">ICommand</span><span class="hl-1"> } </span><span class="hl-4">from</span><span class="hl-1"> </span><span class="hl-2">&#39;../../interfaces/command.interface.js&#39;</span><span class="hl-1">;</span><br/><span class="hl-4">import</span><span class="hl-1"> { </span><span class="hl-3">ChatInputCommandInteraction</span><span class="hl-1">, </span><span class="hl-3">Client</span><span class="hl-1">, </span><span class="hl-3">SlashCommandBuilder</span><span class="hl-1"> } </span><span class="hl-4">from</span><span class="hl-1"> </span><span class="hl-2">&#39;discord.js&#39;</span><span class="hl-1">;</span><br/><br/><span class="hl-4">export</span><span class="hl-1"> </span><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">command</span><span class="hl-1">: </span><span class="hl-7">ICommand</span><span class="hl-1"> = {</span><br/><span class="hl-1">  </span><span class="hl-3">data:</span><span class="hl-1"> </span><span class="hl-5">new</span><span class="hl-1"> </span><span class="hl-0">SlashCommandBuilder</span><span class="hl-1">().</span><span class="hl-0">setName</span><span class="hl-1">(</span><span class="hl-2">&#39;greetings&#39;</span><span class="hl-1">).</span><span class="hl-0">setDescription</span><span class="hl-1">(</span><span class="hl-2">&#39;Greets the user&#39;</span><span class="hl-1">),</span><br/><br/><span class="hl-1">  </span><span class="hl-3">voiceChannel:</span><span class="hl-1"> </span><span class="hl-5">false</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-3">blockedInDMs:</span><span class="hl-1"> </span><span class="hl-5">false</span><span class="hl-1">,</span><br/><br/><span class="hl-1">  </span><span class="hl-0">execute</span><span class="hl-3">:</span><span class="hl-1"> </span><span class="hl-5">async</span><span class="hl-1"> (</span><span class="hl-3">client</span><span class="hl-1">: </span><span class="hl-7">Client</span><span class="hl-1">, </span><span class="hl-3">inter</span><span class="hl-1">: </span><span class="hl-7">ChatInputCommandInteraction</span><span class="hl-1">): </span><span class="hl-7">Promise</span><span class="hl-1">&lt;</span><span class="hl-7">void</span><span class="hl-1">&gt; </span><span class="hl-5">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">    </span><span class="hl-4">await</span><span class="hl-1"> </span><span class="hl-3">inter</span><span class="hl-1">.</span><span class="hl-0">reply</span><span class="hl-1">(</span><span class="hl-2">&#39;Hello! How can I help you today?&#39;</span><span class="hl-1">);</span><br/><span class="hl-1">  },</span><br/><span class="hl-1">};</span>
+</code><button type="button">Copy</button></pre>
+
+<a id="md:events" class="tsd-anchor"></a><h2 class="tsd-anchor-link">Events<a href="#md:events" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><p>The bot uses events to listen for specific actions or triggers and execute functions when those events occur. Events are used to handle various actions, such as when the bot is ready, a user joins the server, or an error occurs. Events are divided into categories based on their emitter, including the client, music player, and process.</p>
+<a id="md:list-of-available-events" class="tsd-anchor"></a><h3 class="tsd-anchor-link">List of available events<a href="#md:list-of-available-events" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><p>The bot uses several events to handle various actions and triggers. These events are divided into categories based on their emitter, including the client, music player, and process.</p>
+<a id="md:client-events" class="tsd-anchor"></a><h4 class="tsd-anchor-link">Client events<a href="#md:client-events" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h4><p>These events are emitted by the Discord client and are related to the bot's connection and status.</p>
+<table>
+<thead>
+<tr>
+<th>Event</th>
+<th>Description</th>
+<th>File</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ready</code></td>
+<td>Emitted when the bot is ready to start receiving commands.</td>
+<td><a href="modules/events_client_ready.html"><code>ready.ts</code></a></td>
+</tr>
+<tr>
+<td><code>interactionCreate</code></td>
+<td>Emitted when an interaction is created.</td>
+<td><a href="modules/events_client_interaction_create.html"><code>interaction-create.ts</code></a></td>
+</tr>
+<tr>
+<td><code>guildMemberAdd</code></td>
+<td>Emitted when a new member joins the server.</td>
+<td><a href="modules/events_client_guild_member_add.html"><code>guild-member-add.ts</code></a></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<a id="md:music-events" class="tsd-anchor"></a><h4 class="tsd-anchor-link">Music events<a href="#md:music-events" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h4><p>These events are emitted by the music player and are related to the music player's status and actions.</p>
+<table>
+<thead>
+<tr>
+<th>Event</th>
+<th>Description</th>
+<th>File</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>emptyQueue</code></td>
+<td>Emitted when the queue is empty.</td>
+<td><a href="modules/events_music_empty_queue.html"><code>empty-queue.ts</code></a></td>
+</tr>
+<tr>
+<td><code>emptyChannel</code></td>
+<td>Emitted when the bot leaves the voice channel.</td>
+<td><a href="modules/events_music_empty_channel.html"><code>empty-channel.ts</code></a></td>
+</tr>
+<tr>
+<td><code>error</code></td>
+<td>Emitted when an error occurs.</td>
+<td><a href="modules/events_music_error.html"><code>error.ts</code></a></td>
+</tr>
+<tr>
+<td><code>playerError</code></td>
+<td>Emitted when an error occurs in the player.</td>
+<td><a href="modules/events_music_player_error.html"><code>player-error.ts</code></a></td>
+</tr>
+<tr>
+<td><code>playerStart</code></td>
+<td>Emitted when the player starts playing a song.</td>
+<td><a href="modules/events_music_player_start.html"><code>player-start.ts</code></a></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<a id="md:process-events" class="tsd-anchor"></a><h4 class="tsd-anchor-link">Process events<a href="#md:process-events" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h4><p>These events are emitted by the process and are related to the node process status.</p>
+<table>
+<thead>
+<tr>
+<th>Event</th>
+<th>Description</th>
+<th>File</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>exit</code></td>
+<td>Emitted when the process is about to exit.</td>
+<td><a href="modules/events_process_exit.html"><code>exit.ts</code></a></td>
+</tr>
+<tr>
+<td><code>SIGINT</code></td>
+<td>Emitted when the process receives a SIGINT signal.</td>
+<td><a href="modules/events_process_SIGINT.html"><code>SIGINT.ts</code></a></td>
+</tr>
+<tr>
+<td><code>unhandledRejection</code></td>
+<td>Emitted when an unhandled promise rejection occurs.</td>
+<td><a href="modules/events_process_unhandled_rejection.html"><code>unhandled-rejection.ts</code></a></td>
+</tr>
+<tr>
+<td><code>uncaughtException</code></td>
+<td>Emitted when an uncaught exception occurs.</td>
+<td><a href="modules/events_process_uncaught_exception.html"><code>uncaught-exception.ts</code></a></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<a id="md:create-a-new-event-for-developers" class="tsd-anchor"></a><h3 class="tsd-anchor-link">Create a new event (for developers)<a href="#md:create-a-new-event-for-developers" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><p>Any new events must be created in the <code>events</code> folder as it is the path where the bot will look for events. Inside the folder, any substructure can be followed, as the bot will search for events recursively, although it is recommended to create a folder for each category of events.</p>
+<p>'Events' must be <code>.ts</code> files and must export a <a href="modules/interfaces_event_interface.html">IEvent</a> object with the following parameters:</p>
+<ul>
+<li>
+<p><strong><code>name</code></strong> <em>(string)</em>:<br>
+The name of the event to listen to. It must match the name of the event emitted by the emitter (see documentation for each emitter).</p>
+</li>
+<li>
+<p><strong><code>emitter</code></strong> <em>(Emitter)</em>:<br>
+The emitter of the event. It can take values from the <code>Emitter</code> enum, which is in the same file as the <code>IEvent</code> interface. The possible values are:</p>
+<ul>
+<li><code>Process</code>: Corresponds to the <a href="https://nodejs.org/api/process.html#process-events" target="_blank" class="external"><code>Node process</code></a>.</li>
+<li><code>Client</code>: Corresponds to the <a href="https://discord.js.org/#/docs/main/stable/class/Client" target="_blank" class="external"><code>Discord client</code></a>.</li>
+<li><code>Music</code>: Corresponds to the <a href="https://discord-player.js.org/docs/discord-player/type/GuildQueueEvents" target="_blank" class="external"><code>Discord player library</code></a>.</li>
+</ul>
+</li>
+<li>
+<p><strong><code>execute(</code><a href="https://discord.js.org/#/docs/discord.js/main/class/Client" target="_blank" class="external"><code>client</code></a><code>, ...args)</code></strong> <em>(async function)</em>:<br>
+The function executed when the event is triggered.</p>
+</li>
+</ul>
+<p>Here is a basic example of an event that logs when the bot is ready:</p>
+<pre><code class="typescript"><span class="hl-4">import</span><span class="hl-1"> { </span><span class="hl-3">IEvent</span><span class="hl-1">, </span><span class="hl-3">Emitter</span><span class="hl-1"> } </span><span class="hl-4">from</span><span class="hl-1"> </span><span class="hl-2">&#39;../../interfaces/event.interface.js&#39;</span><span class="hl-1">;</span><br/><span class="hl-4">import</span><span class="hl-1"> { </span><span class="hl-3">Client</span><span class="hl-1"> } </span><span class="hl-4">from</span><span class="hl-1"> </span><span class="hl-2">&#39;discord.js&#39;</span><span class="hl-1">;</span><br/><br/><span class="hl-4">export</span><span class="hl-1"> </span><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">event</span><span class="hl-1">: </span><span class="hl-7">IEvent</span><span class="hl-1"> = {</span><br/><span class="hl-1">  </span><span class="hl-3">name:</span><span class="hl-1"> </span><span class="hl-2">&#39;ready&#39;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-3">emitter:</span><span class="hl-1"> </span><span class="hl-3">Emitter</span><span class="hl-1">.</span><span class="hl-3">Client</span><span class="hl-1">,</span><br/><br/><span class="hl-1">  </span><span class="hl-0">execute</span><span class="hl-3">:</span><span class="hl-1"> </span><span class="hl-5">async</span><span class="hl-1"> (</span><span class="hl-3">client</span><span class="hl-1">: </span><span class="hl-7">Client</span><span class="hl-1">): </span><span class="hl-7">Promise</span><span class="hl-1">&lt;</span><span class="hl-7">void</span><span class="hl-1">&gt; </span><span class="hl-5">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">    </span><span class="hl-3">console</span><span class="hl-1">.</span><span class="hl-0">log</span><span class="hl-1">(</span><span class="hl-2">`Logged in as </span><span class="hl-5">${</span><span class="hl-3">client</span><span class="hl-8">.</span><span class="hl-3">user</span><span class="hl-8">.</span><span class="hl-3">tag</span><span class="hl-5">}</span><span class="hl-2">!`</span><span class="hl-1">);</span><br/><span class="hl-1">  },</span><br/><span class="hl-1">};</span>
+</code><button type="button">Copy</button></pre>
+
+<a id="md:utils-for-developers" class="tsd-anchor"></a><h2 class="tsd-anchor-link">Utils (for developers)<a href="#md:utils-for-developers" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><p>In the <code>utils</code> folder, you can find a series of utility classes that can be used throughout the bot. These functions are designed to help with common tasks and can be used in any part of the bot:</p>
+<table>
+<thead>
+<tr>
+<th>Utility</th>
+<th>Description</th>
+<th>File</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CommandErrorHandler</code></td>
+<td>Wrapper class to handle errors in commands.</td>
+<td><a href="modules/utils_error_handler.html"><code>error-handler.ts</code></a></td>
+</tr>
+<tr>
+<td><code>EventErrorHandler</code></td>
+<td>Wrapper class to handle errors occurring in events.</td>
+<td><a href="modules/utils_error_handler.html"><code>error-handler.ts</code></a></td>
+</tr>
+<tr>
+<td><code>InteractionUtils</code></td>
+<td>Wrapper class to simplify interaction management.</td>
+<td><a href="modules/utils_interaction_utils.html"><code>interaction-utils.ts</code></a></td>
+</tr>
+<tr>
+<td><code>GifUtils</code></td>
+<td>Utility class to retrieve and send GIFs.</td>
+<td><a href="modules/utils_gif_utils.html"><code>gif-utils.ts</code></a></td>
+</tr>
+<tr>
+<td><code>LanguageUtils</code></td>
+<td>Functions to retrieve literals from the selected language.</td>
+<td><a href="modules/utils_language_utils.html"><code>language-utils.ts</code></a></td>
+</tr>
+<tr>
+<td><code>EmbedPresets</code></td>
+<td>Functions to create embed presets and use them anywhere.</td>
+<td><a href="modules/utils_embed_embed_presets.html"><code>embed-presets.ts</code></a></td>
+</tr>
+<tr>
+<td><code>EmbedUtils</code></td>
+<td>Functions to create and manage embeds for various purposes.</td>
+<td><a href="src/utils/embed-utils.ts"><code>embed-utils.ts</code></a></td>
+</tr>
+</tbody>
+</table>
+<a id="md:logger" class="tsd-anchor"></a><h2 class="tsd-anchor-link">Logger<a href="#md:logger" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><p>The bot includes a logging system that saves logs to a file. The logs are stored in a <code>.log</code> file in the project root by default, but you can change the file path in the <a href="#md:configuration"><code>.env</code></a> file.</p>
+<p>It includes the following log levels:</p>
+<ul>
+<li><strong>INFO</strong>: General information about the bot's operation.</li>
+<li><strong>WARN</strong>: Warning messages indicating potential issues.</li>
+<li><strong>ERROR</strong>: Error messages for critical failures.</li>
+</ul>
+<pre><code class="bash"><span class="hl-1">[30/10/2024, 15:45:17] [info] Loading commands...</span><br/><span class="hl-1">[29/10/2024, 15:24:53] [warn] Could not find literal at path </span><span class="hl-2">&quot;ping.a&quot;</span><br/><span class="hl-1">[29/10/2024, 13:56:20] [error] Could not load event </span><span class="hl-2">&quot;ready&quot;</span>
+</code><button type="button">Copy</button></pre>
+
+<hr>
+<a id="md:usage-for-developers" class="tsd-anchor"></a><h3 class="tsd-anchor-link">Usage (for developers)<a href="#md:usage-for-developers" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><p>The logger object is stored in the process object as a global variable so you can use it anywhere in the bot. To log a message, use the following syntax:</p>
+<pre><code class="typescript"><span class="hl-9">// Log an info message</span><br/><span class="hl-3">globalThis</span><span class="hl-1">.</span><span class="hl-3">logger</span><span class="hl-1">.</span><span class="hl-0">info</span><span class="hl-1">(</span><span class="hl-2">&#39;Loading commands...&#39;</span><span class="hl-1">); </span><span class="hl-9">// or</span><br/><span class="hl-3">logger</span><span class="hl-1">.</span><span class="hl-0">info</span><span class="hl-1">(</span><span class="hl-2">&#39;Loading commands...&#39;</span><span class="hl-1">);</span><br/><br/><span class="hl-9">// Log a warning message</span><br/><span class="hl-3">globalThis</span><span class="hl-1">.</span><span class="hl-3">logger</span><span class="hl-1">.</span><span class="hl-0">warn</span><span class="hl-1">(</span><span class="hl-2">&#39;Could not find literal at path &quot;ping.a&quot;&#39;</span><span class="hl-1">); </span><span class="hl-9">// or</span><br/><span class="hl-3">logger</span><span class="hl-1">.</span><span class="hl-0">warn</span><span class="hl-1">(</span><span class="hl-2">&#39;Could not find literal at path &quot;ping.a&quot;&#39;</span><span class="hl-1">);</span><br/><br/><span class="hl-9">// Log an error message</span><br/><span class="hl-3">globalThis</span><span class="hl-1">.</span><span class="hl-3">logger</span><span class="hl-1">.</span><span class="hl-0">error</span><span class="hl-1">(</span><span class="hl-2">&#39;Could not load event &quot;ready&quot;&#39;</span><span class="hl-1">); </span><span class="hl-9">// or</span><br/><span class="hl-3">logger</span><span class="hl-1">.</span><span class="hl-0">error</span><span class="hl-1">(</span><span class="hl-2">&#39;Could not load event &quot;ready&quot;&#39;</span><span class="hl-1">);</span>
+</code><button type="button">Copy</button></pre>
+
+<a id="md:languages" class="tsd-anchor"></a><h2 class="tsd-anchor-link">Languages<a href="#md:languages" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><p>The bot is designed to support multiple languages, allowing users to interact with the bot in their preferred language.</p>
+<p>In order to change the bot's language, you need to modify the <code>LANGUAGE</code> variable in the <a href="#md:configuration"><code>.env</code></a> file, using one of the supported languages, which are stored in folders in the <code>locales</code> folder. Just copy the folder's name of the language you want to use to the <code>LANGUAGE</code> variable. The bot will automatically load the literals from the selected language. By default, the bot uses English as the language.</p>
+<p>The naming convention for language folders should be clear and consistent to ensure easy identification and loading of the correct language files. It is recommended to use the IETF BCP 47 format for language codes. A list for some codes can be found at <a href="media/locales-list.json"><code>locales-list.json</code></a>.</p>
+<hr>
+<a id="md:supported-languages" class="tsd-anchor"></a><h3 class="tsd-anchor-link">Supported languages<a href="#md:supported-languages" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><ul>
+<li>[x] English</li>
+<li>[x] Spanish</li>
+<li>[ ] French</li>
+<li>[ ] Italian</li>
+<li>[ ] German</li>
+<li>[ ] Portuguese</li>
+</ul>
+<p>Feel free to add your language by following the instructions below!</p>
+<hr>
+<a id="md:add-a-new-language-for-developers" class="tsd-anchor"></a><h3 class="tsd-anchor-link">Add a new language (for developers)<a href="#md:add-a-new-language-for-developers" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><p>To add a new language to the bot, follow these steps:</p>
+<ol>
+<li>
+<p><code>Create a new folder</code>: in the <code>locales</code> directory with the name of the language you want to add, using the IETF BCP 47 format for the language code (e.g., <code>en_US</code> for English, United States).</p>
+</li>
+<li>
+<p><code>Add JSON files</code>: inside the new folder with every key-value pair, you can follow the structure of the existing languages or follow your own structure, but you have to make sure to include every key-value pair or else some parts may not work.</p>
+</li>
+<li>
+<p><code>Access literals</code>: These JSON files will be loaded into the global variable <code>globalThis.literals</code>. Each key is loaded as a result of concatenating the path of the JSON's structure with <code>.</code>. The type of the value is determined by the type of the value in the JSON file, and includes strings, numbers, arrays, and functions (for placeholders). Placeholders are represented by ordered numbers inside curly braces (e.g., <code>{0}</code>, <code>{1}</code>). If a value in the JSON file contains placeholders, it will be wrapped in a function that replaces the placeholders with the provided values when called.</p>
+</li>
+</ol>
+<p>For example, this JSON:</p>
+<pre><code class="json"><span class="hl-1">{</span><br/><span class="hl-1">  </span><span class="hl-10">&quot;poll&quot;</span><span class="hl-1">: {</span><br/><span class="hl-1">    </span><span class="hl-10">&quot;time&quot;</span><span class="hl-1">: </span><span class="hl-11">50</span><span class="hl-1">,</span><br/><span class="hl-1">    </span><span class="hl-10">&quot;question&quot;</span><span class="hl-1">: </span><span class="hl-2">&quot;What&#39;s your favorite food?&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">    </span><span class="hl-10">&quot;answers&quot;</span><span class="hl-1">: [</span><span class="hl-2">&quot;Pizza&quot;</span><span class="hl-1">, </span><span class="hl-2">&quot;Salad&quot;</span><span class="hl-1">, </span><span class="hl-2">&quot;Sushi&quot;</span><span class="hl-1">],</span><br/><span class="hl-1">    </span><span class="hl-10">&quot;message&quot;</span><span class="hl-1">: </span><span class="hl-2">&quot;{0} has started a poll&quot;</span><br/><span class="hl-1">  }</span><br/><span class="hl-1">}</span>
+</code><button type="button">Copy</button></pre>
+
+<p>Will be accessed in the bot like this:</p>
+<pre><code class="typescript"><span class="hl-3">globalThis</span><span class="hl-1">.</span><span class="hl-3">literals</span><span class="hl-1">.</span><span class="hl-3">poll</span><span class="hl-1">.</span><span class="hl-3">time</span><span class="hl-1">; </span><span class="hl-9">// 50</span><br/><span class="hl-3">globalThis</span><span class="hl-1">.</span><span class="hl-3">literals</span><span class="hl-1">.</span><span class="hl-3">poll</span><span class="hl-1">.</span><span class="hl-3">question</span><span class="hl-1">; </span><span class="hl-9">// &quot;What&#39;s your favorite food?&quot;</span><br/><span class="hl-3">globalThis</span><span class="hl-1">.</span><span class="hl-3">literals</span><span class="hl-1">.</span><span class="hl-3">poll</span><span class="hl-1">.</span><span class="hl-3">answers</span><span class="hl-1">; </span><span class="hl-9">// [&quot;Pizza&quot;, &quot;Salad&quot;, &quot;Sushi&quot;]</span><br/><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">message</span><span class="hl-1"> = </span><span class="hl-3">globalThis</span><span class="hl-1">.</span><span class="hl-3">literals</span><span class="hl-1">.</span><span class="hl-3">poll</span><span class="hl-1">.</span><span class="hl-3">message</span><span class="hl-1">; </span><span class="hl-9">// function(message: string) { return `${message} has started a poll`; }</span><br/><span class="hl-3">console</span><span class="hl-1">.</span><span class="hl-0">log</span><span class="hl-1">(</span><span class="hl-0">message</span><span class="hl-1">(</span><span class="hl-2">&#39;Dave&#39;</span><span class="hl-1">)); </span><span class="hl-9">// &quot;Dave has started a poll&quot;</span>
+</code><button type="button">Copy</button></pre>
+
+<p>Else, you can use the <a href="modules/utils_language_utils.html"><code>LanguageUtils</code></a> functions to retrieve literals from the selected language. This is preferred as it will handle the path concatenation for you and will return the correct type of the value, apart from throwing an error if the literal is not found or if the type is incorrect.</p>
+<pre><code class="typescript"><span class="hl-4">import</span><span class="hl-1"> { </span><span class="hl-3">fetchFunction</span><span class="hl-1">, </span><span class="hl-3">fetchString</span><span class="hl-1">, </span><span class="hl-3">fetchNumber</span><span class="hl-1">, </span><span class="hl-3">fetchArray</span><span class="hl-1"> } </span><span class="hl-4">from</span><span class="hl-1"> </span><span class="hl-2">&#39;utils/language-utils.js&#39;</span><span class="hl-1">;</span><br/><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">time</span><span class="hl-1"> = </span><span class="hl-0">fetchNumber</span><span class="hl-1">(</span><span class="hl-2">&#39;poll.time&#39;</span><span class="hl-1">); </span><span class="hl-9">// 50</span><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">question</span><span class="hl-1"> = </span><span class="hl-0">fetchString</span><span class="hl-1">(</span><span class="hl-2">&#39;poll.question&#39;</span><span class="hl-1">); </span><span class="hl-9">// &quot;What&#39;s your favorite food?&quot;</span><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">answers</span><span class="hl-1"> = </span><span class="hl-0">fetchArray</span><span class="hl-1">(</span><span class="hl-2">&#39;poll.answers&#39;</span><span class="hl-1">); </span><span class="hl-9">// [&quot;Pizza&quot;, &quot;Salad&quot;, &quot;Sushi&quot;]</span><br/><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">message</span><span class="hl-1"> = </span><span class="hl-0">fetchFunction</span><span class="hl-1">(</span><span class="hl-2">&#39;poll.message&#39;</span><span class="hl-1">); </span><span class="hl-9">// function(message: string) { return `${message} has started a poll`; }</span><br/><span class="hl-3">console</span><span class="hl-1">.</span><span class="hl-0">log</span><span class="hl-1">(</span><span class="hl-0">message</span><span class="hl-1">(</span><span class="hl-2">&#39;Dave&#39;</span><span class="hl-1">)); </span><span class="hl-9">// &quot;Dave has started a poll&quot;</span>
+</code><button type="button">Copy</button></pre>
+
+<p>As a recommendation, it is better to fetch the literals that will be used in a command/event at the beginning of the file and store them in a variable to avoid multiple calls to the <code>fetch</code> functions.</p>
+<p><strong>IMPORTANT</strong>: If you fail to see some literal in your language and it happens to be in US English, it means that the key is missing in your language files. You can add it by copying the key from the US English file and translating the value to your language.</p>
+<hr>
+<a id="md:fallback-behavior" class="tsd-anchor"></a><h2 class="tsd-anchor-link">Fallback behavior<a href="#md:fallback-behavior" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><p>The bot is designed to handle errors and unexpected behavior gracefully. If an error occurs, the bot will log the error and send a message to the user indicating that an error occurred. The bot will continue to run and respond to commands and events, even if an error occurs.</p>
+<a id="md:troubleshooting" class="tsd-anchor"></a><h2 class="tsd-anchor-link">Troubleshooting<a href="#md:troubleshooting" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><p>If you encounter any issues while running the bot, here are some common troubleshooting steps:</p>
+<ol>
+<li><strong>Check the logs</strong>: Review the logs for any error messages that can provide insight into the issue.</li>
+<li><strong>Verify configuration</strong>: Ensure that your configuration files are set up correctly and that all required variables are defined.</li>
+<li><strong>Update dependencies</strong>: Make sure all dependencies are up to date by running <code>npm install</code>.</li>
+<li><strong>Consult documentation</strong>: Refer to the documentation for any specific instructions related to the feature you are using.</li>
+<li><strong>Search for solutions</strong>: Look for similar issues in the project's issues.</li>
+</ol>
+<a id="md:known-issues" class="tsd-anchor"></a><h2 class="tsd-anchor-link">Known Issues<a href="#md:known-issues" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><a id="md:contributions" class="tsd-anchor"></a><h2 class="tsd-anchor-link">Contributions<a href="#md:contributions" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><p>Feel free to contribute by submitting issues or pull requests! All contributions are welcome and appreciated.</p>
+<a id="md:license" class="tsd-anchor"></a><h2 class="tsd-anchor-link">License<a href="#md:license" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><p>This project is licensed under the MIT License. See the <a href="media/LICENSE">LICENSE</a> file for details.</p>
+</div></div><div class="col-sidebar"><div class="page-menu"><div class="tsd-navigation settings"><details class="tsd-accordion"><summary class="tsd-accordion-summary"><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><use href="assets/icons.svg#icon-chevronDown"></use></svg>Settings</h3></summary><div class="tsd-accordion-details"><div class="tsd-filter-visibility"><span class="settings-label">Member Visibility</span><ul id="tsd-filter-options"><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-protected" name="protected"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Protected</span></label></li><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-inherited" name="inherited" checked/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Inherited</span></label></li><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-external" name="external"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>External</span></label></li></ul></div><div class="tsd-theme-toggle"><label class="settings-label" for="tsd-theme">Theme</label><select id="tsd-theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></div></div></details></div><details open class="tsd-accordion tsd-page-navigation"><summary class="tsd-accordion-summary"><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><use href="assets/icons.svg#icon-chevronDown"></use></svg>On This Page</h3></summary><div class="tsd-accordion-details"><a href="#md:sparky"><span>Sparky</span></a><ul><li><a href="#md:table-of-contents"><span>Table of <wbr/>Contents</span></a></li><li><a href="#md:features"><span>Features</span></a></li><li><a href="#md:bot-setup"><span>Bot setup</span></a></li><li><ul><li><a href="#md:installation"><span>Installation</span></a></li><li><a href="#md:configuration"><span>Configuration</span></a></li></ul></li><li><a href="#md:commands"><span>Commands</span></a></li><li><ul><li><a href="#md:list-of-available-commands"><span>List of available commands</span></a></li><li><ul><li><a href="#md:fun-commands"><span>Fun commands</span></a></li><li><a href="#md:game-commands"><span>Game commands</span></a></li><li><a href="#md:information-commands"><span>Information commands</span></a></li><li><a href="#md:moderation-commands"><span>Moderation commands</span></a></li><li><a href="#md:music-commands"><span>Music commands</span></a></li><li><a href="#md:utility-commands"><span>Utility commands</span></a></li></ul></li><li><a href="#md:create-a-new-command-for-developers"><span>Create a new command (for developers)</span></a></li></ul></li><li><a href="#md:events"><span>Events</span></a></li><li><ul><li><a href="#md:list-of-available-events"><span>List of available events</span></a></li><li><ul><li><a href="#md:client-events"><span>Client events</span></a></li><li><a href="#md:music-events"><span>Music events</span></a></li><li><a href="#md:process-events"><span>Process events</span></a></li></ul></li><li><a href="#md:create-a-new-event-for-developers"><span>Create a new event (for developers)</span></a></li></ul></li><li><a href="#md:utils-for-developers"><span>Utils (for developers)</span></a></li><li><a href="#md:logger"><span>Logger</span></a></li><li><ul><li><a href="#md:usage-for-developers"><span>Usage (for developers)</span></a></li></ul></li><li><a href="#md:languages"><span>Languages</span></a></li><li><ul><li><a href="#md:supported-languages"><span>Supported languages</span></a></li><li><a href="#md:add-a-new-language-for-developers"><span>Add a new language (for developers)</span></a></li></ul></li><li><a href="#md:fallback-behavior"><span>Fallback behavior</span></a></li><li><a href="#md:troubleshooting"><span>Troubleshooting</span></a></li><li><a href="#md:known-issues"><span>Known <wbr/>Issues</span></a></li><li><a href="#md:contributions"><span>Contributions</span></a></li><li><a href="#md:license"><span>License</span></a></li></ul></div></details></div><div class="site-menu"><nav class="tsd-navigation"><a href="modules.html" class="current"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="assets/icons.svg#icon-1"></use></svg><span>sparky</span></a><ul class="tsd-small-nested-navigation" id="tsd-nav-container" data-base="."><li>Loading...</li></ul></nav></div></div></div><footer><p class="tsd-generator">Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></footer><div class="overlay"></div></body></html>

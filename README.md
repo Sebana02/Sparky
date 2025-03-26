@@ -34,7 +34,6 @@
   - [Fallback behavior](#fallback-behavior)
   - [Troubleshooting](#troubleshooting)
   - [Known Issues](#known-issues)
-  - [FAQ](#faq)
   - [Contributions](#contributions)
   - [License](#license)
 
@@ -81,15 +80,19 @@ To install and run the bot locally, follow these steps:
    TOKEN=your_discord_bot_token_here
    ```
 
+   If you don't have a Discord bot token, you can follow [this guide](https://discordjs.guide/preparations/setting-up-a-bot-application.html#creating-your-bot) to create one.
+
    You can configure other settings in the `.env` file. For more details, check the [Configuration](#configuration) section.
 
-6. To start the bot:
+6. Invite the bot to your server by following [this guide](https://discordjs.guide/preparations/adding-your-bot-to-servers.html#bot-invite-links).
+
+7. To start the bot:
 
    ```bash
    npm run start
    ```
 
-7. Alternatively, you can start the bot in development mode:
+8. Alternatively, you can start the bot in development mode:
 
    ```bash
    npm run dev
@@ -97,9 +100,9 @@ To install and run the bot locally, follow these steps:
 
    This will start the bot in development mode. The bot will automatically reload when you save changes to the code.
 
-8. The bot should now be running and connected to your Discord server!
+9. The bot should now be running and connected to your Discord server! You can now use the bot by typing `/` in the chat to see a list of available commands.
 
-9. To shut down the bot, press `Ctrl + C` in the terminal where the bot is running.
+10. To shut down the bot, press `Ctrl + C` in the terminal where the bot is running.
 
 ---
 
@@ -424,8 +427,8 @@ The naming convention for language folders should be clear and consistent to ens
 
 ### Supported languages
 
-- [x] Spanish
 - [x] English
+- [x] Spanish
 - [ ] French
 - [ ] Italian
 - [ ] German
@@ -472,6 +475,8 @@ console.log(message('Dave')); // "Dave has started a poll"
 Else, you can use the [`LanguageUtils`](src/utils/language-utils.ts) functions to retrieve literals from the selected language. This is preferred as it will handle the path concatenation for you and will return the correct type of the value, apart from throwing an error if the literal is not found or if the type is incorrect.
 
 ```typescript
+import { fetchFunction, fetchString, fetchNumber, fetchArray } from 'utils/language-utils.js';
+
 const time = fetchNumber('poll.time'); // 50
 const question = fetchString('poll.question'); // "What's your favorite food?"
 const answers = fetchArray('poll.answers'); // ["Pizza", "Salad", "Sushi"]
@@ -482,6 +487,8 @@ console.log(message('Dave')); // "Dave has started a poll"
 
 As a recommendation, it is better to fetch the literals that will be used in a command/event at the beginning of the file and store them in a variable to avoid multiple calls to the `fetch` functions.
 
+**IMPORTANT**: If you fail to see some literal in your language and it happens to be in US English, it means that the key is missing in your language files. You can add it by copying the key from the US English file and translating the value to your language.
+
 ---
 
 ## Fallback behavior
@@ -490,9 +497,15 @@ The bot is designed to handle errors and unexpected behavior gracefully. If an e
 
 ## Troubleshooting
 
-## Known Issues
+If you encounter any issues while running the bot, here are some common troubleshooting steps:
 
-## FAQ
+1. **Check the logs**: Review the logs for any error messages that can provide insight into the issue.
+2. **Verify configuration**: Ensure that your configuration files are set up correctly and that all required variables are defined.
+3. **Update dependencies**: Make sure all dependencies are up to date by running `npm install`.
+4. **Consult documentation**: Refer to the documentation for any specific instructions related to the feature you are using.
+5. **Search for solutions**: Look for similar issues in the project's issues.
+
+## Known Issues
 
 ## Contributions
 
