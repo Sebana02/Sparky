@@ -1,4 +1,4 @@
-import { deferReply, reply, fetchReply } from '../../utils/interaction-utils';
+import { deferReply, reply, fetchReply, update } from '../../utils/interaction-utils.js';
 import { QueryType, useQueue, useMainPlayer, usePlayer, SearchResult, Track } from 'discord-player';
 import {
   ActionRowBuilder,
@@ -13,11 +13,12 @@ import {
   User,
   TextChannel,
   VoiceChannel,
+  MessageComponentInteraction,
 } from 'discord.js';
-import { createEmbed, ColorScheme, embedFromTemplate } from '../../utils/embed/embed-utils';
-import { fetchString, fetchFunction } from '../../utils/language-utils';
-import { ICommand } from 'interfaces/command.interface';
-import { IQueuePlayerMetadata } from 'interfaces/metadata.interface';
+import { createEmbed, ColorScheme, embedFromTemplate } from '../../utils/embed/embed-utils.js';
+import { fetchString, fetchFunction } from '../../utils/language-utils.js';
+import { ICommand } from 'interfaces/command.interface.js';
+import { IQueuePlayerMetadata } from 'interfaces/metadata.interface.js';
 
 /**
  * Literal object for the command
@@ -68,7 +69,7 @@ export const command: ICommand = {
       return await reply(inter, { embeds: [embedFromTemplate('noPlaylist', client)], ephemeral: true }, 2);
 
     //Start the trivia
-    triviaRound(inter, [], results, [...results.tracks]); //players: {user: user, score: score}
+    await triviaRound(inter, [], results, [...(results.tracks as Track<IQueuePlayerMetadata>[])]);
   },
 };
 
@@ -212,140 +213,127 @@ async function playSong(inter: ChatInputCommandInteraction, song: Track<IQueuePl
 }
 
 /**
- * Await player interaction with the buttons
- * @param {Interaction} inter Interaction
- * @param {Array<{user: User, score: number}>} players Players in the trivia
- * @param {Track} correctSong Correct song
- * @param {SearchResult} results Entire playlist
- * @param {Array<Track>} toBePlayed Songs that have not been played yet
- */
-async function awaitInteraction(inter, players, correctSong, results, toBePlayed) {
-  //Filter for the buttons
-  let filter = (i) => !i.user.bot && i.type === InteractionType.MessageComponent;
-
-  //Fetch the reply
-  let message = await fetchReply(inter);
-
-  //Await button interaction
-  let buttonInteraction;
-  await message
-    .awaitMessageComponent({
-      filter,
-      time: trackDurationToMilliseconds(correctSong.duration) + 10000,
-      max: 1,
-    })
-    .then((i) => (buttonInteraction = i));
-
-  //Check if the button is the stop button
-  if (JSON.parse(buttonInteraction.customId).id === 'Stop') {
-    //Send message
-    const result = createEmbed({
-      author: {
-        name: commandLit.selectedStop,
-        icon_url: buttonInteraction.user.displayAvatarURL(),
-      },
-      color: ColorScheme.game,
-    });
-    await reply(buttonInteraction, {
-      embeds: [result],
-      deleteTime: 1.5,
-      propagate: false,
-    });
-
-    //End trivia
-    await endTrivia(inter, players);
-  } else {
-    if (JSON.parse(buttonInteraction.customId).id === correctSong.id) {
-      //Correct answer
-
-      //Add point to the player
-      let player = players.find((p) => p.user === buttonInteraction.user);
-      if (player) player.score++;
-      else players.push({ user: buttonInteraction.user, score: 1 });
-
-      //Send message
-      const result = createEmbed({
-        author: {
-          name: commandLit.selectedCorrect(buttonInteraction.user.tag),
-          icon_url: buttonInteraction.user.displayAvatarURL(),
-        },
-        footer: {
-          text: commandLit.selectedSong(correctSong.title + ' - ' + correctSong.author).substring(0, 80),
-        },
-        color: ColorScheme.game,
-      });
-      await reply(buttonInteraction, {
-        embeds: [result],
-        deleteTime: 1.5,
-        propagate: false,
-      });
-    } else {
-      //Incorrect answer
-
-      //Send message
-      const result = createEmbed({
-        author: {
-          name: commandLit.selectedIncorrect(buttonInteraction.user.tag),
-          icon_url: buttonInteraction.user.displayAvatarURL(),
-        },
-        footer: {
-          text: commandLit.selectedSong(correctSong.title + ' - ' + correctSong.author).substring(0, 80),
-        },
-        color: ColorScheme.game,
-      });
-      await reply(buttonInteraction, {
-        embeds: [result],
-        deleteTime: 1.5,
-        propagate: false,
-      });
-    }
-
-    //Start new round
-    await triviaRound(inter, players, results, toBePlayed);
-  }
-}
-
-/**
  * End the trivia
- * @param {Interaction} inter Interaction
- * @param {Array<{user: User, score: number}>} players Players in the trivia
+ * @param inter The interaction of the command
+ * @param players Array of players
  */
-async function endTrivia(inter, players) {
+async function endTrivia(inter: ChatInputCommandInteraction, players: Player[]) {
   //Show leaderboard
   await reply(inter, {
     embeds: [createLeaderboardEmbed(players, true)],
-    ephemeral: false,
+    components: [],
   });
 
   //Delete queue
-  const queue = useQueue(inter.guildId);
-  if (queue) queue.delete();
+  useQueue(inter.guildId as string)?.delete();
 }
 
 /**
- * Play a round of trivia
- * @param {Interaction} inter Interaction
- * @param {Array<{user: User, score: number}>} players Players in the trivia
- * @param {SearchResult} results Entire playlist
- * @param {Array<Track>} toBePlayed Songs that have not been played yet
+ * Start a new round of trivia
+ * @param inter The interaction of the command
+ * @param players Array of players
+ * @param results The search results
+ * @param toBePlayed The songs to be played
  */
-async function triviaRound(inter, players, results, toBePlayed) {
+async function triviaRound(
+  inter: ChatInputCommandInteraction,
+  players: Player[],
+  results: SearchResult,
+  toBePlayed: Track<IQueuePlayerMetadata>[]
+) {
   //Check if there are songs left
   if (toBePlayed.length === 0) return await endTrivia(inter, players);
 
   //Select song to be played
-  const { correctSong, songs } = selectSong(results, toBePlayed);
+  const selectedSongs = selectSong(results, toBePlayed);
 
   //Play song
-  await playSong(inter, correctSong);
+  await playSong(inter, selectedSongs.correctSong);
 
   //Create buttons row and leaderboard
-  const buttonsRow = createActionRow(songs);
+  const buttonsRow = createActionRow(selectedSongs.songs);
   const leaderboard = createLeaderboardEmbed(players, false);
 
   //Send message
   await reply(inter, { embeds: [leaderboard], components: [buttonsRow] });
 
   //Await interaction of the player with the buttons
-  await awaitInteraction(inter, players, correctSong, results, toBePlayed);
+  await handleInteraction(inter, players, selectedSongs.correctSong, results, toBePlayed);
+}
+
+/**
+ * Handle the interaction of the players
+ * @param inter The interaction of the command
+ * @param players The players of the game
+ * @param correctSong The correct song
+ * @param results The search results
+ * @param toBePlayed The songs to be played
+ */
+async function handleInteraction(
+  inter: ChatInputCommandInteraction,
+  players: Player[],
+  correctSong: Track<IQueuePlayerMetadata>,
+  results: SearchResult,
+  toBePlayed: Track<IQueuePlayerMetadata>[]
+) {
+  //Fetch the reply
+  const replyMessage = await fetchReply(inter);
+
+  //Await button interaction
+  const interaction: MessageComponentInteraction = await replyMessage.awaitMessageComponent({
+    filter: (i: MessageComponentInteraction) => i.isButton(),
+    time: trackDurationToMilliseconds(correctSong.duration) + 10000,
+  });
+
+  if (interaction.customId === 'Stop') {
+    //Send message
+    await update(interaction, {
+      embeds: [
+        createEmbed({
+          author: {
+            name: commandLit.selectedStop,
+            icon_url: interaction.user.displayAvatarURL(),
+          },
+          color: ColorScheme.game,
+        }),
+      ],
+      components: [],
+    });
+
+    //End trivia
+    setTimeout(async () => {
+      await endTrivia(inter, players);
+    }, 5000);
+  } else {
+    // If the player selected the correct song, add a point
+    if (interaction.customId === correctSong.id) {
+      //Add point to the player
+      let player = players.find((p) => p.user === interaction.user);
+      if (player) player.score++;
+      else players.push({ user: interaction.user, score: 1 });
+    }
+
+    //Create round embed
+    const roundEmbed = createEmbed({
+      author: {
+        name:
+          interaction.customId === correctSong.id
+            ? commandLit.selectedCorrect(interaction.user.tag)
+            : commandLit.selectedIncorrect(interaction.user.tag),
+        icon_url: interaction.user.displayAvatarURL(),
+      },
+      footer: {
+        text: commandLit.selectedSong(correctSong.title + ' - ' + correctSong.author).substring(0, 80),
+      },
+      color: ColorScheme.game,
+    });
+
+    //Send message
+    await update(interaction, { embeds: [roundEmbed], components: [] });
+
+    //Start new round
+    setTimeout(async () => {
+      await triviaRound(inter, players, results, toBePlayed);
+    }, 5000);
+  }
 }
