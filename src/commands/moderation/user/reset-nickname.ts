@@ -9,8 +9,8 @@ import { createEmbed, ColorScheme } from '../../../utils/embed/embed-utils.js';
  */
 const commandLit = {
   description: fetchString('reset_nickname.description'),
-  memberName: fetchString('reset_nickname.options.user.name'),
-  memberDescription: fetchString('reset_nickname.options.user.description'),
+  memberName: fetchString('reset_nickname.options.member.name'),
+  memberDescription: fetchString('reset_nickname.options.member.description'),
   response: fetchFunction('reset_nickname.response'),
 };
 
