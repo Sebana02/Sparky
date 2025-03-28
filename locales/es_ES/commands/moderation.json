@@ -101,7 +101,23 @@
     "response": "El miembro {0} ha sido expulsado correctamente",
     "dm_response": "Has sido expulsado del servidor {0} por la siguiente razón: {1}"
   },
-  "mute": {},
+  "mute": {
+    "description": "Silencia a un usuario",
+    "options": {
+      "member": {
+        "name": "miembro",
+        "description": "Miembro que quieres silenciar"
+      },
+      "reason": {
+        "name": "razón",
+        "description": "Razón por la que quieres silenciar al miembro"
+      }
+    },
+    "not_mutable": "No puedes silenciar a este miembro",
+    "already_muted": "El miembro ya está silenciado",
+    "response": "El miembro {0} ha sido silenciado correctamente por la razón: {1}",
+    "dm_response": "Has sido silenciado en el servidor {0} por la siguiente razón: {1}"
+  },
   "muted_list": {},
   "reset_nickname": {
     "description": "Reestablece el apodo de un usuario",
@@ -162,7 +178,23 @@
     "not_banned": "El usuario no está baneado en este servidor",
     "response": "Usuario {0} desbaneado correctamente"
   },
-  "unmute": {},
+  "unmute": {
+    "description": "Desilencia a un usuario",
+    "options": {
+      "member": {
+        "name": "miembro",
+        "description": "Miembro que quieres desilenciar"
+      },
+      "reason": {
+        "name": "razón",
+        "description": "Razón por la que quieres desilenciar al miembro"
+      }
+    },
+    "not_unmuteable": "No puedes desilenciar a este miembro",
+    "already_unmuted": "El miembro ya está desilenciado",
+    "response": "El miembro {0} ha sido desilenciado correctamente por la razón: {1}",
+    "dm_response": "Has sido desilenciado en el servidor {0} por la siguiente razón: {1}"
+  },
   "warn": {
     "description": "Advierte a un usuario",
     "options": {

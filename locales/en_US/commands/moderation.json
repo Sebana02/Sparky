@@ -101,7 +101,23 @@
     "response": "Member {0} kicked successfully",
     "dm_response": "You have been kicked from the server {0} for the following reason: {1}"
   },
-  "mute": {},
+  "mute": {
+    "description": "Mute a user",
+    "options": {
+      "member": {
+        "name": "member",
+        "description": "Member you want to mute"
+      },
+      "reason": {
+        "name": "reason",
+        "description": "Reason you want to mute the member for"
+      }
+    },
+    "not_mutable": "You cannot mute this member",
+    "already_muted": "The member is already muted",
+    "response": "Member {0} has been muted successfully for the reason: {1}",
+    "dm_response": "You have been muted in the server {0} for the following reason: {1}"
+  },
   "muted_list": {},
   "reset_nickname": {
     "description": "Resets a user's nickname",
@@ -162,7 +178,23 @@
     "not_banned": "The user is not banned on this server",
     "response": "User {0} unbanned successfully"
   },
-  "unmute": {},
+  "unmute": {
+    "description": "Unmutes a user",
+    "options": {
+      "member": {
+        "name": "member",
+        "description": "Member you want to unmute"
+      },
+      "reason": {
+        "name": "reason",
+        "description": "Reason you want to unmute the member for"
+      }
+    },
+    "not_unmutable": "You cannot unmute this member",
+    "already_unmuted": "The member is already unmuted",
+    "response": "Member {0} has been unmuted successfully for the reason: {1}",
+    "dm_response": "You have been unmuted in the server {0} for the following reason: {1}"
+  },
   "warn": {
     "description": "Warns a user",
     "options": {
