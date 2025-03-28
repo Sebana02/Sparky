@@ -84,7 +84,11 @@
     "response": "Miembro {0} baneado correctamente",
     "dm_response": "Has sido baneado del servidor {0} por la siguiente razón: {1}"
   },
-  "banned_list": {},
+  "banned_list": {
+    "description": "Lista de usuarios baneados del servidor",
+    "no_banned_users": "No hay usuarios baneados en este servidor",
+    "response": "Miembros baneados en el servidor: {0}"
+  },
   "kick": {
     "description": "Expulsa a un usuario del servidor",
     "options": {
@@ -118,7 +122,11 @@
     "response": "El miembro {0} ha sido silenciado correctamente por la razón: {1}",
     "dm_response": "Has sido silenciado en el servidor {0} por la siguiente razón: {1}"
   },
-  "muted_list": {},
+  "muted_list": {
+    "description": "Lista de usuarios silenciados del servidor",
+    "no_muted_users": "No hay usuarios silenciados en este servidor",
+    "response": "Miembros silenciados en el servidor: {0}"
+  },
   "reset_nickname": {
     "description": "Reestablece el apodo de un usuario",
     "options": {

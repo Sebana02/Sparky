@@ -84,7 +84,11 @@
     "response": "Member {0} banned successfully",
     "dm_response": "You have been banned from the server {0} for the following reason: {1}"
   },
-  "banned_list": {},
+  "banned_list": {
+    "description": "List of banned users from the server",
+    "no_banned_users": "There are no banned users in this server",
+    "response": "Banned members in the server: {0}"
+  },
   "kick": {
     "description": "Kicks a user from the server",
     "options": {
@@ -118,7 +122,11 @@
     "response": "Member {0} has been muted successfully for the reason: {1}",
     "dm_response": "You have been muted in the server {0} for the following reason: {1}"
   },
-  "muted_list": {},
+  "muted_list": {
+    "description": "List of muted users from the server",
+    "no_muted_users": "There are no muted users in this server",
+    "response": "Muted members in the server: {0}"
+  },
   "reset_nickname": {
     "description": "Resets a user's nickname",
     "options": {

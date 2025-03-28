@@ -39,7 +39,5 @@
 
 ## Translation to TS
 
-- [ ] Mute
-- [ ] Unmute
 - [ ] Mutedlist
 - [ ] Bannedlist
