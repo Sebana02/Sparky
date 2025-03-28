@@ -8,9 +8,9 @@ import { fetchString, fetchFunction } from '../../../utils/language-utils.js';
  * Literal object for the command
  */
 const commandLit = {
-  description: fetchString('mutedlist.description'),
-  noMutedUsers: fetchString('mutedlist.no_muted_users'),
-  response: fetchFunction('mutedlist.response'),
+  description: fetchString('muted_list.description'),
+  noMutedUsers: fetchString('muted_list.no_muted_users'),
+  response: fetchFunction('muted_list.response'),
 };
 
 /**

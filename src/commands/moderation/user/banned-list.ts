@@ -8,9 +8,9 @@ import { fetchString, fetchFunction } from '../../../utils/language-utils.js';
  * Literal object for the command
  */
 const commandLit = {
-  description: fetchString('bannedlist.description'),
-  noBannedUsers: fetchString('bannedlist.no_banned_users'),
-  response: fetchFunction('bannedlist.response'),
+  description: fetchString('banned_list.description'),
+  noBannedUsers: fetchString('banned_list.no_banned_users'),
+  response: fetchFunction('banned_list.response'),
 };
 
 /**
