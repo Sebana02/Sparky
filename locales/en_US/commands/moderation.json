@@ -127,7 +127,26 @@
     },
     "response": "Nickname of {0} changed to {1} successfully"
   },
-  "timeout": {},
+  "timeout": {
+    "description": "Timeout a user",
+    "options": {
+      "member": {
+        "name": "member",
+        "description": "Member you want to timeout"
+      },
+      "reason": {
+        "name": "reason",
+        "description": "Reason you want to timeout the member for"
+      },
+      "time": {
+        "name": "time",
+        "description": "Time you want to timeout the member for"
+      }
+    },
+    "not_timeoutable": "You cannot timeout this member",
+    "response": "Member {0} has been timed out successfully for the reason: {1}, for {2} minutes",
+    "dm_response": "You have been timed out in the server {0} for the following reason: {1}, for {2} minutes"
+  },
   "unban": {
     "description": "Unbans a user from the server",
     "options": {

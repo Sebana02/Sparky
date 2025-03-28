@@ -17,7 +17,7 @@
 
 ## Embeds
 
-- [ ]Change direct imports of embed presets to use embedFromTemplate function
+- [ ] Change direct imports of embed presets to use embedFromTemplate function
 
 ## Moderation commands
 
@@ -39,7 +39,6 @@
 
 ## Translation to TS
 
-- [ ] Timeout
 - [ ] Mute
 - [ ] Unmute
 - [ ] Mutedlist

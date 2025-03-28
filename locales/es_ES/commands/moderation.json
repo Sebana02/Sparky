@@ -127,7 +127,26 @@
     },
     "response": "Apodo de {0} establecido a {1} correctamente"
   },
-  "timeout": {},
+  "timeout": {
+    "description": "Aisla a un usuario",
+    "options": {
+      "member": {
+        "name": "miembro",
+        "description": "Miembro que quieres aislar"
+      },
+      "reason": {
+        "name": "razón",
+        "description": "Razón por la que quieres aislar al miembro"
+      },
+      "time": {
+        "name": "tiempo",
+        "description": "Tiempo que quieres aislar al miembro"
+      }
+    },
+    "not_timeoutable": "No puedo aislar a este miembro",
+    "response": "El miembro {0} ha sido aislado correctamente por la razón: {1}, durante {2} minutos",
+    "dm_response": "Has sido aislado en el servidor {0} por la siguiente razón: {1}, durante {2} minutos"
+  },
   "unban": {
     "description": "Desbanea a un usuario del servidor",
     "options": {
