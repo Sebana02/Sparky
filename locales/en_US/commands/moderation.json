@@ -85,11 +85,48 @@
     "dm_response": "You have been banned from the server {0} for the following reason: {1}"
   },
   "banned_list": {},
-  "kick": {},
+  "kick": {
+    "description": "Kicks a user from the server",
+    "options": {
+      "member": {
+        "name": "member",
+        "description": "Member you want to kick"
+      },
+      "reason": {
+        "name": "reason",
+        "description": "Reason you want to kick the member for"
+      }
+    },
+    "not_kickable": "The member cannot be kicked",
+    "response": "Member {0} kicked successfully",
+    "dm_response": "You have been kicked from the server {0} for the following reason: {1}"
+  },
   "mute": {},
   "muted_list": {},
-  "reset_nickname": {},
-  "set_nickname": {},
+  "reset_nickname": {
+    "description": "Resets a user's nickname",
+    "options": {
+      "member": {
+        "name": "member",
+        "description": "The member whose nickname will be reset"
+      }
+    },
+    "response": "Nickname of {0} reset successfully"
+  },
+  "set_nickname": {
+    "description": "Change nickname of a member",
+    "options": {
+      "member": {
+        "name": "member",
+        "description": "The member whose nickname will be changed"
+      },
+      "nickname": {
+        "name": "nickname",
+        "description": "The nickname to be set for the member"
+      }
+    },
+    "response": "Nickname of {0} changed to {1} successfully"
+  },
   "timeout": {},
   "unban": {
     "description": "Unbans a user from the server",
@@ -107,5 +144,20 @@
     "response": "User {0} unbanned successfully"
   },
   "unmute": {},
-  "warn": {}
+  "warn": {
+    "description": "Warns a user",
+    "options": {
+      "member": {
+        "name": "member",
+        "description": "The member you want to warn"
+      },
+      "reason": {
+        "name": "reason",
+        "description": "The reason you want to warn the member for"
+      }
+    },
+    "not_warnable": "You cannot warn this member",
+    "response": "Member {0} has been warned successfully for the reason: {1}",
+    "dm_response": "You have been warned in the server {0} for the following reason: {1}"
+  }
 }

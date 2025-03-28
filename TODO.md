@@ -39,12 +39,8 @@
 
 ## Translation to TS
 
-- [ ] Bannedlist
-- [ ] Kick
-- [ ] Mute
-- [ ] Mutedlist
-- [ ] Resetnickname
-- [ ] Setnickname
 - [ ] Timeout
+- [ ] Mute
 - [ ] Unmute
-- [ ] Warn
+- [ ] Mutedlist
+- [ ] Bannedlist

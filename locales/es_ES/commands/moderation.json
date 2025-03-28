@@ -85,11 +85,48 @@
     "dm_response": "Has sido baneado del servidor {0} por la siguiente razón: {1}"
   },
   "banned_list": {},
-  "kick": {},
+  "kick": {
+    "description": "Expulsa a un usuario del servidor",
+    "options": {
+      "member": {
+        "name": "miembro",
+        "description": "Miembro que quieres expulsar"
+      },
+      "reason": {
+        "name": "razón",
+        "description": "Razón por la que quieres expulsar al miembro"
+      }
+    },
+    "not_kickable": "No puedo expulsar a este miembro",
+    "response": "El miembro {0} ha sido expulsado correctamente",
+    "dm_response": "Has sido expulsado del servidor {0} por la siguiente razón: {1}"
+  },
   "mute": {},
   "muted_list": {},
-  "reset_nickname": {},
-  "set_nickname": {},
+  "reset_nickname": {
+    "description": "Reestablece el apodo de un usuario",
+    "options": {
+      "member": {
+        "name": "miembro",
+        "description": "El miembro al que se le reestablecerá el apodo"
+      }
+    },
+    "response": "Apodo de {0} restablecido correctamente"
+  },
+  "set_nickname": {
+    "description": "Establece un apodo para un usuario",
+    "options": {
+      "member": {
+        "name": "miembro",
+        "description": "El miembro al que se le establecerá el apodo"
+      },
+      "nickname": {
+        "name": "nickname",
+        "description": "El apodo que se le establecerá al miembro"
+      }
+    },
+    "response": "Apodo de {0} establecido a {1} correctamente"
+  },
   "timeout": {},
   "unban": {
     "description": "Desbanea a un usuario del servidor",
@@ -107,5 +144,20 @@
     "response": "Usuario {0} desbaneado correctamente"
   },
   "unmute": {},
-  "warn": {}
+  "warn": {
+    "description": "Advierte a un usuario",
+    "options": {
+      "member": {
+        "name": "miembro",
+        "description": "Miembro que quieres advertir"
+      },
+      "reason": {
+        "name": "razón",
+        "description": "Razón por la que quieres advertir al miembro"
+      }
+    },
+    "not_warnable": "No puedes advertir a este miembro",
+    "response": "El miembro {0} ha sido advertido correctamente por la razón: {1}",
+    "dm_response": "Has sido advertido en el servidor {0} por la siguiente razón: {1}"
+  }
 }
