@@ -39,8 +39,6 @@
 
 ## Translation to TS
 
-- [ ] Hangman
-- [ ] Trivia
 - [ ] Bannedlist
 - [ ] Kick
 - [ ] Mute

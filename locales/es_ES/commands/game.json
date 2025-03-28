@@ -230,7 +230,7 @@
       "zero"
     ],
     "custom_select_player": "{0} jugadores se han unido al juego. Seleccionando jugador aleatorio...",
-    "start_error": "Ha ocurrido un error al inciar juego",
+    "no_word_selected": "No se ha seleccionado ninguna palabra, cancelando el juego",
     "gather_word": {
       "chosen_one": "Eres el elegido! Tienes {0} segundos para escribir tu palabra. Recuerda, no participas en la partida.",
       "no_word_given": {
@@ -240,8 +240,7 @@
       "word_given": {
         "valid_word": "Buena elección! Volviendo al juego...",
         "invalid_word": "La palabra no es válida, intenta de nuevo",
-        "too_many_tries": "Muchas palabras inválidas, estas fuera de la partida",
-        "no_players_left": "No hay jugadores suficientes para continuar"
+        "too_many_tries": "Muchas palabras inválidas, estas fuera de la partida"
       }
     },
     "progress": {

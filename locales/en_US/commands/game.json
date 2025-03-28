@@ -230,7 +230,7 @@
       "zero"
     ],
     "custom_select_player": "{0} players have joined the game. Selecting a random player...",
-    "start_error": "An error occurred while starting the game",
+    "no_word_selected": "No word has been selected, cancelling the game",
     "gather_word": {
       "chosen_one": "You are the chosen one! You have {0} seconds to write your word. Remember, you do not participate in the game.",
       "no_word_given": {
@@ -240,8 +240,7 @@
       "word_given": {
         "valid_word": "Good choice! Returning to the game...",
         "invalid_word": "The word is not valid, try again",
-        "too_many_tries": "Too many invalid words, you are out of the game",
-        "no_players_left": "Not enough players to continue"
+        "too_many_tries": "Too many invalid words, you are out of the game"
       }
     },
     "progress": {
