@@ -69,7 +69,7 @@ export const command: ICommand = {
         text: commandLit.response(searchTerm),
         icon_url: inter.user.displayAvatarURL(),
       },
-      timestamp: Date.now().toLocaleString(),
+      timestamp: Date.now(),
     });
 
     //Reply with the search result
