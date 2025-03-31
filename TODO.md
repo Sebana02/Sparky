@@ -1,14 +1,14 @@
 # TODO
 
-## Languages
-
 ## General
 
+- [ ] Add more personalization options to the bot, welcome channel, status, etc.
 - [ ] Create a config.ts file to load env variables
 - [ ] Use subcommands when possible
 - [ ] Translate moderation commands
 - [ ] Change use of presets in music commands and events
 - [ ] Improve visuals and embeds
+- [ ] Create error classes to handle errors better
 
 ## IAs
 
@@ -36,8 +36,3 @@
 
 - [ ] Add a way to avoid users using commands in certain channels
 - [ ] More checks regarding who can receive certain commands
-
-## Translation to TS
-
-- [ ] Mutedlist
-- [ ] Bannedlist
