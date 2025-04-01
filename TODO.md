@@ -2,12 +2,11 @@
 
 ## General
 
-- [ ] Add more personalization options to the bot, welcome channel, status, etc.
-- [ ] Create a config.ts file to load env variables
+- [ ] Add more personalization options to the bot: welcome channel, excluded channels, dj role, guild id, bot status and activity, language, etc.
+  - Create a config.json file to store the bot's configuration
+  - Store API keys and other sensitive information in a .env file
+  - Load .env and config.json files in the bot's entry point on a global variable
 - [ ] Use subcommands when possible
-- [ ] Translate moderation commands
-- [ ] Change use of presets in music commands and events
-- [ ] Improve visuals and embeds
 - [ ] Create error classes to handle errors better
 
 ## IAs
@@ -18,19 +17,20 @@
 ## Embeds
 
 - [ ] Change direct imports of embed presets to use embedFromTemplate function
+- [ ] Improve visuals and embeds
 
 ## Moderation commands
 
-- [ ] Addrole command
-- [ ] Removerole command
-- [ ] Createrole command
-- [ ] Deleterole command
-- [ ] Show permissions command
-- [ ] Show roles of a user command
-- [ ] Create channel command
-- [ ] Delete channel command
+- [ ] add-role command
+- [ ] remove-role command
+- [ ] create-role command
+- [ ] delete-role command
+- [ ] show-permissions command
+- [ ] show-roles (of a user) command
+- [ ] create-channel command
+- [ ] delete-channel command
 
-- [ ] Add pagination to bannedlist and mutedlist
+- [ ] Add pagination to bannedlist and mutedlist commands
 
 ## Security
 
