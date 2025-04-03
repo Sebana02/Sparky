@@ -1,4 +1,4 @@
-import { Client, Guild } from 'discord.js';
+import { Client } from 'discord.js';
 import { Emitter, IEvent } from '../../interfaces/event.interface.js';
 
 /**
@@ -16,22 +16,38 @@ export const event: IEvent = {
       process.exit(1);
     }
 
-    //Set activity, if PLAYING_ACTIVITY environment variable is not set, set no activity
-    client.user.setActivity(process.env.PLAYING_ACTIVITY || '');
+    //Set client configuration
+    const clientConfig = config.app.clientConfig;
+    if (clientConfig) {
+      if (clientConfig.setAFK !== undefined) client.user.setAFK(clientConfig.setAFK);
+      if (clientConfig.setActivity !== undefined) client.user.setActivity(clientConfig.setActivity);
+      if (clientConfig.setAvatar !== undefined) client.user.setAvatar(clientConfig.setAvatar);
+      if (clientConfig.setBanner !== undefined) client.user.setBanner(clientConfig.setBanner);
+      if (clientConfig.setPresence !== undefined) client.user.setPresence(clientConfig.setPresence);
+      if (clientConfig.setStatus !== undefined) client.user.setStatus(clientConfig.setStatus);
+      if (clientConfig.setUsername !== undefined) client.user.setUsername(clientConfig.setUsername);
+    }
 
-    //Get guild ID from environment variable and get guild object
-    const guildId = process.env.GUILD_ID?.trim();
+    //Get guild ID from configuration
+    const guildId = config.app.guildConfig?.guildId;
     const guild = guildId ? client.guilds.cache.get(guildId) : undefined;
 
-    //Register slash commands
-    //If guild ID is not set, register globally
-    //If guild ID is set and guild is found, register in that guild
-    //If guild ID is set and guild is not found, log error and exit bot
+    // Get all commands
     const commandsArray = Array.from(globalThis.commands.values()).map((command) => command.data.toJSON());
+
+    // Register slash commands
     if (!guildId) {
+      // Clear existing guild commands
+      client.guilds.cache.forEach((guild) => guild.commands.set([]));
+
+      // Register global commands
       await client.application.commands.set(commandsArray);
       logger.info('Slash commands registered globally');
     } else if (guild) {
+      // Clear existing global commands
+      await client.application.commands.set([]);
+
+      // Register commands in the specified guild
       await guild.commands.set(commandsArray);
       logger.info(`Slash commands registered in guild ${guild.name}`);
     } else {

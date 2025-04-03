@@ -2,6 +2,7 @@ import { Client, GatewayIntentBits, Partials } from 'discord.js';
 import { Player } from 'discord-player';
 import { YoutubeiExtractor } from 'discord-player-youtubei';
 import { config as loadEnv } from 'dotenv';
+import { IConfig, IUserConfig } from './interfaces/config.interface.js';
 import loadLogger from './logger.js';
 import loadResources from './loader.js';
 
@@ -9,8 +10,8 @@ import loadResources from './loader.js';
  * Main function to run the bot
  */
 async function run(): Promise<void> {
-  // Load environment variables
-  loadEnv();
+  // Load configuration
+  await loadConfig();
 
   // Load logger
   loadLogger();
@@ -26,6 +27,52 @@ async function run(): Promise<void> {
 
   // Log the bot into Discord
   await login(client);
+}
+
+/**
+ * Load configuration from environment variables and config file
+ */
+async function loadConfig() {
+  // Load environment variables
+  loadEnv();
+
+  // We store the config file path in a variable to avoid TypeScript trying to resolve it during compilation, just in case the file is missing or has an error
+  const configPath = './config.js';
+
+  // Load client config, it is loaded asynchronously just in case the config file is missing or has an error
+  const appConfig = await import(configPath)
+    .then((configFile) => {
+      // Prioritize `default` export, fallback to first object found
+      const configModule = configFile.default ?? Object.values(configFile).find((m) => typeof m === 'object');
+
+      // Check if the config module is valid, if not, throw an error
+      if (!configModule) throw new Error('Config file does not export a valid module');
+
+      // If valid, return the config module
+      return configModule as IUserConfig;
+    })
+    .catch((error) => {
+      // Log the error and return an empty object
+      console.error(`Could not load config file: ${error.message}`);
+      return {} as IUserConfig;
+    });
+
+  // Load configuration into global variable
+  const config: IConfig = {
+    app: {
+      defaultLocale: 'en_US',
+      locale: appConfig.locale || 'en_US',
+      logPath: appConfig.logPath || '.log',
+      guildConfig: appConfig.guildConfig,
+      clientConfig: appConfig.clientConfig,
+    },
+    secret: {
+      token: process.env.TOKEN,
+      tenorAPIKey: process.env.TENOR_API_KEY,
+    },
+  };
+
+  globalThis.config = Object.freeze(config); // Store config in global variable
 }
 
 /**
@@ -63,13 +110,13 @@ function createPlayer(client: Client): void {
  */
 async function login(client: Client): Promise<void> {
   // Check if the token is set
-  if (!process.env.TOKEN || process.env.TOKEN.trim() === '') {
+  if (!config.secret.token) {
     logger.error('TOKEN environment variable not found');
     process.exit(1);
   }
 
   // Log the bot into Discord
-  await client.login(process.env.TOKEN).catch((error: Error) => {
+  await client.login(config.secret.token).catch((error: Error) => {
     logger.error(`Could not log in bot: ${error.message}`);
     process.exit(1);
   });

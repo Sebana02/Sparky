@@ -73,12 +73,12 @@ async function hasVoiceChannelRequirements(
   guildMember: GuildMember,
   guild: Guild
 ): Promise<boolean> {
-  const djRole = process.env.DJ_ROLE;
+  const djRole = config.app.guildConfig?.djRoleId;
   const memberRoles = guildMember.roles.cache;
   const voiceChannel = guildMember.voice.channel;
   const botVoiceChannel = guild.members.me?.voice.channel;
 
-  if (djRole && !memberRoles.some((role) => role.name === djRole)) {
+  if (djRole && !memberRoles.some((role) => role.id === djRole)) {
     await reply(inter, { content: eventLit.noDJRole, ephemeral: true }, 2);
     return false;
   }

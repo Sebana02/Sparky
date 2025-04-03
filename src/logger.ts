@@ -38,7 +38,7 @@ function logMessage(logFilePath: string, level: LogLevels, ...args: string[]): v
  */
 export default function loadLogger(): void {
   //Path to the log file
-  const logFilePath = resolve(dirname(fileURLToPath(import.meta.url)), '../', process.env.LOG_FILE || '.log');
+  const logFilePath = resolve(dirname(fileURLToPath(import.meta.url)), '../', config.app.logPath);
 
   // Create a logger object, logs to console and file
   const logger: ILogger = {
@@ -48,5 +48,5 @@ export default function loadLogger(): void {
   };
 
   // Set the logger as a global variable
-  globalThis.logger = logger;
+  globalThis.logger = Object.freeze(logger);
 }

@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/bot.ts",
-    "start": "npm run build && node .",
+    "start": "npm run clean && npm run build && node .",
     "build": "tsc",
     "clean": "tsc --build --clean",
     "format": "prettier --write .",

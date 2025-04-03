@@ -23,7 +23,7 @@ const limit = 10;
 /**
  * Language code for the Wikipedia API
  */
-const lang = process.env.LANGUAGE?.split('_')[0] || 'en';
+const lang = config.app.locale.split('_')[0];
 
 /**
  * Command for searching Wikipedia

@@ -4,10 +4,10 @@ import { ICommand } from './interfaces/command.interface.js';
 import { IConfig } from './interfaces/config.interface.js';
 
 declare global {
-  var logger: ILogger; // Declare logger as global variable
+  var logger: Readonly<ILogger>; // Declare logger as global variable
   var commands: Map<string, ICommand>; // Declare commands as global variable
-  var literals: ILanguageObject; // Declare literals as global variable
-  var config: IConfig; // Declare config as global variable
+  var literals: Readonly<ILanguageObject>; // Declare literals as global variable
+  var config: Readonly<IConfig>; // Declare config as global variable
 }
 
 export {};

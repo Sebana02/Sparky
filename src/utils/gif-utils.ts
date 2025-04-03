@@ -19,7 +19,7 @@ function search(keywords: string): string {
   return [
     `https://tenor.googleapis.com/v2/search?`,
     `q=${encodeURIComponent(keywords)}`,
-    `&key=${process.env.TENOR_API_KEY}`,
+    `&key=${config.secret.tenorAPIKey}`,
     `&limit=${50}`,
   ].join('');
 }
@@ -32,8 +32,7 @@ function search(keywords: string): string {
 export async function getRandomGif(category: string): Promise<string | null> {
   try {
     // Check if the api key is set
-    if (!process.env.TENOR_API_KEY || process.env.TENOR_API_KEY.trim() === '')
-      throw new Error('TENOR_API_KEY environment variable not set');
+    if (!config.secret.tenorAPIKey) throw new Error('TENOR_API_KEY environment variable not set');
 
     // Fetch the GIFs
     const response = await fetch(search(category));

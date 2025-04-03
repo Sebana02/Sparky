@@ -14,25 +14,25 @@ export default async function loadLanguages(folderPath: string): Promise<void> {
   // Check if the folder exists
   if (!existsSync(folderPath)) return logger.error(`Could not load languages: ${folderPath} does not exist`);
 
-  // Default language, 'en', is used if the LANG environment variable is not set
-  const defaultLanguage = 'en_US';
-  const selectedLanguage = process.env.LANGUAGE || defaultLanguage;
+  // Load the selected language
+  const selectedLangObj = await loadLanguage(folderPath, config.app.locale);
 
-  // Load the selected language and merge with the default language if necessary
-  const selectedLangObj = await loadLanguage(folderPath, selectedLanguage);
-  const defaultLangObj = await loadLanguage(folderPath, defaultLanguage);
+  // If the selected language is different from the default language, load the default language and merge it
+  if (config.app.locale !== config.app.defaultLocale) {
+    const defaultLangObj = await loadLanguage(folderPath, config.app.defaultLocale);
 
-  // Merge the selected language with the default language
-  Object.entries(defaultLangObj).forEach(([key, value]) => {
-    if (!(key in selectedLangObj)) selectedLangObj[key] = value;
-  });
+    // Merge the selected language with the default language
+    Object.entries(defaultLangObj).forEach(([key, value]) => {
+      if (!(key in selectedLangObj)) selectedLangObj[key] = value;
+    });
+  }
 
   // Check if the merged language object is empty
   if (Object.entries(selectedLangObj).length === 0)
     return logger.error('No literals were loaded. Check the language files.');
 
   // Assign literals to the global literals object
-  globalThis.literals = selectedLangObj;
+  globalThis.literals = Object.freeze(selectedLangObj);
 
   // Log the completion of the processing
   logger.info('Loaded literals');

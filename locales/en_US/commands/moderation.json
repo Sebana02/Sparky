@@ -198,7 +198,7 @@
         "description": "Reason you want to unmute the member for"
       }
     },
-    "not_unmutable": "You cannot unmute this member",
+    "not_unmuteable": "You cannot unmute this member",
     "already_unmuted": "The member is already unmuted",
     "response": "Member {0} has been unmuted successfully for the reason: {1}",
     "dm_response": "You have been unmuted in the server {0} for the following reason: {1}"
