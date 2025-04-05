@@ -2,10 +2,7 @@
 
 ## General
 
-- [ ] Add more personalization options to the bot: welcome channel, excluded channels, dj role, guild id, bot status and activity, language, etc.
-  - Create a config.json file to store the bot's configuration
-  - Store API keys and other sensitive information in a .env file
-  - Load .env and config.json files in the bot's entry point on a global variable
+- [ ] Add more personalization options to the bot
 - [ ] Use subcommands when possible
 - [ ] Create error classes to handle errors better
 
@@ -18,6 +15,7 @@
 
 - [ ] Change direct imports of embed presets to use embedFromTemplate function
 - [ ] Improve visuals and embeds
+- [ ] Make embeds fully customizable using templates
 
 ## Moderation commands
 
@@ -34,5 +32,4 @@
 
 ## Security
 
-- [ ] Add a way to avoid users using commands in certain channels
 - [ ] More checks regarding who can receive certain commands
