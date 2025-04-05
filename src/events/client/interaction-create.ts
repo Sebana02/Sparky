@@ -42,6 +42,13 @@ export const event: IEvent = {
         // Check if command requires user to be in a voice channel
         if (command.voiceChannel && !(await hasVoiceChannelRequirements(inter, guildMember, guild))) return;
 
+        // Check if command was executed on allowed channels
+        if (config.app.guildConfig?.ignoreChannels?.includes(inter.channelId)) return;
+
+        // Check if command was executed by allowed roles
+        if (config.app.guildConfig?.ignoreRoles?.some((role) => guildMember.roles.cache.some((r) => r.id === role)))
+          return;
+
         //Log interaction
         logger.info(
           `Command: ${cmdInfo} | User: ${inter.user.username} (id : ${inter.user}) | Guild: ${guild.name} (id : ${guild.id})`
