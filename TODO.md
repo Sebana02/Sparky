@@ -5,6 +5,8 @@
 - [ ] Add more personalization options to the bot
 - [ ] Use subcommands when possible
 - [ ] Create error classes to handle errors better
+- [ ] Sharding the bot
+- [ ] Consider using i18next for translations
 
 ## Music
 
@@ -18,6 +20,7 @@
 ## Embeds
 
 - [ ] Change direct imports of embed presets to use embedFromTemplate function
+- [ ] Only use embedTemplates when necessary (remove unnecessary ones)
 - [ ] Improve visuals and embeds
 - [ ] Make embeds fully customizable using templates
 

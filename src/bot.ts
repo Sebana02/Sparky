@@ -1,11 +1,11 @@
 import { Client, GatewayIntentBits, Partials } from 'discord.js';
 import { Player } from 'discord-player';
 import { YoutubeiExtractor } from 'discord-player-youtubei';
+import { DefaultExtractors } from '@discord-player/extractor';
 import { config as loadEnv } from 'dotenv';
 import { IConfig, IUserConfig } from './interfaces/config.interface.js';
 import loadLogger from './logger.js';
 import loadResources from './loader.js';
-import { DefaultExtractors } from '@discord-player/extractor';
 
 /**
  * Main function to run the bot
@@ -101,8 +101,6 @@ function createClient(): Client {
  */
 async function createPlayer(client: Client): Promise<void> {
   const player = new Player(client); // Player setup
-  // player.extractors.loadDefault((ext) => ext !== 'YouTubeExtractor'); // Load default extractors, except YouTube
-  // player.extractors.register(YoutubeiExtractor, {}); // Load YouTube support
   await player.extractors.loadMulti(DefaultExtractors); // Load default extractors
   await player.extractors.register(YoutubeiExtractor, {}); // Load YouTube support
 }
