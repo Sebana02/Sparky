@@ -7,6 +7,8 @@
 - [ ] Create error classes to handle errors better
 - [ ] Sharding the bot
 - [ ] Consider using i18next for translations
+- [ ] Consider using aliases when importing modules
+- [ ] Eliminate the need of parsing data property of commands into SlashCommandBuilder
 
 ## Music
 
@@ -24,7 +26,7 @@
 - [ ] Improve visuals and embeds
 - [ ] Make embeds fully customizable using templates
 
-## Moderation commands
+## Commands
 
 - [ ] add-role command
 - [ ] remove-role command
@@ -36,6 +38,8 @@
 - [ ] delete-channel command
 
 - [ ] Add pagination to bannedlist and mutedlist commands
+
+- [ ] Weather command
 
 ## Security
 

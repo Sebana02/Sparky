@@ -139,6 +139,7 @@ export function noLyrics(track: Track): APIEmbed {
 export function addToQueue(track: Track<ITrackMetadata>): APIEmbed {
   return {
     color: ColorScheme.music,
+    url: track.url,
     author: {
       name: `${track.title} | ${track.author}`,
       icon_url: track.thumbnail,

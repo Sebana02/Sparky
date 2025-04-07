@@ -45,7 +45,7 @@
 - 🎮 **Mini Games** – Play **Hangman, Rock-Paper-Scissors, Tic-Tac-Toe**, and other fun challenges with friends.
 - 🛠 **Useful Tools** – Create **polls**, set **reminders**, and check **server latency** in one command.
 - 📚 **Instant Information** – Get **bot uptime, Wikipedia searches**, and quick data directly from chat.
-- ⚙️ **Fully Configurable** – Customize **bot behavior, permissions, and activity status** through the `.env` file.
+- ⚙️ **Fully Configurable** – Customize **bot behavior, permissions, and activity status** through the `.env` and `src/config.ts` file.
 - 🚀 **Modern Slash Commands** – Uses **Discord’s latest slash command system** for a smooth user experience.
 - 🌍 **Multi-language Support** – Available in **English & Spanish**, with more languages coming soon!
 
@@ -82,7 +82,7 @@ To install and run the bot locally, follow these steps:
 
    If you don't have a Discord bot token, you can follow [this guide](https://discordjs.guide/preparations/setting-up-a-bot-application.html#creating-your-bot) to create one.
 
-   You can configure other settings in the `.env` file. For more details, check the [Configuration](#configuration) section.
+   You can configure other settings in the `.env` and `src/config.ts` files. For more details, check the [Configuration](#configuration) section.
 
 6. Invite the bot to your server by following [this guide](https://discordjs.guide/preparations/adding-your-bot-to-servers.html#bot-invite-links).
 
@@ -108,17 +108,12 @@ To install and run the bot locally, follow these steps:
 
 ### Configuration
 
-The bot has the following configurations through the `.env` file, although only the `TOKEN` is required to run the bot:
+The bot has the following configurations through the `.env` file, located on the root of the project, although only the `TOKEN` is required to run the bot:
 
 | Variable | Description |
 | --- | --- |
 | `TOKEN` | Discord authentication token (**Required**). |
-| `LOG_FILE` | The file where logs will be stored. If not specified, logs will be saved in a `.log` file in the project root. |
-| `LANGUAGE` | The bot's language (must match a folder name in `locales`, recommended format: `IETF BCP 47`). |
-| `GUILD_ID` | The server ID where the bot will be used. If not specified, commands will be registered globally (can take up to 1 hour to be available). |
-| `PLAYING_ACTIVITY` | The bot's activity status (e.g., "Playing /help"). If left empty, the bot will not display an activity. |
 | `TENOR_API_KEY` | API key for the Tenor GIF API (required for GIF commands). You can get one [here](https://tenor.com/developer/keysignup). |
-| `DJ_ROLE` | The role ID that will have DJ permissions. If specified, only users with this role can control the music bot. |
 
 ---
 
@@ -126,12 +121,49 @@ Here is an example of a fully configured `.env` file:
 
 ```bash
 TOKEN="your_discord_bot_token_here"
-LOG_FILE="path_to_your_log_file.log"
-LANGUAGE="en_US"
-GUILD_ID="your_guild_id_here"
-PLAYING_ACTIVITY="with Sparky | /help"
 TENOR_API_KEY="your_tenor_api_key_here"
-DJ_ROLE="your_dj_role_id_here"
+```
+
+You can also configure the bot's behavior in the `src/config.ts` file. This file contains various settings that control how the bot operates and general application settings. Here are some of the key settings you can configure:
+
+```typescript
+import { IUserConfig } from './interfaces/config.interface.js';
+
+export const userConfig: IUserConfig = {
+  locale: 'en_US', // Language of the bot (default: 'en_US -> English')
+  logPath: 'bot.log', // Path to the log file (default: '.log')
+  // Guild configuration
+  guildConfig: {
+    guildId: 'your_guild_id', // Guild ID where the bot will be used (default: 'None')
+    ignoreChannels: ['channel_id_1', 'channel_id_2'], // Channel IDs to ignore commands from (default: 'None')
+    ignoreRoles: ['role_id_1', 'role_id_2'], // Roles to ignore commands from (default: 'None')
+    welcomeChannelId: 'your_welcome_channel_id', // Welcome channel ID (default: 'None')
+    djRoleId: 'your_dj_role_id', // DJ role ID (default: 'None')
+  },
+  // Client configuration
+  clientConfig: {
+    setAFK: false, // Set the bot as AFK (default: false)
+    setUsername: 'Sparky', // Set the bot's username (default: 'None')
+    // Add any additional client configuration settings here
+  },
+};
+```
+
+Check the [config.interface.ts](src/interfaces/config.interface.ts) file for more details on the available configuration options.
+
+Both `.env` and `src/config.ts` files are not provided in the repository, so you will need to create them manually. The bot will not work without the `.env` file, but it will work without the `src/config.ts` file. If you don't create it, the bot will use the default values. This is the final structure your project should have:
+
+```bash
+Sparky
+├── .env <--- .env file
+├── src/
+│   ├── commands/
+│   ├── events/
+│   ├── interfaces/
+│   ├── ...
+│   ├── config.ts <--- src/config.ts file
+│   └── bot.ts
+├── ...
 ```
 
 ## Commands
@@ -419,9 +451,7 @@ logger.error('Could not load event "ready"');
 
 The bot is designed to support multiple languages, allowing users to interact with the bot in their preferred language.
 
-In order to change the bot's language, you need to modify the `LANGUAGE` variable in the [`.env`](#configuration) file, using one of the supported languages, which are stored in folders in the `locales` folder. Just copy the folder's name of the language you want to use to the `LANGUAGE` variable. The bot will automatically load the literals from the selected language. By default, the bot uses English as the language.
-
-The naming convention for language folders should be clear and consistent to ensure easy identification and loading of the correct language files. It is recommended to use the IETF BCP 47 format for language codes. A list for some codes can be found at [`locales-list.json`](locales/locales-list.json).
+In order to change the bot's language, you need to modify the `locale` variable in the [`src/config.ts`](#configuration) file, using one of the supported languages, which are stored in folders in the `locales` directory. Simply copy the name of the desired language folder and set it as the `locale` value. The bot will automatically load the corresponding language strings. By default, the bot uses English.
 
 ---
 
@@ -442,11 +472,13 @@ Feel free to add your language by following the instructions below!
 
 To add a new language to the bot, follow these steps:
 
-1. `Create a new folder`: in the `locales` directory with the name of the language you want to add, using the IETF BCP 47 format for the language code (e.g., `en_US` for English, United States).
+1. `Create a new folder`: in the `locales` directory with the name of the language you want to add, using the IETF BCP 47 format for the language code (e.g., `en_US` for English, United States). A list of available language codes can be found in [locales.json](./locales/locales.json)
 
-2. `Add JSON files`: inside the new folder with every key-value pair, you can follow the structure of the existing languages or follow your own structure, but you have to make sure to include every key-value pair or else some parts may not work.
+2. `Add JSON files`: inside the new folder with every key-value pair, you can follow the structure of the existing languages or follow your own structure, but you have to make sure to include every key-value pair or else some parts may not work. It is recommended to copy the English language files and translate the values to your language.
 
-3. `Access literals`: These JSON files will be loaded into the global variable `globalThis.literals`. Each key is loaded as a result of concatenating the path of the JSON's structure with `.`. The type of the value is determined by the type of the value in the JSON file, and includes strings, numbers, arrays, and functions (for placeholders). Placeholders are represented by ordered numbers inside curly braces (e.g., `{0}`, `{1}`). If a value in the JSON file contains placeholders, it will be wrapped in a function that replaces the placeholders with the provided values when called.
+3. `Set the locale`: in the [`src/config.ts`](#configuration) file to the name of the new language folder you created. This property will only accept keys included in the [locales.json](./locales/locales.json) file.
+
+4. `Access literals`: These JSON files will be loaded into the global variable `globalThis.literals`. Each key is loaded as a result of concatenating the path of the JSON's structure with `.`. The type of the value is determined by the type of the value in the JSON file, and includes strings, numbers, arrays, and functions (for placeholders). Placeholders are represented by ordered numbers inside curly braces (e.g., `{0}`, `{1}`). If a value in the JSON file contains placeholders, it will be wrapped in a function that replaces the placeholders with the provided values when called.
 
 For example, this JSON:
 

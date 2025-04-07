@@ -1,5 +1,5 @@
 import { ActivityOptions, Base64Resolvable, BufferResolvable, PresenceData, PresenceStatusData } from 'discord.js';
-import localesJson from '../../locales/locales-list.json';
+import localesJson from '../../locales/locales.json';
 
 /**
  * Interface for user configuration.
