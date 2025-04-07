@@ -2,7 +2,7 @@
   "command_error_handler": "Ha ocurrido un error al ejecutar el comando",
   "music_presets": {
     "error": "Ha ocurrido un error al reproducir la música",
-    "no_results": "No hay resultados para",
+    "no_results": "No hay resultados para esta canción",
     "no_playlist": "Asegurate que el link sea de una playlist y tenga al menos 5 canciones",
     "no_queue": "No hay música reproduciendose",
     "no_history": "No hay historial",

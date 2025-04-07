@@ -1,13 +1,10 @@
 import { ChatInputCommandInteraction, Client, SlashCommandBuilder } from 'discord.js';
-import { Track, useQueue } from 'discord-player';
+import { Track, useMainPlayer, useQueue } from 'discord-player';
 import { reply, deferReply } from '../../../utils/interaction-utils.js';
 import { fetchString } from '../../../utils/language-utils.js';
 import { ICommand } from '../../../interfaces/command.interface.js';
 import { IQueuePlayerMetadata, ITrackMetadata } from '../../../interfaces/metadata.interface.js';
-import { lyricsExtractor } from '@discord-player/extractor';
 import { embedFromTemplate } from '../../../utils/embed/embed-utils.js';
-
-const genius = lyricsExtractor();
 
 /**
  * Literal object for the command
@@ -38,10 +35,12 @@ export const command: ICommand = {
     await deferReply(inter, { ephemeral: false });
 
     //Search for the lyrics
-    const lyricsData = await genius.search((queue.currentTrack as Track<ITrackMetadata>).title);
+    const lyrics = await useMainPlayer().lyrics.search({
+      q: `${(queue.currentTrack as Track<ITrackMetadata>).author} ${(queue.currentTrack as Track<ITrackMetadata>).title}`,
+    });
 
     //If there are no lyrics
-    if (!lyricsData)
+    if (!lyrics.length)
       return await reply(
         inter,
         { embeds: [embedFromTemplate('noLyrics', queue.currentTrack as Track<ITrackMetadata>)], ephemeral: true },
@@ -49,6 +48,6 @@ export const command: ICommand = {
       );
 
     //Send the lyrics embed
-    await reply(inter, { embeds: [embedFromTemplate('lyrics', lyricsData)] });
+    await reply(inter, { embeds: [embedFromTemplate('lyrics', lyrics)] });
   },
 };

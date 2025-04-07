@@ -46,7 +46,7 @@ export const command: ICommand = {
   execute: async (client: Client, inter: ChatInputCommandInteraction) => {
     //Get the queue and loop mode
     const queue = useQueue<IQueuePlayerMetadata>(inter.guild?.id as string);
-    const loopMode = inter.options.getNumber(commandLit.loopName, true);
+    const loopMode = inter.options.getNumber(commandLit.loopName, true) as QueueRepeatMode;
 
     //Check if there is a queue and if it is playing
     if (!queue || !queue.isPlaying()) return await reply(inter, { embeds: [noQueue(client)], ephemeral: true }, 2);

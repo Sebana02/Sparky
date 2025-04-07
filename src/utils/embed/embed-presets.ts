@@ -1,6 +1,5 @@
-import { SearchResult, Track, GuildQueue, GuildQueuePlayerNode } from 'discord-player';
+import { SearchResult, Track, GuildQueue, GuildQueuePlayerNode, LrcSearchResult } from 'discord-player';
 import { Client, APIEmbed } from 'discord.js';
-import { LyricsData } from '@discord-player/extractor';
 import { fetchFunction, fetchString } from '../language-utils.js';
 import { ColorScheme } from './embed-utils.js';
 import { ITrackMetadata, IQueuePlayerMetadata } from '../../interfaces/metadata.interface.js';
@@ -320,17 +319,15 @@ export function volume(vol: number, track: Track<ITrackMetadata>): APIEmbed {
  * @param lyricsData - The lyrics object
  * @returns The lyrics embed
  */
-export function lyrics(lyricsData: LyricsData): APIEmbed {
-  const trimmedLyrics = lyricsData.lyrics.substring(0, 1997);
+export function lyrics(lyricsData: LrcSearchResult[]): APIEmbed {
+  const lyrics = lyricsData[0];
+  const trimmedLyrics = lyrics.plainLyrics.substring(0, 1997);
 
   return {
     color: ColorScheme.music,
-    title: lyricsData.title,
-    url: lyricsData.url,
-    thumbnail: lyricsData.thumbnail ? { url: lyricsData.thumbnail } : undefined,
+    title: `${lyrics.trackName} | ${lyrics.albumName} | ${lyrics.duration}`,
     author: {
-      name: lyricsData.artist.name,
-      icon_url: lyricsData.artist.image,
+      name: lyrics.artistName,
     },
     description: trimmedLyrics.length === 1997 ? `${trimmedLyrics}...` : trimmedLyrics,
   };

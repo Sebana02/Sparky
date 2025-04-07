@@ -6,6 +6,10 @@
 - [ ] Use subcommands when possible
 - [ ] Create error classes to handle errors better
 
+## Music
+
+- [ ] Solve issues with the music commands
+
 ## IAs
 
 - [ ] RPS

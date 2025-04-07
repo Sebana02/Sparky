@@ -18,7 +18,7 @@ import {
 import { createEmbed, ColorScheme, embedFromTemplate } from '../../utils/embed/embed-utils.js';
 import { fetchString, fetchFunction } from '../../utils/language-utils.js';
 import { ICommand } from 'interfaces/command.interface.js';
-import { IQueuePlayerMetadata } from 'interfaces/metadata.interface.js';
+import { IQueuePlayerMetadata, ITrackMetadata } from 'interfaces/metadata.interface.js';
 
 /**
  * Literal object for the command
@@ -69,7 +69,7 @@ export const command: ICommand = {
       return await reply(inter, { embeds: [embedFromTemplate('noPlaylist', client)], ephemeral: true }, 2);
 
     //Start the trivia
-    await triviaRound(inter, [], results, [...(results.tracks as Track<IQueuePlayerMetadata>[])]);
+    await triviaRound(inter, [], results, [...(results.tracks as Track<ITrackMetadata>[])]);
   },
 };
 
@@ -85,8 +85,8 @@ type Player = {
  * Trivia round songs
  */
 type TriviaRoundSongs = {
-  correctSong: Track<IQueuePlayerMetadata>;
-  songs: Track<IQueuePlayerMetadata>[];
+  correctSong: Track<ITrackMetadata>;
+  songs: Track<ITrackMetadata>[];
 };
 
 /**
@@ -121,7 +121,7 @@ function trackDurationToMilliseconds(duration: string): number {
  * @param songs Array of songs to create buttons for
  * @returns ActionRowBuilder with song buttons
  */
-function createActionRow(songs: Track<IQueuePlayerMetadata>[]): ActionRowBuilder<ButtonBuilder> {
+function createActionRow(songs: Track<ITrackMetadata>[]): ActionRowBuilder<ButtonBuilder> {
   return new ActionRowBuilder<ButtonBuilder>()
     .addComponents(
       songs.map((song) => {
@@ -158,7 +158,7 @@ function createLeaderboardEmbed(players: Player[], end: boolean): EmbedBuilder {
  * @param toBePlayed Songs that have not been played yet
  * @returns The correct song and the songs that will appear in the round
  */
-function selectSong(results: SearchResult, toBePlayed: Track<IQueuePlayerMetadata>[]): TriviaRoundSongs {
+function selectSong(results: SearchResult, toBePlayed: Track<ITrackMetadata>[]): TriviaRoundSongs {
   // Select random song from toBePlayed
   let correctSong = toBePlayed[Math.floor(Math.random() * toBePlayed.length)];
 
@@ -166,7 +166,7 @@ function selectSong(results: SearchResult, toBePlayed: Track<IQueuePlayerMetadat
   toBePlayed = toBePlayed.filter((s) => s !== correctSong);
 
   // Select 3 random songs from results.tracks that are not the same as song
-  const incorrectSongs: Track<IQueuePlayerMetadata>[] = (results.tracks as Track<IQueuePlayerMetadata>[])
+  const incorrectSongs: Track<ITrackMetadata>[] = (results.tracks as Track<ITrackMetadata>[])
     .filter((song) => song !== correctSong)
     .sort(() => Math.random() - Math.random())
     .slice(0, 3);
@@ -183,7 +183,7 @@ function selectSong(results: SearchResult, toBePlayed: Track<IQueuePlayerMetadat
  * @param inter The interaction of the command
  * @param song Song to play
  */
-async function playSong(inter: ChatInputCommandInteraction, song: Track<IQueuePlayerMetadata>): Promise<void> {
+async function playSong(inter: ChatInputCommandInteraction, song: Track<ITrackMetadata>): Promise<void> {
   //Get player and queue
   const player = usePlayer(inter.guildId as string);
   const queue = useQueue(inter.guildId as string);
@@ -239,7 +239,7 @@ async function triviaRound(
   inter: ChatInputCommandInteraction,
   players: Player[],
   results: SearchResult,
-  toBePlayed: Track<IQueuePlayerMetadata>[]
+  toBePlayed: Track<ITrackMetadata>[]
 ) {
   //Check if there are songs left
   if (toBePlayed.length === 0) return await endTrivia(inter, players);
@@ -272,9 +272,9 @@ async function triviaRound(
 async function handleInteraction(
   inter: ChatInputCommandInteraction,
   players: Player[],
-  correctSong: Track<IQueuePlayerMetadata>,
+  correctSong: Track<ITrackMetadata>,
   results: SearchResult,
-  toBePlayed: Track<IQueuePlayerMetadata>[]
+  toBePlayed: Track<ITrackMetadata>[]
 ) {
   //Fetch the reply
   const replyMessage = await fetchReply(inter);

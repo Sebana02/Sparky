@@ -5,6 +5,7 @@ import { config as loadEnv } from 'dotenv';
 import { IConfig, IUserConfig } from './interfaces/config.interface.js';
 import loadLogger from './logger.js';
 import loadResources from './loader.js';
+import { DefaultExtractors } from '@discord-player/extractor';
 
 /**
  * Main function to run the bot
@@ -20,7 +21,7 @@ async function run(): Promise<void> {
   const client: Client = createClient();
 
   // Create and set up a new player for music
-  createPlayer(client);
+  await createPlayer(client);
 
   // Load commands, languages, and events
   await loadResources(client);
@@ -98,10 +99,12 @@ function createClient(): Client {
  * Create and set up a new player for music
  * @param client The Discord client
  */
-function createPlayer(client: Client): void {
+async function createPlayer(client: Client): Promise<void> {
   const player = new Player(client); // Player setup
-  player.extractors.loadDefault((ext) => ext !== 'YouTubeExtractor'); // Load default extractors, except YouTube
-  player.extractors.register(YoutubeiExtractor, {}); // Load YouTube support
+  // player.extractors.loadDefault((ext) => ext !== 'YouTubeExtractor'); // Load default extractors, except YouTube
+  // player.extractors.register(YoutubeiExtractor, {}); // Load YouTube support
+  await player.extractors.loadMulti(DefaultExtractors); // Load default extractors
+  await player.extractors.register(YoutubeiExtractor, {}); // Load YouTube support
 }
 
 /**
