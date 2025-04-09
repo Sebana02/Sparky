@@ -1,6 +1,14 @@
 {
   "compilerOptions": {
     "baseUrl": "src",
+    "paths": {
+      "@/*": ["*"],
+      "@commands/*": ["commands/*"],
+      "@events/*": ["events/*"],
+      "@interfaces/*": ["interfaces/*"],
+      "@loaders/*": ["loaders/*"],
+      "@utils/*": ["utils/*"]
+    },
     "outDir": "dist",
     "rootDir": "src",
     "target": "ESNext",
@@ -14,6 +22,6 @@
     "resolveJsonModule": true,
     "esModuleInterop": true
   },
-  "include": ["src"],
+  "include": ["src/**/*"],
   "exclude": ["node_modules"]
 }

@@ -1,6 +1,6 @@
 import { existsSync, readdirSync, statSync } from 'fs';
 import { resolve } from 'path';
-import { ICommand } from '../interfaces/command.interface.js';
+import { ICommand } from '@interfaces/command.interface.js';
 import { Collection, SlashCommandBuilder } from 'discord.js';
 import { pathToFileURL } from 'url';
 

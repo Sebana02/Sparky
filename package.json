@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "tsx watch src/bot.ts",
     "start": "npm run clean && npm run build && node .",
-    "build": "tsc",
+    "build": "tsc && tsc-alias",
     "clean": "tsc --build --clean",
     "format": "prettier --write .",
     "docs": "typedoc --entryPointStrategy expand src --out docs --name Sparky --readme README.md",
@@ -32,6 +32,7 @@
   "devDependencies": {
     "@types/node": "^22.14.0",
     "prettier": "^3.5.3",
+    "tsc-alias": "^1.8.14",
     "tsx": "^4.19.3",
     "typedoc": "^0.28.2",
     "typescript": "^5.8.3"

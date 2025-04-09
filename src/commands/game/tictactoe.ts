@@ -9,10 +9,10 @@ import {
   ButtonStyle,
   MessageComponentInteraction,
 } from 'discord.js';
-import { createEmbed, modifyEmbed, ColorScheme } from '../../utils/embed/embed-utils.js';
-import { reply, deferReply, fetchReply, update } from '../../utils/interaction-utils.js';
-import { fetchString, fetchFunction } from '../../utils/language-utils.js';
-import { ICommand } from 'interfaces/command.interface.js';
+import { createEmbed, modifyEmbed, ColorScheme } from '@utils/embed/embed-utils.js';
+import { reply, deferReply, fetchReply, update } from '@utils/interaction-utils.js';
+import { fetchString, fetchFunction } from '@utils/language-utils.js';
+import { ICommand } from '@interfaces/command.interface.js';
 
 /**
  * Literal object for the command

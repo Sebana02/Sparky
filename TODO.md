@@ -6,8 +6,8 @@
 - [ ] Use subcommands when possible
 - [ ] Create error classes to handle errors better
 - [ ] Sharding the bot
-- [ ] Consider using i18next for translations
-- [ ] Consider using aliases when importing modules
+- [ ] Modify locale placeholders to be more user-friendly (e.g. {user} instead of {0})
+- [ ] Add an alternative to tenor for gifs (e.g. giphy) (use discord's tenor?)
 
 ## Music
 

@@ -1,9 +1,8 @@
-import { deferReply, reply, fetchReply, update } from '../../utils/interaction-utils.js';
+import { deferReply, reply, fetchReply, update } from '@utils/interaction-utils.js';
 import { QueryType, useQueue, useMainPlayer, usePlayer, SearchResult, Track } from 'discord-player';
 import {
   ActionRowBuilder,
   ButtonBuilder,
-  InteractionType,
   EmbedBuilder,
   SlashCommandBuilder,
   Client,
@@ -15,10 +14,10 @@ import {
   VoiceChannel,
   MessageComponentInteraction,
 } from 'discord.js';
-import { createEmbed, ColorScheme, embedFromTemplate } from '../../utils/embed/embed-utils.js';
-import { fetchString, fetchFunction } from '../../utils/language-utils.js';
-import { ICommand } from 'interfaces/command.interface.js';
-import { IQueuePlayerMetadata, ITrackMetadata } from 'interfaces/metadata.interface.js';
+import { createEmbed, ColorScheme, embedFromTemplate } from '@utils/embed/embed-utils.js';
+import { fetchString, fetchFunction } from '@utils/language-utils.js';
+import { ICommand } from '@interfaces/command.interface.js';
+import { IQueuePlayerMetadata, ITrackMetadata } from '@interfaces/metadata.interface.js';
 
 /**
  * Literal object for the command

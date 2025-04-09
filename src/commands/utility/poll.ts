@@ -1,7 +1,7 @@
 import { Client, ChatInputCommandInteraction, PollAnswerData, PollLayoutType, SlashCommandBuilder } from 'discord.js';
-import { fetchReply, reply } from '../../utils/interaction-utils.js';
-import { fetchString } from '../../utils/language-utils.js';
-import { ICommand } from '../../interfaces/command.interface.js';
+import { fetchReply, reply } from '@utils/interaction-utils.js';
+import { fetchString } from '@utils/language-utils.js';
+import { ICommand } from '@interfaces/command.interface.js';
 
 /**
  * Literal object for the command

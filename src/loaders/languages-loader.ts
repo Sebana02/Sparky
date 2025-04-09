@@ -1,6 +1,6 @@
 import { existsSync, readdirSync, statSync } from 'fs';
 import { resolve } from 'path';
-import { ILanguageObject } from '../interfaces/language.interface.js';
+import { ILanguageObject } from '@interfaces/language.interface.js';
 import { readFile } from 'fs/promises';
 
 /**
@@ -168,6 +168,18 @@ function processItem(value: any): any {
         args[number] !== undefined ? args[number] : `{${number}}`
       );
   }
+
+  // Preparing for future use: If the value is a string and contains named placeholders, convert it to a function
+  // if (typeof value === 'string' && /{[^}]+}/.test(value)) {
+  //   return (params: Record<string, any>) =>
+  //     value.replace(/{([^}]+)}/g, (_: string, key: string) =>
+  //       key in params ? params[key] : `{${key}}`
+  //     );
+  // }
+
+  // const template = processItem('Hey {name}, today is {date}');
+  // console.log(template({ name: 'Dave', date: 'Monday' }));
+  // Output: "Hey Dave, today is Monday"
 
   // Return the value as is
   return value;

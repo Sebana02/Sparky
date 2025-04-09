@@ -1,5 +1,5 @@
 import { APIEmbed, EmbedBuilder, EmbedData } from 'discord.js';
-import * as presets from './embed-presets.js';
+import * as presets from '@utils/embed/embed-presets.js';
 
 /**
  * Color scheme for Discord embeds

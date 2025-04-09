@@ -1,8 +1,8 @@
 import { SearchResult, Track, GuildQueue, GuildQueuePlayerNode, LrcSearchResult } from 'discord-player';
 import { Client, APIEmbed } from 'discord.js';
-import { fetchFunction, fetchString } from '../language-utils.js';
-import { ColorScheme } from './embed-utils.js';
-import { ITrackMetadata, IQueuePlayerMetadata } from '../../interfaces/metadata.interface.js';
+import { fetchFunction, fetchString } from '@utils/language-utils.js';
+import { ColorScheme } from '@utils/embed/embed-utils.js';
+import { ITrackMetadata, IQueuePlayerMetadata } from '@interfaces/metadata.interface.js';
 
 /**
  * Literal object for music embeds

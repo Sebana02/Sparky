@@ -1,7 +1,7 @@
 import { dirname, resolve } from 'path';
 import { appendFileSync } from 'fs';
 import { fileURLToPath } from 'url';
-import { ILogger } from './interfaces/logger.interface.js';
+import { ILogger } from '@interfaces/logger.interface.js';
 
 /**
  * Enum for log levels

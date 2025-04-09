@@ -1,5 +1,5 @@
 import { Client } from 'discord.js';
-import { Emitter, IEvent } from '../../interfaces/event.interface.js';
+import { Emitter, IEvent } from '@interfaces/event.interface.js';
 
 /**
  * Event when an unhandled rejection occurs

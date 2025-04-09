@@ -2,9 +2,9 @@ import { Client } from 'discord.js';
 import { existsSync, readdirSync, statSync } from 'fs';
 import { resolve } from 'path';
 import { GuildQueueEvent, useMainPlayer } from 'discord-player';
-import { IEvent, Emitter } from '../interfaces/event.interface.js';
+import { IEvent, Emitter } from '@interfaces/event.interface.js';
 import { pathToFileURL } from 'url';
-import { eventErrorHandler } from '../utils/error-handler.js';
+import { eventErrorHandler } from '@utils/error-handler.js';
 
 /**
  * Loads events from the specified folder path.

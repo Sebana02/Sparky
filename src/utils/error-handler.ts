@@ -1,8 +1,8 @@
 import { ChatInputCommandInteraction, Client } from 'discord.js';
 import { createEmbed, ColorScheme } from './embed/embed-utils.js';
-import { reply } from './interaction-utils.js';
-import { ICommand } from './../interfaces/command.interface.js';
-import { fetchString } from './language-utils.js';
+import { reply } from '@utils/interaction-utils.js';
+import { ICommand } from '@interfaces/command.interface.js';
+import { fetchString } from '@utils/language-utils.js';
 
 /**
  * Literal object for utility functions

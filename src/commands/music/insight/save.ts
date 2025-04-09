@@ -1,10 +1,10 @@
 import { ChatInputCommandInteraction, Client, GuildMember, SlashCommandBuilder } from 'discord.js';
 import { useQueue, Track } from 'discord-player';
-import { deferReply, reply } from '../../../utils/interaction-utils.js';
-import { noQueue, save, savePrivate } from '../../../utils/embed/embed-presets.js';
-import { fetchString } from '../../../utils/language-utils.js';
-import { ICommand } from '../../../interfaces/command.interface.js';
-import { IQueuePlayerMetadata, ITrackMetadata } from '../../../interfaces/metadata.interface.js';
+import { deferReply, reply } from '@utils/interaction-utils.js';
+import { noQueue, save, savePrivate } from '@utils/embed/embed-presets.js';
+import { fetchString } from '@utils/language-utils.js';
+import { ICommand } from '@interfaces/command.interface.js';
+import { IQueuePlayerMetadata, ITrackMetadata } from '@interfaces/metadata.interface.js';
 
 /**
  * Literal object for the command

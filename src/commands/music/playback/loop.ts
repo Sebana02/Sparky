@@ -1,10 +1,10 @@
 import { ChatInputCommandInteraction, Client, SlashCommandBuilder } from 'discord.js';
 import { useQueue, Track, QueueRepeatMode } from 'discord-player';
-import { reply } from '../../../utils/interaction-utils.js';
-import { noQueue, loop } from '../../../utils/embed/embed-presets.js';
-import { fetchString } from '../../../utils/language-utils.js';
-import { ICommand } from '../../../interfaces/command.interface.js';
-import { IQueuePlayerMetadata, ITrackMetadata } from '../../../interfaces/metadata.interface.js';
+import { reply } from '@utils/interaction-utils.js';
+import { noQueue, loop } from '@utils/embed/embed-presets.js';
+import { fetchString } from '@utils/language-utils.js';
+import { ICommand } from '@interfaces/command.interface.js';
+import { IQueuePlayerMetadata, ITrackMetadata } from '@interfaces/metadata.interface.js';
 
 /**
  * Literal object for the command

@@ -1,8 +1,8 @@
 import { ChatInputCommandInteraction, Client, PermissionFlagsBits, SlashCommandBuilder } from 'discord.js';
-import { ICommand } from 'interfaces/command.interface';
-import { reply, deferReply } from '../../../utils/interaction-utils.js';
-import { createEmbed, ColorScheme } from '../../../utils/embed/embed-utils.js';
-import { fetchString, fetchFunction } from '../../../utils/language-utils.js';
+import { ICommand } from '@interfaces/command.interface';
+import { reply, deferReply } from '@utils/interaction-utils.js';
+import { createEmbed, ColorScheme } from '@utils/embed/embed-utils.js';
+import { fetchString, fetchFunction } from '@utils/language-utils.js';
 
 /**
  * Literal object for the command

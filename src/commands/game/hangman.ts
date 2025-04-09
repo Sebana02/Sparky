@@ -11,10 +11,10 @@ import {
   Message,
   TextChannel,
 } from 'discord.js';
-import { deferReply, reply, fetchReply } from '../../utils/interaction-utils.js';
-import { createEmbed, ColorScheme } from '../../utils/embed/embed-utils.js';
-import { fetchString, fetchFunction, fetchArray } from '../../utils/language-utils.js';
-import { ICommand } from 'interfaces/command.interface.js';
+import { deferReply, reply, fetchReply } from '@utils/interaction-utils.js';
+import { createEmbed, ColorScheme } from '@utils/embed/embed-utils.js';
+import { fetchString, fetchFunction, fetchArray } from '@utils/language-utils.js';
+import { ICommand } from '@interfaces/command.interface.js';
 
 /**
  * Literal object for the command

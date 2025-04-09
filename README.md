@@ -300,7 +300,7 @@ Each command must be a `.ts` file and must export an [`ICommand`](src/interfaces
 Here is a basic command that replies with a greeting:
 
 ```typescript
-import { ICommand } from '../../interfaces/command.interface.js';
+import { ICommand } from '@interfaces/command.interface.js';
 import { ChatInputCommandInteraction, Client, SlashCommandBuilder } from 'discord.js';
 
 export const command: ICommand = {
@@ -384,7 +384,7 @@ Any new events must be created in the `events` folder as it is the path where th
 Here is a basic example of an event that logs when the bot is ready:
 
 ```typescript
-import { IEvent, Emitter } from '../../interfaces/event.interface.js';
+import { IEvent, Emitter } from '@interfaces/event.interface.js';
 import { Client } from 'discord.js';
 
 export const event: IEvent = {

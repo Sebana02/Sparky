@@ -9,10 +9,10 @@ import {
   EmbedField,
   SlashCommandBuilder,
 } from 'discord.js';
-import { ICommand } from '../../interfaces/command.interface.js';
-import { createEmbed, ColorScheme } from '../../utils/embed/embed-utils.js';
-import { reply, deferReply, fetchReply, deleteReply, update } from '../../utils/interaction-utils.js';
-import { fetchFunction, fetchString } from '../../utils/language-utils.js';
+import { ICommand } from '@interfaces/command.interface.js';
+import { createEmbed, ColorScheme } from '@utils/embed/embed-utils.js';
+import { reply, deferReply, fetchReply, deleteReply, update } from '@utils/interaction-utils.js';
+import { fetchFunction, fetchString } from '@utils/language-utils.js';
 
 /**
  * Literal object for the command

@@ -1,7 +1,7 @@
-import { modifyEmbed, createEmbed, ColorScheme } from './embed/embed-utils.js';
-import { reply, deferReply } from './interaction-utils.js';
+import { modifyEmbed, createEmbed, ColorScheme } from '@utils/embed/embed-utils.js';
+import { reply, deferReply } from '@utils/interaction-utils.js';
 import { ChatInputCommandInteraction, EmbedBuilder } from 'discord.js';
-import { fetchFunction } from './language-utils.js';
+import { fetchFunction } from '@utils/language-utils.js';
 
 /**
  * Literal object for utility functions

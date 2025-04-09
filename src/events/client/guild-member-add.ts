@@ -1,6 +1,6 @@
 import { Client, GuildMember } from 'discord.js';
-import { Emitter, IEvent } from '../../interfaces/event.interface.js';
-import { fetchFunction } from '../../utils/language-utils.js';
+import { Emitter, IEvent } from '@interfaces/event.interface.js';
+import { fetchFunction } from '@utils/language-utils.js';
 
 /**
  * Literal object for the event

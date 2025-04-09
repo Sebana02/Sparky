@@ -1,18 +1,17 @@
 import {
   ChatInputCommandInteraction,
   Client,
-  VoiceBasedChannel,
   GuildMember,
   SlashCommandBuilder,
   VoiceChannel,
   TextChannel,
 } from 'discord.js';
-import { QueryType, useMainPlayer, SearchOptions, Track } from 'discord-player';
-import { reply, deferReply } from '../../../utils/interaction-utils.js';
-import { noResults, addToQueue, addToQueueMany } from '../../../utils/embed/embed-presets.js';
-import { fetchString } from '../../../utils/language-utils.js';
-import { IQueuePlayerMetadata, ITrackMetadata } from '../../../interfaces/metadata.interface.js';
-import { ICommand } from '../../../interfaces/command.interface.js';
+import { QueryType, useMainPlayer, Track } from 'discord-player';
+import { reply, deferReply } from '@utils/interaction-utils.js';
+import { noResults, addToQueue, addToQueueMany } from '@utils/embed/embed-presets.js';
+import { fetchString } from '@utils/language-utils.js';
+import { IQueuePlayerMetadata, ITrackMetadata } from '@interfaces/metadata.interface.js';
+import { ICommand } from '@interfaces/command.interface.js';
 
 /**
  * Literal object for the command

@@ -3,9 +3,9 @@ import { Player } from 'discord-player';
 import { YoutubeiExtractor } from 'discord-player-youtubei';
 import { DefaultExtractors } from '@discord-player/extractor';
 import { config as loadEnv } from 'dotenv';
-import { IConfig, IUserConfig } from './interfaces/config.interface.js';
-import loadLogger from './logger.js';
-import loadResources from './loader.js';
+import { IConfig, IUserConfig } from '@interfaces/config.interface.js';
+import loadLogger from '@/logger.js';
+import loadResources from '@/loader.js';
 
 /**
  * Main function to run the bot

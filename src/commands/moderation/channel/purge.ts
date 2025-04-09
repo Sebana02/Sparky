@@ -1,7 +1,7 @@
 import { ChatInputCommandInteraction, Client, PermissionFlagsBits, SlashCommandBuilder } from 'discord.js';
-import { reply } from '../../../utils/interaction-utils.js';
-import { fetchString, fetchFunction } from '../../../utils/language-utils.js';
-import { ICommand } from '../../../interfaces/command.interface.js';
+import { reply } from '@utils/interaction-utils.js';
+import { fetchString, fetchFunction } from '@utils/language-utils.js';
+import { ICommand } from '@interfaces/command.interface.js';
 
 /**
  * Literal object for the command

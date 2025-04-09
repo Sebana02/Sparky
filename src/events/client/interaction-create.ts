@@ -1,11 +1,11 @@
 import { useQueue } from 'discord-player';
-import { commandErrorHandler } from '../../utils/error-handler.js';
-import { reply } from '../../utils/interaction-utils.js';
-import { fetchString } from '../../utils/language-utils.js';
+import { commandErrorHandler } from '@utils/error-handler.js';
+import { reply } from '@utils/interaction-utils.js';
+import { fetchString } from '@utils/language-utils.js';
 import { ChatInputCommandInteraction, Client, Guild, GuildMember, Interaction } from 'discord.js';
-import { ICommand } from '../../interfaces/command.interface.js';
-import { Emitter, IEvent } from '../../interfaces/event.interface.js';
-import { IQueuePlayerMetadata } from '../../interfaces/metadata.interface.js';
+import { ICommand } from '@interfaces/command.interface.js';
+import { Emitter, IEvent } from '@interfaces/event.interface.js';
+import { IQueuePlayerMetadata } from '@interfaces/metadata.interface.js';
 
 /**
  * Literal object for the event
