@@ -44,7 +44,7 @@ export const command: ICommand = {
     )
     .addNumberOption((option) =>
       option.setName(commandLit.timeName).setDescription(commandLit.timeDescription).setRequired(true).setMinValue(1)
-    ) as SlashCommandBuilder,
+    ),
 
   blockedInDMs: true,
 

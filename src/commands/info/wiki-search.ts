@@ -34,7 +34,7 @@ export const command: ICommand = {
     .setDescription(commandLit.description)
     .addStringOption((option) =>
       option.setName(commandLit.termName).setDescription(commandLit.termDescription).setRequired(true)
-    ) as SlashCommandBuilder,
+    ),
 
   execute: async (client: Client, inter: ChatInputCommandInteraction): Promise<void> => {
     //Get search term

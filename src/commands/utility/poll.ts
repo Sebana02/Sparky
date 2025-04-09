@@ -38,7 +38,7 @@ export const command: ICommand = {
     )
     .addBooleanOption((option) =>
       option.setName(commandLit.multiAnswerName).setDescription(commandLit.multiAnswerDescription).setRequired(true)
-    ) as SlashCommandBuilder,
+    ),
 
   blockedInDMs: true,
 

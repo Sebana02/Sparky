@@ -23,7 +23,7 @@ export const command: ICommand = {
     .setDescription(commandLit.description)
     .addStringOption((option) =>
       option.setName(commandLit.gifName).setDescription(commandLit.gifDescription).setRequired(true)
-    ) as SlashCommandBuilder,
+    ),
 
   execute: async (client: Client, inter: ChatInputCommandInteraction): Promise<void> => {
     //Get the category

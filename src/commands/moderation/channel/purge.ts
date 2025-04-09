@@ -28,7 +28,7 @@ export const command: ICommand = {
         .setRequired(true)
         .setMinValue(1)
         .setMaxValue(100)
-    ) as SlashCommandBuilder,
+    ),
 
   blockedInDMs: true,
 

@@ -8,7 +8,6 @@
 - [ ] Sharding the bot
 - [ ] Consider using i18next for translations
 - [ ] Consider using aliases when importing modules
-- [ ] Eliminate the need of parsing data property of commands into SlashCommandBuilder
 
 ## Music
 

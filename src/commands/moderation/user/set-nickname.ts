@@ -29,7 +29,7 @@ export const command: ICommand = {
     )
     .addStringOption((option) =>
       option.setName(commandLit.nicknameName).setDescription(commandLit.nicknameDescription).setRequired(true)
-    ) as SlashCommandBuilder,
+    ),
 
   blockedInDMs: true,
 

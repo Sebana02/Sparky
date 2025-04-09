@@ -30,7 +30,7 @@ export const command: ICommand = {
     )
     .addStringOption((option) =>
       option.setName(commandLit.reminderName).setDescription(commandLit.reminderDescription).setRequired(true)
-    ) as SlashCommandBuilder,
+    ),
 
   async execute(client: Client, inter: ChatInputCommandInteraction): Promise<void> {
     //Get time and reminder

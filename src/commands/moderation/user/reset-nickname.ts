@@ -24,7 +24,7 @@ export const command: ICommand = {
     .setDefaultMemberPermissions(PermissionFlagsBits.ManageNicknames)
     .addUserOption((option) =>
       option.setName(commandLit.memberName).setDescription(commandLit.memberDescription).setRequired(true)
-    ) as SlashCommandBuilder,
+    ),
 
   blockedInDMs: true,
 

@@ -32,7 +32,7 @@ export const command: ICommand = {
     .setDescription(commandLit.description)
     .addStringOption((option) =>
       option.setName(commandLit.songName).setDescription(commandLit.songDescription).setRequired(true)
-    ) as SlashCommandBuilder,
+    ),
 
   voiceChannel: true,
 

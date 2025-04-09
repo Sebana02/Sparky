@@ -52,7 +52,7 @@ export const command: ICommand = {
     )
     .addRoleOption((option) =>
       option.setName(commandLit.roleName).setDescription(commandLit.roleDescription).setRequired(false)
-    ) as SlashCommandBuilder,
+    ),
 
   blockedInDMs: true,
 

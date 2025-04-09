@@ -43,7 +43,7 @@ export const command: ICommand = {
     .setDescription(commandLit.description)
     .addUserOption((option) =>
       option.setName(commandLit.optionName).setDescription(commandLit.optionDescription).setRequired(true)
-    ) as SlashCommandBuilder,
+    ),
 
   blockedInDMs: true,
 

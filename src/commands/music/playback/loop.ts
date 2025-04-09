@@ -37,7 +37,7 @@ export const command: ICommand = {
           { name: commandLit.loopChoiceQueue, value: QueueRepeatMode.QUEUE },
           { name: commandLit.loopChoiceAutoplay, value: QueueRepeatMode.AUTOPLAY }
         )
-    ) as SlashCommandBuilder,
+    ),
 
   voiceChannel: true,
 

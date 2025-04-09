@@ -76,7 +76,7 @@ export const command: ICommand = {
           { name: commandLit.choiceCustom, value: 'custom' },
           { name: commandLit.choiceRandom, value: 'random' }
         )
-    ) as SlashCommandBuilder,
+    ),
 
   execute: async (client: Client, inter: ChatInputCommandInteraction): Promise<void> => {
     // Defer the reply
