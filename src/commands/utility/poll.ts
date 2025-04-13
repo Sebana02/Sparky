@@ -1,4 +1,11 @@
-import { Client, ChatInputCommandInteraction, PollAnswerData, PollLayoutType, SlashCommandBuilder } from 'discord.js';
+import {
+  Client,
+  ChatInputCommandInteraction,
+  PollAnswerData,
+  PollLayoutType,
+  SlashCommandBuilder,
+  PollData,
+} from 'discord.js';
 import { fetchReply, reply } from '@utils/interaction-utils.js';
 import { fetchString } from '@utils/language-utils.js';
 import { ICommand } from '@interfaces/command.interface.js';
@@ -67,11 +74,11 @@ export const command: ICommand = {
         question: {
           text: pollTheme,
         },
-        duration: Math.max(Math.ceil(time / 3600), 1),
+        duration: Math.max(Math.ceil(time / 3600), 1), // Duration in hours
         answers: possibleAnsw,
         allowMultiselect: multiAnswer,
         layoutType: PollLayoutType.Default,
-      },
+      } as PollData,
     });
 
     // Set timeout to end the poll manually

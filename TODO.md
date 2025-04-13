@@ -8,6 +8,7 @@
 - [ ] Sharding the bot
 - [ ] Modify locale placeholders to be more user-friendly (e.g. {user} instead of {0})
 - [ ] Add an alternative to tenor for gifs (e.g. giphy) (use discord's tenor?)
+- [ ] Change ephemeral on reply to flags
 
 ## Music
 
@@ -39,6 +40,8 @@
 - [ ] Add pagination to bannedlist and mutedlist commands
 
 - [ ] Weather command
+
+- [ ] Add options info to the help command
 
 ## Security
 
