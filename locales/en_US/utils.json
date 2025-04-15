@@ -35,7 +35,7 @@
     },
     "volume": "Volume has been changed to {0}%",
     "skip": "skipped",
-    "now_playing": "Volume **{0}%**\nDuration **{1}**Progress {2}\nLoop **{3}**\nRequested by {4}",
+    "now_playing": "Volume **{0}%**\nDuration **{1}**\nProgress {2}\nLoop **{3}**\nRequested by {4}",
     "shuffle": {
       "title": "{0} songs",
       "description": "have been shuffled"

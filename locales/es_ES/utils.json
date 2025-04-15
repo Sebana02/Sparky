@@ -35,7 +35,7 @@
     },
     "volume": "Se ha cambiado el volumen a {0}%",
     "skip": "saltada",
-    "now_playing": "Volumen **{0}%**\nDuración **{1}**Progreso {2}\nBucle **{3}**\nRequested by {4}",
+    "now_playing": "Volumen **{0}%**\nDuración **{1}**\nProgreso {2}\nBucle **{3}**\nRequested by {4}",
     "shuffle": {
       "title": "{0} canciones",
       "description": "se han mezclado"

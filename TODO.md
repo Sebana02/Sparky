@@ -43,6 +43,8 @@
 
 - [ ] Add options info to the help command
 
+- [ ] Create and send embed message
+
 ## Security
 
 - [ ] More checks regarding who can receive certain commands
