@@ -5,6 +5,7 @@ import {
   SlashCommandBuilder,
   GuildMember,
   DMChannel,
+  MessageFlags,
 } from 'discord.js';
 import { reply } from '@utils/interaction-utils.js';
 import { fetchString, fetchFunction } from '@utils/language-utils.js';
@@ -51,14 +52,14 @@ export const command: ICommand = {
 
     //Check the member is not the bot, the author of the interaction, and that the member is kickable
     if (member.id === inter.user.id || member.user.bot)
-      return await reply(inter, { content: commandLit.notUnmuteable, ephemeral: true }, 2);
+      return await reply(inter, { content: commandLit.notUnmuteable, flags: MessageFlags.Ephemeral }, 2);
 
     // Try to get the mute role from the guild
     let guildMuteRole = inter.guild?.roles.cache.find((role) => role.name.toLowerCase() === 'muted');
 
     // If the mute role doesn't exist, or it is not assigned to the member, return
     if (!guildMuteRole || !member.roles.cache.has(guildMuteRole.id))
-      return await reply(inter, { content: commandLit.alreadyUnmuted, ephemeral: true }, 2);
+      return await reply(inter, { content: commandLit.alreadyUnmuted, flags: MessageFlags.Ephemeral }, 2);
 
     // Unmute the member by removing the mute role
     await member.roles.remove(guildMuteRole.id);
@@ -78,6 +79,6 @@ export const command: ICommand = {
     });
 
     // Send message, confirming the mute
-    await reply(inter, { embeds: [embed], ephemeral: true }, 2);
+    await reply(inter, { embeds: [embed], flags: MessageFlags.Ephemeral }, 2);
   },
 };

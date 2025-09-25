@@ -13,6 +13,7 @@ import {
   TextChannel,
   VoiceChannel,
   MessageComponentInteraction,
+  MessageFlags,
 } from 'discord.js';
 import { createEmbed, ColorScheme, embedFromTemplate } from '@utils/embed/embed-utils.js';
 import { fetchString, fetchFunction } from '@utils/language-utils.js';
@@ -52,7 +53,7 @@ export const command: ICommand = {
 
   execute: async (client: Client, inter: ChatInputCommandInteraction): Promise<void> => {
     // Defer reply
-    await deferReply(inter, { ephemeral: false });
+    await deferReply(inter, { flags: MessageFlags.Ephemeral });
 
     // Delete queue if exists
     let queue = useQueue(inter.guildId as string);
@@ -63,9 +64,13 @@ export const command: ICommand = {
 
     // Check if the playlist exists and has enough songs
     if (!results.hasTracks())
-      return await reply(inter, { embeds: [embedFromTemplate('noResults', client)], ephemeral: true }, 2);
+      return await reply(inter, { embeds: [embedFromTemplate('noResults', client)], flags: MessageFlags.Ephemeral }, 2);
     if (!results.hasPlaylist() || results.tracks.length < 4)
-      return await reply(inter, { embeds: [embedFromTemplate('noPlaylist', client)], ephemeral: true }, 2);
+      return await reply(
+        inter,
+        { embeds: [embedFromTemplate('noPlaylist', client)], flags: MessageFlags.Ephemeral },
+        2
+      );
 
     //Start the trivia
     await triviaRound(inter, [], results, [...(results.tracks as Track<ITrackMetadata>[])]);

@@ -1,4 +1,11 @@
-import { ChatInputCommandInteraction, Client, PermissionFlagsBits, SlashCommandBuilder, GuildMember } from 'discord.js';
+import {
+  ChatInputCommandInteraction,
+  Client,
+  PermissionFlagsBits,
+  SlashCommandBuilder,
+  GuildMember,
+  MessageFlags,
+} from 'discord.js';
 import { reply } from '@utils/interaction-utils.js';
 import { fetchString, fetchFunction } from '@utils/language-utils.js';
 import { ICommand } from '@interfaces/command.interface.js';
@@ -43,7 +50,7 @@ export const command: ICommand = {
 
     //Check the member is not the bot, the author of the interaction
     if (member.id === inter.user.id || member.user.bot)
-      return await reply(inter, { content: commandLit.notWarnable, ephemeral: true }, 2);
+      return await reply(inter, { content: commandLit.notWarnable, flags: MessageFlags.Ephemeral }, 2);
 
     //Send a DM to him explaining the reason of the warn
     //Note: This will not work if the member has DMs disabled
@@ -57,6 +64,6 @@ export const command: ICommand = {
     });
 
     //Send message. confirming the warn
-    await reply(inter, { embeds: [embed], ephemeral: true }, 2);
+    await reply(inter, { embeds: [embed], flags: MessageFlags.Ephemeral }, 2);
   },
 };

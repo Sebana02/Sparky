@@ -1,4 +1,4 @@
-import { ChatInputCommandInteraction, Client, SlashCommandBuilder } from 'discord.js';
+import { ChatInputCommandInteraction, Client, SlashCommandBuilder, MessageFlags } from 'discord.js';
 import { useQueue, usePlayer, Track } from 'discord-player';
 import { reply } from '@utils/interaction-utils.js';
 import { noQueue, resume } from '@utils/embed/embed-presets.js';
@@ -29,7 +29,8 @@ export const command: ICommand = {
     const player = usePlayer<IQueuePlayerMetadata>(inter.guild?.id as string);
 
     //Check if there is a queue and if it is playing
-    if (!queue || !queue.isPlaying()) return await reply(inter, { embeds: [noQueue(client)], ephemeral: true }, 2);
+    if (!queue || !queue.isPlaying())
+      return await reply(inter, { embeds: [noQueue(client)], flags: MessageFlags.Ephemeral }, 2);
 
     //Resume the queue
     player?.setPaused(false);

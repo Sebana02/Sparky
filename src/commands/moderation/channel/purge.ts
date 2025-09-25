@@ -1,4 +1,10 @@
-import { ChatInputCommandInteraction, Client, PermissionFlagsBits, SlashCommandBuilder } from 'discord.js';
+import {
+  ChatInputCommandInteraction,
+  Client,
+  PermissionFlagsBits,
+  SlashCommandBuilder,
+  MessageFlags,
+} from 'discord.js';
 import { reply } from '@utils/interaction-utils.js';
 import { fetchString, fetchFunction } from '@utils/language-utils.js';
 import { ICommand } from '@interfaces/command.interface.js';
@@ -37,7 +43,7 @@ export const command: ICommand = {
     const amount = inter.options.getNumber(commandLit.amountName, true);
 
     //Reply to the interaction
-    await reply(inter, { content: commandLit.response(amount), ephemeral: true }, 2);
+    await reply(inter, { content: commandLit.response(amount), flags: MessageFlags.Ephemeral }, 2);
 
     //Delete the messages
     if (inter.inGuild()) await inter.channel?.bulkDelete(amount, true);

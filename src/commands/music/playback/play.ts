@@ -5,6 +5,7 @@ import {
   SlashCommandBuilder,
   VoiceChannel,
   TextChannel,
+  MessageFlags,
 } from 'discord.js';
 import { QueryType, useMainPlayer, Track } from 'discord-player';
 import { reply, deferReply } from '@utils/interaction-utils.js';
@@ -43,7 +44,7 @@ export const command: ICommand = {
     const song = inter.options.getString(commandLit.songName, true);
 
     //Defer the reply
-    await deferReply(inter, { ephemeral: false });
+    await deferReply(inter, { flags: MessageFlags.Ephemeral });
 
     //Search for the song
     const results = await player.search(song, {
@@ -52,7 +53,8 @@ export const command: ICommand = {
     });
 
     //If there are no results
-    if (!results.hasTracks()) return await reply(inter, { embeds: [noResults(client)], ephemeral: true }, 2);
+    if (!results.hasTracks())
+      return await reply(inter, { embeds: [noResults(client)], flags: MessageFlags.Ephemeral }, 2);
 
     //Set the metadata for the tracks, this can be changed in the future
     results.tracks.forEach((track) => {

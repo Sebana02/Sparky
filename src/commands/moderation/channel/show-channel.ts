@@ -10,6 +10,7 @@ import {
   StageChannel,
   ForumChannel,
   Role,
+  MessageFlags,
 } from 'discord.js';
 import { reply, deferReply } from '@utils/interaction-utils.js';
 import { fetchString, fetchFunction } from '@utils/language-utils.js';
@@ -58,7 +59,7 @@ export const command: ICommand = {
 
   execute: async (client: Client, inter: ChatInputCommandInteraction): Promise<void> => {
     //Defer reply
-    await deferReply(inter, { ephemeral: true });
+    await deferReply(inter, { flags: MessageFlags.Ephemeral });
 
     //Get the channel to show
     const channel = inter.options.getChannel(commandLit.channelName, true) as
@@ -73,7 +74,7 @@ export const command: ICommand = {
 
     //Check if the channel is already visible
     if (channel.permissionsFor(role).has(PermissionFlagsBits.ViewChannel))
-      return await reply(inter, { content: commandLit.alreadyShown, ephemeral: true }, 2);
+      return await reply(inter, { content: commandLit.alreadyShown, flags: MessageFlags.Ephemeral }, 2);
 
     //Show the channel
     await channel.permissionOverwrites.edit(role, { ViewChannel: true });
@@ -85,6 +86,6 @@ export const command: ICommand = {
     });
 
     //Reply
-    await reply(inter, { embeds: [embed], ephemeral: true }, 2);
+    await reply(inter, { embeds: [embed], flags: MessageFlags.Ephemeral }, 2);
   },
 };

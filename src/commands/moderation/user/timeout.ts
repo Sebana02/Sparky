@@ -5,6 +5,7 @@ import {
   SlashCommandBuilder,
   GuildMember,
   DMChannel,
+  MessageFlags,
 } from 'discord.js';
 import { reply } from '@utils/interaction-utils.js';
 import { fetchString, fetchFunction } from '@utils/language-utils.js';
@@ -56,7 +57,7 @@ export const command: ICommand = {
 
     //Check the member is not the bot, the author of the interaction, and that the member is kickable
     if (member.id === inter.user.id || member.user.bot)
-      return await reply(inter, { content: commandLit.notTimeoutable, ephemeral: true }, 2);
+      return await reply(inter, { content: commandLit.notTimeoutable, flags: MessageFlags.Ephemeral }, 2);
 
     //Send a DM to him explaining the reason of the timeout, this will not work if the member has DMs disabled
     const dmMessagge = await member
@@ -79,6 +80,6 @@ export const command: ICommand = {
     });
 
     // Send message, confirming the timeout
-    await reply(inter, { embeds: [embed], ephemeral: true }, 2);
+    await reply(inter, { embeds: [embed], flags: MessageFlags.Ephemeral }, 2);
   },
 };

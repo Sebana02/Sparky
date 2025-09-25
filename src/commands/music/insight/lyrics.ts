@@ -1,4 +1,4 @@
-import { ChatInputCommandInteraction, Client, SlashCommandBuilder } from 'discord.js';
+import { ChatInputCommandInteraction, Client, SlashCommandBuilder, MessageFlags } from 'discord.js';
 import { Track, useMainPlayer, useQueue } from 'discord-player';
 import { reply, deferReply } from '@utils/interaction-utils.js';
 import { fetchString } from '@utils/language-utils.js';
@@ -29,10 +29,10 @@ export const command: ICommand = {
 
     //Check if there is a queue and if it is playing
     if (!queue || !queue.isPlaying())
-      return await reply(inter, { embeds: [embedFromTemplate('noQueue', client)], ephemeral: true }, 2);
+      return await reply(inter, { embeds: [embedFromTemplate('noQueue', client)], flags: MessageFlags.Ephemeral }, 2);
 
     //Defer the reply
-    await deferReply(inter, { ephemeral: false });
+    await deferReply(inter, { flags: MessageFlags.Ephemeral });
 
     //Search for the lyrics
     const lyrics = await useMainPlayer().lyrics.search({
@@ -43,7 +43,10 @@ export const command: ICommand = {
     if (!lyrics.length)
       return await reply(
         inter,
-        { embeds: [embedFromTemplate('noLyrics', queue.currentTrack as Track<ITrackMetadata>)], ephemeral: true },
+        {
+          embeds: [embedFromTemplate('noLyrics', queue.currentTrack as Track<ITrackMetadata>)],
+          flags: MessageFlags.Ephemeral,
+        },
         2
       );
 

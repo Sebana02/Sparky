@@ -1,7 +1,13 @@
 import { reply } from '@utils/interaction-utils.js';
 import { fetchString, fetchFunction } from '@utils/language-utils.js';
 import { ICommand } from '@interfaces/command.interface.js';
-import { Client, ChatInputCommandInteraction, PermissionFlagsBits, SlashCommandBuilder } from 'discord.js';
+import {
+  Client,
+  ChatInputCommandInteraction,
+  PermissionFlagsBits,
+  SlashCommandBuilder,
+  MessageFlags,
+} from 'discord.js';
 
 /**
  * Literal object for the command
@@ -24,7 +30,7 @@ export const command: ICommand = {
 
   execute: async (client: Client, inter: ChatInputCommandInteraction): Promise<void> => {
     //Reply to the interaction
-    await reply(inter, { content: commandLit.response(inter.user.username), ephemeral: true }, 2);
+    await reply(inter, { content: commandLit.response(inter.user.username), flags: MessageFlags.Ephemeral }, 2);
 
     //Disconnect bot
     await client.destroy();

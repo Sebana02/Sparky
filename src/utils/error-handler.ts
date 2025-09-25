@@ -1,4 +1,4 @@
-import { ChatInputCommandInteraction, Client } from 'discord.js';
+import { ChatInputCommandInteraction, Client, MessageFlags } from 'discord.js';
 import { createEmbed, ColorScheme } from './embed/embed-utils.js';
 import { reply } from '@utils/interaction-utils.js';
 import { ICommand } from '@interfaces/command.interface.js';
@@ -60,6 +60,6 @@ export async function commandErrorHandler(
     });
 
     // Reply to the interaction with the error embed
-    await reply(inter, { embeds: [errorEmbed], ephemeral: true }, 2);
+    await reply(inter, { embeds: [errorEmbed], flags: MessageFlags.Ephemeral }, 2);
   }
 }

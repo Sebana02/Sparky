@@ -1,4 +1,4 @@
-import { ChatInputCommandInteraction, Client, SlashCommandBuilder } from 'discord.js';
+import { ChatInputCommandInteraction, Client, SlashCommandBuilder, MessageFlags } from 'discord.js';
 import { useQueue, usePlayer, Track } from 'discord-player';
 import { reply } from '@utils/interaction-utils.js';
 import { noQueue, volume } from '@utils/embed/embed-presets.js';
@@ -42,7 +42,8 @@ export const command: ICommand = {
     const vol = inter.options.getNumber(commandLit.volumenName, true);
 
     //Check if there is a queue and if it is playing
-    if (!queue || !queue.isPlaying()) return await reply(inter, { embeds: [noQueue(client)], ephemeral: true }, 2);
+    if (!queue || !queue.isPlaying())
+      return await reply(inter, { embeds: [noQueue(client)], flags: MessageFlags.Ephemeral }, 2);
 
     //Set the volume
     player?.setVolume(vol);

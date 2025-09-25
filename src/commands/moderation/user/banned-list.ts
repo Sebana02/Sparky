@@ -1,4 +1,10 @@
-import { ChatInputCommandInteraction, Client, PermissionFlagsBits, SlashCommandBuilder } from 'discord.js';
+import {
+  ChatInputCommandInteraction,
+  Client,
+  PermissionFlagsBits,
+  SlashCommandBuilder,
+  MessageFlags,
+} from 'discord.js';
 import { ICommand } from '@interfaces/command.interface';
 import { reply, deferReply } from '@utils/interaction-utils.js';
 import { createEmbed, ColorScheme } from '@utils/embed/embed-utils.js';
@@ -26,14 +32,14 @@ export const command: ICommand = {
 
   execute: async (client: Client, inter: ChatInputCommandInteraction): Promise<void> => {
     //Defer reply
-    await deferReply(inter, { ephemeral: true });
+    await deferReply(inter, { flags: MessageFlags.Ephemeral });
 
     //Get the banned members
     const bannedMembers = await inter.guild?.bans.fetch();
 
     //Check if there are no banned members
     if (!bannedMembers || bannedMembers.size === 0)
-      return await reply(inter, { content: commandLit.noBannedUsers, ephemeral: true }, 2);
+      return await reply(inter, { content: commandLit.noBannedUsers, flags: MessageFlags.Ephemeral }, 2);
 
     //Create the embed
     const embed = createEmbed({
@@ -43,6 +49,6 @@ export const command: ICommand = {
     });
 
     //Reply
-    await reply(inter, { embeds: [embed], ephemeral: true }, 30);
+    await reply(inter, { embeds: [embed], flags: MessageFlags.Ephemeral }, 30);
   },
 };

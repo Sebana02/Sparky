@@ -8,6 +8,7 @@ import {
   MessageComponentInteraction,
   EmbedField,
   SlashCommandBuilder,
+  MessageFlags,
 } from 'discord.js';
 import { ICommand } from '@interfaces/command.interface.js';
 import { createEmbed, ColorScheme } from '@utils/embed/embed-utils.js';
@@ -27,7 +28,7 @@ export const command: ICommand = {
 
   execute: async (client: Client, inter: ChatInputCommandInteraction): Promise<void> => {
     // Defer the reply to indicate processing
-    await deferReply(inter, { ephemeral: true });
+    await deferReply(inter, { flags: MessageFlags.Ephemeral });
 
     // Generate command fields
     const fields = Array.from(globalThis.commands.values()).map((command: ICommand) => ({
@@ -48,7 +49,7 @@ export const command: ICommand = {
     await reply(inter, {
       embeds: [generateEmbed(chunkedFields, currentPage, totalPages)],
       components: [createActionRow(currentPage, totalPages)],
-      ephemeral: true,
+      flags: MessageFlags.Ephemeral,
     });
 
     // Create the collector for handling button interactions

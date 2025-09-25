@@ -1,7 +1,7 @@
 import { reply } from '@utils/interaction-utils.js';
 import { fetchString, fetchFunction } from '@utils/language-utils.js';
 import { ICommand } from '@interfaces/command.interface.js';
-import { Client, ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js';
+import { Client, ChatInputCommandInteraction, SlashCommandBuilder, MessageFlags } from 'discord.js';
 
 /**
  * Literal object for the command
@@ -19,6 +19,6 @@ export const command: ICommand = {
 
   execute: async (client: Client, inter: ChatInputCommandInteraction): Promise<void> => {
     // Reply with the bot's ping
-    await reply(inter, { content: commandLit.response(client.ws.ping), ephemeral: true }, 2);
+    await reply(inter, { content: commandLit.response(client.ws.ping), flags: MessageFlags.Ephemeral }, 2);
   },
 };

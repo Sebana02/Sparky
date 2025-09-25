@@ -1,4 +1,4 @@
-import { ChatInputCommandInteraction, Client, GuildMember, SlashCommandBuilder } from 'discord.js';
+import { ChatInputCommandInteraction, Client, GuildMember, SlashCommandBuilder, MessageFlags } from 'discord.js';
 import { QueryType, Track, useMainPlayer, useQueue } from 'discord-player';
 import { reply, deferReply } from '@utils/interaction-utils.js';
 import { noResults, addToQueue, noQueue } from '@utils/embed/embed-presets.js';
@@ -36,10 +36,11 @@ export const command: ICommand = {
     const song = inter.options.getString(commandLit.songName, true);
 
     //Check if there is a queue and if it is playing
-    if (!queue || !queue.isPlaying()) return await reply(inter, { embeds: [noQueue(client)], ephemeral: true }, 2);
+    if (!queue || !queue.isPlaying())
+      return await reply(inter, { embeds: [noQueue(client)], flags: MessageFlags.Ephemeral }, 2);
 
     //Defer the reply
-    await deferReply(inter, { ephemeral: false });
+    await deferReply(inter, { flags: MessageFlags.Ephemeral });
 
     //Search for the song
     const results = await useMainPlayer().search(song, {
@@ -48,7 +49,8 @@ export const command: ICommand = {
     });
 
     //If there are no results
-    if (!results.hasTracks()) return await reply(inter, { embeds: [noResults(client)], ephemeral: true }, 2);
+    if (!results.hasTracks())
+      return await reply(inter, { embeds: [noResults(client)], flags: MessageFlags.Ephemeral }, 2);
 
     //Set the metadata
     results.tracks[0].setMetadata({} as ITrackMetadata);

@@ -8,6 +8,7 @@ import {
   EmbedBuilder,
   ButtonStyle,
   MessageComponentInteraction,
+  MessageFlags,
 } from 'discord.js';
 import { createEmbed, modifyEmbed, ColorScheme } from '@utils/embed/embed-utils.js';
 import { reply, deferReply, fetchReply, update } from '@utils/interaction-utils.js';
@@ -50,12 +51,13 @@ export const command: ICommand = {
   execute: async (client: Client, inter: ChatInputCommandInteraction): Promise<void> => {
     // Get the opponent and check if it is a bot or the author of the interaction
     const opponent = inter.options.getUser(commandLit.optionName, true);
-    if (opponent.bot) return await reply(inter, { content: commandLit.checkAgainstBot, ephemeral: true }, 2);
+    if (opponent.bot)
+      return await reply(inter, { content: commandLit.checkAgainstBot, flags: MessageFlags.Ephemeral }, 2);
     if (opponent === inter.user)
-      return await reply(inter, { content: commandLit.checkAgainstSelf, ephemeral: true }, 2);
+      return await reply(inter, { content: commandLit.checkAgainstSelf, flags: MessageFlags.Ephemeral }, 2);
 
     //Defer the reply
-    await deferReply(inter, { ephemeral: false });
+    await deferReply(inter, { flags: MessageFlags.Ephemeral });
 
     //Define the players object
     const players: Player[] = [
@@ -231,7 +233,7 @@ async function handleInteraction(
   collector.on('collect', async (interaction: MessageComponentInteraction) => {
     // Check if it is the player's turn
     if (players.find((player) => player.user === interaction.user)?.symbol !== turn)
-      return reply(interaction, { content: commandLit.notYourTurn, ephemeral: true }, 2);
+      return reply(interaction, { content: commandLit.notYourTurn, flags: MessageFlags.Ephemeral }, 2);
 
     // Get the row and column of the cell
     const index = parseInt(interaction.customId);
@@ -275,7 +277,7 @@ async function handleInteraction(
 
   collector.on('end', async () => {
     if (collector.endReason === 'time') {
-      await reply(inter, { content: commandLit.timeout, ephemeral: true, embeds: [], components: [] }, 2);
+      await reply(inter, { content: commandLit.timeout, flags: MessageFlags.Ephemeral, embeds: [], components: [] }, 2);
     }
   });
 }

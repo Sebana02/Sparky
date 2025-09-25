@@ -1,6 +1,13 @@
 import { ICommand } from '@interfaces/command.interface.js';
 import { reply } from '@utils/interaction-utils.js';
-import { ChatInputCommandInteraction, Client, PermissionFlagsBits, SlashCommandBuilder, GuildMember } from 'discord.js';
+import {
+  ChatInputCommandInteraction,
+  Client,
+  PermissionFlagsBits,
+  SlashCommandBuilder,
+  GuildMember,
+  MessageFlags,
+} from 'discord.js';
 import { fetchFunction, fetchString } from '@utils/language-utils.js';
 import { createEmbed, ColorScheme } from '@utils/embed/embed-utils.js';
 
@@ -42,6 +49,6 @@ export const command: ICommand = {
     });
 
     // Send message, confirming the nickname reset
-    await reply(inter, { embeds: [embed], ephemeral: true }, 2);
+    await reply(inter, { embeds: [embed], flags: MessageFlags.Ephemeral }, 2);
   },
 };

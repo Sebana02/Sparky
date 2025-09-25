@@ -1,4 +1,10 @@
-import { ChatInputCommandInteraction, Client, PermissionFlagsBits, SlashCommandBuilder } from 'discord.js';
+import {
+  ChatInputCommandInteraction,
+  Client,
+  PermissionFlagsBits,
+  SlashCommandBuilder,
+  MessageFlags,
+} from 'discord.js';
 import { reply, deferReply } from '@utils/interaction-utils.js';
 import { fetchString, fetchFunction } from '@utils/language-utils.js';
 import { ICommand } from '@interfaces/command.interface.js';
@@ -41,7 +47,7 @@ export const command: ICommand = {
     const reason = inter.options.getString(commandLit.reasonName, true);
 
     //Defer reply
-    await deferReply(inter, { ephemeral: true });
+    await deferReply(inter, { flags: MessageFlags.Ephemeral });
 
     //Check if the member is banned
     const bannedList = await inter.guild?.bans.fetch();
@@ -56,7 +62,7 @@ export const command: ICommand = {
               color: ColorScheme.error,
             }),
           ],
-          ephemeral: true,
+          flags: MessageFlags.Ephemeral,
         },
         2
       );

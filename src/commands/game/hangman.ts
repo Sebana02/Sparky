@@ -10,6 +10,7 @@ import {
   DMChannel,
   Message,
   TextChannel,
+  MessageFlags,
 } from 'discord.js';
 import { deferReply, reply, fetchReply } from '@utils/interaction-utils.js';
 import { createEmbed, ColorScheme } from '@utils/embed/embed-utils.js';
@@ -80,7 +81,7 @@ export const command: ICommand = {
 
   execute: async (client: Client, inter: ChatInputCommandInteraction): Promise<void> => {
     // Defer the reply
-    await deferReply(inter, { ephemeral: false });
+    await deferReply(inter, { flags: MessageFlags.Ephemeral });
 
     // Gather players
     let players = await gatherPlayers(inter);
@@ -227,7 +228,7 @@ async function gatherPlayers(inter: ChatInputCommandInteraction): Promise<User[]
         if (!players.find((player) => player.id === i.user.id)) players.push(i.user);
 
         //Reply to the player
-        reply(i, { content: commandLit.confirmationJoin, ephemeral: true }, 2);
+        reply(i, { content: commandLit.confirmationJoin, flags: MessageFlags.Ephemeral }, 2);
       }
 
       //Player doesn't want to join
@@ -236,7 +237,7 @@ async function gatherPlayers(inter: ChatInputCommandInteraction): Promise<User[]
         players = players.filter((player) => player.id != i.user.id);
 
         //Reply to the player
-        reply(i, { content: commandLit.confirmationExit, ephemeral: true }, 2);
+        reply(i, { content: commandLit.confirmationExit, flags: MessageFlags.Ephemeral }, 2);
       }
     });
 

@@ -10,6 +10,7 @@ import {
   StageChannel,
   ForumChannel,
   Role,
+  MessageFlags,
 } from 'discord.js';
 import { reply, deferReply } from '@utils/interaction-utils.js';
 import { fetchString, fetchFunction } from '@utils/language-utils.js';
@@ -58,7 +59,7 @@ export const command: ICommand = {
 
   execute: async (client: Client, inter: ChatInputCommandInteraction) => {
     //Defer reply
-    await deferReply(inter, { ephemeral: true });
+    await deferReply(inter, { flags: MessageFlags.Ephemeral });
 
     //Get the channel to mute
     const channel = inter.options.getChannel(commandLit.channelName, true) as
@@ -75,14 +76,14 @@ export const command: ICommand = {
     if (channel instanceof VoiceChannel) {
       //Check if the channel is already muted
       if (!channel.permissionsFor(role).has(PermissionFlagsBits.Speak))
-        return await reply(inter, { content: commandLit.alreadyMuted, ephemeral: true }, 2);
+        return await reply(inter, { content: commandLit.alreadyMuted, flags: MessageFlags.Ephemeral }, 2);
 
       //Mute the channel
       await channel.permissionOverwrites.edit(role, { Speak: false });
     } else {
       //Check if the channel is already muted
       if (!channel.permissionsFor(role).has(PermissionFlagsBits.SendMessages))
-        return await reply(inter, { content: commandLit.alreadyMuted, ephemeral: true }, 2);
+        return await reply(inter, { content: commandLit.alreadyMuted, flags: MessageFlags.Ephemeral }, 2);
 
       //Mute the channel
       await channel.permissionOverwrites.edit(role, { SendMessages: false });
@@ -95,6 +96,6 @@ export const command: ICommand = {
     });
 
     // Reply to the interaction
-    await reply(inter, { embeds: [embed], ephemeral: true }, 2);
+    await reply(inter, { embeds: [embed], flags: MessageFlags.Ephemeral }, 2);
   },
 };

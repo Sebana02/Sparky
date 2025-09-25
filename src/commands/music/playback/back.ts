@@ -1,4 +1,4 @@
-import { ChatInputCommandInteraction, Client, SlashCommandBuilder } from 'discord.js';
+import { ChatInputCommandInteraction, Client, SlashCommandBuilder, MessageFlags } from 'discord.js';
 import { useQueue, Track } from 'discord-player';
 import { deferReply, reply } from '@utils/interaction-utils.js';
 import { noQueue, noHistory, previousTrack } from '@utils/embed/embed-presets.js';
@@ -28,16 +28,17 @@ export const command: ICommand = {
     const queue = useQueue<IQueuePlayerMetadata>(inter.guild?.id as string);
 
     //Check if there is a queue and if it is playing
-    if (!queue || !queue.isPlaying()) return await reply(inter, { embeds: [noQueue(client)], ephemeral: true }, 2);
+    if (!queue || !queue.isPlaying())
+      return await reply(inter, { embeds: [noQueue(client)], flags: MessageFlags.Ephemeral }, 2);
 
     //Get the history
     const history = queue.history;
 
     //Check if there is a history
-    if (history.isEmpty()) return await reply(inter, { embeds: [noHistory(client)], ephemeral: true }, 2);
+    if (history.isEmpty()) return await reply(inter, { embeds: [noHistory(client)], flags: MessageFlags.Ephemeral }, 2);
 
     //Defer reply
-    await deferReply(inter, { ephemeral: false });
+    await deferReply(inter, { flags: MessageFlags.Ephemeral });
 
     //Play the previous track
     await history.previous(true);

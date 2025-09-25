@@ -5,6 +5,7 @@ import {
   PollLayoutType,
   SlashCommandBuilder,
   PollData,
+  MessageFlags,
 } from 'discord.js';
 import { fetchReply, reply } from '@utils/interaction-utils.js';
 import { fetchString } from '@utils/language-utils.js';
@@ -64,9 +65,9 @@ export const command: ICommand = {
       .map((option) => ({ text: option }));
 
     if (possibleAnsw.length < 2)
-      return await reply(inter, { content: commandLit.insufficientOptions, ephemeral: true }, 2);
+      return await reply(inter, { content: commandLit.insufficientOptions, flags: MessageFlags.Ephemeral }, 2);
     else if (possibleAnsw.length > 10)
-      return await reply(inter, { content: commandLit.tooManyOptions, ephemeral: true }, 2);
+      return await reply(inter, { content: commandLit.tooManyOptions, flags: MessageFlags.Ephemeral }, 2);
 
     // Send the poll
     await reply(inter, {

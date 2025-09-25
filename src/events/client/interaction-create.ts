@@ -2,7 +2,7 @@ import { useQueue } from 'discord-player';
 import { commandErrorHandler } from '@utils/error-handler.js';
 import { reply } from '@utils/interaction-utils.js';
 import { fetchString } from '@utils/language-utils.js';
-import { ChatInputCommandInteraction, Client, Guild, GuildMember, Interaction } from 'discord.js';
+import { ChatInputCommandInteraction, Client, Guild, GuildMember, Interaction, MessageFlags } from 'discord.js';
 import { ICommand } from '@interfaces/command.interface.js';
 import { Emitter, IEvent } from '@interfaces/event.interface.js';
 import { IQueuePlayerMetadata } from '@interfaces/metadata.interface.js';
@@ -86,19 +86,19 @@ async function hasVoiceChannelRequirements(
   const botVoiceChannel = guild.members.me?.voice.channel;
 
   if (djRole && !memberRoles.some((role) => role.id === djRole)) {
-    await reply(inter, { content: eventLit.noDJRole, ephemeral: true }, 2);
+    await reply(inter, { content: eventLit.noDJRole, flags: MessageFlags.Ephemeral }, 2);
     return false;
   }
   if (!voiceChannel) {
-    await reply(inter, { content: eventLit.noVoiceChannel, ephemeral: true }, 2);
+    await reply(inter, { content: eventLit.noVoiceChannel, flags: MessageFlags.Ephemeral }, 2);
     return false;
   }
   if (botVoiceChannel && voiceChannel.id !== botVoiceChannel.id) {
-    await reply(inter, { content: eventLit.noSameVoiceChannel, ephemeral: true }, 2);
+    await reply(inter, { content: eventLit.noSameVoiceChannel, flags: MessageFlags.Ephemeral }, 2);
     return false;
   }
   if (useQueue<IQueuePlayerMetadata>(guild)?.metadata.trivia) {
-    await reply(inter, { content: eventLit.noCommandsTrivia, ephemeral: true }, 2);
+    await reply(inter, { content: eventLit.noCommandsTrivia, flags: MessageFlags.Ephemeral }, 2);
     return false;
   }
   return true;

@@ -1,4 +1,4 @@
-import { ChatInputCommandInteraction, Client, GuildMember, SlashCommandBuilder } from 'discord.js';
+import { ChatInputCommandInteraction, Client, GuildMember, SlashCommandBuilder, MessageFlags } from 'discord.js';
 import { useQueue, Track } from 'discord-player';
 import { deferReply, reply } from '@utils/interaction-utils.js';
 import { noQueue, save, savePrivate } from '@utils/embed/embed-presets.js';
@@ -28,15 +28,20 @@ export const command: ICommand = {
     const queue = useQueue<IQueuePlayerMetadata>(inter.guild?.id as string);
 
     //Check if there is a queue and if it is playing
-    if (!queue || !queue.isPlaying()) return await reply(inter, { embeds: [noQueue(client)], ephemeral: true }, 2);
+    if (!queue || !queue.isPlaying())
+      return await reply(inter, { embeds: [noQueue(client)], flags: MessageFlags.Ephemeral }, 2);
 
     //Defer the reply
-    await deferReply(inter, { ephemeral: true });
+    await deferReply(inter, { flags: MessageFlags.Ephemeral });
 
     //Send the save embed to the user
     await (inter.member as GuildMember).send({ embeds: [savePrivate(queue.currentTrack as Track<ITrackMetadata>)] });
 
     //Send the save embed to the user
-    return await reply(inter, { embeds: [save(queue.currentTrack as Track<ITrackMetadata>)], ephemeral: true }, 2);
+    return await reply(
+      inter,
+      { embeds: [save(queue.currentTrack as Track<ITrackMetadata>)], flags: MessageFlags.Ephemeral },
+      2
+    );
   },
 };

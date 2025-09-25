@@ -8,6 +8,7 @@ import {
   MessageComponentInteraction,
   User,
   EmbedBuilder,
+  MessageFlags,
 } from 'discord.js';
 import { reply, deferReply, fetchReply } from '@utils/interaction-utils.js';
 import { createEmbed, modifyEmbed, ColorScheme } from '@utils/embed/embed-utils.js';
@@ -44,12 +45,13 @@ export const command: ICommand = {
   execute: async (client: Client, inter: ChatInputCommandInteraction): Promise<void> => {
     // Get the opponent and check if it is a bot or the author of the interaction
     const opponent = inter.options.getUser(commandLit.optionName, true);
-    if (opponent.bot) return await reply(inter, { content: commandLit.checkAgainstBot, ephemeral: true }, 2);
+    if (opponent.bot)
+      return await reply(inter, { content: commandLit.checkAgainstBot, flags: MessageFlags.Ephemeral }, 2);
     if (opponent === inter.user)
-      return await reply(inter, { content: commandLit.checkAgainstSelf, ephemeral: true }, 2);
+      return await reply(inter, { content: commandLit.checkAgainstSelf, flags: MessageFlags.Ephemeral }, 2);
 
     // Defer reply
-    await deferReply(inter, { ephemeral: false });
+    await deferReply(inter, { flags: MessageFlags.Ephemeral });
 
     // Define players object
     const players: Player[] = [
@@ -132,7 +134,7 @@ async function handleInteraction(
     const move = interaction.customId as keyof typeof RPSMove;
 
     // Reply to the player with their move
-    reply(interaction, { content: commandLit.selection(RPSMove[move]), ephemeral: true }, 2);
+    reply(interaction, { content: commandLit.selection(RPSMove[move]), flags: MessageFlags.Ephemeral }, 2);
 
     // Store the move of the player
     players.forEach((player) => {

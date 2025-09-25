@@ -1,4 +1,11 @@
-import { ChatInputCommandInteraction, Client, PermissionFlagsBits, SlashCommandBuilder, GuildMember } from 'discord.js';
+import {
+  ChatInputCommandInteraction,
+  Client,
+  PermissionFlagsBits,
+  SlashCommandBuilder,
+  GuildMember,
+  MessageFlags,
+} from 'discord.js';
 import { reply, deferReply } from '@utils/interaction-utils.js';
 import { fetchString, fetchFunction } from '@utils/language-utils.js';
 import { ICommand } from '@interfaces/command.interface.js';
@@ -39,7 +46,7 @@ export const command: ICommand = {
 
   execute: async (client: Client, inter: ChatInputCommandInteraction): Promise<void> => {
     //Defer reply
-    await deferReply(inter, { ephemeral: true });
+    await deferReply(inter, { flags: MessageFlags.Ephemeral });
 
     //Get member and reason
     const member = inter.options.getMember(commandLit.userName) as GuildMember;
@@ -56,7 +63,7 @@ export const command: ICommand = {
               color: ColorScheme.moderation,
             }),
           ],
-          ephemeral: true,
+          flags: MessageFlags.Ephemeral,
         },
         2
       );
@@ -71,7 +78,7 @@ export const command: ICommand = {
               color: ColorScheme.moderation,
             }),
           ],
-          ephemeral: true,
+          flags: MessageFlags.Ephemeral,
         },
         2
       );
@@ -94,6 +101,6 @@ export const command: ICommand = {
     });
 
     //Send message confirming the ban
-    await reply(inter, { embeds: [embed], ephemeral: true }, 2);
+    await reply(inter, { embeds: [embed], flags: MessageFlags.Ephemeral }, 2);
   },
 };
