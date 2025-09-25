@@ -160,7 +160,7 @@ export function addToQueueMany(results: SearchResult): APIEmbed {
     color: ColorScheme.music,
     author: {
       name: musicLit.addToQueueManyTitle(results.tracks.length),
-      icon_url: results.tracks[0].thumbnail,
+      icon_url: results.playlist?.thumbnail,
     },
     footer: {
       text: musicLit.addToQueueManyDescription,

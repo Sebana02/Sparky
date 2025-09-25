@@ -329,7 +329,7 @@ These events are emitted by the Discord client and are related to the bot's conn
 
 | Event | Description | File |
 | --- | --- | --- |
-| `ready` | Emitted when the bot is ready to start receiving commands. | [`ready.ts`](src/events/client/ready.ts) |
+| `clientReady` | Emitted when the bot is ready to start receiving commands. | [`ready.ts`](src/events/client/client-ready.ts) |
 | `interactionCreate` | Emitted when an interaction is created. | [`interaction-create.ts`](src/events/client/interaction-create.ts) |
 | `guildMemberAdd` | Emitted when a new member joins the server. | [`guild-member-add.ts`](src/events/client/guild-member-add.ts) |
 
@@ -373,7 +373,6 @@ Any new events must be created in the `events` folder as it is the path where th
 
 - **`emitter`** _(Emitter)_:  
   The emitter of the event. It can take values from the `Emitter` enum, which is in the same file as the `IEvent` interface. The possible values are:
-
   - `Process`: Corresponds to the [`Node process`](https://nodejs.org/api/process.html#process-events).
   - `Client`: Corresponds to the [`Discord client`](https://discord.js.org/#/docs/main/stable/class/Client).
   - `Music`: Corresponds to the [`Discord player library`](https://discord-player.js.org/docs/discord-player/type/GuildQueueEvents).

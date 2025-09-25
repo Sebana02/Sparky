@@ -20,14 +20,14 @@ import {
  * @returns A promise that resolves after the reply is sent
  * @throws An error if the interaction is not provided or if neither content nor embeds are provided
  */
-export async function reply(
+export async function reply<T extends InteractionReplyOptions | InteractionEditReplyOptions>(
   interaction:
     | ChatInputCommandInteraction
     | MessageContextMenuCommandInteraction
     | UserContextMenuCommandInteraction
     | MessageComponentInteraction
     | ModalSubmitInteraction,
-  replyOptions: InteractionReplyOptions | InteractionEditReplyOptions,
+  replyOptions: T,
   deleteTime: number = -1
 ): Promise<void> {
   try {

@@ -5,7 +5,7 @@ import { Emitter, IEvent } from '@interfaces/event.interface.js';
  * Event handler for the ready event
  */
 export const event: IEvent = {
-  event: 'ready',
+  event: 'clientReady',
 
   emitter: Emitter.Client,
 

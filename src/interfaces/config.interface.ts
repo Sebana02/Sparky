@@ -14,7 +14,7 @@ export interface IUserConfig {
    */
   logPath?: string;
   /**
-   * Configuration for the guild (server). If not provided, the bot will not be configured globally.
+   * Configuration for the guild (server). If not provided, the bot will be configured globally.
    */
   guildConfig?: IGuildConfig;
   /**
