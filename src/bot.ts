@@ -1,8 +1,9 @@
 import { Client, GatewayIntentBits, Partials } from 'discord.js';
 import { Player } from 'discord-player';
 import { YoutubeiExtractor } from 'discord-player-youtubei';
-import { DefaultExtractors } from '@discord-player/extractor';
+import { SpotifyExtractor } from 'discord-player-spotify';
 import { config as loadEnv } from 'dotenv';
+// import { DefaultExtractors } from '@discord-player/extractor';
 import { IConfig, IUserConfig } from '@interfaces/config.interface.js';
 import loadLogger from '@/logger.js';
 import loadResources from '@/loader.js';
@@ -101,8 +102,26 @@ function createClient(): Client {
  */
 async function createPlayer(client: Client): Promise<void> {
   const player = new Player(client); // Player setup
-  await player.extractors.loadMulti(DefaultExtractors); // Load default extractors
-  await player.extractors.register(YoutubeiExtractor, {}); // Load YouTube support
+
+  // Load YouTube support
+  await player.extractors.register(YoutubeiExtractor, {
+    streamOptions: {
+      useClient: 'WEB_EMBEDDED',
+    },
+    innertubeConfigRaw: {
+      player_id: '0004de42',
+    },
+    generateWithPoToken: true,
+    useServerAbrStream: false,
+  });
+
+  await player.extractors.register(SpotifyExtractor, {}); // Load Spotify support (only fetching)
+
+  // Log some player dependencies info
+  logger.info(player.scanDeps());
+
+  // Some debugging
+  // player.on('debug', console.log).events.on('debug', (_, m) => console.log(m));
 }
 
 /**

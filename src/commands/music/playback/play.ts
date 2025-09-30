@@ -7,7 +7,7 @@ import {
   TextChannel,
   MessageFlags,
 } from 'discord.js';
-import { QueryType, useMainPlayer, Track } from 'discord-player';
+import { QueryType, useMainPlayer, Track, useQueue } from 'discord-player';
 import { reply, deferReply } from '@utils/interaction-utils.js';
 import { noResults, addToQueue, addToQueueMany } from '@utils/embed/embed-presets.js';
 import { fetchString } from '@utils/language-utils.js';
@@ -73,11 +73,13 @@ export const command: ICommand = {
           channel: textChanel,
           trivia: false,
         },
-        leaveOnEmptyCooldown: 0,
+        leaveOnEmptyCooldown: 2000,
         leaveOnEmpty: true,
-        leaveOnEndCooldown: 0,
+        leaveOnEndCooldown: 2000,
         leaveOnEnd: true,
-        bufferingTimeout: 0,
+        leaveOnStop: true,
+        leaveOnStopCooldown: 2000,
+        bufferingTimeout: 15000,
         selfDeaf: true,
       },
     });

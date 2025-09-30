@@ -207,8 +207,9 @@ async function playSong(inter: ChatInputCommandInteraction, song: Track<ITrackMe
       leaveOnEmpty: false,
       leaveOnEnd: false,
       leaveOnStop: false,
-      bufferingTimeout: 0,
+      bufferingTimeout: 15000,
       selfDeaf: true,
+      volume: 30,
     },
   });
 

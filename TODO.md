@@ -2,9 +2,6 @@
 
 ## Important
 
-- [ ] Is utils/interaction-utils.ts really needed?
-  - [ ] Ephemeral is deprecated -> use flags instead
-
 - [ ] Modify locale placeholders to be more user-friendly (e.g. {user} instead of {0}) (loaders/languages-loader.ts)
 
 ## General
@@ -24,9 +21,14 @@
 
 ## Music
 
-- [ ] Solve issues with the music commands
-  - [ ] Impossible to bridge some songs sp->yt
-  - [ ] No pfp on songs -> discord-player package issue
+- [x] While YoutubeI package is being fixed, quick workaround done (bot.ts)
+  - [ ] Solve issues with the music commands
+    - [ ] YoutubeI Package
+      - [ ] Impossible to bridge some songs sp->yt
+      - [ ] Songs are found but won't start
+
+- [ ] Add guide to locally use ffmpeg -> HAS TO BE ON PATH VARIABLE IF NO PATH IS SPECIFIED IN .ENV
+  - [ ] .env FFMPEG_PATH entry not working?
 
 ## IAs
 
