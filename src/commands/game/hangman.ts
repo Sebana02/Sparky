@@ -81,7 +81,7 @@ export const command: ICommand = {
 
   execute: async (client: Client, inter: ChatInputCommandInteraction): Promise<void> => {
     // Defer the reply
-    await deferReply(inter, { flags: MessageFlags.Ephemeral });
+    await deferReply(inter, {});
 
     // Gather players
     let players = await gatherPlayers(inter);

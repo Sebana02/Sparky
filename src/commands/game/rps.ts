@@ -51,7 +51,7 @@ export const command: ICommand = {
       return await reply(inter, { content: commandLit.checkAgainstSelf, flags: MessageFlags.Ephemeral }, 2);
 
     // Defer reply
-    await deferReply(inter, { flags: MessageFlags.Ephemeral });
+    await deferReply(inter, {});
 
     // Define players object
     const players: Player[] = [

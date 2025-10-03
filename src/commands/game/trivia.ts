@@ -53,7 +53,7 @@ export const command: ICommand = {
 
   execute: async (client: Client, inter: ChatInputCommandInteraction): Promise<void> => {
     // Defer reply
-    await deferReply(inter, { flags: MessageFlags.Ephemeral });
+    await deferReply(inter, {});
 
     // Delete queue if exists
     let queue = useQueue(inter.guildId as string);

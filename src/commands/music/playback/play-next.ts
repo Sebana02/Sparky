@@ -40,7 +40,7 @@ export const command: ICommand = {
       return await reply(inter, { embeds: [noQueue(client)], flags: MessageFlags.Ephemeral }, 2);
 
     //Defer the reply
-    await deferReply(inter, { flags: MessageFlags.Ephemeral });
+    await deferReply(inter, {});
 
     //Search for the song
     const results = await useMainPlayer().search(song, {

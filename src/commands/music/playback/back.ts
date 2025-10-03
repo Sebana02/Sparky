@@ -38,7 +38,7 @@ export const command: ICommand = {
     if (history.isEmpty()) return await reply(inter, { embeds: [noHistory(client)], flags: MessageFlags.Ephemeral }, 2);
 
     //Defer reply
-    await deferReply(inter, { flags: MessageFlags.Ephemeral });
+    await deferReply(inter, {});
 
     //Play the previous track
     await history.previous(true);

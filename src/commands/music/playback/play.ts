@@ -44,7 +44,7 @@ export const command: ICommand = {
     const song = inter.options.getString(commandLit.songName, true);
 
     //Defer the reply
-    await deferReply(inter, { flags: MessageFlags.Ephemeral });
+    await deferReply(inter, {});
 
     //Search for the song
     const results = await player.search(song, {

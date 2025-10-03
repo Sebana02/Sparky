@@ -1,6 +1,6 @@
 import { modifyEmbed, createEmbed, ColorScheme } from '@utils/embed/embed-utils.js';
 import { reply, deferReply } from '@utils/interaction-utils.js';
-import { ChatInputCommandInteraction, EmbedBuilder, MessageFlags } from 'discord.js';
+import { ChatInputCommandInteraction, EmbedBuilder } from 'discord.js';
 import { fetchFunction } from '@utils/language-utils.js';
 
 /**
@@ -67,7 +67,7 @@ export async function sendRandomGif(
 ): Promise<void> {
   try {
     //Defer reply
-    await deferReply(inter, { flags: MessageFlags.Ephemeral });
+    await deferReply(inter, {});
 
     //Search gifs
     const gifURL = await getRandomGif(category);

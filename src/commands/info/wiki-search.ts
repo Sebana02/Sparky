@@ -1,6 +1,6 @@
 import { createEmbed, ColorScheme } from '@utils/embed/embed-utils.js';
 import { reply, deferReply } from '@utils/interaction-utils.js';
-import { ChatInputCommandInteraction, Client, MessageFlags, SlashCommandBuilder } from 'discord.js';
+import { ChatInputCommandInteraction, Client, SlashCommandBuilder } from 'discord.js';
 import { fetchString, fetchFunction } from '@utils/language-utils.js';
 import { ICommand } from '@interfaces/command.interface.js';
 
@@ -41,7 +41,7 @@ export const command: ICommand = {
     const searchTerm = inter.options.getString(commandLit.termName, true);
 
     //Defer reply
-    await deferReply(inter, { flags: MessageFlags.Ephemeral });
+    await deferReply(inter, {});
 
     //Search Wikipedia
     const response = await fetch(search(searchTerm));
