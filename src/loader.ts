@@ -5,7 +5,7 @@ import { fileURLToPath } from 'url';
 /**
  * Loads languages, events, and commands
  * @param client The Discord client
- * @note It is important that loadLanguages, loadEvents, and loadCommands are loaded in this order, thats why they are imported dinamically
+ * @remarks It is important that loadLanguages, loadEvents, and loadCommands are loaded in this order, thats why they are imported dinamically
  */
 export default async function loadResources(client: Client): Promise<void> {
   // Log start time

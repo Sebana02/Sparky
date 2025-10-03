@@ -21,14 +21,7 @@
 
 ## Music
 
-- [x] While YoutubeI package is being fixed, quick workaround done (bot.ts)
-  - [ ] Solve issues with the music commands
-    - [ ] YoutubeI Package
-      - [ ] Impossible to bridge some songs sp->yt
-      - [ ] Songs are found but won't start
-
-- [ ] Add guide to locally use ffmpeg -> HAS TO BE ON PATH VARIABLE IF NO PATH IS SPECIFIED IN .ENV
-  - [ ] .env FFMPEG_PATH entry not working?
+- [x] While YoutubeI package is being fixed, quick workaround done (bot.ts) -> songs wont play
 
 - [ ] Player.search function only returns 100 songs from a spotify playlist -> might be capped
 

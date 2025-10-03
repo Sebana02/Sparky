@@ -460,7 +460,7 @@ export function playing(track: Track<ITrackMetadata>): APIEmbed {
 
 /**
  * Generates an empty channel embed
- * @param track - The track object
+ * @param client - The client object
  * @returns The empty channel embed
  */
 export function emptyChannel(client: Client): APIEmbed {
@@ -475,8 +475,8 @@ export function emptyChannel(client: Client): APIEmbed {
 
 /**
  * Generates a empty queue embed
- * @param track - The track object
- * @returns The empty channel embed
+ * @param client - The client object
+ * @returns The empty queue embed
  */
 export function emptyQueue(client: Client): APIEmbed {
   return {

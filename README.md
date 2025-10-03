@@ -39,7 +39,7 @@
 
 ## Features
 
-- 🎵 **Advanced Music Control** – Play, pause, skip, loop, and manage your music queue seamlessly. Supports **YouTube, Spotify, and SoundCloud**.
+- 🎵 **Advanced Music Control** – Play, pause, skip, loop, and manage your music queue seamlessly. Supports **YouTube and Spotify**.
 - 🔨 **Powerful Moderation** – Keep your server safe with **ban, kick, mute**, and role management commands.
 - 🎉 **Fun & Interaction** – Send **memes, GIFs, cat & dog pictures**, and interact with virtual **hugs, slaps**, and more.
 - 🎮 **Mini Games** – Play **Hangman, Rock-Paper-Scissors, Tic-Tac-Toe**, and other fun challenges with friends.
@@ -114,14 +114,16 @@ The bot has the following configurations through the `.env` file, located on the
 | --- | --- |
 | `TOKEN` | Discord authentication token (**Required**). |
 | `TENOR_API_KEY` | API key for the Tenor GIF API (required for GIF commands). You can get one [here](https://tenor.com/developer/keysignup). |
+| `FFMPEG_PATH` | Path to the ffmpeg binary (if not in PATH variable). Alternative to the pre-installed ffmpeg which is known to be unstable. You can get ffmpeg [here](https://ffmpeg.org/download.html). |
 
 ---
 
 Here is an example of a fully configured `.env` file:
 
 ```bash
-TOKEN="your_discord_bot_token_here"
-TENOR_API_KEY="your_tenor_api_key_here"
+TOKEN=your_discord_bot_token_here
+TENOR_API_KEY=your_tenor_api_key_here
+FFMPEG_PATH=path_to_your_ffmpeg_binary_here
 ```
 
 You can also configure the bot's behavior in the `src/config.ts` file. This file contains various settings that control how the bot operates and general application settings. Here are some of the key settings you can configure:
@@ -225,7 +227,6 @@ These commands help maintain order and control in the server by providing tools 
 | `/mutechannel [channel]` | Mutes the specified `channel`, preventing users from sending messages in that channel. If no channel is specified, it mutes the channel where the command is used. It can be used both on text and voice channels. | `/mutechannel general` | Channel | [`mute-channel.ts`](src/commands/moderation/channel/mute-channel.ts) |
 | `/unmutechannel [channel]` | Unmutes the specified `channel`, allowing users to send messages once more. If no channel is specified, it unmutes the channel where the command is used. It can be used both on text and voice channels. | `/unmutechannel general` | Channel | [`unmute-channel.ts`](src/commands/moderation/channel/unmute-channel.ts) |
 | `/purge [amount]` | Deletes a specified `amount` of messages in the channel, helping to clean up chat clutter. | `/purge 10` | Channel | [`purge.ts`](src/commands/moderation/channel/purge.ts) |
-| `/createrole <roleName> [color]` | Creates a new role with the specified `roleName` and, optionally, a `color` in hexadecimal format (#abc123) | `/createrole Admin #FFFFFF` | Role | [`create-role.ts`](src/commands/moderation/role/createrole.ts) |
 | `/ban <user>` | Bans a specified `user` from the server, preventing them from joining or interacting with the server. | `/ban @Dave` | User | [`ban.ts`](src/commands/moderation/user/ban.ts) |
 | `/unban <user>` | Unbans a specified `user` from the server, allowing them to rejoin and interact with the community. | `/unban @Dave` | User | [`unban.ts`](src/commands/moderation/user/unban.ts) |
 | `/bannedlist` | Displays a list of banned users, providing insight into who is currently banned from the server. | `/bannedlist` | User | [`banned-list.ts`](src/commands/moderation/user/banned-list.ts) |
@@ -408,7 +409,7 @@ In the `utils` folder, you can find a series of utility classes that can be used
 | `GifUtils` | Utility class to retrieve and send GIFs. | [`gif-utils.ts`](src/utils/gif-utils.ts) |
 | `LanguageUtils` | Functions to retrieve literals from the selected language. | [`language-utils.ts`](src/utils/language-utils.ts) |
 | `EmbedPresets` | Functions to create embed presets and use them anywhere. | [`embed-presets.ts`](src/utils/embed/embed-presets.ts) |
-| `EmbedUtils` | Functions to create and manage embeds for various purposes. | [`embed-utils.ts`](src/utils/embed-utils.ts) |
+| `EmbedUtils` | Functions to create and manage embeds for various purposes. | [`embed-utils.ts`](src/utils/embed/embed-utils.ts) |
 
 ## Logger
 

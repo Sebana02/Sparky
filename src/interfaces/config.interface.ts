@@ -87,7 +87,8 @@ export interface IClientConfig {
  * Type for language locale keys, derived from the locales JSON file.
  * This ensures that only valid locale keys are used in the configuration.
  */
-export type localeKeys = keyof typeof localesJson;
+export const locales = localesJson;
+export type localeKeys = keyof typeof locales;
 
 /**
  * Interface for client configuration, including non-sensitive information.
