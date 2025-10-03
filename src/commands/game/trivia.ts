@@ -167,7 +167,7 @@ function selectSong(results: SearchResult, toBePlayed: Track<ITrackMetadata>[]):
   let correctSong = toBePlayed[Math.floor(Math.random() * toBePlayed.length)];
 
   // Remove song from toBePlayed
-  toBePlayed = toBePlayed.filter((s) => s !== correctSong);
+  toBePlayed.splice(toBePlayed.indexOf(correctSong), 1);
 
   // Select 3 random songs from results.tracks that are not the same as song
   const incorrectSongs: Track<ITrackMetadata>[] = (results.tracks as Track<ITrackMetadata>[])
@@ -246,6 +246,7 @@ async function triviaRound(
   results: SearchResult,
   toBePlayed: Track<ITrackMetadata>[]
 ) {
+  console.log(toBePlayed.length);
   //Check if there are songs left
   if (toBePlayed.length === 0) return await endTrivia(inter, players);
 

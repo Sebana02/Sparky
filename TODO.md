@@ -30,7 +30,7 @@
 - [ ] Add guide to locally use ffmpeg -> HAS TO BE ON PATH VARIABLE IF NO PATH IS SPECIFIED IN .ENV
   - [ ] .env FFMPEG_PATH entry not working?
 
-- [ ] Some songs are being repeated on trivia
+- [ ] Player.search function only returns 100 songs from a spotify playlist -> might be capped
 
 ## IAs
 
