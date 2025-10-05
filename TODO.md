@@ -23,8 +23,6 @@
 
 - [x] While YoutubeI package is being fixed, quick workaround done (bot.ts) -> songs wont play
 
-- [ ] Player.search function only returns 100 songs from a spotify playlist -> might be capped
-
 ## IAs
 
 - [ ] RPS

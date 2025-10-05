@@ -3,7 +3,7 @@ import { Player } from 'discord-player';
 import { YoutubeiExtractor } from 'discord-player-youtubei';
 import { SpotifyExtractor } from 'discord-player-spotify';
 import { config as loadEnv } from 'dotenv';
-// import { DefaultExtractors } from '@discord-player/extractor';
+import { SoundCloudExtractor, AppleMusicExtractor } from '@discord-player/extractor';
 import { IConfig, IUserConfig } from '@interfaces/config.interface.js';
 import loadLogger from '@/logger.js';
 import loadResources from '@/loader.js';
@@ -116,9 +116,11 @@ async function createPlayer(client: Client): Promise<void> {
   });
 
   await player.extractors.register(SpotifyExtractor, {}); // Load Spotify support (only fetching)
+  await player.extractors.register(AppleMusicExtractor, {}); // Load Apple Music support (only fetching)
+  await player.extractors.register(SoundCloudExtractor, {}); // Load SoundCloud support
 
   // Log some player dependencies info
-  logger.info(player.scanDeps());
+  //logger.info(player.scanDeps());
 
   // Some debugging
   // player.on('debug', console.log).events.on('debug', (_, m) => console.log(m));
@@ -141,6 +143,10 @@ async function login(client: Client): Promise<void> {
     process.exit(1);
   });
 }
+
+// Disable youtubei.js logs
+import { Log } from 'youtubei.js';
+Log.setLevel(Log.Level.NONE);
 
 // Start the bot
 run();

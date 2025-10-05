@@ -39,7 +39,7 @@
 
 ## Features
 
-- 🎵 **Advanced Music Control** – Play, pause, skip, loop, and manage your music queue seamlessly. Supports **YouTube and Spotify**.
+- 🎵 **Advanced Music Control** – Play, pause, skip, loop, and manage your music queue seamlessly. Supports **Youtube, Spotify (only search), Apple Music (only search) and SoundCloud**.
 - 🔨 **Powerful Moderation** – Keep your server safe with **ban, kick, mute**, and role management commands.
 - 🎉 **Fun & Interaction** – Send **memes, GIFs, cat & dog pictures**, and interact with virtual **hugs, slaps**, and more.
 - 🎮 **Mini Games** – Play **Hangman, Rock-Paper-Scissors, Tic-Tac-Toe**, and other fun challenges with friends.
@@ -115,6 +115,8 @@ The bot has the following configurations through the `.env` file, located on the
 | `TOKEN` | Discord authentication token (**Required**). |
 | `TENOR_API_KEY` | API key for the Tenor GIF API (required for GIF commands). You can get one [here](https://tenor.com/developer/keysignup). |
 | `FFMPEG_PATH` | Path to the ffmpeg binary (if not in PATH variable). Alternative to the pre-installed ffmpeg which is known to be unstable. You can get ffmpeg [here](https://ffmpeg.org/download.html). |
+| `DP_SPOTIFY_CLIENT_ID` | Spotify client ID (for Spotify authentication). It is not required, but recommended for additional features. You can get one [here](https://developer.spotify.com/dashboard). |
+| `DP_SPOTIFY_CLIENT_SECRET` | Spotify client secret (for Spotify authentication). You can get one [here](https://developer.spotify.com/dashboard). |
 
 ---
 
@@ -124,6 +126,8 @@ Here is an example of a fully configured `.env` file:
 TOKEN=your_discord_bot_token_here
 TENOR_API_KEY=your_tenor_api_key_here
 FFMPEG_PATH=path_to_your_ffmpeg_binary_here
+DP_SPOTIFY_CLIENT_ID=your_spotify_client_id_here
+DP_SPOTIFY_CLIENT_SECRET=your_spotify_client_secret_here
 ```
 
 You can also configure the bot's behavior in the `src/config.ts` file. This file contains various settings that control how the bot operates and general application settings. Here are some of the key settings you can configure:
