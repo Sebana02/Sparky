@@ -32,7 +32,12 @@ export const command: ICommand = {
 
     // Generate command fields
     const fields = Array.from(globalThis.commands.values()).map((command: ICommand) => ({
-      name: `> **${command.data.name}**`,
+      name: `> **${command.data.name}**  ${command.data.options
+        .map((opt) => {
+          const option = opt.toJSON();
+          return option.required ? `<${option.name}>` : `[${option.name}]`;
+        })
+        .join(', ')}`,
       value: `\`${command.data.description}\``,
       inline: true,
     }));

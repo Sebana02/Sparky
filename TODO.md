@@ -8,8 +8,6 @@
 
 - [ ] Add more personalization options to the bot (src/config.ts)
 
-- [ ] Implement subcommands when possible (e.g. mute/unmute -> mute)
-
 - [ ] Create error classes to handle errors better
 
 - [ ] Add an alternative to tenor for gifs (e.g. giphy)
@@ -23,37 +21,44 @@
 
 - [x] While YoutubeI package is being fixed, quick workaround done (bot.ts) -> songs wont play
 
-## IAs
-
-- [ ] RPS
-- [ ] TicTacToe
-
 ## Embeds
 
-- [ ] Change direct imports of embed presets to use embedFromTemplate function
-- [ ] Only use embedTemplates when necessary (remove unnecessary ones)
-- [ ] Improve visuals and embeds
-- [ ] Make embeds fully customizable using templates
+- [ ] Improve visuals of embeds
+
+- [ ] Is all of this really necessary?
+  - [ ] Change direct imports of embed presets to use embedFromTemplate function
+  - [ ] Only use embedTemplates when necessary (remove unnecessary ones)
+  - [ ] Make embeds fully customizable using templates
 
 ## Commands
 
-- [ ] add-role command
-- [ ] remove-role command
-- [ ] create-role command
-- [ ] delete-role command
-- [ ] show-permissions command
-- [ ] show-roles (of a user) command
-- [ ] create-channel command
-- [ ] delete-channel command
+- [ ] Combine similar commands into subcommands (e.g., ban/unban, mute/unmute, kick/warn)
 
-- [ ] Add pagination to bannedlist and mutedlist commands
+- [ ] Moderation
+  - [ ] Roles
+    - [ ] Add role to user
+    - [ ] Remove role from user
+    - [ ] Create role
+    - [ ] Delete role
+    - [ ] Show permissions of a role
+    - [ ] Show roles of a user
+  - [ ] Channels
+    - [ ] Create channel
+    - [ ] Delete channel
+    - [ ] Modify channel permissions
+  - [ ] Add pagination to user/banned-list and user/muted-list commands
 
-- [ ] Weather command
+- [ ] Info
+  - [ ] Weather info
+  - [ ] Ask chatGPT info
 
-- [ ] Add options info to the help command
+- [ ] Utility
+  - [ ] Create and send embed message
 
-- [ ] Create and send embed message
+- [ ] Game
+  - [ ] RPS IA
+  - [ ] TicTacToe IA
 
 ## Security
 
-- [ ] More checks regarding who can receive certain commands
+- [ ] More checks regarding who can receive certain commands (e.g., ban, kick, mute, warn, role management, etc.)
