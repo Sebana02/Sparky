@@ -1,10 +1,10 @@
 import { ChatInputCommandInteraction, Client, SlashCommandBuilder, MessageFlags } from 'discord.js';
 import { useQueue, Track } from 'discord-player';
 import { deferReply, reply } from '@utils/interaction-utils.js';
-import { noQueue, noHistory, previousTrack } from '@utils/embed/embed-presets.js';
 import { fetchString } from '@utils/language-utils.js';
 import { ICommand } from '@interfaces/command.interface.js';
 import { IQueuePlayerMetadata, ITrackMetadata } from '@interfaces/metadata.interface.js';
+import { embedFromTemplate } from '@/utils/embed-utils.js';
 
 /**
  * Literal object for the command
@@ -29,13 +29,14 @@ export const command: ICommand = {
 
     //Check if there is a queue and if it is playing
     if (!queue || !queue.isPlaying())
-      return await reply(inter, { embeds: [noQueue(client)], flags: MessageFlags.Ephemeral }, 2);
+      return await reply(inter, { embeds: [embedFromTemplate('noQueue', client)], flags: MessageFlags.Ephemeral }, 2);
 
     //Get the history
     const history = queue.history;
 
     //Check if there is a history
-    if (history.isEmpty()) return await reply(inter, { embeds: [noHistory(client)], flags: MessageFlags.Ephemeral }, 2);
+    if (history.isEmpty())
+      return await reply(inter, { embeds: [embedFromTemplate('noHistory', client)], flags: MessageFlags.Ephemeral }, 2);
 
     //Defer reply
     await deferReply(inter, {});
@@ -44,6 +45,6 @@ export const command: ICommand = {
     await history.previous(true);
 
     //Send the previous track embed
-    await reply(inter, { embeds: [previousTrack(queue.currentTrack as Track<ITrackMetadata>)] });
+    await reply(inter, { embeds: [embedFromTemplate('previousTrack', queue.currentTrack as Track<ITrackMetadata>)] });
   },
 };

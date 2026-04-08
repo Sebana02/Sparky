@@ -1,7 +1,7 @@
 import { ICommand } from '@interfaces/command.interface.js';
-import { fetchFunction, fetchString } from '@utils/language-utils.js';
+import { fetchString } from '@utils/language-utils.js';
 import { sendRandomGif } from '@utils/gif-utils.js';
-import { createEmbed, ColorScheme } from '@utils/embed/embed-utils.js';
+import { embedFromTemplate } from '@/utils/embed-utils.js';
 import { ChatInputCommandInteraction, Client, SlashCommandBuilder } from 'discord.js';
 
 /**
@@ -11,8 +11,6 @@ const commandLit = {
   description: fetchString('slap.description'),
   userName: fetchString('slap.option.name'),
   userDescription: fetchString('slap.option.description'),
-  responseTitle: fetchFunction('slap.response.description'),
-  responseDescription: fetchFunction('slap.response.footer'),
 };
 
 /**
@@ -32,17 +30,7 @@ export const command: ICommand = {
     // Get the target user
     const targetUser = inter.options.getUser(commandLit.userName, true);
 
-    // Create embed
-    const embed = createEmbed({
-      color: ColorScheme.fun,
-      description: commandLit.responseTitle(targetUser),
-      footer: {
-        text: commandLit.responseDescription(inter.user.username),
-        icon_url: inter.user.displayAvatarURL(),
-      },
-    });
-
     // Reply with a random gif, slapping the user
-    await sendRandomGif(inter, 'slap', embed);
+    await sendRandomGif(inter, 'slap', embedFromTemplate('slap', inter, targetUser));
   },
 };

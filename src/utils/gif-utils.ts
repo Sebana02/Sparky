@@ -1,4 +1,4 @@
-import { modifyEmbed, createEmbed, ColorScheme } from '@utils/embed/embed-utils.js';
+import { modifyEmbed, createEmbed, ColorScheme } from '@/utils/embed-utils.js';
 import { reply, deferReply } from '@utils/interaction-utils.js';
 import { ChatInputCommandInteraction, EmbedBuilder } from 'discord.js';
 import { fetchFunction } from '@utils/language-utils.js';

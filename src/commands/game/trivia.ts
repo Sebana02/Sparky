@@ -15,7 +15,7 @@ import {
   MessageComponentInteraction,
   MessageFlags,
 } from 'discord.js';
-import { createEmbed, ColorScheme, embedFromTemplate } from '@utils/embed/embed-utils.js';
+import { createEmbed, ColorScheme, embedFromTemplate } from '@/utils/embed-utils.js';
 import { fetchString, fetchFunction } from '@utils/language-utils.js';
 import { ICommand } from '@interfaces/command.interface.js';
 import { IQueuePlayerMetadata, ITrackMetadata } from '@interfaces/metadata.interface.js';
@@ -246,7 +246,6 @@ async function triviaRound(
   results: SearchResult,
   toBePlayed: Track<ITrackMetadata>[]
 ) {
-  console.log(toBePlayed.length);
   //Check if there are songs left
   if (toBePlayed.length === 0) return await endTrivia(inter, players);
 
@@ -298,7 +297,7 @@ async function handleInteraction(
         createEmbed({
           author: {
             name: commandLit.selectedStop,
-            icon_url: interaction.user.displayAvatarURL(),
+            iconURL: interaction.user.displayAvatarURL(),
           },
           color: ColorScheme.game,
         }),
@@ -326,7 +325,7 @@ async function handleInteraction(
           interaction.customId === correctSong.id
             ? commandLit.selectedCorrect(interaction.user.tag)
             : commandLit.selectedIncorrect(interaction.user.tag),
-        icon_url: interaction.user.displayAvatarURL(),
+        iconURL: interaction.user.displayAvatarURL(),
       },
       footer: {
         text: commandLit.selectedSong(correctSong.title + ' - ' + correctSong.author).substring(0, 80),

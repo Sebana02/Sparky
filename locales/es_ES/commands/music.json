@@ -1,69 +1,116 @@
 {
+  "music_general": {
+    "error": "Ha ocurrido un error al reproducir la música",
+    "no_results": "No hay resultados para esta canción",
+    "no_playlist": "Asegurate que el link sea de una playlist y tenga al menos 5 canciones",
+    "no_queue": "No hay música reproduciendose",
+    "no_history": "No hay historial",
+    "no_lyrics": "No se encontraron letras para esta canción",
+    "playing": "reproduciendo ahora",
+    "empty_channel": "No hay nadie en el canal de voz, saliendo...",
+    "empty_queue": "No hay canciones en la cola,saliendo..."
+  },
   "lyrics": {
     "description": "Muestra la letra de la canción actual"
   },
   "now_playing": {
-    "description": "Muestra la canción que se está reproduciendo actualmente"
-  },
-  "save": {
-    "description": "Guarda la canción actual en un mensaje privado"
-  },
-  "back": {
-    "description": "Reproducir la canción anterior"
-  },
-  "loop": {
-    "description": "Activa o desactiva el bucle de una canción o de la cola",
-    "option": {
-      "name": "modo",
-      "description": "Modo de bucle",
-      "choices": {
-        "off": "Desactivado",
-        "track": "Canción",
-        "queue": "Cola",
-        "autoplay": "Autoplay"
+    "description": "Muestra la canción que se está reproduciendo",
+    "response": "Volumen **{0}%**\nDuración **{1}**\nProgreso {2}\nBucle **{3}**\nRequested by {4}",
+    "save": {
+      "description": "Guarda la canción actual en un mensaje privado",
+      "response": "enviado al privado"
+    },
+    "back": {
+      "description": "Reproduce la canción anterior",
+      "response": "reproduciendo la canción anterior"
+    },
+    "loop": {
+      "description": "Activa o desactiva el bucle para una canción o la cola",
+      "option": {
+        "name": "mode",
+        "description": "Modo de bucle",
+        "choices": {
+          "off": "Desactivado",
+          "track": "Canción",
+          "queue": "Cola",
+          "autoplay": "Reproducción automática"
+        }
+      },
+      "response": {
+        "modes": {
+          "off": "desactivado",
+          "track": "canción",
+          "queue": "cola",
+          "autoplay": "reproducción automática"
+        },
+        "title": "Bucle: {0}"
+      }
+    },
+    "pause": {
+      "description": "Pausa la canción",
+      "response": "pausada"
+    },
+    "play": {
+      "description": "Reproduce una canción o una lista de reproducción",
+      "option": {
+        "name": "song",
+        "description": "Canción o lista de reproducción que deseas reproducir"
+      },
+      "response": {
+        "add_to_queue": "añadida a la cola",
+        "add_to_queue_many": {
+          "title": "{0} canciones",
+          "description": "añadidas a la cola"
+        }
+      }
+    },
+    "play_next": {
+      "description": "Reproduce la canción que deseas a continuación",
+      "option": {
+        "name": "song",
+        "description": "Canción que deseas reproducir a continuación"
+      }
+    },
+    "resume": {
+      "description": "Reanuda la canción",
+      "response": "reanudada"
+    },
+    "skip": {
+      "description": "Salta la canción actual",
+      "response": "saltada"
+    },
+    "stop": {
+      "description": "Detiene la reproducción de música",
+      "response": "Se ha parado la música"
+    },
+    "volume": {
+      "description": "Cambia el volumen de la música",
+      "option": {
+        "name": "volume",
+        "description": "Volumen de la música"
+      },
+      "response": "El volumen se ha cambiado a {0}%"
+    },
+    "clear": {
+      "description": "Limpia la cola de reproducción",
+      "response": "Se ha limpiado la cola de reproducción"
+    },
+    "queue": {
+      "description": "Muestra la cola de reproducción",
+      "response": {
+        "next_songs": {
+          "add": "Y **{0}** canciones más...",
+          "no_add": "**{0}** canciones..."
+        },
+        "title": "en la cola"
+      }
+    },
+    "shuffle": {
+      "description": "Baraja la cola de reproducción",
+      "response": {
+        "title": "{0} canciones",
+        "description": "se han mezclado"
       }
     }
-  },
-  "pause": {
-    "description": "Pausa la canción"
-  },
-  "play": {
-    "description": "Reproduce una canción o una lista de reproducción",
-    "option": {
-      "name": "canción",
-      "description": "Canción o lista de reproducción que quieres reproducir"
-    }
-  },
-  "play_next": {
-    "description": "Reproducir la canción que quieras a continuación",
-    "option": {
-      "name": "canción",
-      "description": "Canción que quieres reproducir a continuación"
-    }
-  },
-  "resume": {
-    "description": "Reanuda la canción"
-  },
-  "skip": {
-    "description": "Salta la canción actual"
-  },
-  "stop": {
-    "description": "Detiene la reproducción de música"
-  },
-  "volume": {
-    "description": "Cambia el volumen de la música",
-    "option": {
-      "name": "volumen",
-      "description": "Volumen de la música"
-    }
-  },
-  "clear": {
-    "description": "Vacía la cola de reproducción"
-  },
-  "queue": {
-    "description": "Muestra la cola de reproducción"
-  },
-  "shuffle": {
-    "description": "Baraja la cola de reproducción"
   }
 }

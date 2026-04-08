@@ -21,7 +21,7 @@
     "@ffmpeg-installer/ffmpeg": "^1.1.0",
     "discord-player": "^7.1.0",
     "discord-player-spotify": "^1.1.7",
-    "discord-player-youtubei": "^1.5.0",
+    "discord-player-youtubei": "^2.0.0-dev",
     "discord.js": "^14.22.1",
     "dotenv": "^17.2.1",
     "mediaplex": "^1.0.0"

@@ -1,10 +1,10 @@
 import { ChatInputCommandInteraction, Client, GuildMember, SlashCommandBuilder, MessageFlags } from 'discord.js';
 import { QueryType, Track, useMainPlayer, useQueue } from 'discord-player';
 import { reply, deferReply } from '@utils/interaction-utils.js';
-import { noResults, addToQueue, noQueue } from '@utils/embed/embed-presets.js';
 import { fetchString } from '@utils/language-utils.js';
 import { IQueuePlayerMetadata, ITrackMetadata } from '@interfaces/metadata.interface.js';
 import { ICommand } from '@interfaces/command.interface.js';
+import { embedFromTemplate } from '@/utils/embed-utils.js';
 
 /**
  * Literal object for the command
@@ -37,7 +37,7 @@ export const command: ICommand = {
 
     //Check if there is a queue and if it is playing
     if (!queue || !queue.isPlaying())
-      return await reply(inter, { embeds: [noQueue(client)], flags: MessageFlags.Ephemeral }, 2);
+      return await reply(inter, { embeds: [embedFromTemplate('noQueue', client)], flags: MessageFlags.Ephemeral }, 2);
 
     //Defer the reply
     await deferReply(inter, {});
@@ -50,7 +50,7 @@ export const command: ICommand = {
 
     //If there are no results
     if (!results.hasTracks())
-      return await reply(inter, { embeds: [noResults(client)], flags: MessageFlags.Ephemeral }, 2);
+      return await reply(inter, { embeds: [embedFromTemplate('noResults', client)], flags: MessageFlags.Ephemeral }, 2);
 
     //Set the metadata
     results.tracks[0].setMetadata({} as ITrackMetadata);
@@ -59,6 +59,8 @@ export const command: ICommand = {
     queue.insertTrack(results.tracks[0], 0);
 
     //Send the added to queue embed
-    await reply(inter, { embeds: [addToQueue(results.tracks[0] as Track<ITrackMetadata>)] });
+    await reply(inter, {
+      embeds: [embedFromTemplate('addToQueue', results.tracks[0] as Track<ITrackMetadata>)],
+    });
   },
 };

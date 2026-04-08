@@ -1,6 +1,6 @@
 import { ICommand } from '@interfaces/command.interface.js';
-import { fetchFunction, fetchString } from '@utils/language-utils.js';
-import { createEmbed, ColorScheme } from '@utils/embed/embed-utils.js';
+import { fetchString } from '@utils/language-utils.js';
+import { embedFromTemplate } from '@/utils/embed-utils.js';
 import { ChatInputCommandInteraction, Client, SlashCommandBuilder } from 'discord.js';
 import { reply } from '@utils/interaction-utils.js';
 
@@ -9,9 +9,6 @@ import { reply } from '@utils/interaction-utils.js';
  */
 const commandLit = {
   description: fetchString('coin_flip.description'),
-  response: fetchFunction('coin_flip.response.footer'),
-  heads: fetchString('coin_flip.response.heads'),
-  tails: fetchString('coin_flip.response.tails'),
 };
 
 /**
@@ -21,17 +18,7 @@ export const command: ICommand = {
   data: new SlashCommandBuilder().setName('coinflip').setDescription(commandLit.description),
 
   execute: async (client: Client, inter: ChatInputCommandInteraction): Promise<void> => {
-    // Create embed with random response
-    const embed = createEmbed({
-      footer: {
-        text: commandLit.response(inter.user.username),
-        icon_url: inter.user.displayAvatarURL(),
-      },
-      title: `${Math.random() < 0.5 ? commandLit.heads : commandLit.tails}`,
-      color: ColorScheme.fun,
-    });
-
     // Reply to the interaction
-    await reply(inter, { embeds: [embed] });
+    await reply(inter, { embeds: [embedFromTemplate('coinFlip', inter)] });
   },
 };

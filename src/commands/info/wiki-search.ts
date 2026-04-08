@@ -1,4 +1,4 @@
-import { createEmbed, ColorScheme } from '@utils/embed/embed-utils.js';
+import { embedFromTemplate } from '@/utils/embed-utils.js';
 import { reply, deferReply } from '@utils/interaction-utils.js';
 import { ChatInputCommandInteraction, Client, SlashCommandBuilder } from 'discord.js';
 import { fetchString, fetchFunction } from '@utils/language-utils.js';
@@ -12,7 +12,6 @@ const commandLit = {
   termName: fetchString('wiki_search.option.name'),
   termDescription: fetchString('wiki_search.option.description'),
   noResults: fetchFunction('wiki_search.no_results'),
-  response: fetchFunction('wiki_search.results'),
 };
 
 /**
@@ -43,37 +42,25 @@ export const command: ICommand = {
     //Defer reply
     await deferReply(inter, {});
 
-    //Search Wikipedia
+    //Search Wikipedia and check if the request was successful
     const response = await fetch(search(searchTerm));
-
-    //Check if the request was successful
     if (!response.ok) throw new Error('Invalid HTTP request, code: ' + response.status);
 
     //Parse the JSON response
-    const data = await response.json();
+    const { query: { search: results } = {} } = await response.json();
 
-    //Check if there are any results
-    if (data.query.search.length === 0) return await reply(inter, { content: commandLit.noResults(searchTerm) }, 3);
+    // Check for results
+    if (!results?.length) return await reply(inter, { content: commandLit.noResults(searchTerm) }, 3);
 
-    // Extracting the first search result
-    const result = data.query.search[0];
-    const pageUrl = `https://${lang}.wikipedia.org/?curid=${result.pageid}`;
-
-    // Create embed with search result
-    const embed = createEmbed({
-      color: ColorScheme.information,
-      title: result.title,
-      description: result.snippet.replace(/<\/?[^>]+(>|$)/g, ''), // Removing HTML tags from snippet
-      url: pageUrl,
-      footer: {
-        text: commandLit.response(searchTerm),
-        icon_url: inter.user.displayAvatarURL(),
-      },
-      timestamp: Date.now(),
-    });
+    // Extract first result
+    const [{ pageid, title, snippet }] = results;
+    const cleanSnippet = snippet.replace(/<\/?[^>]+(>|$)/g, '');
+    const pageUrl = `https://${lang}.wikipedia.org/?curid=${pageid}`;
 
     //Reply with the search result
-    await reply(inter, { embeds: [embed] });
+    await reply(inter, {
+      embeds: [embedFromTemplate('wikiSearch', inter, searchTerm, { title, snippet: cleanSnippet, pageUrl })],
+    });
   },
 };
 

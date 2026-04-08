@@ -1,7 +1,7 @@
 import { ICommand } from '@interfaces/command.interface.js';
-import { fetchFunction, fetchString } from '@utils/language-utils.js';
+import { fetchString } from '@utils/language-utils.js';
 import { sendRandomGif } from '@utils/gif-utils.js';
-import { createEmbed, ColorScheme } from '@utils/embed/embed-utils.js';
+import { embedFromTemplate } from '@/utils/embed-utils.js';
 import { ChatInputCommandInteraction, Client, SlashCommandBuilder } from 'discord.js';
 
 /**
@@ -11,7 +11,6 @@ const commandLit = {
   description: fetchString('gif.description'),
   gifName: fetchString('gif.option.name'),
   gifDescription: fetchString('gif.option.description'),
-  response: fetchFunction('gif.response'),
 };
 
 /**
@@ -29,16 +28,7 @@ export const command: ICommand = {
     //Get the category
     const category = inter.options.getString(commandLit.gifName, true);
 
-    //Create embed
-    const embed = createEmbed({
-      color: ColorScheme.fun,
-      footer: {
-        text: commandLit.response(inter.user.username, category),
-        icon_url: inter.user.displayAvatarURL(),
-      },
-    });
-
     //Reply with a gif from the specified category
-    await sendRandomGif(inter, category, embed);
+    await sendRandomGif(inter, category, embedFromTemplate('gif', inter, category));
   },
 };

@@ -10,7 +10,7 @@ import {
   MessageComponentInteraction,
   MessageFlags,
 } from 'discord.js';
-import { createEmbed, modifyEmbed, ColorScheme } from '@utils/embed/embed-utils.js';
+import { createEmbed, modifyEmbed, ColorScheme } from '@/utils/embed-utils.js';
 import { reply, deferReply, fetchReply, update } from '@utils/interaction-utils.js';
 import { fetchString, fetchFunction } from '@utils/language-utils.js';
 import { ICommand } from '@interfaces/command.interface.js';
@@ -177,7 +177,7 @@ function generateEmbed(board: BoxSymbol[][], players: Player[], turn: Turn): Emb
     description: boardString,
     footer: {
       text: commandLit.turn(player?.user.username),
-      icon_url: player?.user.displayAvatarURL(),
+      iconURL: player?.user.displayAvatarURL(),
     },
     color: ColorScheme.game,
   });
@@ -251,7 +251,7 @@ async function handleInteraction(
       const gameEmbed = modifyEmbed(generateEmbed(board, players, turn), {
         footer: {
           text: playerWon ? commandLit.win(interaction.user.username) : commandLit.draw,
-          icon_url: interaction.user.displayAvatarURL(),
+          iconURL: interaction.user.displayAvatarURL(),
         },
       });
 

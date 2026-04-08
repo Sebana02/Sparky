@@ -13,7 +13,7 @@ import {
   MessageFlags,
 } from 'discord.js';
 import { deferReply, reply, fetchReply } from '@utils/interaction-utils.js';
-import { createEmbed, ColorScheme } from '@utils/embed/embed-utils.js';
+import { createEmbed, ColorScheme } from '@/utils/embed-utils.js';
 import { fetchString, fetchFunction, fetchArray } from '@utils/language-utils.js';
 import { ICommand } from '@interfaces/command.interface.js';
 
@@ -193,7 +193,7 @@ async function gatherPlayers(inter: ChatInputCommandInteraction): Promise<User[]
     color: ColorScheme.game,
     footer: {
       text: commandLit.gatherPlayersEmbed(time),
-      icon_url: inter.user.displayAvatarURL(),
+      iconURL: inter.user.displayAvatarURL(),
     },
   });
 

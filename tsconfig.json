@@ -7,7 +7,8 @@
       "@events/*": ["events/*"],
       "@interfaces/*": ["interfaces/*"],
       "@loaders/*": ["loaders/*"],
-      "@utils/*": ["utils/*"]
+      "@utils/*": ["utils/*"],
+      "@embeds/*": ["embeds/*"]
     },
     "outDir": "dist",
     "rootDir": "src",

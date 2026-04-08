@@ -1,5 +1,5 @@
 import { APIEmbed, EmbedBuilder, EmbedData } from 'discord.js';
-import * as presets from '@utils/embed/embed-presets.js';
+import * as presets from '@embeds/index.js';
 
 /**
  * Color scheme for Discord embeds
@@ -20,7 +20,7 @@ export enum ColorScheme {
  * @returns The created Discord embed.
  * @throws An error if the created embed is empty.
  */
-export function createEmbed(embedContent: EmbedData | APIEmbed): EmbedBuilder {
+export function createEmbed(embedContent: EmbedData): EmbedBuilder {
   try {
     // Set the default color if not provided
     embedContent.color = embedContent.color || ColorScheme.default;
@@ -46,7 +46,7 @@ export function createEmbed(embedContent: EmbedData | APIEmbed): EmbedBuilder {
  * @returns The modified Discord embed.
  * @throws An error if the modified embed is empty.
  */
-export function modifyEmbed(embed: EmbedBuilder, embedContent: EmbedData | APIEmbed): EmbedBuilder {
+export function modifyEmbed(embed: EmbedBuilder, embedContent: EmbedData): EmbedBuilder {
   try {
     // Set the properties of the embed
     Object.assign(embed.data, embedContent);
@@ -105,7 +105,7 @@ export function embedFromTemplate<T extends keyof typeof presets>(
   ...args: Parameters<(typeof presets)[T]>
 ): EmbedBuilder {
   // Get the method for the template and create the embed
-  const method = presets[templateName] as (this: any, ...args: Parameters<(typeof presets)[T]>) => APIEmbed;
+  const method = presets[templateName] as (this: any, ...args: Parameters<(typeof presets)[T]>) => EmbedData;
   const embed = createEmbed(method.apply(null, args)); // For some reason, TS doesn't like the spread operator here
 
   // Check if the embed is empty

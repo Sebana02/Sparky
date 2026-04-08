@@ -1,44 +1,53 @@
 import { SearchResult, Track, GuildQueue, GuildQueuePlayerNode, LrcSearchResult } from 'discord-player';
-import { Client, APIEmbed } from 'discord.js';
+import { Client, EmbedData } from 'discord.js';
 import { fetchFunction, fetchString } from '@utils/language-utils.js';
-import { ColorScheme } from '@utils/embed/embed-utils.js';
+import { ColorScheme } from '@utils/embed-utils.js';
 import { ITrackMetadata, IQueuePlayerMetadata } from '@interfaces/metadata.interface.js';
 
 /**
  * Literal object for music embeds
  */
 const musicLit = {
-  error: fetchString('music_presets.error'),
-  noResults: fetchString('music_presets.no_results'),
-  noPlaylist: fetchString('music_presets.no_playlist'),
-  noQueue: fetchString('music_presets.no_queue'),
-  noHistory: fetchString('music_presets.no_history'),
-  noLyrics: fetchString('music_presets.no_lyrics'),
-  addToQueue: fetchString('music_presets.add_to_queue'),
-  addToQueueManyTitle: fetchFunction('music_presets.add_to_queue_many.title'),
-  addToQueueManyDescription: fetchString('music_presets.add_to_queue_many.description'),
-  previousTrack: fetchString('music_presets.previous_track'),
-  stop: fetchString('music_presets.stop'),
-  pause: fetchString('music_presets.pause'),
-  resume: fetchString('music_presets.resume'),
-  clear: fetchString('music_presets.clear'),
-  loop: fetchFunction('music_presets.loop.response'),
-  loopModeOff: fetchString('music_presets.loop.modes.off'),
-  loopModeTrack: fetchString('music_presets.loop.modes.track'),
-  loopModeQueue: fetchString('music_presets.loop.modes.queue'),
-  loopModeAutoplay: fetchString('music_presets.loop.modes.autoplay'),
-  queueNextSongsAdd: fetchFunction('music_presets.current_queue.next_songs.add'),
-  queueNextSongsNoAdd: fetchFunction('music_presets.current_queue.next_songs.no_add'),
-  queueResponse: fetchString('music_presets.current_queue.response'),
-  volume: fetchFunction('music_presets.volume'),
-  skip: fetchString('music_presets.skip'),
-  nowPlaying: fetchFunction('music_presets.now_playing'),
-  shuffleTitle: fetchFunction('music_presets.shuffle.title'),
-  shuffleDescription: fetchString('music_presets.shuffle.description'),
-  save: fetchString('music_presets.save'),
-  playing: fetchString('music_presets.playing'),
-  emptyChannel: fetchString('music_presets.empty_channel'),
-  emptyQueue: fetchString('music_presets.empty_queue'),
+  // Music general
+  errorMessage: fetchString('music_general.error'),
+  noResultsMessage: fetchString('music_general.no_results'),
+  noPlaylistMessage: fetchString('music_general.no_playlist'),
+  noQueueMessage: fetchString('music_general.no_queue'),
+  noHistoryMessage: fetchString('music_general.no_history'),
+  noLyricsMessage: fetchString('music_general.no_lyrics'),
+  playingMessage: fetchString('music_general.playing'),
+  emptyChannelMessage: fetchString('music_general.empty_channel'),
+  emptyQueueMessage: fetchString('music_general.empty_queue'),
+
+  // Play
+  addToQueueMessage: fetchString('play.response.add_to_queue'),
+  addToQueueManyTitle: fetchFunction('play.response.add_to_queue_many.title'),
+  addToQueueManyDesc: fetchString('play.response.add_to_queue_many.description'),
+  backMessage: fetchString('back.response'),
+  stopMessage: fetchString('stop.response'),
+  pauseMessage: fetchString('pause.response'),
+  resumeMessage: fetchString('resume.response'),
+  clearMessage: fetchString('clear.response'),
+
+  // Loop
+  loopTitle: fetchFunction('loop.response.title'),
+  loopModeOff: fetchString('loop.response.modes.off'),
+  loopModeTrack: fetchString('loop.response.modes.track'),
+  loopModeQueue: fetchString('loop.response.modes.queue'),
+  loopModeAutoplay: fetchString('loop.response.modes.autoplay'),
+
+  // Queue
+  queueFooterAdd: fetchFunction('queue.response.next_songs.add'),
+  queueFooterNoAdd: fetchFunction('queue.response.next_songs.no_add'),
+  queueTitle: fetchString('queue.response.title'),
+
+  // Other controls
+  volumeMessage: fetchFunction('volume.response'),
+  skipMessage: fetchString('skip.response'),
+  nowPlayingMessage: fetchFunction('now_playing.response'),
+  shuffleTitle: fetchFunction('shuffle.response.title'),
+  shuffleDescription: fetchString('shuffle.response.description'),
+  saveMessage: fetchString('save.response'),
 };
 
 /**
@@ -46,12 +55,12 @@ const musicLit = {
  * @param client - The Discord client object
  * @returns The no results embed
  */
-export function musicError(client: Client): APIEmbed {
+export function musicError(client: Client): EmbedData {
   return {
     color: ColorScheme.error,
     author: {
-      name: musicLit.error,
-      icon_url: client.user?.displayAvatarURL(),
+      name: musicLit.errorMessage,
+      iconURL: client.user?.displayAvatarURL(),
     },
   };
 }
@@ -61,12 +70,12 @@ export function musicError(client: Client): APIEmbed {
  * @param client - The Discord client object
  * @returns The no results embed
  */
-export function noResults(client: Client): APIEmbed {
+export function noResults(client: Client): EmbedData {
   return {
     color: ColorScheme.error,
     author: {
-      name: musicLit.noResults,
-      icon_url: client.user?.displayAvatarURL(),
+      name: musicLit.noResultsMessage,
+      iconURL: client.user?.displayAvatarURL(),
     },
   };
 }
@@ -76,12 +85,12 @@ export function noResults(client: Client): APIEmbed {
  * @param client - The Discord client object
  * @returns The no playlist embed
  */
-export function noPlaylist(client: Client): APIEmbed {
+export function noPlaylist(client: Client): EmbedData {
   return {
     color: ColorScheme.error,
     author: {
-      name: musicLit.noPlaylist,
-      icon_url: client.user?.displayAvatarURL(),
+      name: musicLit.noPlaylistMessage,
+      iconURL: client.user?.displayAvatarURL(),
     },
   };
 }
@@ -91,12 +100,12 @@ export function noPlaylist(client: Client): APIEmbed {
  * @param client - The Discord client object
  * @returns The no queue embed
  */
-export function noQueue(client: Client): APIEmbed {
+export function noQueue(client: Client): EmbedData {
   return {
     color: ColorScheme.error,
     author: {
-      name: musicLit.noQueue,
-      icon_url: client.user?.displayAvatarURL(),
+      name: musicLit.noQueueMessage,
+      iconURL: client.user?.displayAvatarURL(),
     },
   };
 }
@@ -106,12 +115,12 @@ export function noQueue(client: Client): APIEmbed {
  * @param client - The Discord client object
  * @returns The no history embed
  */
-export function noHistory(client: Client): APIEmbed {
+export function noHistory(client: Client): EmbedData {
   return {
     color: ColorScheme.error,
     author: {
-      name: musicLit.noHistory,
-      icon_url: client.user?.displayAvatarURL(),
+      name: musicLit.noHistoryMessage,
+      iconURL: client.user?.displayAvatarURL(),
     },
   };
 }
@@ -121,12 +130,12 @@ export function noHistory(client: Client): APIEmbed {
  * @param track - The track object
  * @returns The no lyrics embed
  */
-export function noLyrics(track: Track): APIEmbed {
+export function noLyrics(track: Track): EmbedData {
   return {
     color: ColorScheme.error,
     author: {
-      name: musicLit.noLyrics,
-      icon_url: track.thumbnail,
+      name: musicLit.noLyricsMessage,
+      iconURL: track.thumbnail,
     },
   };
 }
@@ -136,16 +145,16 @@ export function noLyrics(track: Track): APIEmbed {
  * @param track - The track object
  * @returns The added to queue embed
  */
-export function addToQueue(track: Track<ITrackMetadata>): APIEmbed {
+export function addToQueue(track: Track<ITrackMetadata>): EmbedData {
   return {
     color: ColorScheme.music,
     url: track.url,
     author: {
       name: `${track.title} | ${track.author}`,
-      icon_url: track.thumbnail,
+      iconURL: track.thumbnail,
     },
     footer: {
-      text: musicLit.addToQueue,
+      text: musicLit.addToQueueMessage,
     },
   };
 }
@@ -155,15 +164,15 @@ export function addToQueue(track: Track<ITrackMetadata>): APIEmbed {
  * @param results - The results object
  * @returns The added to queue many embed
  */
-export function addToQueueMany(results: SearchResult): APIEmbed {
+export function addToQueueMany(results: SearchResult): EmbedData {
   return {
     color: ColorScheme.music,
     author: {
       name: musicLit.addToQueueManyTitle(results.tracks.length),
-      icon_url: results.playlist?.thumbnail,
+      iconURL: results.playlist?.thumbnail,
     },
     footer: {
-      text: musicLit.addToQueueManyDescription,
+      text: musicLit.addToQueueManyDesc,
     },
   };
 }
@@ -173,15 +182,15 @@ export function addToQueueMany(results: SearchResult): APIEmbed {
  * @param track - The track object
  * @returns The previous track embed
  */
-export function previousTrack(track: Track<ITrackMetadata>): APIEmbed {
+export function previousTrack(track: Track<ITrackMetadata>): EmbedData {
   return {
     color: ColorScheme.music,
     author: {
       name: `${track.title} | ${track.author}`,
-      icon_url: track.thumbnail,
+      iconURL: track.thumbnail,
     },
     footer: {
-      text: musicLit.previousTrack,
+      text: musicLit.backMessage,
     },
   };
 }
@@ -191,12 +200,12 @@ export function previousTrack(track: Track<ITrackMetadata>): APIEmbed {
  * @param client - The Discord client object
  * @returns The stopped embed
  */
-export function stop(client: Client): APIEmbed {
+export function stop(client: Client): EmbedData {
   return {
     color: ColorScheme.music,
     author: {
-      name: musicLit.stop,
-      icon_url: client.user?.displayAvatarURL(),
+      name: musicLit.stopMessage,
+      iconURL: client.user?.displayAvatarURL(),
     },
   };
 }
@@ -206,15 +215,15 @@ export function stop(client: Client): APIEmbed {
  * @param track - The track object
  * @returns The paused embed
  */
-export function pause(track: Track<ITrackMetadata>): APIEmbed {
+export function pause(track: Track<ITrackMetadata>): EmbedData {
   return {
     color: ColorScheme.music,
     author: {
       name: `${track.title} | ${track.author}`,
-      icon_url: track.thumbnail,
+      iconURL: track.thumbnail,
     },
     footer: {
-      text: musicLit.pause,
+      text: musicLit.pauseMessage,
     },
   };
 }
@@ -224,15 +233,15 @@ export function pause(track: Track<ITrackMetadata>): APIEmbed {
  * @param track - The track object
  * @returns The resumed embed
  */
-export function resume(track: Track<ITrackMetadata>): APIEmbed {
+export function resume(track: Track<ITrackMetadata>): EmbedData {
   return {
     color: ColorScheme.music,
     author: {
       name: `${track.title} | ${track.author}`,
-      icon_url: track.thumbnail,
+      iconURL: track.thumbnail,
     },
     footer: {
-      text: musicLit.resume,
+      text: musicLit.resumeMessage,
     },
   };
 }
@@ -242,12 +251,12 @@ export function resume(track: Track<ITrackMetadata>): APIEmbed {
  * @param client - The Discord client object
  * @returns The cleared embed
  */
-export function clear(client: Client): APIEmbed {
+export function clear(client: Client): EmbedData {
   return {
     color: ColorScheme.music,
     author: {
-      name: musicLit.clear,
-      icon_url: client.user?.displayAvatarURL(),
+      name: musicLit.clearMessage,
+      iconURL: client.user?.displayAvatarURL(),
     },
   };
 }
@@ -258,14 +267,14 @@ export function clear(client: Client): APIEmbed {
  * @param track - The track object
  * @returns The loop embed
  */
-export function loop(repeatMode: number, track: Track<ITrackMetadata>): APIEmbed {
+export function loop(repeatMode: number, track: Track<ITrackMetadata>): EmbedData {
   const names = [musicLit.loopModeOff, musicLit.loopModeTrack, musicLit.loopModeQueue, musicLit.loopModeAutoplay];
 
   return {
     color: ColorScheme.music,
     author: {
-      name: musicLit.loop(names[repeatMode]),
-      icon_url: track.thumbnail,
+      name: musicLit.loopTitle(names[repeatMode]),
+      iconURL: track.thumbnail,
     },
   };
 }
@@ -275,12 +284,10 @@ export function loop(repeatMode: number, track: Track<ITrackMetadata>): APIEmbed
  * @param queue - The queue object
  * @returns The queue embed
  */
-export function currentQueue(queue: GuildQueue<IQueuePlayerMetadata>): APIEmbed {
+export function currentQueue(queue: GuildQueue<IQueuePlayerMetadata>): EmbedData {
   const methods = ['', '| 🔂', '| 🔁', '| 🔀'];
   const nextSongs =
-    queue.getSize() > 5
-      ? musicLit.queueNextSongsAdd(queue.getSize() - 5)
-      : musicLit.queueNextSongsNoAdd(queue.getSize());
+    queue.getSize() > 5 ? musicLit.queueFooterAdd(queue.getSize() - 5) : musicLit.queueFooterNoAdd(queue.getSize());
 
   const tracks = queue.tracks.map(
     (track, i) => `**${i + 1}** - ${track.title} | ${track.author} (requested by : ${track.requestedBy?.username}`
@@ -294,7 +301,7 @@ export function currentQueue(queue: GuildQueue<IQueuePlayerMetadata>): APIEmbed 
       name: `${queue.currentTrack?.title} | ${queue.currentTrack?.author} ${methods[queue.repeatMode]}`,
     },
     footer: {
-      text: musicLit.queueResponse,
+      text: musicLit.queueTitle,
     },
   };
 }
@@ -305,12 +312,12 @@ export function currentQueue(queue: GuildQueue<IQueuePlayerMetadata>): APIEmbed 
  * @param track - The track object
  * @returns The volume embed
  */
-export function volume(vol: number, track: Track<ITrackMetadata>): APIEmbed {
+export function volume(vol: number, track: Track<ITrackMetadata>): EmbedData {
   return {
     color: ColorScheme.music,
     author: {
-      name: musicLit.volume(vol),
-      icon_url: track.thumbnail,
+      name: musicLit.volumeMessage(vol),
+      iconURL: track.thumbnail,
     },
   };
 }
@@ -320,7 +327,7 @@ export function volume(vol: number, track: Track<ITrackMetadata>): APIEmbed {
  * @param lyricsData - The lyrics object
  * @returns The lyrics embed
  */
-export function lyrics(lyricsData: LrcSearchResult[]): APIEmbed {
+export function lyrics(lyricsData: LrcSearchResult[]): EmbedData {
   const lyrics = lyricsData[0];
   const trimmedLyrics = lyrics.plainLyrics.substring(0, 1997);
 
@@ -339,15 +346,15 @@ export function lyrics(lyricsData: LrcSearchResult[]): APIEmbed {
  * @param track - The track object
  * @returns The skipped embed
  */
-export function skip(track: Track<ITrackMetadata>): APIEmbed {
+export function skip(track: Track<ITrackMetadata>): EmbedData {
   return {
     color: ColorScheme.music,
     author: {
       name: `${track.title} | ${track.author}`,
-      icon_url: track.thumbnail,
+      iconURL: track.thumbnail,
     },
     footer: {
-      text: musicLit.skip,
+      text: musicLit.skipMessage,
     },
   };
 }
@@ -361,7 +368,7 @@ export function skip(track: Track<ITrackMetadata>): APIEmbed {
 export function nowPlaying(
   queue: GuildQueue<IQueuePlayerMetadata>,
   player: GuildQueuePlayerNode<IQueuePlayerMetadata>
-): APIEmbed {
+): EmbedData {
   const track = queue.currentTrack;
   const loopModes = [musicLit.loopModeOff, musicLit.loopModeTrack, musicLit.loopModeQueue, musicLit.loopModeAutoplay];
 
@@ -384,12 +391,12 @@ export function nowPlaying(
  * @param queue - The queue object
  * @returns The shuffle embed
  */
-export function shuffle(queue: GuildQueue<IQueuePlayerMetadata>): APIEmbed {
+export function shuffle(queue: GuildQueue<IQueuePlayerMetadata>): EmbedData {
   return {
     color: ColorScheme.music,
     author: {
       name: musicLit.shuffleTitle(queue.tracks.size),
-      icon_url: queue.currentTrack?.thumbnail,
+      iconURL: queue.currentTrack?.thumbnail,
     },
     footer: {
       text: musicLit.shuffleDescription,
@@ -402,7 +409,7 @@ export function shuffle(queue: GuildQueue<IQueuePlayerMetadata>): APIEmbed {
  * @param track - The track object
  * @returns The save embed
  */
-export function savePrivate(track: Track<ITrackMetadata>): APIEmbed {
+export function savePrivate(track: Track<ITrackMetadata>): EmbedData {
   return {
     color: ColorScheme.music,
     title: `:arrow_forward: ${track.title}`,
@@ -429,15 +436,15 @@ export function savePrivate(track: Track<ITrackMetadata>): APIEmbed {
  * @param track - The track object
  * @returns The save embed
  */
-export function save(track: Track<ITrackMetadata>): APIEmbed {
+export function save(track: Track<ITrackMetadata>): EmbedData {
   return {
     color: ColorScheme.music,
     author: {
       name: `${track.title} | ${track.author}`,
-      icon_url: track.thumbnail,
+      iconURL: track.thumbnail,
     },
     footer: {
-      text: musicLit.save,
+      text: musicLit.saveMessage,
     },
   };
 }
@@ -447,14 +454,14 @@ export function save(track: Track<ITrackMetadata>): APIEmbed {
  * @param track - The track object
  * @returns The playing embed
  */
-export function playing(track: Track<ITrackMetadata>): APIEmbed {
+export function playing(track: Track<ITrackMetadata>): EmbedData {
   return {
     color: ColorScheme.music,
     author: {
       name: `${track.title} | ${track.author}`,
-      icon_url: track.thumbnail,
+      iconURL: track.thumbnail,
     },
-    footer: { text: musicLit.playing },
+    footer: { text: musicLit.playingMessage },
   };
 }
 
@@ -463,12 +470,12 @@ export function playing(track: Track<ITrackMetadata>): APIEmbed {
  * @param client - The client object
  * @returns The empty channel embed
  */
-export function emptyChannel(client: Client): APIEmbed {
+export function emptyChannel(client: Client): EmbedData {
   return {
     color: ColorScheme.music,
     author: {
-      name: musicLit.emptyChannel,
-      icon_url: client.user?.displayAvatarURL(),
+      name: musicLit.emptyChannelMessage,
+      iconURL: client.user?.displayAvatarURL(),
     },
   };
 }
@@ -478,12 +485,12 @@ export function emptyChannel(client: Client): APIEmbed {
  * @param client - The client object
  * @returns The empty queue embed
  */
-export function emptyQueue(client: Client): APIEmbed {
+export function emptyQueue(client: Client): EmbedData {
   return {
     color: ColorScheme.music,
     author: {
-      name: musicLit.emptyQueue,
-      icon_url: client.user?.displayAvatarURL(),
+      name: musicLit.emptyQueueMessage,
+      iconURL: client.user?.displayAvatarURL(),
     },
   };
 }

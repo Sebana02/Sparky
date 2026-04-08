@@ -11,16 +11,15 @@ import {
   MessageFlags,
 } from 'discord.js';
 import { ICommand } from '@interfaces/command.interface.js';
-import { createEmbed, ColorScheme } from '@utils/embed/embed-utils.js';
+import { createEmbed, ColorScheme, embedFromTemplate } from '@/utils/embed-utils.js';
 import { reply, deferReply, fetchReply, deleteReply, update } from '@utils/interaction-utils.js';
-import { fetchFunction, fetchString } from '@utils/language-utils.js';
+import { fetchString } from '@utils/language-utils.js';
 
 /**
  * Literal object for the command
  */
 const commandLit = {
   description: fetchString('help.description'),
-  response: fetchFunction('help.response'),
 };
 
 export const command: ICommand = {
@@ -52,7 +51,7 @@ export const command: ICommand = {
 
     // Send the first embed with navigation buttons
     await reply(inter, {
-      embeds: [generateEmbed(chunkedFields, currentPage, totalPages)],
+      embeds: [embedFromTemplate('help', chunkedFields[currentPage], currentPage, totalPages)],
       components: [createActionRow(currentPage, totalPages)],
       flags: MessageFlags.Ephemeral,
     });
@@ -61,23 +60,6 @@ export const command: ICommand = {
     await handleInteraction(inter, currentPage, chunkedFields, totalPages);
   },
 };
-
-/**
- * Generates an embed with the command fields.
- * @param fields - Array of command fields.
- * @param currentPage - The current page number.
- * @param totalPages - The total number of pages.
- * @returns Embed with the command fields.
- */
-function generateEmbed(fields: EmbedField[][], currentPage: number, totalPages: number): EmbedBuilder {
-  return createEmbed({
-    color: ColorScheme.information,
-    fields: fields[currentPage],
-    footer: {
-      text: commandLit.response(currentPage + 1, totalPages),
-    },
-  });
-}
 
 /**
  * Creates an action row with navigation buttons.
@@ -127,7 +109,7 @@ async function updatePage(
   totalPages: number
 ): Promise<void> {
   await update(inter, {
-    embeds: [generateEmbed(fields, currentPage, totalPages)],
+    embeds: [embedFromTemplate('help', fields[currentPage], currentPage, totalPages)],
     components: [createActionRow(currentPage, totalPages)],
   });
 }

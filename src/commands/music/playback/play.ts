@@ -9,10 +9,10 @@ import {
 } from 'discord.js';
 import { QueryType, useMainPlayer, Track, useQueue } from 'discord-player';
 import { reply, deferReply } from '@utils/interaction-utils.js';
-import { noResults, addToQueue, addToQueueMany } from '@utils/embed/embed-presets.js';
 import { fetchString } from '@utils/language-utils.js';
 import { IQueuePlayerMetadata, ITrackMetadata } from '@interfaces/metadata.interface.js';
 import { ICommand } from '@interfaces/command.interface.js';
+import { embedFromTemplate } from '@/utils/embed-utils.js';
 
 /**
  * Literal object for the command
@@ -54,7 +54,7 @@ export const command: ICommand = {
 
     //If there are no results
     if (!results.hasTracks())
-      return await reply(inter, { embeds: [noResults(client)], flags: MessageFlags.Ephemeral }, 2);
+      return await reply(inter, { embeds: [embedFromTemplate('noResults', client)], flags: MessageFlags.Ephemeral }, 2);
 
     //Set the metadata for the tracks, this can be changed in the future
     results.tracks.forEach((track) => {
@@ -86,7 +86,11 @@ export const command: ICommand = {
 
     //Send the added to queue embed
     await reply(inter, {
-      embeds: [results.playlist ? addToQueueMany(results) : addToQueue(results.tracks[0] as Track<ITrackMetadata>)],
+      embeds: [
+        results.playlist
+          ? embedFromTemplate('addToQueueMany', results)
+          : embedFromTemplate('addToQueue', results.tracks[0] as Track<ITrackMetadata>),
+      ],
     });
   },
 };

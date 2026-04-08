@@ -1,10 +1,10 @@
 import { ChatInputCommandInteraction, Client, SlashCommandBuilder, MessageFlags } from 'discord.js';
 import { useQueue, usePlayer, GuildQueue, GuildQueuePlayerNode } from 'discord-player';
 import { reply } from '@utils/interaction-utils.js';
-import { noQueue, nowPlaying } from '@utils/embed/embed-presets.js';
 import { fetchString } from '@utils/language-utils.js';
 import { ICommand } from '@interfaces/command.interface.js';
 import { IQueuePlayerMetadata } from '@interfaces/metadata.interface.js';
+import { embedFromTemplate } from '@/utils/embed-utils.js';
 
 /**
  * Literal object for the command
@@ -30,9 +30,11 @@ export const command: ICommand = {
 
     //Check if there is a queue and if it is playing
     if (!queue || !queue.isPlaying())
-      return await reply(inter, { embeds: [noQueue(client)], flags: MessageFlags.Ephemeral }, 2);
+      return await reply(inter, { embeds: [embedFromTemplate('noQueue', client)], flags: MessageFlags.Ephemeral }, 2);
 
     //Send the now playing embed
-    await reply(inter, { embeds: [nowPlaying(queue, player as GuildQueuePlayerNode<IQueuePlayerMetadata>)] });
+    await reply(inter, {
+      embeds: [embedFromTemplate('nowPlaying', queue, player as GuildQueuePlayerNode<IQueuePlayerMetadata>)],
+    });
   },
 };

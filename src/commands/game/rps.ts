@@ -11,7 +11,7 @@ import {
   MessageFlags,
 } from 'discord.js';
 import { reply, deferReply, fetchReply } from '@utils/interaction-utils.js';
-import { createEmbed, modifyEmbed, ColorScheme } from '@utils/embed/embed-utils.js';
+import { createEmbed, modifyEmbed, ColorScheme } from '@/utils/embed-utils.js';
 import { fetchString, fetchFunction } from '@utils/language-utils.js';
 import { ICommand } from '@interfaces/command.interface.js';
 

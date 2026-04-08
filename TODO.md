@@ -2,7 +2,9 @@
 
 ## Important
 
+- [ ] game-embeds.ts and moderation-embeds.ts need to be refactored to use embedFromTemplate function (embeds/)
 - [ ] Modify locale placeholders to be more user-friendly (e.g. {user} instead of {0}) (loaders/languages-loader.ts)
+- [ ] Check and fix references
 
 ## General
 
@@ -20,6 +22,10 @@
 ## Music
 
 - [x] While YoutubeI package is being fixed, quick workaround done (bot.ts) -> songs wont play
+- [ ] Maybe add posibility to play next a playlist or an album (play-next command)
+- [ ] In trivia, add missing songs (number).
+- [ ] In trivia, substract 1 point if the user answers wrong (currently only adds points if the answer is correct)
+- [ ] In trivia, add gamemode where every user can answer in a limited time (e.g. 30 seconds) and every player that answers correctly gets points, but only the first one gets more points (e.g. 10 points for the first one, 5 for the second one, and 2 for the rest)
 
 ## Embeds
 

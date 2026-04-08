@@ -1,15 +1,29 @@
 {
+  "music_general": {
+    "error": "An error occurred while playing the music",
+    "no_results": "No results for this song",
+    "no_playlist": "Make sure the link is a playlist and has at least 5 songs",
+    "no_queue": "No music is currently playing",
+    "no_history": "No history available",
+    "no_lyrics": "No lyrics found for this song",
+    "playing": "now playing",
+    "empty_channel": "No one is in the voice channel, leaving...",
+    "empty_queue": "No songs in the queue, leaving..."
+  },
   "lyrics": {
     "description": "Displays the lyrics of the current song"
   },
   "now_playing": {
-    "description": "Displays the song currently playing"
+    "description": "Displays the song currently playing",
+    "response": "Volume **{0}%**\nDuration **{1}**\nProgress {2}\nLoop **{3}**\nRequested by {4}"
   },
   "save": {
-    "description": "Saves the current song in a private message"
+    "description": "Saves the current song in a private message",
+    "response": "sent to private message"
   },
   "back": {
-    "description": "Plays the previous song"
+    "description": "Plays the previous song",
+    "response": "playing the previous song"
   },
   "loop": {
     "description": "Enables or disables looping for a song or the queue",
@@ -22,16 +36,33 @@
         "queue": "Queue",
         "autoplay": "Autoplay"
       }
+    },
+    "response": {
+      "modes": {
+        "off": "disabled",
+        "track": "song",
+        "queue": "queue",
+        "autoplay": "autoplay"
+      },
+      "title": "Loop: {0}"
     }
   },
   "pause": {
-    "description": "Pauses the song"
+    "description": "Pauses the song",
+    "response": "paused"
   },
   "play": {
     "description": "Plays a song or a playlist",
     "option": {
       "name": "song",
       "description": "Song or playlist you want to play"
+    },
+    "response": {
+      "add_to_queue": "added to the queue",
+      "add_to_queue_many": {
+        "title": "{0} songs",
+        "description": "added to the queue"
+      }
     }
   },
   "play_next": {
@@ -42,28 +73,44 @@
     }
   },
   "resume": {
-    "description": "Resumes the song"
+    "description": "Resumes the song",
+    "response": "resumed"
   },
   "skip": {
-    "description": "Skips the current song"
+    "description": "Skips the current song",
+    "response": "skipped"
   },
   "stop": {
-    "description": "Stops music playback"
+    "description": "Stops music playback",
+    "response": "Music has been stopped"
   },
   "volume": {
     "description": "Changes the music volume",
     "option": {
       "name": "volume",
       "description": "Music volume"
-    }
+    },
+    "response": "Volume has been changed to {0}%"
   },
   "clear": {
-    "description": "Clears the playback queue"
+    "description": "Clears the playback queue",
+    "response": "The queue has been cleared"
   },
   "queue": {
-    "description": "Displays the playback queue"
+    "description": "Displays the playback queue",
+    "response": {
+      "next_songs": {
+        "add": "And **{0}** more songs...",
+        "no_add": "**{0}** songs..."
+      },
+      "title": "in the queue"
+    }
   },
   "shuffle": {
-    "description": "Shuffles the playback queue"
+    "description": "Shuffles the playback queue",
+    "response": {
+      "title": "{0} songs",
+      "description": "have been shuffled"
+    }
   }
 }

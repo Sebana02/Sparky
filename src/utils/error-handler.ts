@@ -1,5 +1,5 @@
 import { ChatInputCommandInteraction, Client, MessageFlags } from 'discord.js';
-import { createEmbed, ColorScheme } from './embed/embed-utils.js';
+import { createEmbed, ColorScheme } from './embed-utils.js';
 import { reply } from '@utils/interaction-utils.js';
 import { ICommand } from '@interfaces/command.interface.js';
 import { fetchString } from '@utils/language-utils.js';
@@ -55,7 +55,7 @@ export async function commandErrorHandler(
       color: ColorScheme.error,
       author: {
         name: utilLit.commandError,
-        icon_url: client.user?.displayAvatarURL(),
+        iconURL: client.user?.displayAvatarURL(),
       },
     });
 

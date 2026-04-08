@@ -2,7 +2,7 @@ import { Client } from 'discord.js';
 import { Emitter, IEvent } from '@interfaces/event.interface.js';
 import { GuildQueue } from 'discord-player';
 import { IQueuePlayerMetadata } from '@interfaces/metadata.interface';
-import { embedFromTemplate } from '@utils/embed/embed-utils.js';
+import { embedFromTemplate } from '@/utils/embed-utils.js';
 
 /**
  * Event emitted when the voice channel is empty

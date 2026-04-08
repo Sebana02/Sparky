@@ -1,6 +1,6 @@
 import { ChatInputCommandInteraction, Client, SlashCommandBuilder, MessageFlags } from 'discord.js';
 import { followUp, reply } from '@utils/interaction-utils.js';
-import { createEmbed, ColorScheme } from '@utils/embed/embed-utils.js';
+import { embedFromTemplate } from '@utils/embed-utils.js';
 import { fetchString, fetchFunction } from '@utils/language-utils.js';
 import { ICommand } from '@interfaces/command.interface.js';
 
@@ -15,7 +15,6 @@ const commandLit = {
   reminderDescription: fetchString('remind.options.reminder.description'),
   invalidTime: fetchString('remind.invalid_time'),
   reminderSet: fetchFunction('remind.reminder_set'),
-  response: fetchFunction('remind.response'),
 };
 
 /**
@@ -85,17 +84,7 @@ export const command: ICommand = {
 
     //Set reminder
     setTimeout(async () => {
-      //Create embed
-      const embed = createEmbed({
-        description: reminder,
-        timestamp: Date.now().toLocaleString(),
-        footer: {
-          text: commandLit.response(inter.user.tag),
-          icon_url: inter.user.displayAvatarURL(),
-        },
-        color: ColorScheme.utility,
-      });
-      await followUp(inter, { embeds: [embed] });
+      await followUp(inter, { embeds: [embedFromTemplate('remind', inter, reminder)] });
     }, futureDate.getTime() - Date.now());
   },
 };

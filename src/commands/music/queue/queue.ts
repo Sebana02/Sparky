@@ -1,10 +1,10 @@
 import { ChatInputCommandInteraction, Client, SlashCommandBuilder, MessageFlags } from 'discord.js';
 import { useQueue } from 'discord-player';
 import { reply } from '@utils/interaction-utils.js';
-import { noQueue, currentQueue } from '@utils/embed/embed-presets.js';
 import { fetchString } from '@utils/language-utils.js';
 import { ICommand } from '@interfaces/command.interface.js';
 import { IQueuePlayerMetadata } from '@interfaces/metadata.interface.js';
+import { embedFromTemplate } from '@/utils/embed-utils.js';
 
 /**
  * Literal object for the command
@@ -29,9 +29,9 @@ export const command: ICommand = {
 
     //Check if there is a queue and if it is playing
     if (!queue || !queue.isPlaying())
-      return await reply(inter, { embeds: [noQueue(client)], flags: MessageFlags.Ephemeral }, 2);
+      return await reply(inter, { embeds: [embedFromTemplate('noQueue', client)], flags: MessageFlags.Ephemeral }, 2);
 
     //Send the queue embed
-    await reply(inter, { embeds: [currentQueue(queue)] });
+    await reply(inter, { embeds: [embedFromTemplate('currentQueue', queue)] });
   },
 };

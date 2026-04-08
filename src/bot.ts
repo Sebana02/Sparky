@@ -103,18 +103,7 @@ function createClient(): Client {
 async function createPlayer(client: Client): Promise<void> {
   const player = new Player(client); // Player setup
 
-  // Load YouTube support
-  await player.extractors.register(YoutubeiExtractor, {
-    streamOptions: {
-      useClient: 'WEB_EMBEDDED',
-    },
-    innertubeConfigRaw: {
-      player_id: '0004de42',
-    },
-    generateWithPoToken: true,
-    useServerAbrStream: false,
-  });
-
+  await player.extractors.register(YoutubeiExtractor, { logLevel: 'NONE', useYoutubeDL: true }); // Load YouTube support with default options
   await player.extractors.register(SpotifyExtractor, {}); // Load Spotify support (only fetching)
   await player.extractors.register(AppleMusicExtractor, {}); // Load Apple Music support (only fetching)
   await player.extractors.register(SoundCloudExtractor, {}); // Load SoundCloud support
